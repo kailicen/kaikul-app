@@ -5,7 +5,7 @@ type Props = {};
 function Features({}: Props) {
   return (
     <div
-      className="h-screen w-screen md:w-auto flex relative flex-col text-center md:text-left md:flex-row
+      className="min-h-screen w-screen md:w-auto flex relative flex-col text-center md:text-left md:flex-row
     max-w-7xl px-10 mx-auto items-center justify-center"
     >
       <h3 className="absolute top-24 uppercase tracking-[20px] text-2xl">
