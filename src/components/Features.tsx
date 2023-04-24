@@ -6,20 +6,20 @@ type Props = {};
 function Features({}: Props) {
   return (
     <div
-      className="min-h-screen w-screen md:w-auto flex relative flex-col text-center md:text-left md:flex-row
+      className="min-h-screen w-screen md:w-auto flex flex-col text-center
     max-w-7xl px-10 mx-auto items-center justify-center"
     >
-      <h3 className="absolute top-24 uppercase tracking-[20px] text-2xl">
+      <h3 className="mb-20 uppercase tracking-[20px] text-2xl">
         Groups
         <span className="lowercase text-xl tracking-[10px]">(beta)</span>
       </h3>
       <div
-        className="absolute top-36 md:relative md:top-0 
+        className="
         flex flex-col md:flex-row space-y-5 md:space-x-10 md:space-y-0
       items-center justify-center px-2 md:px-10"
       >
-        <div className="bg-gray-100 rounded-lg p-2 md:p-5 text-start text-md md:text-base">
-          <h4 className="text-lg md:text-xl mb-1 md:mb-5 font-bold">
+        <div className="bg-gray-100 rounded-lg p-2 md:p-5 text-start text-sm md:text-base">
+          <h4 className="text-base md:text-xl mb-1 md:mb-5 font-bold">
             WhatsApp Group
           </h4>
           <p className="mb-2 md:mb-5">
@@ -36,7 +36,7 @@ function Features({}: Props) {
           <p className="my-2 md:my-5">
             Join for support and progress towards your goals!
           </p>
-          <button className="button bg-gray-800 hover:bg-cyan-500">
+          <button className="button py-1 md:py-3 px-3 md:px-4 bg-gray-800 hover:bg-cyan-500">
             <Link
               href="https://www.linkedin.com/in/setthawutkul/"
               target="_blank"
@@ -45,8 +45,8 @@ function Features({}: Props) {
             </Link>
           </button>
         </div>
-        <div className="bg-gray-100 rounded-lg p-2 md:p-5 text-start text-md md:text-base">
-          <h4 className="text-lg md:text-xl mb-1 md:mb-5 font-bold">
+        <div className="bg-gray-100 rounded-lg p-2 md:p-5 text-start text-sm md:text-base">
+          <h4 className="text-base md:text-xl mb-1 md:mb-5 font-bold">
             Zoom Catchup Group
           </h4>
           <p className="mb-2 md:mb-5">
@@ -61,7 +61,7 @@ function Features({}: Props) {
           <p className="my-2 md:my-5">
             Join for an interactive way to progress towards your goals!
           </p>
-          <button className="button bg-gray-800 hover:bg-cyan-500">
+          <button className="button py-1 md:py-3 px-3 md:px-4 bg-gray-800 hover:bg-cyan-500">
             <Link
               href="https://www.linkedin.com/in/kaili-cen-1975b4197/"
               target="_blank"
