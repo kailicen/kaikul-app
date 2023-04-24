@@ -61,7 +61,7 @@ function Contact({}: Props) {
 
   return (
     <div
-      className="h-[80vh] w-screen md:w-auto flex flex-col text-center md:text-left
+      className="h-screen w-screen md:w-auto flex flex-col text-center
     max-w-7xl px-10 mx-auto items-center justify-center"
     >
       <h3 className="mb-20 uppercase tracking-[20px] text-2xl">Contact</h3>
