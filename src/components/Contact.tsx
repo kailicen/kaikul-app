@@ -61,12 +61,10 @@ function Contact({}: Props) {
 
   return (
     <div
-      className="h-screen w-screen md:w-auto flex relative flex-col text-center md:text-left md:flex-row
+      className="h-[80vh] w-screen md:w-auto flex flex-col text-center md:text-left
     max-w-7xl px-10 mx-auto items-center justify-center"
     >
-      <h3 className="absolute top-24 uppercase tracking-[20px] text-2xl">
-        Contact
-      </h3>
+      <h3 className="mb-20 uppercase tracking-[20px] text-2xl">Contact</h3>
       <div className="flex flex-col space-y-10 px-2 w-full md:w-[500px] items-center justify-center">
         <form
           onSubmit={handleSubmit(onSubmit)}
