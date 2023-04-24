@@ -7,26 +7,28 @@ type WaitlistProps = {
 const Waitlist = () => {
   const [email, setEmail] = useState("");
   const [isSuccess, setIsSuccess] = useState(false);
+  const [isLoading, setIsLoading] = useState(false); // new state to track loading state
 
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    // call your API to store the email in your database or CRM
+    setIsLoading(true); // set loading state to true before making the API call
     const waitlistData: WaitlistProps = { email };
-    fetch("/api/waitlist", {
-      method: "POST",
-      body: JSON.stringify(waitlistData),
-      headers: {
-        "Content-Type": "application/json",
-      },
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        console.log(data);
-        setIsSuccess(true); // set the state to true if the response is successful
-      })
-      .catch((error) => console.error(error));
-
-    setEmail(""); // clear the email input after submitting
+    try {
+      const response = await fetch("/api/waitlist", {
+        method: "POST",
+        body: JSON.stringify(waitlistData),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+      const data = await response.json();
+      console.log(data);
+      setIsSuccess(true);
+      setEmail("");
+    } catch (error) {
+      console.error(error);
+    }
+    setIsLoading(false); // set loading state to false after the API call is completed
   };
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -47,8 +49,10 @@ const Waitlist = () => {
         <button
           type="submit"
           className="button w-48 bg-gray-800 hover:bg-cyan-500"
+          disabled={isLoading} // disable the button when loading
         >
-          Join Waitlist
+          {isLoading ? "Joining..." : "Join Waitlist"}{" "}
+          {/* display a spinner when loading */}
         </button>
       </div>
       {isSuccess && (
