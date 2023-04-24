@@ -57,17 +57,19 @@ export default function Home() {
         </div>
       </header>
 
-      <section id="hero">
-        <Hero />
-      </section>
+      <div className="flex flex-col">
+        <section id="hero">
+          <Hero />
+        </section>
 
-      <section id="features" ref={featuresRef}>
-        <Features />
-      </section>
+        <section id="features" ref={featuresRef}>
+          <Features />
+        </section>
 
-      <section id="contact" ref={contactRef}>
-        <Contact />
-      </section>
+        <section id="contact" ref={contactRef}>
+          <Contact />
+        </section>
+      </div>
 
       <footer className="bg-gray-800 py-8">
         <div className="container mx-auto px-4">
