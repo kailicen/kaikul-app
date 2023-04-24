@@ -1,3 +1,4 @@
+import Link from "next/link";
 import React from "react";
 
 type Props = {};
@@ -17,8 +18,10 @@ function Features({}: Props) {
         flex flex-col md:flex-row space-y-5 md:space-x-10 md:space-y-0
       items-center justify-center px-2 md:px-10"
       >
-        <div className="bg-gray-100 rounded-lg p-2 md:p-5 text-md md:text-base">
-          <h4 className="text-lg md:text-xl mb-1 md:mb-5">WhatsApp Group</h4>
+        <div className="bg-gray-100 rounded-lg p-2 md:p-5 text-start text-md md:text-base">
+          <h4 className="text-lg md:text-xl mb-1 md:mb-5 font-bold">
+            WhatsApp Group
+          </h4>
           <p className="mb-2 md:mb-5">
             Our WhatsApp group offers a more extensive community of{" "}
             <span className="underline decoration-cyan-500">
@@ -30,12 +33,20 @@ function Features({}: Props) {
           <p>📣 Weekly gentle reminders</p>
           <p>🥹 Motivation materials</p>
           <p>🤓 A reflection framework</p>
-          <p className="mt-2 md:mt-5">
+          <p className="my-2 md:my-5">
             Join for support and progress towards your goals!
           </p>
+          <button className="button bg-gray-800 hover:bg-cyan-500">
+            <Link
+              href="https://www.linkedin.com/in/setthawutkul/"
+              target="_blank"
+            >
+              Contact Boom
+            </Link>
+          </button>
         </div>
-        <div className="bg-gray-100 rounded-lg p-2 md:p-5 text-md md:text-base">
-          <h4 className="text-lg md:text-xl mb-1 md:mb-5">
+        <div className="bg-gray-100 rounded-lg p-2 md:p-5 text-start text-md md:text-base">
+          <h4 className="text-lg md:text-xl mb-1 md:mb-5 font-bold">
             Zoom Catchup Group
           </h4>
           <p className="mb-2 md:mb-5">
@@ -47,9 +58,17 @@ function Features({}: Props) {
           <p>💡 Theme and question of the week</p>
           <p>🤗 A weekly open sharing zoom call (40 minutes)</p>
           <p>🤓 An accountable buddy</p>
-          <p className="mt-2 md:mt-5">
+          <p className="my-2 md:my-5">
             Join for an interactive way to progress towards your goals!
           </p>
+          <button className="button bg-gray-800 hover:bg-cyan-500">
+            <Link
+              href="https://www.linkedin.com/in/kaili-cen-1975b4197/"
+              target="_blank"
+            >
+              Contact Kaili
+            </Link>
+          </button>
         </div>
       </div>
     </div>
