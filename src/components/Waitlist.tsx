@@ -46,7 +46,7 @@ const Waitlist = () => {
         />
         <button
           type="submit"
-          className="button w-48 bg-black hover:bg-gray-800"
+          className="button w-48 bg-gray-800 hover:bg-cyan-500"
         >
           Join Waitlist
         </button>

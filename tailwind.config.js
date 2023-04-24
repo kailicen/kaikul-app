@@ -7,7 +7,7 @@ module.exports = {
   ],
   theme: {
     fontFamily: {
-      mali: ["Mali", "cursive"],
+      caveat: ["Caveat", "cursive"],
     },
     extend: {
       backgroundImage: {
