@@ -17,8 +17,8 @@ function Features({}: Props) {
         flex flex-col md:flex-row space-y-5 md:space-x-10 md:space-y-0
       items-center justify-center px-2 md:px-10"
       >
-        <div className="bg-gray-100 rounded-lg p-5 text-md md:text-base">
-          <h4 className="text-lg md:text-xl mb-5">WhatsApp Group</h4>
+        <div className="bg-gray-100 rounded-lg p-2 md:p-5 text-md md:text-base">
+          <h4 className="text-lg md:text-xl mb-1 md:mb-5">WhatsApp Group</h4>
           <p className="mb-2 md:mb-5">
             Our WhatsApp group offers a more extensive community of{" "}
             <span className="underline decoration-cyan-500">
@@ -34,8 +34,10 @@ function Features({}: Props) {
             Join for support and progress towards your goals!
           </p>
         </div>
-        <div className="bg-gray-100 rounded-lg p-5 text-md md:text-base">
-          <h4 className="text-lg md:text-xl mb-5">Zoom Catchup Group</h4>
+        <div className="bg-gray-100 rounded-lg p-2 md:p-5 text-md md:text-base">
+          <h4 className="text-lg md:text-xl mb-1 md:mb-5">
+            Zoom Catchup Group
+          </h4>
           <p className="mb-2 md:mb-5">
             Our Zoom group is a more intimate setting, consisting of{" "}
             <span className="underline decoration-cyan-500">2 individuals</span>{" "}

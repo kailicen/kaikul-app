@@ -39,7 +39,7 @@ export default function Home() {
     mx-auto z-20 items-center"
       >
         <div
-          className="font-caveat text-2xl md:italic hover:cursor-pointer hover:text-cyan-500"
+          className="md:font-caveat text-2xl md:italic hover:cursor-pointer hover:text-cyan-500"
           onClick={scrollToTop}
         >
           LifeLift
