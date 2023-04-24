@@ -39,7 +39,7 @@ export default function Home() {
     mx-auto z-20 items-center"
       >
         <div
-          className="font-caveat text-2xl italic hover:cursor-pointer hover:text-cyan-500"
+          className="font-caveat text-2xl md:italic hover:cursor-pointer hover:text-cyan-500"
           onClick={scrollToTop}
         >
           LifeLift
@@ -57,7 +57,7 @@ export default function Home() {
         </div>
       </header>
 
-      <div className="flex flex-col">
+      <div className="flex flex-col space-y-5">
         <section id="hero">
           <Hero />
         </section>

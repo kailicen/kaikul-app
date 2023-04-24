@@ -17,9 +17,9 @@ function Features({}: Props) {
         flex flex-col md:flex-row space-y-5 md:space-x-10 md:space-y-0
       items-center justify-center px-2 md:px-10"
       >
-        <div className="bg-gray-100 rounded-lg p-5">
-          <h4 className="text-xl mb-5">WhatsApp Group</h4>
-          <p className="mb-5">
+        <div className="bg-gray-100 rounded-lg p-5 text-md md:text-base">
+          <h4 className="text-lg md:text-xl mb-5">WhatsApp Group</h4>
+          <p className="mb-2 md:mb-5">
             Our WhatsApp group offers a more extensive community of{" "}
             <span className="underline decoration-cyan-500">
               less than 10 individuals
@@ -30,13 +30,13 @@ function Features({}: Props) {
           <p>📣 Weekly gentle reminders</p>
           <p>🥹 Motivation materials</p>
           <p>🤓 A reflection framework</p>
-          <p className="mt-5">
+          <p className="mt-2 md:mt-5">
             Join for support and progress towards your goals!
           </p>
         </div>
-        <div className="bg-gray-100 rounded-lg p-5">
-          <h4 className="text-xl mb-5">Zoom Catchup Group</h4>
-          <p className="mb-5">
+        <div className="bg-gray-100 rounded-lg p-5 text-md md:text-base">
+          <h4 className="text-lg md:text-xl mb-5">Zoom Catchup Group</h4>
+          <p className="mb-2 md:mb-5">
             Our Zoom group is a more intimate setting, consisting of{" "}
             <span className="underline decoration-cyan-500">2 individuals</span>{" "}
             paired with a facilitator. You&apos;ll have access to:
@@ -45,7 +45,7 @@ function Features({}: Props) {
           <p>💡 Theme and question of the week</p>
           <p>🤗 A weekly open sharing zoom call (40 minutes)</p>
           <p>🤓 An accountable buddy</p>
-          <p className="mt-5">
+          <p className="mt-2 md:mt-5">
             Join for an interactive way to progress towards your goals!
           </p>
         </div>
