@@ -1,14 +1,15 @@
 import Contact from "@/components/Contact";
 import Features from "@/components/Features";
 import Hero from "@/components/Hero";
+import Team from "@/components/Team";
 import Head from "next/head";
 import { useRef } from "react";
 
 type SectionRef = HTMLDivElement | null;
 
 export default function Home() {
-  //const heroRef = useRef<SectionRef>(null);
   const featuresRef = useRef<SectionRef>(null);
+  const teamRef = useRef<SectionRef>(null);
   const contactRef = useRef<SectionRef>(null);
 
   const scrollToTop = () => {
@@ -18,6 +19,12 @@ export default function Home() {
   const scrollToFeatures = () => {
     if (featuresRef.current) {
       featuresRef.current.scrollIntoView({ behavior: "smooth" });
+    }
+  };
+
+  const scrollToTeam = () => {
+    if (teamRef.current) {
+      teamRef.current.scrollIntoView({ behavior: "smooth" });
     }
   };
 
@@ -51,6 +58,12 @@ export default function Home() {
           >
             Groups (beta)
           </div>
+          <div
+            className="hover:text-teal-500 hover:cursor-pointer"
+            onClick={scrollToTeam}
+          >
+            Our Team
+          </div>
           <button className="button" onClick={scrollToContact}>
             Contact
           </button>
@@ -64,6 +77,10 @@ export default function Home() {
 
         <section id="features" ref={featuresRef}>
           <Features />
+        </section>
+
+        <section id="team" ref={teamRef}>
+          <Team />
         </section>
 
         <section id="contact" ref={contactRef}>
