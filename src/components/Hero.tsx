@@ -12,7 +12,7 @@ function Hero({}: Props) {
       <div className="flex flex-col items-center justify-center w-full flex-1 px-3 md:px-32 lg:px-52 text-center">
         <h1 className="text-3xl md:text-6xl md:leading-[65px] font-bold">
           A community where professionals{" "}
-          <span className="underline decoration-cyan-500">come together</span>{" "}
+          <span className="underline decoration-teal-500">come together</span>{" "}
           to share their self development progress.
         </h1>
         <h2 className="mt-6 text-md md:text-xl px-0 md:px-32">

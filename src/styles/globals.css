@@ -2,16 +2,14 @@
 @tailwind components;
 @tailwind utilities;
 
-@import url("https://fonts.googleapis.com/css2?family=Caveat:wght@700&display=swap");
-
 @layer components {
   .button {
-    @apply bg-cyan-500 rounded-full text-white py-3 px-4 hover:bg-cyan-600;
+    @apply bg-teal-500 rounded-full text-white py-3 px-4 hover:bg-teal-600;
   }
   .contactInput {
     @apply outline-none bg-gray-100 rounded-sm border-b px-6 py-4 border-gray-300
-    text-gray-900 placeholder-gray-500 transition-all focus:border-cyan-400/40
-     hover:border-cyan-400/40;
+    text-gray-900 placeholder-gray-500 transition-all focus:border-teal-400/40
+     hover:border-teal-400/40;
   }
 }
 

@@ -120,7 +120,7 @@ function Contact({}: Props) {
 
           <button
             type="submit"
-            className={`bg-cyan-500 py-3 px-10 rounded-md text-white text-lg ${
+            className={`bg-teal-500 py-3 px-10 rounded-md text-white text-lg hover:bg-teal-600 ${
               isSubmitting ? "opacity-50 cursor-not-allowed" : ""
             }`}
             disabled={isSubmitting}

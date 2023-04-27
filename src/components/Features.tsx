@@ -15,7 +15,7 @@ function Features({}: Props) {
       </h3>
       <p className="mb-10">
         Welcome to our{" "}
-        <span className="underline decoration-cyan-500">
+        <span className="underline decoration-teal-500">
           one-month challenge
         </span>
         ! During this month, you will set your goals and track them weekly.
@@ -32,7 +32,7 @@ function Features({}: Props) {
           </h4>
           <p className="mb-2 md:mb-5">
             Our WhatsApp group offers a more extensive community of{" "}
-            <span className="underline decoration-cyan-500">
+            <span className="underline decoration-teal-500">
               less than 10 individuals
             </span>
             . You&apos;ll have access to:
@@ -41,7 +41,7 @@ function Features({}: Props) {
           <p>📣 Weekly gentle reminders</p>
           <p>🥹 Motivation materials</p>
           <p>🤓 A reflection framework</p>
-          <button className="button mt-2 md:mt-10 py-1 md:py-3 px-3 md:px-4 bg-gray-800 hover:bg-cyan-500">
+          <button className="button mt-2 md:mt-10 py-1 md:py-3 px-3 md:px-4 bg-gray-800 hover:bg-teal-500">
             <Link
               href="https://www.linkedin.com/in/setthawutkul/"
               target="_blank"
@@ -56,14 +56,14 @@ function Features({}: Props) {
           </h4>
           <p className="mb-2 md:mb-5">
             Our Zoom group is a more intimate setting, consisting of{" "}
-            <span className="underline decoration-cyan-500">2 individuals</span>{" "}
+            <span className="underline decoration-teal-500">2 individuals</span>{" "}
             paired with a facilitator. You&apos;ll have access to:
           </p>
           <p>🎯 A weekly goal-setting and tracking template</p>
           <p>💡 Theme & question of the week</p>
           <p>🤗 A weekly zoom call (40 minutes)</p>
           <p>🤓 An accountable buddy</p>
-          <button className="button mt-2 md:mt-10 py-1 md:py-3 px-3 md:px-4 bg-gray-800 hover:bg-cyan-500">
+          <button className="button mt-2 md:mt-10 py-1 md:py-3 px-3 md:px-4 bg-gray-800 hover:bg-teal-500">
             <Link
               href="https://www.linkedin.com/in/kaili-cen-1975b4197/"
               target="_blank"

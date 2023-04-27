@@ -30,7 +30,7 @@ export default function Home() {
   return (
     <div className="min-h-screen z-0">
       <Head>
-        <title>LifeLift</title>
+        <title>KaiKul | Your Personal Development Go-to Place </title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
@@ -39,14 +39,14 @@ export default function Home() {
     mx-auto z-20 items-center"
       >
         <div
-          className="md:font-caveat text-2xl md:italic hover:cursor-pointer hover:text-cyan-500"
+          className="font-bold text-2xl hover:cursor-pointer hover:text-teal-500"
           onClick={scrollToTop}
         >
-          LifeLift
+          KaiKul
         </div>
         <div className="flex flex-row items-center space-x-5">
           <div
-            className="hover:text-cyan-500 hover:cursor-pointer"
+            className="hover:text-teal-500 hover:cursor-pointer"
             onClick={scrollToFeatures}
           >
             Groups (beta)
@@ -74,7 +74,7 @@ export default function Home() {
       <footer className="bg-gray-800 py-8">
         <div className="container mx-auto px-4">
           <p className="text-gray-400 text-center text-sm">
-            © {new Date().getFullYear()} LifeLift. All rights reserved.
+            © {new Date().getFullYear()} KaiKul. All rights reserved.
           </p>
         </div>
       </footer>
