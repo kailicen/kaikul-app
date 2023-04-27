@@ -1,3 +1,4 @@
+import Beta from "@/components/Beta";
 import Contact from "@/components/Contact";
 import Features from "@/components/Features";
 import Hero from "@/components/Hero";
@@ -9,6 +10,7 @@ type SectionRef = HTMLDivElement | null;
 
 export default function Home() {
   const featuresRef = useRef<SectionRef>(null);
+  const betaRef = useRef<SectionRef>(null);
   const teamRef = useRef<SectionRef>(null);
   const contactRef = useRef<SectionRef>(null);
 
@@ -19,6 +21,12 @@ export default function Home() {
   const scrollToFeatures = () => {
     if (featuresRef.current) {
       featuresRef.current.scrollIntoView({ behavior: "smooth" });
+    }
+  };
+
+  const scrollToBeta = () => {
+    if (betaRef.current) {
+      betaRef.current.scrollIntoView({ behavior: "smooth" });
     }
   };
 
@@ -56,7 +64,13 @@ export default function Home() {
             className="hover:text-teal-500 hover:cursor-pointer"
             onClick={scrollToFeatures}
           >
-            Groups (beta)
+            Features
+          </div>
+          <div
+            className="hover:text-teal-500 hover:cursor-pointer"
+            onClick={scrollToBeta}
+          >
+            Beta
           </div>
           <div
             className="hover:text-teal-500 hover:cursor-pointer"
@@ -77,6 +91,10 @@ export default function Home() {
 
         <section id="features" ref={featuresRef}>
           <Features />
+        </section>
+
+        <section id="beta" ref={betaRef}>
+          <Beta />
         </section>
 
         <section id="team" ref={teamRef}>
