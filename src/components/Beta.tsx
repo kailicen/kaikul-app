@@ -54,7 +54,10 @@ function Features({}: Props) {
           </p>
 
           <button className="buttonMobile md:button mt-2 md:mt-10 bg-gray-800 md:bg-gray-800">
-            <Link href="#" target="_blank">
+            <Link
+              href="https://docs.google.com/forms/d/e/1FAIpQLSfswWq-QXPv6xA-_1W5xS2seGvG9x9uCziBo_HkRNbAirz8yA/viewform"
+              target="_blank"
+            >
               Join Now
             </Link>
           </button>
