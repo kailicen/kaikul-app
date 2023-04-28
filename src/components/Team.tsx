@@ -34,7 +34,7 @@ function Team({}: Props) {
             individuals, and foster strong connections within our community. Are
             you ready? Let&apos;s progress together towards a better future!
           </p>
-          <div className="flex flex-row space-x-2">
+          <div className="flex flex-row space-x-2 mt-2">
             <SocialIcon
               url="https://www.linkedin.com/in/setthawutkul/"
               target="_blank"
@@ -77,9 +77,15 @@ function Team({}: Props) {
             can all grow spiritually, mentally, emotionally, and physically.
             Join me on this journey of self-discovery and personal development!
           </p>
-          <div className="flex flex-row space-x-2">
+          <div className="flex flex-row space-x-2 mt-2">
             <SocialIcon
               url="https://www.linkedin.com/in/kaili-cen-1975b4197/"
+              target="_blank"
+              bgColor="black"
+              className="mt-2"
+            />
+            <SocialIcon
+              url="https://medium.com/@kailicen226"
               target="_blank"
               bgColor="black"
               className="mt-2"
