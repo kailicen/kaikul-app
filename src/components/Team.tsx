@@ -28,12 +28,21 @@ function Team({}: Props) {
             Setthawut Kulsrisuwan (Boom)
           </h3>
           <p className="text-center mt-2">
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus
-            eget nisi vitae justo lacinia feugiat.{" "}
+            Hi, I&apos;m Boom - your admin for self-discovery sessions and
+            community interaction. My mission is to create objective-setting and
+            self-awareness sessions, promote collaboration among diverse
+            individuals, and foster strong connections within our community. Are
+            you ready? Let&apos;s progress together towards a better future!
           </p>
           <div className="flex flex-row space-x-2">
             <SocialIcon
               url="https://www.linkedin.com/in/setthawutkul/"
+              target="_blank"
+              bgColor="black"
+              className="mt-2"
+            />
+            <SocialIcon
+              url="https://setthawut-kul.medium.com/startup-journey-1st-month-fbf6af794a8c"
               target="_blank"
               bgColor="black"
               className="mt-2"
