@@ -24,7 +24,9 @@ function Team({}: Props) {
               height={128}
             />
           </div>
-          <h3 className="text-xl font-bold mt-6">Boom</h3>
+          <h3 className="text-xl font-bold mt-6">
+            Setthawut Kulsrisuwan (Boom)
+          </h3>
           <p className="text-center mt-2">
             Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus
             eget nisi vitae justo lacinia feugiat.{" "}
@@ -50,7 +52,7 @@ function Team({}: Props) {
               height={128}
             />
           </div>
-          <h3 className="text-xl font-bold mt-6">Kaili</h3>
+          <h3 className="text-xl font-bold mt-6">Kaili Cen</h3>
           <p className="text-center mt-2">
             I firmly believe that adversity can make us stronger, and with the
             right coping skills, we can use our struggles to propel ourselves

@@ -48,7 +48,7 @@ const Waitlist = () => {
         />
         <button
           type="submit"
-          className="button w-48 bg-gray-800 hover:bg-teal-500"
+          className="buttonMobile md:button mt-2 md:mt-10 md:w-48 bg-gray-800 md:bg-gray-800"
           disabled={isLoading} // disable the button when loading
         >
           {isLoading ? "Joining..." : "Join Waitlist"}{" "}

@@ -12,7 +12,7 @@ function Features({}: Props) {
       <h3 className="mb-10 uppercase tracking-[20px] text-2xl">Beta</h3>
       {/* <p className="mb-10">
         Welcome to our{" "}
-        <span className="underline decoration-teal-500">
+        <span className="underline decoration-teal-600">
           one-month challenge
         </span>
         ! During this month, you will set your goals and track them weekly with
@@ -51,7 +51,7 @@ function Features({}: Props) {
             </li>
           </ul>
 
-          <button className="button mt-2 md:mt-10 py-1 md:py-3 px-3 md:px-4 bg-gray-800 hover:bg-teal-500">
+          <button className="buttonMobile md:button mt-2 md:mt-10 bg-gray-800 md:bg-gray-800">
             <Link href="#" target="_blank">
               Join Now
             </Link>
@@ -66,14 +66,20 @@ function Features({}: Props) {
           </h4>
           <p className="mb-2 md:mb-5">
             Our Zoom group is a more intimate setting, consisting of{" "}
-            <span className="underline decoration-teal-500">2 individuals</span>{" "}
+            <span className="underline decoration-teal-600">2 individuals</span>{" "}
             paired with a facilitator. You&apos;ll:
           </p>
-          <p>🤓 Pair up with a self improvement buddy</p>
-          <p>🤗 Have a weekly virtual call (40 minutes)</p>
-          <p>🎯 Receive a weekly goal-setting and tracking template</p>
-          <p>💡 Share your thoughts on theme & question of the week</p>
-          <button className="button mt-2 md:mt-10 py-1 md:py-3 px-3 md:px-4 bg-gray-800 hover:bg-teal-500">
+          <p>🤝 Partner with a self-improvement buddy</p>
+          <p>
+            🤗 Enjoy a weekly 40-minute call in a safe and supportive
+            environment
+          </p>
+          <p>📈 Get a weekly goal-setting and tracking template</p>
+          <p>
+            💡 Share your discoveries and insights on the theme and question of
+            the week
+          </p>
+          <button className="buttonMobile md:button mt-2 md:mt-10 bg-gray-800 md:bg-gray-800">
             <Link href="#" target="_blank">
               Join Now
             </Link>

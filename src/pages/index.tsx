@@ -59,7 +59,7 @@ export default function Home() {
         >
           KaiKul
         </div>
-        <div className="flex flex-row items-center space-x-5">
+        <div className="flex flex-row items-center space-x-2 md:space-x-5">
           <div
             className="hover:text-teal-500 hover:cursor-pointer"
             onClick={scrollToFeatures}
@@ -78,7 +78,7 @@ export default function Home() {
           >
             Our Team
           </div>
-          <button className="button" onClick={scrollToContact}>
+          <button className="buttonMobile md:button" onClick={scrollToContact}>
             Contact
           </button>
         </div>
