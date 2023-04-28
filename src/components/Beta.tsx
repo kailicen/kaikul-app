@@ -20,12 +20,11 @@ function Features({}: Props) {
       </p> */}
       <div
         className="
-        flex flex-col md:flex-row space-y-5 md:space-x-10 md:space-y-0
-      items-center justify-center px-2 md:px-10"
+        grid md:grid-cols-2 gap-5 px-2 md:px-10"
       >
         <div
           className="bg-white rounded-lg shadow-md p-2 md:p-5 text-start text-sm md:text-base
-        hover:bg-gray-50 hover:shadow-lg flex-1"
+        hover:bg-gray-50 hover:shadow-lg"
         >
           <h4 className="text-base md:text-xl mb-1 md:mb-5 font-bold">
             WhatsApp Group
@@ -60,7 +59,7 @@ function Features({}: Props) {
         </div>
         <div
           className="bg-white rounded-lg shadow-md p-2 md:p-5 text-start text-sm md:text-base
-        hover:bg-gray-50 hover:shadow-lg  flex-1"
+        hover:bg-gray-50 hover:shadow-lg "
         >
           <h4 className="text-base md:text-xl mb-1 md:mb-5 font-bold">
             Zoom Catchup Group
