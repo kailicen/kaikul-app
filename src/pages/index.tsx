@@ -46,6 +46,11 @@ export default function Home() {
     <div className="min-h-screen z-0">
       <Head>
         <title>KaiKul | Your Personal Development Go-to Place </title>
+        <meta
+          property="og:title"
+          content="KaiKul: Unleash your potential and find your purpose with our supportive community"
+        />
+        <meta property="og:image" content="/img/kaikul-thumbnail.png" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
