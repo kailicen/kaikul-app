@@ -10,14 +10,14 @@ function Features({}: Props) {
     max-w-7xl px-3 md:px-10 mx-auto items-center justify-center"
     >
       <h3 className="mb-10 uppercase tracking-[20px] text-2xl">Beta</h3>
-      <p className="mb-10">
+      {/* <p className="mb-10">
         Welcome to our{" "}
         <span className="underline decoration-teal-500">
           one-month challenge
         </span>
         ! During this month, you will set your goals and track them weekly with
         your buddies. There are two pathways:
-      </p>
+      </p> */}
       <div
         className="
         flex flex-col md:flex-row space-y-5 md:space-x-10 md:space-y-0
