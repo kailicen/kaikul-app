@@ -12,7 +12,7 @@ function Features({}: Props) {
       <h3 className="mb-10 uppercase tracking-[20px] text-2xl">Beta</h3>
       {/* <p className="mb-10">
         Welcome to our{" "}
-        <span className="underline decoration-teal-600">
+        <span className="underline decoration-violet-600">
           one-month challenge
         </span>
         ! During this month, you will set your goals and track them weekly with
@@ -66,7 +66,9 @@ function Features({}: Props) {
           </h4>
           <p className="mb-2 md:mb-5">
             Our Zoom group is a more intimate setting, consisting of{" "}
-            <span className="underline decoration-teal-600">2 individuals</span>{" "}
+            <span className="underline decoration-violet-600">
+              2 individuals
+            </span>{" "}
             paired with a facilitator. You&apos;ll:
           </p>
           <p>🤝 Partner with a self-improvement buddy</p>

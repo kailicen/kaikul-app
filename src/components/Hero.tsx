@@ -12,7 +12,7 @@ function Hero({}: Props) {
       <div className="flex flex-col items-center justify-center w-full flex-1 px-3 md:px-32 lg:px-52 text-center">
         <h1 className="text-2xl md:text-5xl md:leading-[65px] font-bold">
           Unleash your potential and find your purpose with our{" "}
-          <span className="underline decoration-teal-500">
+          <span className="underline decoration-violet-500">
             supportive community
           </span>
         </h1>

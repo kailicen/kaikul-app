@@ -40,7 +40,7 @@ const Waitlist = () => {
       <div className="flex flex-col space-y-3 md:flex-row md:space-x-3 items-center md:items-end">
         <input
           type="email"
-          className="border rounded-lg py-3 px-4 w-full focus:outline-none focus:ring-1 focus:ring-teal-500"
+          className="border rounded-lg py-3 px-4 w-full focus:outline-none focus:ring-1 focus:ring-violet-500"
           placeholder="you@example.com"
           value={email}
           onChange={handleChange}

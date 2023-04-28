@@ -54,26 +54,26 @@ export default function Home() {
     mx-auto z-20 items-center"
       >
         <div
-          className="font-bold text-2xl hover:cursor-pointer hover:text-teal-500"
+          className="font-bold text-2xl hover:cursor-pointer hover:text-violet-500"
           onClick={scrollToTop}
         >
           KaiKul
         </div>
         <div className="flex flex-row items-center space-x-2 md:space-x-5">
           <div
-            className="hover:text-teal-500 hover:cursor-pointer"
+            className="hover:text-violet-500 hover:cursor-pointer"
             onClick={scrollToFeatures}
           >
             Features
           </div>
           <div
-            className="hover:text-teal-500 hover:cursor-pointer"
+            className="hover:text-violet-500 hover:cursor-pointer"
             onClick={scrollToBeta}
           >
             Beta
           </div>
           <div
-            className="hover:text-teal-500 hover:cursor-pointer"
+            className="hover:text-violet-500 hover:cursor-pointer"
             onClick={scrollToTeam}
           >
             Our Team
