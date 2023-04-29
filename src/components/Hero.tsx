@@ -11,10 +11,11 @@ function Hero({}: Props) {
     >
       <div className="flex flex-col items-center justify-center w-full flex-1 px-3 md:px-32 lg:px-52 text-center">
         <h1 className="text-2xl md:text-5xl md:leading-[65px] font-bold">
-          Unleash your potential and find your purpose with our{" "}
+          Kaikul is about finding your like-minded people in your{" "}
           <span className="underline decoration-violet-500">
-            supportive community
-          </span>
+            self-improvement
+          </span>{" "}
+          journey.
         </h1>
         <h2 className="mt-6 text-md md:text-lg px-0 md:px-32">
           Join our community of like-minded individuals dedicated to unlocking
@@ -23,7 +24,7 @@ function Hero({}: Props) {
           work tirelessly to achieve our dreams. Start living the life you were
           meant to live today. Join us now.
         </h2>
-        <Waitlist />
+        {/* <Waitlist /> */}
       </div>
     </div>
   );

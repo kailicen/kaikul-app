@@ -83,7 +83,7 @@ function Features({}: Props) {
             the week.
           </p>
           <button className="buttonMobile md:button mt-2 md:mt-10 bg-gray-800 md:bg-gray-800">
-            <Link href="https://forms.gle/1LuYyq5LemEpoKfw8" target="_blank">
+            <Link href="https://forms.gle/nNd4a4DsXwZ3QEQu9" target="_blank">
               Join Now
             </Link>
           </button>
