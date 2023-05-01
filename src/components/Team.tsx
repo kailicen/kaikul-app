@@ -47,6 +47,12 @@ function Team({}: Props) {
               bgColor="black"
               className="mt-2"
             />
+            <SocialIcon
+              url="https://setthawut.mystrikingly.com/"
+              target="_blank"
+              bgColor="black"
+              className="mt-2"
+            />
           </div>
         </div>
         <div
