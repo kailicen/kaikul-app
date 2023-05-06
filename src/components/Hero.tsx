@@ -14,9 +14,10 @@ function Hero({}: Props) {
           KaiKul: Track your goals with an accountable buddy.
         </h1>
         <h2 className="mt-6 text-md md:text-lg px-0 md:px-32">
-          KaiKul is a goal-tracking platform that randomly pairs two individuals
-          to share and track their personal goals, emphasizing meaningful
-          connections and diversity.
+          KaiKul is an AI-driven platform designed to facilitate goal tracking
+          by connecting individuals with shared personal objectives. The
+          platform emphasizes the value of meaningful connections and diversity
+          in pursuit of personal growth.
         </h2>
         {/* <Waitlist /> */}
       </div>
