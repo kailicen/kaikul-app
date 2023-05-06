@@ -46,7 +46,7 @@ export default function Home() {
   return (
     <div className="min-h-screen z-0">
       <Head>
-        <title>KaiKul | Share Self-Development Progress With New Friends</title>
+        <title>KaiKul | Track your goals with an accountable buddy</title>
         <meta
           property="og:title"
           content="KaiKul: Unleash your potential and find your purpose with our supportive community"

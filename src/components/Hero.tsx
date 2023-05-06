@@ -11,12 +11,12 @@ function Hero({}: Props) {
     >
       <div className="flex flex-col items-center justify-center w-full flex-1 px-3 md:px-32 lg:px-52 text-center">
         <h1 className="text-2xl md:text-5xl md:leading-[65px] font-bold">
-          KaiKul: Share self-development progress with new friends.
+          KaiKul: Track your goals with an accountable buddy.
         </h1>
         <h2 className="mt-6 text-md md:text-lg px-0 md:px-32">
-          KaiKul is a platform that randomly pairs two individuals each week to
-          share and track their personal goals, emphasizing meaningful
-          connections and diversity.
+          KaiKul is a platform that randomly pairs two individuals to share and
+          track their personal goals, emphasizing meaningful connections and
+          diversity.
         </h2>
         {/* <Waitlist /> */}
       </div>
