@@ -5,6 +5,7 @@ import Hero from "@/components/Hero";
 import Team from "@/components/Team";
 import Head from "next/head";
 import { useRef } from "react";
+import { SocialIcon } from "react-social-icons";
 
 type SectionRef = HTMLDivElement | null;
 
@@ -45,7 +46,7 @@ export default function Home() {
   return (
     <div className="min-h-screen z-0">
       <Head>
-        <title>KaiKul | Your Personal Development Go-to Place </title>
+        <title>KaiKul | Share Self-Development Progress With New Friends</title>
         <meta
           property="og:title"
           content="KaiKul: Unleash your potential and find your purpose with our supportive community"
@@ -111,11 +112,31 @@ export default function Home() {
         </section>
       </div>
 
-      <footer className="bg-gray-800 py-8">
+      <footer className="bg-gray-800 py-8 flex flex-col justify-center items-center">
         <div className="container mx-auto px-4">
           <p className="text-gray-400 text-center text-sm">
             © {new Date().getFullYear()} KaiKul. All rights reserved.
           </p>
+        </div>
+        <div className="flex flex-row space-x-2 my-2">
+          <SocialIcon
+            url="https://www.linkedin.com/company/kaikul"
+            target="_blank"
+            bgColor="white"
+            className="mt-2"
+          />
+          <SocialIcon
+            url="https://twitter.com/KaiKul314/"
+            target="_blank"
+            bgColor="white"
+            className="mt-2"
+          />
+          <SocialIcon
+            url="https://www.instagram.com/kaikul1/"
+            target="_blank"
+            bgColor="white"
+            className="mt-2"
+          />
         </div>
       </footer>
     </div>
