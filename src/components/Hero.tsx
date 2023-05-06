@@ -14,9 +14,9 @@ function Hero({}: Props) {
           KaiKul: Share self-development progress with new friends.
         </h1>
         <h2 className="mt-6 text-md md:text-lg px-0 md:px-32">
-          KaiKul randomly pairs two individuals each week to share and track
-          their personal goals, emphasizing meaningful connections and
-          diversity.
+          KaiKul is a platform that randomly pairs two individuals each week to
+          share and track their personal goals, emphasizing meaningful
+          connections and diversity.
         </h2>
         {/* <Waitlist /> */}
       </div>
