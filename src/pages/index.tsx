@@ -137,6 +137,12 @@ export default function Home() {
             bgColor="white"
             className="mt-2"
           />
+          <SocialIcon
+            url="https://www.instagram.com/kaikulapp/"
+            target="_blank"
+            bgColor="white"
+            className="mt-2"
+          />
         </div>
       </footer>
     </div>
