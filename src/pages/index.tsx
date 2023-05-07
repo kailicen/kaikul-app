@@ -49,7 +49,7 @@ export default function Home() {
         <title>KaiKul | Track your goals with an accountable buddy</title>
         <meta
           property="og:title"
-          content="KaiKul: Unleash your potential and find your purpose with our supportive community"
+          content="KaiKul: Track your goals with an accountable buddy"
         />
         <meta property="og:image" content="/img/kaikul-thumbnail.png" />
         <link rel="icon" href="/favicon.ico" />
