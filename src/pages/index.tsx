@@ -138,7 +138,7 @@ export default function Home() {
             className="mt-2"
           />
           <SocialIcon
-            url="https://www.instagram.com/kaikulapp/"
+            url="https://www.facebook.com/kaikulapp/"
             target="_blank"
             bgColor="white"
             className="mt-2"
