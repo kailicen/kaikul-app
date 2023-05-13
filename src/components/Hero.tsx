@@ -15,14 +15,12 @@ function Hero({}: Props) {
           KaiKul: Achieve Your Goals with an Accountability Partner
         </h1>
         <h2 className="mt-6 text-md md:text-lg px-0 md:px-32">
-          KaiKul is a goal tracking platform that connects you with an
-          accountability partner based on your goals and preferences.
-          Collaborate with your partner to achieve your goals and catch up
-          weekly via a virtual or in-person call using a recommended agenda. Get
-          weekly updates, personal development material, notifications, and
-          progress reports to help you stay on track. With KaiKul&apos;s
-          personalized support and motivation, you can reach your full potential
-          and live your best life.
+          Learning new things, running a marathon or building a business... your
+          dreams are important and need to be nurtured. Don&apos;t tackle your
+          dreams alone. KaiKul connects you with an accountability partner based
+          on your goals and preferences. Stay on track with weekly virtual or
+          in-person calls using a recommended agenda. Achieve the seemingly
+          impossible together. Try KaiKul now.
         </h2>
         {/* <Waitlist /> */}
       </div>
