@@ -1,5 +1,6 @@
 import React from "react";
 import Waitlist from "@/components/Waitlist";
+import { ArrowDownIcon } from "@heroicons/react/24/solid";
 
 type Props = {};
 
@@ -15,12 +16,13 @@ function Hero({}: Props) {
         </h1>
         <h2 className="mt-6 text-md md:text-lg px-0 md:px-32">
           KaiKul is a goal tracking platform that connects you with an
-          accountability partner based on your goals and preferences. You
-          receive weekly updates, personal development material, and
-          notifications to help you stay on track. You collaborate with your
-          partner to achieve your goals and catch up weekly via a virtual or
-          in-person call. KaiKul provides personalized support and motivation to
-          help you reach your full potential.
+          accountability partner based on your goals and preferences.
+          Collaborate with your partner to achieve your goals and catch up
+          weekly via a virtual or in-person call using a recommended agenda. Get
+          weekly updates, personal development material, notifications, and
+          progress reports to help you stay on track. With KaiKul&apos;s
+          personalized support and motivation, you can reach your full potential
+          and live your best life.
         </h2>
         {/* <Waitlist /> */}
       </div>
