@@ -47,6 +47,19 @@ function Testimonial({}: Props) {
           </p>
           <h3 className="font-bold mt-6">-- Nadia Firsova</h3>
         </div>
+        <div
+          className="bg-white rounded-lg shadow-md p-2 md:p-5 text-sm md:text-base
+        cardHover flex flex-col items-center"
+        >
+          <BsFillChatSquareQuoteFill className="text-violet-500" />
+          <p className="mt-2">
+            It is a really useful platform. Short weekly meetings help me to
+            rethink what I did in this week, set goals next week and gain
+            knowledge about how to cultivate my mindset and advance my career.
+            You will feel you are not alone, you are in a group.
+          </p>
+          <h3 className="font-bold mt-6">-- Haiyang (Ocean) Zou</h3>
+        </div>
       </div>
     </div>
   );
