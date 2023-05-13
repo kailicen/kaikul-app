@@ -3,6 +3,7 @@ import Contact from "@/components/Contact";
 import Features from "@/components/Features";
 import Hero from "@/components/Hero";
 import Team from "@/components/Team";
+import Testimonial from "@/components/Testimonial";
 import Head from "next/head";
 import { useRef } from "react";
 import { SocialIcon } from "react-social-icons";
@@ -11,6 +12,7 @@ type SectionRef = HTMLDivElement | null;
 
 export default function Home() {
   const featuresRef = useRef<SectionRef>(null);
+  const testimonialRef = useRef<SectionRef>(null);
   const betaRef = useRef<SectionRef>(null);
   const teamRef = useRef<SectionRef>(null);
   const contactRef = useRef<SectionRef>(null);
@@ -22,6 +24,12 @@ export default function Home() {
   const scrollToFeatures = () => {
     if (featuresRef.current) {
       featuresRef.current.scrollIntoView({ behavior: "smooth" });
+    }
+  };
+
+  const scrollToTestimonial = () => {
+    if (testimonialRef.current) {
+      testimonialRef.current.scrollIntoView({ behavior: "smooth" });
     }
   };
 
@@ -70,13 +78,19 @@ export default function Home() {
             className="hover:text-violet-500 hover:cursor-pointer"
             onClick={scrollToFeatures}
           >
-            Features
+            How It Works
+          </div>
+          <div
+            className="hover:text-violet-500 hover:cursor-pointer"
+            onClick={scrollToTestimonial}
+          >
+            Testimonial
           </div>
           <div
             className="hover:text-violet-500 hover:cursor-pointer"
             onClick={scrollToBeta}
           >
-            Beta
+            Beta v1.1
           </div>
           <div
             className="hover:text-violet-500 hover:cursor-pointer"
@@ -97,6 +111,10 @@ export default function Home() {
 
         <section id="features" ref={featuresRef}>
           <Features />
+        </section>
+
+        <section id="testimonial" ref={testimonialRef}>
+          <Testimonial />
         </section>
 
         <section id="beta" ref={betaRef}>

@@ -14,7 +14,7 @@ function Team({}: Props) {
       <div className="grid md:grid-cols-2 gap-5 px-2 md:px-10">
         <div
           className="bg-white rounded-lg shadow-md p-2 md:p-5 text-sm md:text-base
-        hover:bg-gray-50 hover:shadow-lg flex flex-col items-center"
+        cardHover flex flex-col items-center"
         >
           <div className="w-32 h-32 rounded-full overflow-hidden">
             <Image
@@ -57,7 +57,7 @@ function Team({}: Props) {
         </div>
         <div
           className="bg-white rounded-lg shadow-md p-2 md:p-5 text-sm md:text-base
-        hover:bg-gray-50 hover:shadow-lg flex flex-col items-center"
+        cardHover flex flex-col items-center"
         >
           <div className="w-32 h-32 rounded-full overflow-hidden">
             <Image

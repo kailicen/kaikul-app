@@ -14,6 +14,10 @@
     text-gray-900 placeholder-gray-500 transition-all focus:border-violet-400/40
      hover:border-violet-400/40;
   }
+  .cardHover {
+    @apply hover:bg-violet-50 hover:shadow-lg 
+    transform transition duration-300 hover:-translate-y-1;
+  }
 }
 
 .spinner {
