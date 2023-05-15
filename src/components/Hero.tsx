@@ -16,15 +16,14 @@ function Hero({}: Props) {
         </h1>
         <h2 className="mt-6 text-md md:text-lg px-0 lg:px-32">
           Learning new things, running a marathon or building a business... your
-          dreams are important and need to be nurtured. Don&apos;t tackle your
-          dreams alone. KaiKul connects you with an accountability partner based
-          on your goals and preferences. Stay on track with weekly virtual or
-          in-person calls using a recommended agenda. Achieve the seemingly
-          impossible together. Try KaiKul now.
+          dreams are important. Don&apos;t tackle them alone. KaiKul connects
+          you with an accountability partner based on your goals and
+          preferences. Stay on track with weekly video calls using a recommended
+          agenda. Achieve the seemingly impossible together.
         </h2>
-        <button className="buttonMobile md:button mt-5 md:mt-10">
+        <button className="buttonMobile md:button mt-5 md:mt-10 text-2xl">
           <Link href="https://airtable.com/shrRTSGtb5taQ50yO/" target="_blank">
-            Join Beta Now
+            Try KaiKul now
           </Link>
         </button>
         {/* <Waitlist /> */}

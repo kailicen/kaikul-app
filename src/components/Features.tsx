@@ -25,14 +25,9 @@ function Features({}: Props) {
           </h4>
           <p>
             Create a detailed profile outlining your personal objectives and
-            preferences.
+            partner preferences.
           </p>
-          <Image
-            src="/img/profile.png"
-            width={250}
-            height={250}
-            alt="profile"
-          />
+          <Image src="/img/user.png" width={200} height={200} alt="profile" />
         </div>
         <div
           className="bg-white rounded-lg shadow-md p-2 text-sm md:text-base
@@ -42,13 +37,11 @@ function Features({}: Props) {
             Step 2: Peer Matching
           </h4>
           <p>
-            Our AI algorithm will match you with like-minded individuals who
-            share similar goals and interests. You can start connecting with
-            your matched peers through our messaging system.
+            Connect with like-minded individuals and choose your accountability
+            buddy.
           </p>
 
-          <Image src="/img/match.png" width={200} height={200} alt="match" />
-          <Image src="/img/match2.png" width={200} height={200} alt="match" />
+          <Image src="/img/partner.png" width={200} height={200} alt="match" />
         </div>
         <div
           className="bg-white rounded-lg shadow-md p-2 text-sm md:text-base
@@ -58,12 +51,11 @@ function Features({}: Props) {
             Step 3: Accountability Partnership
           </h4>
           <p>
-            Choose to match with one other user, and schedule weekly meetings to
-            share and update each other on your progress using our weekly
-            updates template.
+            Schedule weekly meetings to share and update on your progress using
+            our weekly updates template.
           </p>
           <Image
-            src="/img/partnership.png"
+            src="/img/catchup.png"
             width={200}
             height={200}
             alt="partnership"
@@ -81,13 +73,7 @@ function Features({}: Props) {
             stay on track.
           </p>
           <Image
-            src="/img/inspirations.png"
-            width={200}
-            height={200}
-            alt="inspirations"
-          />
-          <Image
-            src="/img/inspirations2.png"
+            src="/img/insight.png"
             width={200}
             height={200}
             alt="inspirations"

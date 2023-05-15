@@ -16,11 +16,9 @@ function Features({}: Props) {
         Beta <span className="text-lg">v1.1</span>
       </h3>
       <div className="mb-10 max-w-[900px]">
-        Welcome to our Beta v1.1! Our app is not yet available, but we&apos;re
-        thrilled to invite you to participate in our beta program. Your feedback
-        is invaluable in helping us improve our product for you! The beta will
-        last for one month, and we welcome any feedback you have during this
-        time.
+        Join our Beta v1.1 and help shape our app! Your feedback is invaluable
+        in improving our product for you. The beta runs for a month, so share
+        your thoughts with us!
       </div>
       <div
         className="
@@ -31,13 +29,12 @@ function Features({}: Props) {
         cardHover"
         >
           <FaHandshake className="text-4xl text-violet-500" />
-          <h4 className="text-base my-1 md:my-5 font-semibold">
+          <h4 className="text-base my-1 md:my-5 font-bold">
             Personalized matching
           </h4>
           <p className="mb-2 md:mb-5">
-            Fill out your profile and partner preferences via Airtable, chat
-            with the buddy that we chose for you and decide whether to match via
-            WhatsApp
+            Create your profile and partner preferences, and chat with your
+            chosen buddy.
           </p>
         </div>
         <div
@@ -45,13 +42,12 @@ function Features({}: Props) {
         cardHover "
         >
           <FaCalendarWeek className="text-4xl text-violet-500" />
-          <h4 className="text-base my-1 md:my-5 font-semibold">
+          <h4 className="text-base my-1 md:my-5 font-bold">
             Weekly templates and catch up
           </h4>
           <p className="mb-2 md:mb-5">
-            We&apos;ll provide you with weekly goal tracking templates and
-            recommended agendas for your catch-up sessions with your partner,
-            helping you stay on track and accountable.
+            Stay accountable with your partner in weekly video catch-up
+            sessions, using goal tracking templates and recommended agendas.
           </p>
         </div>
         <div
@@ -59,7 +55,7 @@ function Features({}: Props) {
         cardHover "
         >
           <HiUserGroup className="text-4xl text-violet-500" />
-          <h4 className="text-base my-1 md:my-5 font-semibold">
+          <h4 className="text-base my-1 md:my-5 font-bold">
             Supportive community
           </h4>
           <p className="mb-2 md:mb-5">
@@ -72,18 +68,18 @@ function Features({}: Props) {
         cardHover "
         >
           <GiProgression className="text-4xl text-violet-500" />
-          <h4 className="text-base my-1 md:my-5 font-semibold">
+          <h4 className="text-base my-1 md:my-5 font-bold">
             Progress tracking
           </h4>
           <p className="mb-2 md:mb-5">
-            At the end of the week, you&apos;ll fill out your weekly updates and
-            receive a progress report along with all your previous weeks&apos;
-            progress, helping you track your progress and stay motivated.
+            Fill out your weekly updates at the end of each week and receive a
+            progress report that includes all your previous weeks&apos;
+            progress.
           </p>
         </div>
       </div>
 
-      <button className="buttonMobile md:button mt-5 md:mt-10">
+      <button className="buttonMobile md:button mt-5 md:mt-10 text-xl">
         <Link href="https://airtable.com/shrRTSGtb5taQ50yO/" target="_blank">
           Join Beta Now
         </Link>
