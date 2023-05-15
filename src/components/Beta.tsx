@@ -83,7 +83,7 @@ function Features({}: Props) {
         </div>
       </div>
 
-      <button className="buttonMobile md:button mt-5 md:mt-10 bg-gray-800 md:bg-gray-800">
+      <button className="buttonMobile md:button mt-5 md:mt-10">
         <Link href="https://airtable.com/shrRTSGtb5taQ50yO/" target="_blank">
           Join Beta Now
         </Link>

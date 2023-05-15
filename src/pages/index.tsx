@@ -6,6 +6,7 @@ import Team from "@/components/Team";
 import Testimonial from "@/components/Testimonial";
 import { Bars3Icon } from "@heroicons/react/24/solid";
 import Head from "next/head";
+import Link from "next/link";
 import { useRef, useState } from "react";
 import { SocialIcon } from "react-social-icons";
 
@@ -16,7 +17,7 @@ export default function Home() {
   const testimonialRef = useRef<SectionRef>(null);
   const betaRef = useRef<SectionRef>(null);
   const teamRef = useRef<SectionRef>(null);
-  const contactRef = useRef<SectionRef>(null);
+  //const contactRef = useRef<SectionRef>(null);
 
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
@@ -52,11 +53,11 @@ export default function Home() {
     }
   };
 
-  const scrollToContact = () => {
-    if (contactRef.current) {
-      contactRef.current.scrollIntoView({ behavior: "smooth" });
-    }
-  };
+  // const scrollToContact = () => {
+  //   if (contactRef.current) {
+  //     contactRef.current.scrollIntoView({ behavior: "smooth" });
+  //   }
+  // };
 
   return (
     <div className="min-h-screen z-0">
@@ -107,8 +108,16 @@ export default function Home() {
           >
             Our Team
           </div>
-          <button className="buttonMobile md:button" onClick={scrollToContact}>
+          {/* <button className="buttonMobile md:button" onClick={scrollToContact}>
             Contact
+          </button> */}
+          <button className="buttonMobile md:button">
+            <Link
+              href="https://airtable.com/shrRTSGtb5taQ50yO/"
+              target="_blank"
+            >
+              Join Now
+            </Link>
           </button>
         </div>
         <Bars3Icon
@@ -153,7 +162,7 @@ export default function Home() {
             >
               Our Team
             </div>
-            <button
+            {/* <button
               className="block my-2 mx-4 buttonMobile md:button"
               onClick={() => {
                 toggleMenu();
@@ -161,6 +170,17 @@ export default function Home() {
               }}
             >
               Contact
+            </button> */}
+            <button
+              className="block my-2 mx-4 buttonMobile md:button"
+              onClick={toggleMenu}
+            >
+              <Link
+                href="https://airtable.com/shrRTSGtb5taQ50yO/"
+                target="_blank"
+              >
+                Join Now
+              </Link>
             </button>
           </div>
         )}
@@ -187,9 +207,9 @@ export default function Home() {
           <Team />
         </section>
 
-        <section id="contact" ref={contactRef}>
+        {/* <section id="contact" ref={contactRef}>
           <Contact />
-        </section>
+        </section> */}
       </div>
 
       <footer className="bg-gray-800 py-8 flex flex-col justify-center items-center">
