@@ -8,12 +8,12 @@ function Team({}: Props) {
   return (
     <div
       className="min-h-screen w-screen md:w-auto flex flex-col text-center
-    max-w-7xl px-3 md:px-10 mx-auto items-center justify-center"
+    max-w-7xl py-10 px-3 md:px-10 mx-auto items-center justify-center"
     >
       <h3 className="mb-10 uppercase tracking-[20px] text-2xl">Our Team</h3>
       <div className="grid md:grid-cols-2 gap-5 px-2 md:px-10">
         <div
-          className="bg-white rounded-lg shadow-md p-2 md:p-5 text-sm md:text-base
+          className="bg-white rounded-lg shadow-md px-2 py-5 md:p-5 text-sm md:text-base
         cardHover flex flex-col items-center"
         >
           <div className="w-32 h-32 rounded-full overflow-hidden">
@@ -56,7 +56,7 @@ function Team({}: Props) {
           </div>
         </div>
         <div
-          className="bg-white rounded-lg shadow-md p-2 md:p-5 text-sm md:text-base
+          className="bg-white rounded-lg shadow-md px-2 py-5 md:p-5 text-sm md:text-base
         cardHover flex flex-col items-center"
         >
           <div className="w-32 h-32 rounded-full overflow-hidden">

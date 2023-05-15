@@ -186,7 +186,7 @@ export default function Home() {
         )}
       </header>
 
-      <div className="flex flex-col space-y-5">
+      <div className="flex flex-col space-y-15">
         <section id="hero">
           <Hero />
         </section>

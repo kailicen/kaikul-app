@@ -7,8 +7,8 @@ type Props = {};
 function Hero({}: Props) {
   return (
     <div
-      className="h-[80vh] flex flex-col space-y-8 items-center justify-center 
-    text-center overflow-hidden"
+      className="h-[90vh] flex flex-col space-y-8 items-center justify-center 
+    text-center overflow-hidden py-5"
     >
       <div className="flex flex-col items-center justify-center w-full flex-1 px-3 md:px-32 lg:px-52 text-center">
         <h1 className="text-2xl lg:text-5xl lg:leading-[65px] font-bold">
