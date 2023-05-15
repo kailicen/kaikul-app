@@ -10,7 +10,25 @@ function Testimonial({}: Props) {
     max-w-7xl px-3 md:px-10 mx-auto items-center justify-center"
     >
       <h3 className="mb-10 uppercase tracking-[20px] text-2xl">Testimonial</h3>
-      <div className="grid md:grid-cols-2 gap-5 px-2 md:px-10">
+      <div className="grid md:grid-cols-2 gap-5 px-2 md:px-10 h-[80vh] overflow-auto">
+        <div
+          className="bg-white rounded-lg shadow-md p-2 md:p-5 text-sm md:text-base
+        cardHover flex flex-col items-center"
+        >
+          <BsFillChatSquareQuoteFill className="text-violet-500" />
+          <p className="mt-2">
+            One of the most important things to think about when taking control
+            of your own personal development, health or whatever it may be, is
+            your environment. Having a group of like-minded individuals around
+            you, people who are driven to succeed and reach their goals, will
+            inherently make you want to also reach your own goals alongside
+            them. A lot of people tend to under-value the impact a good group or
+            partner can have. <br></br>So I strongly recommend trying anything
+            like this, which can pair you with individuals/groups of people who
+            are also on the same path in life.
+          </p>
+          <h3 className="font-bold mt-6">-- Ezra Valentine</h3>
+        </div>
         <div
           className="bg-white rounded-lg shadow-md p-2 md:p-5 text-sm md:text-base
         cardHover flex flex-col items-center"
