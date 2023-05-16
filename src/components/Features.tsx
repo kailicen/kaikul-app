@@ -21,7 +21,7 @@ function Features({}: Props) {
         flex flex-col items-center space-y-4 cardHover"
         >
           <h4 className="text-center mt-2 text-lg font-bold">
-            Step 1: Create your profile
+            Step 1: Create Your Profile
           </h4>
           <p>
             Create a detailed profile outlining your personal objectives and
@@ -66,7 +66,7 @@ function Features({}: Props) {
         cardHover flex flex-col items-center space-y-4"
         >
           <h4 className="text-center mt-2 text-lg font-bold">
-            Step 4: Inspirations, notifications, and progress reports
+            Step 4: Inspirations, Notifications, and Progress Reports
           </h4>
           <p>
             Receive weekly inspiration, notifications, and progress reports to

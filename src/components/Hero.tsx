@@ -23,7 +23,7 @@ function Hero({}: Props) {
         </h2>
         <button className="buttonMobile md:button mt-5 md:mt-10 text-2xl">
           <Link href="https://airtable.com/shrRTSGtb5taQ50yO/" target="_blank">
-            Try KaiKul now
+            Try KaiKul Now
           </Link>
         </button>
         {/* <Waitlist /> */}

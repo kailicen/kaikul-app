@@ -30,7 +30,7 @@ function Features({}: Props) {
         >
           <FaHandshake className="text-4xl text-violet-500" />
           <h4 className="text-base my-1 md:my-5 font-bold">
-            Personalized matching
+            Personalized Matching
           </h4>
           <p className="mb-2 md:mb-5">
             Create your profile and partner preferences, and chat with your
@@ -43,7 +43,7 @@ function Features({}: Props) {
         >
           <FaCalendarWeek className="text-4xl text-violet-500" />
           <h4 className="text-base my-1 md:my-5 font-bold">
-            Weekly templates and catch up
+            Weekly Templates and Catch Up
           </h4>
           <p className="mb-2 md:mb-5">
             Stay accountable with your partner in weekly video catch-up
@@ -56,7 +56,7 @@ function Features({}: Props) {
         >
           <HiUserGroup className="text-4xl text-violet-500" />
           <h4 className="text-base my-1 md:my-5 font-bold">
-            Supportive community
+            Supportive Community
           </h4>
           <p className="mb-2 md:mb-5">
             Join our WhatsApp community for support and inspiration throughout
@@ -69,7 +69,7 @@ function Features({}: Props) {
         >
           <GiProgression className="text-4xl text-violet-500" />
           <h4 className="text-base my-1 md:my-5 font-bold">
-            Progress tracking
+            Progress Tracking
           </h4>
           <p className="mb-2 md:mb-5">
             Fill out your weekly updates at the end of each week and receive a
