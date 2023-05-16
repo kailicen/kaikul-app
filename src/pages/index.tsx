@@ -62,12 +62,10 @@ export default function Home() {
   return (
     <div className="min-h-screen z-0">
       <Head>
-        <title>
-          KaiKul | Achieve Your Goals with an Accountability Partner
-        </title>
+        <title>KaiKul | Peer matching for personal development</title>
         <meta
           property="og:title"
-          content="KaiKul: Achieve Your Goals with an Accountability Partner"
+          content="KaiKul: Peer matching for personal development"
         />
         <meta property="og:image" content="/img/kaikul-thumbnail.png" />
         <link rel="icon" href="/favicon.ico" />
