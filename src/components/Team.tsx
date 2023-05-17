@@ -69,19 +69,14 @@ function Team({}: Props) {
           </div>
           <h3 className="text-xl font-bold mt-6">Kaili Cen</h3>
           <p className="text-center mt-2">
-            I firmly believe that adversity can make us stronger, and with the
-            right coping skills, we can use our struggles to propel ourselves
-            forward towards personal growth and fulfillment. I&apos;ve struggled
-            to find like-minded individuals to share my personal journey with.
-            That&apos;s why I&apos; m creating a platform where people can
-            openly share their experiences and personal growth journeys without
-            any constraints.
-          </p>
-          <p className="text-center mt-2">
-            As a web developer who enjoys writing blogs and creating meaningful
-            content, I am committed to fostering a supportive community where we
-            can all grow spiritually, mentally, emotionally, and physically.
-            Join me on this journey of self-discovery and personal development!
+            Hey there, I&apos;m Kaili, based in Hobart, Australia. As a
+            technical business analyst for the Tasmanian Department of
+            Education, I spend my days juggling work with my passion project -
+            KaiKul. My own journey has been tough and lonely, which is why I
+            created KaiKul as a space where people can share their personal
+            growth journeys without holding back. It&apos;s all about supporting
+            each other as we grow spiritually, mentally, emotionally, and
+            physically. Join us!
           </p>
           <div className="flex flex-row space-x-2 mt-2">
             <SocialIcon

@@ -60,7 +60,7 @@ export default function Home() {
   // };
 
   return (
-    <div className="min-h-screen z-0">
+    <div className="min-h-screen z-0 max-w-7xl">
       <Head>
         <title>KaiKul | Peer matching for personal development</title>
         <meta
