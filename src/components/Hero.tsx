@@ -26,7 +26,7 @@ function Hero({}: Props) {
           />
         </a>
 
-        <h1 className="text-2xl lg:text-5xl lg:leading-[65px] font-bold">
+        <h1 className="text-2xl lg:text-4xl 2xl:text-5xl lg:leading-[65px] font-bold">
           KaiKul: Peer Matching for Personal Development
         </h1>
         <h2 className="mt-6 text-md md:text-lg px-0 lg:px-32">
