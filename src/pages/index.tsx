@@ -60,7 +60,7 @@ export default function Home() {
   // };
 
   return (
-    <div className="min-h-screen z-0 max-w-7xl mx-auto">
+    <div className="min-h-screen z-0">
       <Head>
         <title>KaiKul | Peer matching for personal development</title>
         <meta
@@ -184,7 +184,7 @@ export default function Home() {
         )}
       </header>
 
-      <div className="flex flex-col space-y-15">
+      <div className="flex flex-col space-y-15 max-w-7xl mx-auto">
         <section id="hero">
           <Hero />
         </section>
