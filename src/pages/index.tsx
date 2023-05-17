@@ -224,13 +224,13 @@ export default function Home() {
             className="mt-2"
           />
           <SocialIcon
-            url="https://twitter.com/KaiKul314/"
+            url="https://twitter.com/KaiKulapp/"
             target="_blank"
             bgColor="white"
             className="mt-2"
           />
           <SocialIcon
-            url="https://www.instagram.com/kaikul1/"
+            url="https://www.instagram.com/kaikulapp/"
             target="_blank"
             bgColor="white"
             className="mt-2"
