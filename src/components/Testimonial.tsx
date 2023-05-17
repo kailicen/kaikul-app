@@ -10,7 +10,7 @@ function Testimonial({}: Props) {
     max-w-7xl px-3 md:px-10 mx-auto items-center justify-center"
     >
       <h3 className="mb-10 uppercase tracking-[20px] text-2xl">Testimonial</h3>
-      <div className="grid md:grid-cols-2 gap-5 px-2 md:px-10 h-[80vh] overflow-auto">
+      <div className="grid md:grid-cols-2 gap-5 px-2 md:px-10">
         <div
           className="bg-white rounded-lg shadow-md p-2 md:p-5 text-sm md:text-base
         cardHover flex flex-col items-center"
@@ -42,10 +42,9 @@ function Testimonial({}: Props) {
         >
           <BsFillChatSquareQuoteFill className="text-violet-500" />
           <p className="mt-2">
-            It is a really useful platform. Short weekly meetings help me to
-            rethink what I did in this week, set goals next week and gain
-            knowledge about how to cultivate my mindset and advance my career.
-            You will feel you are not alone, you are in a group.
+            ... Short weekly meetings help me to rethink what I did in this
+            week, set goals next week and gain knowledge about how to cultivate
+            my mindset and advance my career ...
           </p>
           <h3 className="font-bold mt-6">-- Haiyang (Ocean) Zou</h3>
         </div>
@@ -55,10 +54,9 @@ function Testimonial({}: Props) {
         >
           <BsFillChatSquareQuoteFill className="text-violet-500" />
           <p className="mt-2">
-            Being part of a community of people who share a common purpose and
-            support each other in achieving our dreams is incredibly meaningful,
-            as we don&apos;t feel alone in our pursuits and are inspired by the
-            collective energy of the group, even if our dreams may be different.
+            ... as we don&apos;t feel alone in our pursuits and are inspired by
+            the collective energy of the group, even if our dreams may be
+            different.
           </p>
           <h3 className="font-bold mt-6">-- Cerena Ip</h3>
         </div>
@@ -70,13 +68,8 @@ function Testimonial({}: Props) {
           <p className="mt-2">
             One of the most important things to think about when taking control
             of your own personal development, health or whatever it may be, is
-            your environment. Having a group of like-minded individuals around
-            you, people who are driven to succeed and reach their goals, will
-            inherently make you want to also reach your own goals alongside
-            them. A lot of people tend to under-value the impact a good group or
-            partner can have. <br></br>So I strongly recommend trying anything
-            like this, which can pair you with individuals/groups of people who
-            are also on the same path in life.
+            your environment. ... can pair you with individuals/groups of people
+            who are also on the same path in life.
           </p>
           <h3 className="font-bold mt-6">-- Ezra Valentine</h3>
         </div>
@@ -87,10 +80,9 @@ function Testimonial({}: Props) {
           <BsFillChatSquareQuoteFill className="text-violet-500" />
           <p className="mt-2">
             Sometimes we need to be held accountable to ourselves for any type
-            of goals we aim to meet. This is a great platform that creates
-            reflection on what you have accomplished and what you aim to do
-            next. You get support, social interaction, accountability and great
-            tips on how you can hit and exceed your goals.
+            of goals we aim to meet. ... You get support, social interaction,
+            accountability and great tips on how you can hit and exceed your
+            goals.
           </p>
           <h3 className="font-bold mt-6">-- Alexander Dolling</h3>
         </div>

@@ -22,7 +22,7 @@ function Features({}: Props) {
       </div>
       <div
         className="
-        grid md:grid-cols-2 lg:grid-cols-4 gap-5 px-2 md:px-10"
+        grid md:grid-cols-2 gap-5 px-2 md:px-10"
       >
         <div
           className="bg-white rounded-lg shadow-md p-2 md:p-5 flex flex-col items-center text-sm md:text-base

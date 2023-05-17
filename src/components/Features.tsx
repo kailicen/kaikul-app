@@ -7,7 +7,7 @@ function Features({}: Props) {
   return (
     <div
       className="min-h-screen w-screen md:w-auto flex flex-col text-center py-5
-    px-3 md:px-5 mx-auto items-center justify-center"
+    px-3 md:px-10 mx-auto items-center justify-center"
     >
       <h3 className="mb-10 uppercase tracking-[20px] text-2xl">How it Works</h3>
       {/* <div className="mb-3 w-[800px]">
@@ -15,7 +15,7 @@ function Features({}: Props) {
         health, happiness, money, relationship) through personalized
         peer-to-peer matching. Here&apos;s how it works:
       </div> */}
-      <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-5 px-2 md:px-5">
+      <div className="grid md:grid-cols-2 gap-5 px-2 md:px-5">
         <div
           className="bg-white rounded-lg shadow-md p-2 text-sm md:text-base
         flex flex-col items-center space-y-4 cardHover"
@@ -27,7 +27,7 @@ function Features({}: Props) {
             Create a detailed profile outlining your personal objectives and
             partner preferences.
           </p>
-          <Image src="/img/user.png" width={200} height={200} alt="profile" />
+          <Image src="/img/user.png" width={150} height={150} alt="profile" />
         </div>
         <div
           className="bg-white rounded-lg shadow-md p-2 text-sm md:text-base
@@ -41,7 +41,7 @@ function Features({}: Props) {
             buddy.
           </p>
 
-          <Image src="/img/partner.png" width={200} height={200} alt="match" />
+          <Image src="/img/partner.png" width={150} height={150} alt="match" />
         </div>
         <div
           className="bg-white rounded-lg shadow-md p-2 text-sm md:text-base
@@ -56,8 +56,8 @@ function Features({}: Props) {
           </p>
           <Image
             src="/img/catchup.png"
-            width={200}
-            height={200}
+            width={150}
+            height={150}
             alt="partnership"
           />
         </div>
@@ -74,8 +74,8 @@ function Features({}: Props) {
           </p>
           <Image
             src="/img/insight.png"
-            width={200}
-            height={200}
+            width={150}
+            height={150}
             alt="inspirations"
           />
         </div>
