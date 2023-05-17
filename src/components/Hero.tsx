@@ -12,33 +12,22 @@ function Hero({}: Props) {
     text-center overflow-hidden py-5"
     >
       <div className="relative flex flex-col items-center justify-center w-full flex-1 px-3 md:px-32 lg:px-52 text-center">
-        <button
-          className="absolute top-0  border border-[#F05D53] 
-        rounded-full bg-white pl-4 pr-6 py-2"
+        <a
+          className="absolute top-0"
+          href="https://www.producthunt.com/posts/kaikul?utm_source=badge-featured&utm_medium=badge&utm_souce=badge-kaikul"
+          target="_blank"
         >
-          <Link
-            href="https://www.producthunt.com/posts/kaikul"
-            target="_blank"
-            className="flex items-center justify-center space-x-2"
-          >
-            <div className="bg-[#F05D53] rounded-full w-10 h-10 flex items-center justify-center text-white font-bold text-3xl">
-              P
-            </div>
-            <div className="text-left">
-              <p className="text-[10px] font-medium text-[#F05D53]">
-                FEATURE ON
-              </p>
-              <p className="text-xl font-bold text-[#F05D53]">Product Hunt</p>
-            </div>
-            <div className="flex flex-col items-center justify-end pl-3 h-full text-[#F05D53]">
-              <BsTriangleFill className="text-xs" />
-              <p className="text-base font-medium">12</p>
-            </div>
-          </Link>
-        </button>
+          <img
+            src="https://api.producthunt.com/widgets/embed-image/v1/featured.svg?post_id=394368&theme=light"
+            alt="KaiKul - Peer&#0032;matching&#0032;for&#0032;personal&#0032;development | Product Hunt"
+            className="w-[250px] h-[54px]"
+            width="250"
+            height="54"
+          />
+        </a>
 
         <h1 className="text-2xl lg:text-5xl lg:leading-[65px] font-bold">
-          KaiKul: Peer matching for personal development
+          KaiKul: Peer Matching for Personal Development
         </h1>
         <h2 className="mt-6 text-md md:text-lg px-0 lg:px-32">
           KaiKul connects you with an accountability partner based on your goals
