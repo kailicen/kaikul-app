@@ -72,7 +72,7 @@ export default function Home() {
       </Head>
 
       <header
-        className="sticky top-0 p-5 flex justify-between max-w-7xl bg-transparent
+        className="sticky top-0 p-5 flex justify-between bg-transparent
     mx-auto z-20 items-center"
       >
         <div
