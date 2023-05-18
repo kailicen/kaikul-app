@@ -5,7 +5,7 @@
 
 @layer components {
   .button {
-    @apply bg-violet-500 rounded-full text-white py-3 px-5 hover:bg-violet-600;
+    @apply bg-violet-500 rounded-full text-white py-3 px-6 hover:bg-violet-600;
   }
   .buttonMobile {
     @apply bg-violet-500 rounded-full text-white py-2 px-4 hover:bg-violet-600;
