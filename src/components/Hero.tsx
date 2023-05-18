@@ -31,7 +31,7 @@ function Hero({}: Props) {
         <h1 className="text-2xl md:text-3xl lg:text-4xl 2xl:text-5xl lg:leading-[65px] font-bold">
           KaiKul: Peer Matching for Personal Development
         </h1>
-        <h2 className="mt-6 text-md md:text-lg px-0 md:text-end max-w-[800px]">
+        <h2 className="mt-6 text-md md:text-lg lg:text-xl 2xl:text-2xl px-0 md:text-end max-w-[800px]">
           KaiKul connects you with an accountability partner based on your goals
           and preferences. Experience the power of weekly virtual or in-person
           calls, following our goal-setting and group-reflection KaiKul
