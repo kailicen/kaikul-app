@@ -8,7 +8,7 @@ function Team({}: Props) {
   return (
     <div
       className="min-h-screen w-screen md:w-auto flex flex-col text-center
-    max-w-7xl py-10 px-3 md:px-10 mx-auto items-center justify-center"
+    max-w-7xl py-20 px-3 md:px-32 mx-auto items-center justify-center"
     >
       <h3 className="mb-10 uppercase tracking-[20px] text-2xl">Our Team</h3>
       <div className="grid md:grid-cols-2 gap-5 px-2 md:px-10">

@@ -9,8 +9,8 @@ type Props = {};
 function Features({}: Props) {
   return (
     <div
-      className="min-h-screen w-screen md:w-auto flex flex-col text-center py-5
-    px-3 md:px-10 mx-auto items-center justify-center"
+      className="min-h-screen w-screen md:w-auto flex flex-col text-center py-20
+    px-3 md:px-32 mx-auto items-center justify-center max-w-7xl"
     >
       <h3 className="mb-10 uppercase tracking-[20px] text-2xl">
         Beta <span className="text-lg">v1.1</span>
@@ -29,7 +29,7 @@ function Features({}: Props) {
         cardHover"
         >
           <FaHandshake className="text-4xl text-violet-500" />
-          <h4 className="text-base my-1 md:my-5 font-bold">
+          <h4 className="text-lg my-1 md:my-5 font-bold">
             Personalized Matching
           </h4>
           <p className="mb-2 md:mb-5">
@@ -42,7 +42,7 @@ function Features({}: Props) {
         cardHover "
         >
           <FaCalendarWeek className="text-4xl text-violet-500" />
-          <h4 className="text-base my-1 md:my-5 font-bold">
+          <h4 className="text-lg my-1 md:my-5 font-bold">
             Weekly Templates and Catch Up
           </h4>
           <p className="mb-2 md:mb-5">
@@ -55,7 +55,7 @@ function Features({}: Props) {
         cardHover "
         >
           <HiUserGroup className="text-4xl text-violet-500" />
-          <h4 className="text-base my-1 md:my-5 font-bold">
+          <h4 className="text-lg my-1 md:my-5 font-bold">
             Supportive Community
           </h4>
           <p className="mb-2 md:mb-5">
@@ -68,9 +68,7 @@ function Features({}: Props) {
         cardHover "
         >
           <GiProgression className="text-4xl text-violet-500" />
-          <h4 className="text-base my-1 md:my-5 font-bold">
-            Progress Tracking
-          </h4>
+          <h4 className="text-lg my-1 md:my-5 font-bold">Progress Tracking</h4>
           <p className="mb-2 md:mb-5">
             Fill out your weekly updates at the end of each week and receive a
             progress report that includes all your previous weeks&apos;

@@ -6,8 +6,8 @@ type Props = {};
 function Features({}: Props) {
   return (
     <div
-      className="min-h-screen w-screen md:w-auto flex flex-col text-center py-5
-    px-3 md:px-10 mx-auto items-center justify-center"
+      className="min-h-screen w-screen md:w-auto flex flex-col text-center py-20
+    px-3 md:px-32 mx-auto items-center justify-center max-w-7xl"
     >
       <h3 className="mb-10 uppercase tracking-[20px] text-2xl">How it Works</h3>
       {/* <div className="mb-3 w-[800px]">
