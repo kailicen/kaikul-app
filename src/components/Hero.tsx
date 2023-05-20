@@ -10,7 +10,7 @@ function Hero({}: Props) {
     <div
       className="w-full mx-auto flex flex-col space-y-8 items-center justify-center 
     overflow-hidden py-5 
-    absolute inset-0 bg-no-repeat bg-cover bg-center bg-fixed bg-[url('img'mbg.jpg')] md:bg-[url('/img/bg3.jpg')]"
+    absolute inset-0 bg-no-repeat bg-cover bg-center bg-fixed bg-[url('img/mbg.jpg')] md:bg-[url('/img/bg3.jpg')]"
     >
       <a
         className="absolute top-20"
