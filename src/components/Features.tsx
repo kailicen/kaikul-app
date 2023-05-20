@@ -57,7 +57,7 @@ function Features({}: Props) {
             alt="self-improvement"
           />
           <h4 className="text-violet-800 mt-2 text-xl font-bold">
-            3: Make Incremental Changes
+            3. Make Incremental Changes
           </h4>
           <p>Use collective reflection to set better goals next week</p>
         </div>
