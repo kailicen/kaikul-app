@@ -78,7 +78,7 @@ export default function Home() {
     mx-auto z-20 items-center"
       >
         <div
-          className="font-bold text-2xl 2xl:text-3xl hover:cursor-pointer hover:text-white"
+          className="font-bold text-2xl 2xl:text-3xl hover:cursor-pointer hover:text-gray-700"
           onClick={scrollToTop}
         >
           KaiKul
@@ -187,7 +187,7 @@ export default function Home() {
       </header>
 
       <div className="flex flex-col space-y-15 mx-auto">
-        <section id="hero" className="h-screen">
+        <section id="hero" className="h-[90vh]">
           <Hero />
         </section>
 
