@@ -70,12 +70,12 @@ function Testimonial({}: Props) {
     <div
       className="min-h-screen w-screen md:w-auto flex flex-col text-center py-20
     px-3 md:px-32 mx-auto items-center justify-center 
-    bg-cover bg-center bg-fixed "
+    bg-cover bg-center bg-fixed bg-[url('/img/bg4.jpg')]"
     >
-      <h3 className="mb-10 text-3xl font-bold text-violet-800">Testimonial</h3>
+      <h3 className="mb-10 text-3xl font-bold">Testimonial</h3>
       <div
         className="relative max-w-[800px] min-h-[400px] rounded-lg flex flex-col items-center justify-center
-         shadow-md px-14 py-8 m-2"
+        bg-violet-50 shadow-md px-14 py-8 m-2"
       >
         <div className="text-2xl mb-8 text-violet-800 font-semibold">
           &ldquo;{testimonials[currentTestimonial].keyword}&rdquo;
@@ -134,7 +134,7 @@ function Testimonial({}: Props) {
           <div
             key={index}
             className={`w-3 h-3 mx-2 rounded-full cursor-pointer ${
-              index === currentTestimonial ? "bg-violet-900" : "bg-violet-400"
+              index === currentTestimonial ? "bg-violet-900" : "bg-gray-500"
             }`}
             onClick={() => navigateToTestimonial(index)}
           ></div>
