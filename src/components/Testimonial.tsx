@@ -68,7 +68,7 @@ function Testimonial({}: Props) {
 
   return (
     <div
-      className="min-h-screen w-screen md:w-auto flex flex-col text-center py-20
+      className="min-h-[80vh] w-screen md:w-auto flex flex-col text-center py-20
     px-3 md:px-32 mx-auto items-center justify-center 
     bg-cover bg-center bg-fixed md:bg-[url('/img/bg4.jpg')] bg-violet-200"
     >
@@ -83,7 +83,7 @@ function Testimonial({}: Props) {
         <div className="text-base md:text-lg mb-4">
           &ldquo;{testimonials[currentTestimonial].testimonial}&rdquo;
         </div>
-        <div className="text-xs md:text-base font-semibold">
+        <div className="text-base md:text-lg font-semibold">
           -- {testimonials[currentTestimonial].name}
         </div>
         <div className="absolute top-0 left-0 flex items-center h-full">

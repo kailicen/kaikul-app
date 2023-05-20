@@ -7,18 +7,22 @@ import Testimonial from "@/components/Testimonial";
 import { Bars3Icon } from "@heroicons/react/24/solid";
 import Head from "next/head";
 import Link from "next/link";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { SocialIcon } from "react-social-icons";
 import va from "@vercel/analytics";
+import Qna from "@/components/Qna";
 
 type SectionRef = HTMLDivElement | null;
 
 export default function Home() {
   const featuresRef = useRef<SectionRef>(null);
   const testimonialRef = useRef<SectionRef>(null);
-  const betaRef = useRef<SectionRef>(null);
+  const qnaRef = useRef<SectionRef>(null);
+  //const betaRef = useRef<SectionRef>(null);
   const teamRef = useRef<SectionRef>(null);
   //const contactRef = useRef<SectionRef>(null);
+
+  const [headerBgColor, setHeaderBgColor] = useState("");
 
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
@@ -41,12 +45,17 @@ export default function Home() {
       testimonialRef.current.scrollIntoView({ behavior: "smooth" });
     }
   };
-
-  const scrollToBeta = () => {
-    if (betaRef.current) {
-      betaRef.current.scrollIntoView({ behavior: "smooth" });
+  const scrollToQna = () => {
+    if (qnaRef.current) {
+      qnaRef.current.scrollIntoView({ behavior: "smooth" });
     }
   };
+
+  // const scrollToBeta = () => {
+  //   if (betaRef.current) {
+  //     betaRef.current.scrollIntoView({ behavior: "smooth" });
+  //   }
+  // };
 
   const scrollToTeam = () => {
     if (teamRef.current) {
@@ -59,6 +68,26 @@ export default function Home() {
   //     contactRef.current.scrollIntoView({ behavior: "smooth" });
   //   }
   // };
+
+  useEffect(() => {
+    const handleScroll = () => {
+      const scrollTop =
+        window.pageYOffset || document.documentElement.scrollTop;
+      const threshold = 180; // Adjust this value as needed
+
+      if (scrollTop > threshold) {
+        setHeaderBgColor("bg-white");
+      } else {
+        setHeaderBgColor("bg-transparent");
+      }
+    };
+
+    window.addEventListener("scroll", handleScroll);
+
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, []);
 
   return (
     <div className="min-h-screen z-0 font-sans">
@@ -75,36 +104,41 @@ export default function Home() {
       </Head>
 
       <header
-        className="sticky top-0 p-5 flex justify-between px-5 md:px-20 bg-transparent
-    mx-auto z-20 items-center"
+        className={`sticky top-0 p-5 flex justify-between px-5 md:px-20 ${headerBgColor} mx-auto z-20 items-center`}
       >
         <div
-          className="font-bold text-2xl 2xl:text-3xl hover:cursor-pointer hover:text-gray-700"
+          className="font-bold text-2xl 2xl:text-3xl hover:cursor-pointer hover:text-violet-600"
           onClick={scrollToTop}
         >
           KaiKul
         </div>
         <div className="hidden md:flex md:flex-row items-center space-x-2 md:space-x-5 font-semibold 2xl:text-xl">
           <div
-            className="hover:text-violet-500 hover:cursor-pointer"
+            className="hover:text-violet-600 hover:cursor-pointer"
             onClick={scrollToFeatures}
           >
             How It Works
           </div>
           <div
-            className="hover:text-violet-500 hover:cursor-pointer"
+            className="hover:text-violet-600 hover:cursor-pointer"
             onClick={scrollToTestimonial}
           >
             Testimonial
           </div>
+          <div
+            className="hover:text-violet-600 hover:cursor-pointer"
+            onClick={scrollToQna}
+          >
+            FAQ
+          </div>
           {/* <div
-            className="hover:text-violet-500 hover:cursor-pointer"
+            className="hover:text-violet-600 hover:cursor-pointer"
             onClick={scrollToBeta}
           >
             Beta v1.1
           </div> */}
           <div
-            className="hover:text-violet-500 hover:cursor-pointer"
+            className="hover:text-violet-600 hover:cursor-pointer"
             onClick={scrollToTeam}
           >
             Our Team
@@ -129,7 +163,7 @@ export default function Home() {
         {isMenuOpen && (
           <div className="absolute top-20 right-0 w-full p-4 bg-white z-20 flex flex-col items-end">
             <div
-              className="block py-2 px-4 hover:text-violet-500 hover:cursor-pointer"
+              className="block py-2 px-4 hover:text-violet-600 hover:cursor-pointer"
               onClick={() => {
                 toggleMenu();
                 scrollToFeatures();
@@ -138,7 +172,7 @@ export default function Home() {
               How It Works
             </div>
             <div
-              className="block py-2 px-4 hover:text-violet-500 hover:cursor-pointer"
+              className="block py-2 px-4 hover:text-violet-600 hover:cursor-pointer"
               onClick={() => {
                 toggleMenu();
                 scrollToTestimonial();
@@ -146,8 +180,17 @@ export default function Home() {
             >
               Testimonial
             </div>
+            <div
+              className="block py-2 px-4 hover:text-violet-600 hover:cursor-pointer"
+              onClick={() => {
+                toggleMenu();
+                scrollToQna();
+              }}
+            >
+              FAQ
+            </div>
             {/* <div
-              className="block py-2 px-4 hover:text-violet-500 hover:cursor-pointer"
+              className="block py-2 px-4 hover:text-violet-600 hover:cursor-pointer"
               onClick={() => {
                 toggleMenu();
                 scrollToBeta();
@@ -156,7 +199,7 @@ export default function Home() {
               Beta v1.1
             </div> */}
             <div
-              className="block py-2 px-4 hover:text-violet-500 hover:cursor-pointer"
+              className="block py-2 px-4 hover:text-violet-600 hover:cursor-pointer"
               onClick={() => {
                 toggleMenu();
                 scrollToTeam();
@@ -205,6 +248,10 @@ export default function Home() {
         {/* <section id="beta" ref={betaRef}>
           <Beta />
         </section> */}
+
+        <section id="qna" ref={qnaRef}>
+          <Qna />
+        </section>
 
         <section id="team" ref={teamRef}>
           <Team />
