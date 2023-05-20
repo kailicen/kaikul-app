@@ -1,7 +1,7 @@
 import React from "react";
 //import Waitlist from "@/components/Waitlist";
 import Link from "next/link";
-import Image from "next/image";
+import va from "@vercel/analytics";
 
 type Props = {};
 
@@ -38,7 +38,11 @@ function Hero({}: Props) {
           more measurable, accountable, and reflective .
         </h2>
         <button className="buttonMobile md:button mt-5 md:mt-10 text-xl md:text-2xl">
-          <Link href="https://airtable.com/shrRTSGtb5taQ50yO/" target="_blank">
+          <Link
+            href="https://airtable.com/shrRTSGtb5taQ50yO/"
+            target="_blank"
+            onClick={() => va.track("TryKaiKulNow")}
+          >
             Try KaiKul Now
           </Link>
         </button>

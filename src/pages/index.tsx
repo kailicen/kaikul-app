@@ -9,6 +9,7 @@ import Head from "next/head";
 import Link from "next/link";
 import { useRef, useState } from "react";
 import { SocialIcon } from "react-social-icons";
+import va from "@vercel/analytics";
 
 type SectionRef = HTMLDivElement | null;
 
@@ -115,6 +116,7 @@ export default function Home() {
             <Link
               href="https://airtable.com/shrRTSGtb5taQ50yO/"
               target="_blank"
+              onClick={() => va.track("JoinNow")}
             >
               Join Now
             </Link>
@@ -178,6 +180,7 @@ export default function Home() {
               <Link
                 href="https://airtable.com/shrRTSGtb5taQ50yO/"
                 target="_blank"
+                onClick={() => va.track("JoinNowFromMobile")}
               >
                 Join Now
               </Link>
