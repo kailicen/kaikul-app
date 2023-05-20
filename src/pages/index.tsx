@@ -62,10 +62,12 @@ export default function Home() {
   return (
     <div className="min-h-screen z-0 font-wix">
       <Head>
-        <title>KaiKul | Peer matching for personal development</title>
+        <title>
+          KaiKul | KaiKul: Self-Improvement. Weekly Changes. Companionship.
+        </title>
         <meta
           property="og:title"
-          content="KaiKul: Peer matching for personal development"
+          content="KaiKul: KaiKul: Self-Improvement. Weekly Changes. Companionship."
         />
         <meta property="og:image" content="/img/kaikul-thumbnail.png" />
         <link rel="icon" href="/favicon.ico" />
