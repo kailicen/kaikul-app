@@ -12,7 +12,7 @@ function Features({}: Props) {
       className="min-h-screen w-screen md:w-auto flex flex-col text-center py-20
     px-3 md:px-32 mx-auto items-center justify-center max-w-7xl"
     >
-      <h3 className="mb-10 uppercase tracking-[20px] text-2xl">
+      <h3 className="mb-10 text-3xl font-bold text-violet-600">
         Beta <span className="text-lg">v1.1</span>
       </h3>
       <div className="mb-10 max-w-[900px]">

@@ -9,75 +9,57 @@ function Features({}: Props) {
       className="min-h-screen w-screen md:w-auto flex flex-col text-center py-20
     px-3 md:px-32 mx-auto items-center justify-center max-w-7xl"
     >
-      <h3 className="mb-10 uppercase tracking-[20px] text-2xl">How it Works</h3>
+      <h3 className="mb-10 text-3xl font-bold text-violet-600">How it Works</h3>
       {/* <div className="mb-3 w-[800px]">
         Welcome to KaiKul! Our mission is to help you reach your goals (career,
         health, happiness, money, relationship) through personalized
         peer-to-peer matching. Here&apos;s how it works:
       </div> */}
-      <div className="grid md:grid-cols-2 gap-5 px-2 md:px-5">
+      <div className="grid md:grid-cols-3 gap-5 px-2 md:px-5">
         <div
-          className="bg-white rounded-lg shadow-md p-2 text-sm md:text-base
-        flex flex-col items-center space-y-4 cardHover"
+          className=" p-2 text-sm md:text-base
+        flex flex-col items-center space-y-4 "
         >
-          <h4 className="text-center mt-2 text-lg font-bold">
-            Step 1: Create Your Profile
+          <Image src="/img/goals.png" width={150} height={150} alt="goals" />
+          <h4 className="text-violet-600 mt-2 text-xl font-bold">
+            1. Set and Track Goals
           </h4>
           <p>
-            Create a detailed profile outlining your personal objectives and
-            partner preferences.
+            Set actionable and measurable SMART goals with our weekly template.
           </p>
-          <Image src="/img/user.png" width={150} height={150} alt="profile" />
         </div>
         <div
-          className="bg-white rounded-lg shadow-md p-2 text-sm md:text-base
-        cardHover flex flex-col items-center space-y-4"
+          className=" p-2 text-sm md:text-base
+         flex flex-col items-center space-y-4"
         >
-          <h4 className="text-center mt-2 text-lg font-bold">
-            Step 2: Peer Matching
-          </h4>
-          <p>
-            Connect with like-minded individuals and choose your accountability
-            buddy.
-          </p>
-
-          <Image src="/img/partner.png" width={150} height={150} alt="match" />
-        </div>
-        <div
-          className="bg-white rounded-lg shadow-md p-2 text-sm md:text-base
-        cardHover flex flex-col items-center space-y-4"
-        >
-          <h4 className="text-center mt-2 text-lg font-bold">
-            Step 3: Accountability Partnership
-          </h4>
-          <p>
-            Schedule weekly meetings to share and update on your progress using
-            our weekly updates template.
-          </p>
           <Image
             src="/img/catchup.png"
             width={150}
             height={150}
-            alt="partnership"
+            alt="catchup"
           />
-        </div>
-        <div
-          className="bg-white rounded-lg shadow-md p-2 text-sm md:text-base
-        cardHover flex flex-col items-center space-y-4"
-        >
-          <h4 className="text-center mt-2 text-lg font-bold">
-            Step 4: Inspirations, Notifications, and Progress Reports
+          <h4 className="text-violet-600 mt-2 text-xl font-bold">
+            2. Join Weekly Meetings
           </h4>
           <p>
-            Receive weekly inspiration, notifications, and progress reports to
-            stay on track.
+            Share progress, feedback with a supportive peer and chat about
+            weekly personal development topics
           </p>
+        </div>
+        <div
+          className=" p-2 text-sm md:text-base
+         flex flex-col items-center space-y-4"
+        >
           <Image
-            src="/img/insight.png"
+            src="/img/self-improvement.png"
             width={150}
             height={150}
-            alt="inspirations"
+            alt="self-improvement"
           />
+          <h4 className="text-violet-600 mt-2 text-xl font-bold">
+            3: Make Incremental Changes
+          </h4>
+          <p>Use collective reflection to set better goals next week</p>
         </div>
       </div>
       {/* <iframe

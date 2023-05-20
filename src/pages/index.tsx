@@ -60,7 +60,7 @@ export default function Home() {
   // };
 
   return (
-    <div className="min-h-screen z-0 font-wix">
+    <div className="min-h-screen z-0 font-sans">
       <Head>
         <title>
           KaiKul | KaiKul: Self-Improvement. Weekly Changes. Companionship.
@@ -78,12 +78,12 @@ export default function Home() {
     mx-auto z-20 items-center"
       >
         <div
-          className="font-bold text-2xl hover:cursor-pointer hover:text-violet-500"
+          className="font-bold text-2xl 2xl:text-3xl hover:cursor-pointer hover:text-white"
           onClick={scrollToTop}
         >
           KaiKul
         </div>
-        <div className="hidden md:flex md:flex-row items-center space-x-2 md:space-x-5">
+        <div className="hidden md:flex md:flex-row items-center space-x-2 md:space-x-5 font-semibold 2xl:text-xl">
           <div
             className="hover:text-violet-500 hover:cursor-pointer"
             onClick={scrollToFeatures}
@@ -96,12 +96,12 @@ export default function Home() {
           >
             Testimonial
           </div>
-          <div
+          {/* <div
             className="hover:text-violet-500 hover:cursor-pointer"
             onClick={scrollToBeta}
           >
             Beta v1.1
-          </div>
+          </div> */}
           <div
             className="hover:text-violet-500 hover:cursor-pointer"
             onClick={scrollToTeam}
@@ -144,7 +144,7 @@ export default function Home() {
             >
               Testimonial
             </div>
-            <div
+            {/* <div
               className="block py-2 px-4 hover:text-violet-500 hover:cursor-pointer"
               onClick={() => {
                 toggleMenu();
@@ -152,7 +152,7 @@ export default function Home() {
               }}
             >
               Beta v1.1
-            </div>
+            </div> */}
             <div
               className="block py-2 px-4 hover:text-violet-500 hover:cursor-pointer"
               onClick={() => {
@@ -199,9 +199,9 @@ export default function Home() {
           <Testimonial />
         </section>
 
-        <section id="beta" ref={betaRef}>
+        {/* <section id="beta" ref={betaRef}>
           <Beta />
-        </section>
+        </section> */}
 
         <section id="team" ref={teamRef}>
           <Team />
@@ -212,9 +212,9 @@ export default function Home() {
         </section> */}
       </div>
 
-      <footer className="bg-gray-800 py-8 flex flex-col justify-center items-center">
+      <footer className="bg-violet-950 py-8 flex flex-col justify-center items-center">
         <div className="container mx-auto px-4">
-          <p className="text-gray-400 text-center text-sm">
+          <p className="text-violet-400 text-center text-sm">
             © {new Date().getFullYear()} KaiKul. All rights reserved.
           </p>
         </div>
