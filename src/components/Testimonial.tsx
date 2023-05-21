@@ -3,45 +3,38 @@ import React, { useEffect, useState } from "react";
 const testimonials = [
   {
     name: "Nadia Firsova",
-    color: "red",
+    role: "IT Project Manager",
     keyword: "Goal Tracking",
     testimonial:
       "It's a great platform and community where I can set my goal and reflect for what I like to achieve.",
   },
   {
     name: "Natasha Sachatheva",
-    color: "orange",
+    role: "Integrated Communications Strategist",
     keyword: "Connectivity within Oneself and Others",
     testimonial:
       "Life can pass us by and work becomes our priory, so often that we forget what's important. A platform like this allows for deeper connectivity within one self and with like minded people.",
   },
   {
     name: "Haiyang (Ocean) Zou",
-    color: "yellow",
+    role: "Full-stack Developer",
     keyword: "Self Reflection Meets Group Reflection",
     testimonial:
       "It is a really useful platform. Short weekly meetings help me to rethink what I did in this week, set goals next week and gain knowledge about how to cultivate my mindset and advance my career. You will feel you are not alone, you are in a group.",
   },
   {
     name: "Cerena Ip",
-    color: "green",
+    role: "Co-founder@Y YOGA, 'US' on Spotify+, and HKUST Business School",
     keyword: "Not Alone",
     testimonial:
       "In our pursuits, we find solace in the company of like-minded individuals, drawing inspiration from the collective energy of the group, even as our dreams may vary.",
   },
   {
     name: "Ezra Valentine",
-    color: "turquoise",
+    role: "YouTube Content Creator",
     keyword: "Power of Environment & Community",
     testimonial:
       "One of the most important things to think about when taking control of your own personal development, health or whatever it may be, is your environment. Having a group of like-minded individuals around you, people who are driven to succeed and reach their goals, will inherently make you want to also reach your own goals alongside them. A lot of people tend to under-value the impact a good group or partner can have. \nSo I strongly recommend trying anything like this, which can pair you with individuals/groups of people who are also on the same path in life.",
-  },
-  {
-    name: "Alexander Dolling",
-    color: "blue",
-    keyword: "Accountability, Reflection, Support, Success",
-    testimonial:
-      "Sometimes we need to be held accountable to ourselves for any type of goals we aim to meet. This is a great platform that creates reflection on what you have accomplished and what you aim to do next. You get support, social interaction, accountability and great tips on how you can hit and exceed your goals.",
   },
 ];
 
@@ -72,7 +65,7 @@ function Testimonial({}: Props) {
     px-3 md:px-32 mx-auto items-center justify-center 
     bg-cover bg-center bg-fixed md:bg-[url('/img/bg4.jpg')] bg-violet-200"
     >
-      <h3 className="mb-10 text-3xl font-bold text-violet-900">Testimonial</h3>
+      {/* <h3 className="mb-10 text-3xl font-bold text-violet-900">Testimonial</h3> */}
       <div
         className="relative max-w-[800px] min-h-[400px] rounded-lg flex flex-col items-center justify-center
         bg-violet-50 shadow-md px-14 py-8 m-2"
@@ -80,11 +73,14 @@ function Testimonial({}: Props) {
         <div className="text-lg md:text-2xl mb-8 text-violet-800 font-semibold">
           &ldquo;{testimonials[currentTestimonial].keyword}&rdquo;
         </div>
-        <div className="text-base md:text-lg mb-4">
+        <div className="font-serif lg:text-xl 2xl:text-2xl mb-8">
           &ldquo;{testimonials[currentTestimonial].testimonial}&rdquo;
         </div>
-        <div className="text-base md:text-lg font-semibold">
-          -- {testimonials[currentTestimonial].name}
+        <div className="text-sm lg:text-base font-semibold">
+          {testimonials[currentTestimonial].name}
+        </div>
+        <div className="text-sm lg:text-base">
+          {testimonials[currentTestimonial].role}
         </div>
         <div className="absolute top-0 left-0 flex items-center h-full">
           <button

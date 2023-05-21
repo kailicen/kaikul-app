@@ -17,7 +17,7 @@ type SectionRef = HTMLDivElement | null;
 
 export default function Home() {
   const featuresRef = useRef<SectionRef>(null);
-  const storyRef = useRef<SectionRef>(null);
+  //const storyRef = useRef<SectionRef>(null);
   const testimonialRef = useRef<SectionRef>(null);
   const qnaRef = useRef<SectionRef>(null);
   //const betaRef = useRef<SectionRef>(null);
@@ -42,11 +42,11 @@ export default function Home() {
     }
   };
 
-  const scrollToStory = () => {
-    if (storyRef.current) {
-      storyRef.current.scrollIntoView({ behavior: "smooth" });
-    }
-  };
+  // const scrollToStory = () => {
+  //   if (storyRef.current) {
+  //     storyRef.current.scrollIntoView({ behavior: "smooth" });
+  //   }
+  // };
 
   const scrollToTestimonial = () => {
     if (testimonialRef.current) {
@@ -127,12 +127,12 @@ export default function Home() {
           >
             How It Works
           </div>
-          <div
+          {/* <div
             className="hover:text-violet-600 hover:cursor-pointer"
             onClick={scrollToStory}
           >
             User Story
-          </div>
+          </div> */}
           <div
             className="hover:text-violet-600 hover:cursor-pointer"
             onClick={scrollToTestimonial}
@@ -185,7 +185,7 @@ export default function Home() {
             >
               How It Works
             </div>
-            <div
+            {/* <div
               className="block py-2 px-4 hover:text-violet-600 hover:cursor-pointer"
               onClick={() => {
                 toggleMenu();
@@ -193,7 +193,7 @@ export default function Home() {
               }}
             >
               User Story
-            </div>
+            </div> */}
             <div
               className="block py-2 px-4 hover:text-violet-600 hover:cursor-pointer"
               onClick={() => {
@@ -264,11 +264,11 @@ export default function Home() {
           <Features />
         </section>
 
-        <section id="story" ref={storyRef}>
+        <section id="testimonial" ref={testimonialRef}>
           <Story />
         </section>
 
-        <section id="testimonial" ref={testimonialRef}>
+        <section>
           <Testimonial />
         </section>
 
