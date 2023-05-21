@@ -7,7 +7,7 @@ type Props = {};
 function Team({}: Props) {
   return (
     <div
-      className="min-h-screen w-screen md:w-auto flex flex-col text-center
+      className="min-h-[50vh] w-screen md:w-auto flex flex-col text-center
     max-w-7xl py-20 px-3 md:px-32 mx-auto items-center justify-center"
     >
       <h3 className="mb-10 text-3xl font-bold text-violet-800">Our Team</h3>

@@ -11,11 +11,13 @@ import { useEffect, useRef, useState } from "react";
 import { SocialIcon } from "react-social-icons";
 import va from "@vercel/analytics";
 import Qna from "@/components/Qna";
+import { Story } from "@/components/Story";
 
 type SectionRef = HTMLDivElement | null;
 
 export default function Home() {
   const featuresRef = useRef<SectionRef>(null);
+  const storyRef = useRef<SectionRef>(null);
   const testimonialRef = useRef<SectionRef>(null);
   const qnaRef = useRef<SectionRef>(null);
   //const betaRef = useRef<SectionRef>(null);
@@ -37,6 +39,12 @@ export default function Home() {
   const scrollToFeatures = () => {
     if (featuresRef.current) {
       featuresRef.current.scrollIntoView({ behavior: "smooth" });
+    }
+  };
+
+  const scrollToStory = () => {
+    if (storyRef.current) {
+      storyRef.current.scrollIntoView({ behavior: "smooth" });
     }
   };
 
@@ -73,7 +81,7 @@ export default function Home() {
     const handleScroll = () => {
       const scrollTop =
         window.pageYOffset || document.documentElement.scrollTop;
-      const threshold = 180; // Adjust this value as needed
+      const threshold = 20; // Adjust this value as needed
 
       if (scrollTop > threshold) {
         setHeaderBgColor("bg-white");
@@ -118,6 +126,12 @@ export default function Home() {
             onClick={scrollToFeatures}
           >
             How It Works
+          </div>
+          <div
+            className="hover:text-violet-600 hover:cursor-pointer"
+            onClick={scrollToStory}
+          >
+            User Story
           </div>
           <div
             className="hover:text-violet-600 hover:cursor-pointer"
@@ -170,6 +184,15 @@ export default function Home() {
               }}
             >
               How It Works
+            </div>
+            <div
+              className="block py-2 px-4 hover:text-violet-600 hover:cursor-pointer"
+              onClick={() => {
+                toggleMenu();
+                scrollToStory();
+              }}
+            >
+              User Story
             </div>
             <div
               className="block py-2 px-4 hover:text-violet-600 hover:cursor-pointer"
@@ -239,6 +262,10 @@ export default function Home() {
 
         <section id="features" ref={featuresRef}>
           <Features />
+        </section>
+
+        <section id="story" ref={storyRef}>
+          <Story />
         </section>
 
         <section id="testimonial" ref={testimonialRef}>

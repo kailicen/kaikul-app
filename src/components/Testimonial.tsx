@@ -68,7 +68,7 @@ function Testimonial({}: Props) {
 
   return (
     <div
-      className="min-h-[80vh] w-screen md:w-auto flex flex-col text-center py-20
+      className="min-h-[50vh] w-screen md:w-auto flex flex-col text-center py-20
     px-3 md:px-32 mx-auto items-center justify-center 
     bg-cover bg-center bg-fixed md:bg-[url('/img/bg4.jpg')] bg-violet-200"
     >
