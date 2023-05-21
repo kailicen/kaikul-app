@@ -9,6 +9,20 @@ const testimonials = [
       "It's a great platform and community where I can set my goal and reflect for what I like to achieve.",
   },
   {
+    name: "Mohamad Shehimi",
+    role: "Co-Founder of SWLancer",
+    keyword: "Refreshing, Similar Goals & Mindset",
+    testimonial:
+      "It's very refreshing to see such ideas come to life. KaiKul is unique and one of a kind. It truly helps to have someone with similar goals and mindset to buddy with and share progress. KaiKul helps tremendously with that. ",
+  },
+  {
+    name: "Ezra Valentine",
+    role: "YouTube Content Creator",
+    keyword: "Power of Environment & Community",
+    testimonial:
+      "One of the most important things to think about when taking control of your own personal development, health or whatever it may be, is your environment. Having a group of like-minded individuals around you, people who are driven to succeed and reach their goals, will inherently make you want to also reach your own goals alongside them. A lot of people tend to under-value the impact a good group or partner can have. \nSo I strongly recommend trying anything like this, which can pair you with individuals/groups of people who are also on the same path in life.",
+  },
+  {
     name: "Natasha Sachatheva",
     role: "Integrated Communications Strategist",
     keyword: "Connectivity within Oneself and Others",
@@ -24,17 +38,10 @@ const testimonials = [
   },
   {
     name: "Cerena Ip",
-    role: "Co-founder@Y YOGA, 'US' on Spotify+, and HKUST Business School",
+    role: "Co-Founder@Y YOGA, 'US' on Spotify+, and HKUST Business School",
     keyword: "Not Alone",
     testimonial:
       "In our pursuits, we find solace in the company of like-minded individuals, drawing inspiration from the collective energy of the group, even as our dreams may vary.",
-  },
-  {
-    name: "Ezra Valentine",
-    role: "YouTube Content Creator",
-    keyword: "Power of Environment & Community",
-    testimonial:
-      "One of the most important things to think about when taking control of your own personal development, health or whatever it may be, is your environment. Having a group of like-minded individuals around you, people who are driven to succeed and reach their goals, will inherently make you want to also reach your own goals alongside them. A lot of people tend to under-value the impact a good group or partner can have. \nSo I strongly recommend trying anything like this, which can pair you with individuals/groups of people who are also on the same path in life.",
   },
 ];
 

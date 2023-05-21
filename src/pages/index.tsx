@@ -12,6 +12,7 @@ import { SocialIcon } from "react-social-icons";
 import va from "@vercel/analytics";
 import Qna from "@/components/Qna";
 import { Story } from "@/components/Story";
+import PictureWall from "@/components/PictureWall";
 
 type SectionRef = HTMLDivElement | null;
 
@@ -270,6 +271,10 @@ export default function Home() {
 
         <section>
           <Testimonial />
+        </section>
+
+        <section>
+          <PictureWall />
         </section>
 
         {/* <section id="beta" ref={betaRef}>
