@@ -73,7 +73,7 @@ function Testimonial({}: Props) {
         <div className="text-lg md:text-2xl mb-8 text-violet-800 font-semibold">
           &ldquo;{testimonials[currentTestimonial].keyword}&rdquo;
         </div>
-        <div className="font-serif lg:text-xl 2xl:text-2xl mb-8">
+        <div className="font-serif lg:text-xl mb-8">
           &ldquo;{testimonials[currentTestimonial].testimonial}&rdquo;
         </div>
         <div className="text-sm lg:text-base font-semibold">

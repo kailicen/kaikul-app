@@ -23,13 +23,11 @@ export function Story(props: IStoryProps) {
           <div className="text-lg lg:text-2xl mb-2 lg:mb-8 text-violet-800 font-semibold">
             &ldquo;{story.keyword}&rdquo;
           </div>
-          <div className="font-serif lg:text-xl 2xl:text-2xl mb-2 lg:mb-5">
+          <div className="font-serif lg:text-xl mb-2 lg:mb-5">
             &ldquo;{story.testimonial}&rdquo;
           </div>
-          <div className="text-sm lg:text-base 2xl:text-xl font-bold">
-            {story.name}
-          </div>
-          <div className="text-sm lg:text-base 2xl:text-xl">{story.role}</div>
+          <div className="text-sm lg:text-base font-bold">{story.name}</div>
+          <div className="text-sm lg:text-base">{story.role}</div>
         </div>
 
         <div className="order-1 md:order-2">
