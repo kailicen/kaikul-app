@@ -106,7 +106,7 @@ export default function Home() {
         </title>
         <meta
           property="og:title"
-          content="KaiKul: KaiKul: Self-Improvement. Weekly Changes. Companionship."
+          content="KaiKul | Self-Improvement. Weekly Changes. Companionship."
         />
         <meta property="og:image" content="/img/kaikul-thumbnail.png" />
         <link rel="icon" href="/favicon.ico" />
