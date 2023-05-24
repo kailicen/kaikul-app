@@ -9,7 +9,7 @@ function PictureWall({}: Props) {
       <h3 className="my-5 text-xl font-bold text-center">
         Some other KaiKul buddies 👇
       </h3>
-      <div className="flex flex-col md:flex-row md:items-center">
+      <div className="flex flex-col items-center md:flex-row md:items-center md:justify-evenly">
         <Image
           src="/img/pics/alex&boom.png"
           width={500}
