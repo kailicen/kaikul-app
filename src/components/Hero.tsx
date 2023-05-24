@@ -34,20 +34,20 @@ function Hero({}: Props) {
        flex-1 p-3 lg:p-5 xl:p-10 text-center lg:text-start lg:bg-white/80 lg:rounded-lg max-w-[600px] 2xl:max-w-[800px]"
         >
           <h1
-            className="text-2xl md:text-3xl lg:text-4xl 2xl:text-5xl font-bold lg:max-w-7xl 2xl:leading-relaxed
+            className="text-2xl md:text-3xl lg:text-4xl 2xl:text-5xl font-bold lg:max-w-7xl 2xl:leading-normal
         max-w-[800px] text-violet-800"
           >
             Make Weekly Improvements <br />
             with your Peer
           </h1>
-          <h2 className="mt-6 2xl:mt-16 text-md md:text-lg lg:text-xl 2xl:text-2xl px-0 md:text-start max-w-[800px]">
+          <h2 className="mt-6 2xl:mt-12 text-md md:text-lg lg:text-xl 2xl:text-2xl px-0 md:text-start max-w-[800px]">
             🚀 Rapidly attain your goals within weeks
             <br />
             ✨ Get started with 3 simple steps
             <br />
             🥳 Absolutely free of charge
           </h2>
-          <button className="buttonMobile md:button mt-5 md:mt-10 text-xl md:text-2xl 2x:mt-20">
+          <button className="buttonMobile md:button mt-5 md:mt-10 text-xl md:text-2xl 2xl:mt-16">
             <Link
               href="https://airtable.com/shrRTSGtb5taQ50yO/"
               target="_blank"
