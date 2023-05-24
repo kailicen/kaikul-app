@@ -101,12 +101,10 @@ export default function Home() {
   return (
     <div className="min-h-screen z-0 font-sans">
       <Head>
-        <title>
-          KaiKul | KaiKul: Self-Improvement. Weekly Changes. Companionship.
-        </title>
+        <title>KaiKul | Make Weekly Improvements with your Peer</title>
         <meta
           property="og:title"
-          content="KaiKul | Self-Improvement. Weekly Changes. Companionship."
+          content="KaiKul | Make Weekly Improvements with your Peer"
         />
         <meta property="og:image" content="/img/kaikul-thumbnail.png" />
         <link rel="icon" href="/favicon.ico" />
@@ -257,7 +255,7 @@ export default function Home() {
       </header>
 
       <div className="flex flex-col space-y-15 mx-auto">
-        <section id="hero" className="h-[90vh]">
+        <section id="hero" className="min-h-[100vh]">
           <Hero />
         </section>
 

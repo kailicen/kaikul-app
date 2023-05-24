@@ -2,18 +2,17 @@ import React from "react";
 //import Waitlist from "@/components/Waitlist";
 import Link from "next/link";
 import va from "@vercel/analytics";
+import Image from "next/image";
 
 type Props = {};
 
 function Hero({}: Props) {
   return (
     <div
-      className="w-full mx-auto flex flex-col space-y-8 items-center justify-center 
-    overflow-hidden py-5 
-    absolute inset-0 bg-no-repeat bg-cover bg-center bg-fixed md:bg-[url('/img/bg3.jpg')] bg-violet-200"
+      className="min-h-[100vh] w-full mx-auto flex flex-col space-y-8 items-center justify-center
+    bg-cover bg-center bg-fixed lg:bg-[url('/img/bg3.jpg')] bg-violet-200 absolute top-0 py-16"
     >
       <a
-        className="absolute top-20"
         href="https://www.producthunt.com/posts/kaikul?utm_source=badge-featured&utm_medium=badge&utm_souce=badge-kaikul"
         target="_blank"
       >
@@ -26,32 +25,47 @@ function Hero({}: Props) {
         />
       </a>
       <div
-        className="flex flex-col items-center md:items-end justify-center 
-      w-full md:px-10 lg:px-20 xl:px-30 2xl:px-40 flex-1 px-3 text-center md:text-end"
+        className="flex flex-col items-center justify-center lg:flex-row lg:gap-20
+      w-full md:px-10 lg:px-20 xl:px-30 2xl:px-40"
       >
-        <h1
-          className="text-2xl md:text-3xl lg:text-4xl 2xl:text-5xl font-bold lg:max-w-7xl
-        max-w-[800px] text-violet-800"
+        <div
+          className="flex flex-col items-center lg:items-start justify-center 
+       flex-1 p-3 lg:p-5 xl:p-10 text-center lg:text-start lg:bg-white/80 lg:rounded-lg max-w-[600px]"
         >
-          Make Weekly Improvements with your Peer
-        </h1>
-        <h2 className="mt-6 text-md md:text-lg lg:text-xl 2xl:text-2xl px-0 md:text-end max-w-[800px]">
-          Rapidly attain your goals within weeks 🚀
-          <br />
-          Get started with 3 simple steps 📅
-          <br />
-          Absolutely free of charge 🆓
-        </h2>
-        <button className="buttonMobile md:button mt-5 md:mt-10 text-xl md:text-2xl">
-          <Link
-            href="https://airtable.com/shrRTSGtb5taQ50yO/"
-            target="_blank"
-            onClick={() => va.track("TryKaiKulNow")}
+          <h1
+            className="text-2xl md:text-3xl lg:text-4xl 2xl:text-5xl font-bold lg:max-w-7xl
+        max-w-[800px] text-violet-800"
           >
-            Set My Goals Now
-          </Link>
-        </button>
-        {/* <Waitlist /> */}
+            Make Weekly Improvements <br />
+            with your Peer
+          </h1>
+          <h2 className="mt-6 text-md md:text-lg lg:text-xl 2xl:text-2xl px-0 md:text-start max-w-[800px]">
+            🚀 Rapidly attain your goals within weeks
+            <br />
+            ✨ Get started with 3 simple steps
+            <br />
+            🥳 Absolutely free of charge
+          </h2>
+          <button className="buttonMobile md:button mt-5 md:mt-10 text-xl md:text-2xl">
+            <Link
+              href="https://airtable.com/shrRTSGtb5taQ50yO/"
+              target="_blank"
+              onClick={() => va.track("TryKaiKulNow")}
+            >
+              Set Goals Now
+            </Link>
+          </button>
+          {/* <Waitlist /> */}
+        </div>
+        <Image
+          src="/img/hero-markup.png"
+          width={600}
+          height={600}
+          alt="will and mohamad"
+        />
+        <div className="block md:hidden absolute bottom-10 text-lg">
+          👇 Scroll Down 👇
+        </div>
       </div>
     </div>
   );
