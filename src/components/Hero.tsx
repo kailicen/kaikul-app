@@ -33,12 +33,14 @@ function Hero({}: Props) {
           className="text-2xl md:text-3xl lg:text-4xl 2xl:text-5xl font-bold lg:max-w-7xl
         max-w-[800px] text-violet-800"
         >
-          Self-Improvement. Weekly Changes. Companionship.
+          Make Weekly Improvements with your Peer
         </h1>
         <h2 className="mt-6 text-md md:text-lg lg:text-xl 2xl:text-2xl px-0 md:text-end max-w-[800px]">
-          Set goals, track progress, and have weekly video calls with a buddy
-          for diverse perspectives. With KaiKul, your weekly improvements become
-          more measurable, accountable, and reflective .
+          Rapidly attain your goals within weeks 🚀
+          <br />
+          Get started with 3 simple steps 📅
+          <br />
+          Absolutely free of charge 🆓
         </h2>
         <button className="buttonMobile md:button mt-5 md:mt-10 text-xl md:text-2xl">
           <Link
@@ -46,7 +48,7 @@ function Hero({}: Props) {
             target="_blank"
             onClick={() => va.track("TryKaiKulNow")}
           >
-            Try KaiKul Now
+            Set My Goals Now
           </Link>
         </button>
         {/* <Waitlist /> */}
