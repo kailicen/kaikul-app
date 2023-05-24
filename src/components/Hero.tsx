@@ -46,7 +46,7 @@ function Hero({}: Props) {
             target="_blank"
             onClick={() => va.track("TryKaiKulNow")}
           >
-            Try KaiKul Now
+            Get Started
           </Link>
         </button>
         {/* <Waitlist /> */}
