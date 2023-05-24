@@ -9,8 +9,8 @@ type Props = {};
 function Hero({}: Props) {
   return (
     <div
-      className="min-h-[100vh] w-full mx-auto flex flex-col space-y-8 items-center justify-center
-    bg-cover bg-center bg-fixed lg:bg-[url('/img/bg3.jpg')] bg-violet-200 absolute top-0 py-16"
+      className="min-h-[100vh] w-full mx-auto flex flex-col space-y-8 items-center
+    bg-cover bg-center bg-fixed lg:bg-[url('/img/bg3.jpg')] bg-violet-200 absolute top-0 py-24"
     >
       <a
         href="https://www.producthunt.com/posts/kaikul?utm_source=badge-featured&utm_medium=badge&utm_souce=badge-kaikul"
@@ -30,7 +30,7 @@ function Hero({}: Props) {
       >
         <div
           className="flex flex-col items-center lg:items-start justify-center 
-       flex-1 p-3 lg:p-5 xl:p-10 text-center lg:text-start lg:bg-white/80 lg:rounded-lg max-w-[600px]"
+       flex-1 p-3 lg:p-5 xl:p-10 text-center lg:text-start lg:bg-white/80 lg:rounded-lg max-w-[600px] 2xl:max-w-[800px]"
         >
           <h1
             className="text-2xl md:text-3xl lg:text-4xl 2xl:text-5xl font-bold lg:max-w-7xl
