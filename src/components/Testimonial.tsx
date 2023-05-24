@@ -70,7 +70,7 @@ function Testimonial({}: Props) {
     <div
       className="min-h-[50vh] w-screen md:w-auto flex flex-col text-center py-20
     px-3 md:px-32 mx-auto items-center justify-center 
-    bg-cover bg-center bg-fixed md:bg-[url('/img/bg4.jpg')] bg-violet-200"
+    bg-cover bg-center bg-fixed md:bg-[url('/img/bg3.jpg')] bg-violet-200"
     >
       {/* <h3 className="mb-10 text-3xl font-bold text-violet-900">Testimonial</h3> */}
       <div
