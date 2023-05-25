@@ -43,6 +43,13 @@ const testimonials = [
     testimonial:
       "In our pursuits, we find solace in the company of like-minded individuals, drawing inspiration from the collective energy of the group, even as our dreams may vary.",
   },
+  {
+    name: "Elle Chen",
+    role: "Entrepreneur, and student",
+    keyword: "Genuine care",
+    testimonial:
+      "I’ve been doing group meetings with Kaili once a week for a month now, this is a perfect opportunity to meet different people and gain different perspectives both at large and periodically at your own life, additionally, we not only report and reflect our weekly events, there’s an atmosphere of genuine care which is helpful not only professionally or productively. I cannot wait to see how Kaikul will turn out, and kudos to Kaili, for once this is done I’m sure it will help lots of people.",
+  },
 ];
 
 type Props = {};
