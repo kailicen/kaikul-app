@@ -9,8 +9,8 @@ type Props = {};
 function Hero({}: Props) {
   return (
     <div
-      className="min-h-[100vh] w-full mx-auto flex flex-col space-y-8 items-center justify-center
-    bg-cover bg-center bg-fixed lg:bg-[url('/img/bg3.jpg')] bg-violet-200 absolute top-0 pt-[100px] pb-[30px]"
+      className="min-h-screen w-full mx-auto flex flex-col space-y-8 items-center justify-center
+    bg-cover bg-center bg-fixed lg:bg-[url('/img/bg3.jpg')] bg-violet-200 pt-[100px] pb-[30px]"
     >
       <a
         className="absolute top-20"

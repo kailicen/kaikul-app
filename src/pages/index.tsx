@@ -111,7 +111,7 @@ export default function Home() {
       </Head>
 
       <header
-        className={`sticky top-0 p-5 flex justify-between px-5 md:px-20 ${headerBgColor} mx-auto z-20 items-center`}
+        className={`fixed top-0 left-0 right-0 p-5 flex justify-between px-5 md:px-20 ${headerBgColor} mx-auto z-20 items-center`}
       >
         <div
           className="font-bold text-2xl 2xl:text-3xl hover:cursor-pointer hover:text-violet-600"
