@@ -17,7 +17,7 @@ const questions = [
     id: 3,
     question: "How do I get started?",
     answer:
-      "You can fill out the beta group form to participate in our one-month challenge. Once you have completed the form, you will receive an email and WhatsApp invitation. Our app will be launching soon! ",
+      "You can fill out the beta group form to participate in our one-month challenge. Once you have completed the form, you will receive an email on the same day with more info and key dates to get involved. ",
   },
   {
     id: 4,

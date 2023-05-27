@@ -25,7 +25,8 @@ function Features({}: Props) {
             1. Set and Track Goals
           </h4>
           <p>
-            Set actionable and measurable SMART goals with our weekly template.
+            Set actionable and measurable SMART goals with our weekly template
+            and keep track on it weekly.
           </p>
         </div>
         <div
@@ -43,7 +44,7 @@ function Features({}: Props) {
           </h4>
           <p>
             Share progress, feedback with a supportive peer and chat about
-            weekly personal development topics
+            weekly personal development topics.
           </p>
         </div>
         <div
@@ -59,7 +60,10 @@ function Features({}: Props) {
           <h4 className="text-violet-800 mt-2 text-xl font-bold">
             3. Make Incremental Changes
           </h4>
-          <p>Use collective reflection to set better goals next week</p>
+          <p>
+            Focus on setting more effective goals and implementing improved
+            strategies in the upcoming week.
+          </p>
         </div>
       </div>
       {/* <iframe
