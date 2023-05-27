@@ -101,10 +101,10 @@ export default function Home() {
   return (
     <div className="min-h-screen z-0 font-sans">
       <Head>
-        <title>KaiKul | Make Weekly Improvements with your Peer</title>
+        <title>KaiKul | Make Weekly Improvements With Your Peer</title>
         <meta
           property="og:title"
-          content="KaiKul | Make Weekly Improvements with your Peer"
+          content="KaiKul | Make Weekly Improvements With Your Peer"
         />
         <meta property="og:image" content="/img/kaikul-thumbnail.png" />
         <link rel="icon" href="/favicon.ico" />

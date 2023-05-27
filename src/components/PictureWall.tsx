@@ -7,7 +7,7 @@ function PictureWall({}: Props) {
   return (
     <div>
       <h3 className="my-5 text-xl font-bold text-center">
-        Some other KaiKul buddies 👇
+        Some Other KaiKul Buddies 👇
       </h3>
       <div className="flex flex-col items-center md:flex-row md:items-center md:justify-evenly">
         <Image
