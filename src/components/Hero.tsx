@@ -60,7 +60,7 @@ function Hero({}: Props) {
               Schedule with Kaili
             </Link>
           </button>
-          <button className="buttonMobile md:button mt-2 md:mt-3 text-xl md:text-2xl 2xl:mt-16">
+          {/* <button className="buttonMobile md:button mt-2 md:mt-3 text-xl md:text-2xl 2xl:mt-16">
             <Link
               href="https://calendly.com/setthawut-kul/30minmeeting"
               target="_blank"
@@ -68,7 +68,7 @@ function Hero({}: Props) {
             >
               Schedule with Boom
             </Link>
-          </button>
+          </button> */}
 
           {/* <Waitlist /> */}
         </div>
@@ -78,9 +78,9 @@ function Hero({}: Props) {
           height={600}
           alt="will and mohamad"
         />
-        <div className="block md:hidden absolute bottom-10 text-lg">
+        {/* <div className="block md:hidden absolute bottom-10 text-lg">
           👇 Scroll Down 👇
-        </div>
+        </div> */}
       </div>
     </div>
   );
