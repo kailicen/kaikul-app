@@ -17,7 +17,7 @@ const questions = [
     id: 3,
     question: "How do I get started?",
     answer:
-      "Click the 'Get Started' button to initiate a 15 to 20-minute onboarding call with our team. During this call, we will delve deeper into your motivations and better explain the range of benefits we can offer you. ",
+      "Initiate a 15-20 minute onboarding call with our team by clicking the 'Schedule with Boom/Kaili' button on our homepage. During the call, we will provide you with detailed information about the onboarding process and discuss the range of benefits we offer. ",
   },
   {
     id: 4,

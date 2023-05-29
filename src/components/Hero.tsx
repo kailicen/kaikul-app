@@ -48,16 +48,25 @@ function Hero({}: Props) {
             🥳 Absolutely free of charge
           </h2>
           <p className="mt-5">
-            (Schedule a onboarding call with our team by hitting the &apos;Get
-            Started&apos; button 👇)
+            Schedule an onboarding call with our team below at your preferred
+            time 👇
           </p>
-          <button className="buttonMobile md:button mt-5 md:mt-10 text-xl md:text-2xl 2xl:mt-16">
+          <button className="buttonMobile md:button mt-5 md:mt-8 text-xl md:text-2xl 2xl:mt-16">
             <Link
               href="https://calendly.com/setthawut-kul/30minmeeting"
               target="_blank"
               onClick={() => va.track("TryKaiKulNow")}
             >
-              Get Started
+              Schedule with Boom
+            </Link>
+          </button>
+          <button className="buttonMobile md:button mt-2 md:mt-3 text-xl md:text-2xl 2xl:mt-16">
+            <Link
+              href="https://calendly.com/kailicen/kaikul-beta-onboarding"
+              target="_blank"
+              onClick={() => va.track("TryKaiKulNow")}
+            >
+              Schedule with Kaili
             </Link>
           </button>
           {/* <Waitlist /> */}
