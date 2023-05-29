@@ -47,6 +47,10 @@ function Hero({}: Props) {
             <br />
             🥳 Absolutely free of charge
           </h2>
+          <p className="mt-5">
+            (Schedule a onboarding call with our team by hitting the &apos;Get
+            Started&apos; button 👇)
+          </p>
           <button className="buttonMobile md:button mt-5 md:mt-10 text-xl md:text-2xl 2xl:mt-16">
             <Link
               href="https://calendly.com/setthawut-kul/30minmeeting"
