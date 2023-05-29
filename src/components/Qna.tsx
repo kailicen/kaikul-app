@@ -17,7 +17,7 @@ const questions = [
     id: 3,
     question: "How do I get started?",
     answer:
-      "You can fill out the beta group form to participate in our one-month challenge. Once you have completed the form, you will receive an email on the same day with more info and key dates to get involved. ",
+      "Click the 'Get Started' button to initiate a 15 to 20-minute onboarding call with our team. During this call, we will delve deeper into your motivations and better explain the range of benefits we can offer you. ",
   },
   {
     id: 4,

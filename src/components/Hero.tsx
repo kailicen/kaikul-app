@@ -49,11 +49,11 @@ function Hero({}: Props) {
           </h2>
           <button className="buttonMobile md:button mt-5 md:mt-10 text-xl md:text-2xl 2xl:mt-16">
             <Link
-              href="https://airtable.com/shrRTSGtb5taQ50yO/"
+              href="https://calendly.com/setthawut-kul/30minmeeting"
               target="_blank"
               onClick={() => va.track("TryKaiKulNow")}
             >
-              Set Goals Now
+              Get Started
             </Link>
           </button>
           {/* <Waitlist /> */}

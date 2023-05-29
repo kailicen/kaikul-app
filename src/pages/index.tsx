@@ -161,11 +161,11 @@ export default function Home() {
           </button> */}
           <button className="buttonMobile md:button">
             <Link
-              href="https://airtable.com/shrRTSGtb5taQ50yO/"
+              href="https://calendly.com/setthawut-kul/30minmeeting"
               target="_blank"
               onClick={() => va.track("JoinNow")}
             >
-              Join Now
+              Get Started
             </Link>
           </button>
         </div>
@@ -243,11 +243,11 @@ export default function Home() {
               onClick={toggleMenu}
             >
               <Link
-                href="https://airtable.com/shrRTSGtb5taQ50yO/"
+                href="https://calendly.com/setthawut-kul/30minmeeting"
                 target="_blank"
                 onClick={() => va.track("JoinNowFromMobile")}
               >
-                Join Now
+                Get Started
               </Link>
             </button>
           </div>
