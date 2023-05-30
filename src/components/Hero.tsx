@@ -38,7 +38,7 @@ function Hero({}: Props) {
         max-w-[800px] text-violet-800"
           >
             Make Weekly Improvements <br />
-            with your Peer
+            With Your Peer
           </h1>
           <h2 className="mt-6 2xl:mt-12 text-md md:text-lg lg:text-xl 2xl:text-2xl px-0 md:text-start max-w-[800px]">
             🚀 Rapidly attain your goals within weeks
@@ -60,15 +60,15 @@ function Hero({}: Props) {
               Schedule with Kaili
             </Link>
           </button>
-          {/* <button className="buttonMobile md:button mt-2 md:mt-3 text-xl md:text-2xl 2xl:mt-16">
+          <button className="buttonMobile md:button mt-2 md:mt-3 text-xl md:text-2xl 2xl:mt-16">
             <Link
-              href="https://calendly.com/setthawut-kul/30minmeeting"
+              href="https://calendly.com/setthawut-kul/onboarding"
               target="_blank"
               onClick={() => va.track("TryKaiKulNow")}
             >
               Schedule with Boom
             </Link>
-          </button> */}
+          </button>
 
           {/* <Waitlist /> */}
         </div>
