@@ -50,6 +50,13 @@ const testimonials = [
     testimonial:
       "I’ve been doing group meetings with Kaili once a week for a month now, this is a perfect opportunity to meet different people and gain different perspectives both at large and periodically at your own life, additionally, we not only report and reflect our weekly events, there’s an atmosphere of genuine care which is helpful not only professionally or productively. I cannot wait to see how Kaikul will turn out, and kudos to Kaili, for once this is done I’m sure it will help lots of people.",
   },
+  {
+    name: "Christina Wu",
+    role: "Data Analyst",
+    keyword: "Fresh Insights",
+    testimonial:
+      "We all need a little encouragement from time to time. At Kaikul, you'll receive unwavering support, constructive feedback, and uplifting messages from your peers. What's more, You can exchange ideas, and learn from other's experiences. You're constantly exposed to fresh insights and innovative approaches, making your journey even more enriching.",
+  },
 ];
 
 type Props = {};
