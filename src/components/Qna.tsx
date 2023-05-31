@@ -23,7 +23,7 @@ const questions = [
     id: 4,
     question: "How do we match KaiKul buddies?",
     answer:
-      "We match your self-help domains and partner preferences that you have provided us. Additionally, we consider your LinkedIn profile and availability during the matching process. ",
+      "You choose your own buddy on our timetable based on your convenience! ",
   },
   {
     id: 5,
