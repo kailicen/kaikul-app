@@ -161,9 +161,9 @@ export default function Home() {
           </button> */}
           <button className="buttonMobile md:button">
             <Link
-              href="https://calendly.com/kailicen/kaikul-beta-onboarding"
+              href="https://calendly.com/setthawut-kul/onboarding"
               target="_blank"
-              onClick={() => va.track("JoinNow")}
+              onClick={() => va.track("GetStarted")}
             >
               Get Started
             </Link>
@@ -243,7 +243,7 @@ export default function Home() {
               onClick={toggleMenu}
             >
               <Link
-                href="https://calendly.com/kailicen/kaikul-beta-onboarding"
+                href="https://calendly.com/setthawut-kul/onboarding"
                 target="_blank"
                 onClick={() => va.track("JoinNowFromMobile")}
               >

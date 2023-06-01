@@ -31,7 +31,7 @@ function Hero({}: Props) {
       >
         <div
           className="flex flex-col items-center lg:items-start justify-center 
-       flex-1 p-3 lg:p-5 xl:p-10 text-center lg:text-start lg:bg-white/80 lg:rounded-lg max-w-[600px] 2xl:max-w-[800px]"
+       flex-1 p-2 lg:p-4 xl:p-6 text-center lg:text-start lg:bg-white/80 lg:rounded-lg max-w-[600px] 2xl:max-w-[800px]"
         >
           <h1
             className="text-2xl md:text-3xl lg:text-4xl 2xl:text-5xl font-bold lg:max-w-7xl 2xl:leading-normal
@@ -55,7 +55,7 @@ function Hero({}: Props) {
             <Link
               href="https://calendly.com/kailicen/kaikul-beta-onboarding"
               target="_blank"
-              onClick={() => va.track("TryKaiKulNow")}
+              onClick={() => va.track("withKaili")}
             >
               Schedule with Kaili
             </Link>
@@ -64,7 +64,7 @@ function Hero({}: Props) {
             <Link
               href="https://calendly.com/setthawut-kul/onboarding"
               target="_blank"
-              onClick={() => va.track("TryKaiKulNow")}
+              onClick={() => va.track("withBoom")}
             >
               Schedule with Boom
             </Link>
