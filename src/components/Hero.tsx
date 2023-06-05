@@ -73,10 +73,10 @@ function Hero({}: Props) {
           {/* <Waitlist /> */}
         </div>
         <Image
-          src="/img/hero-markup.png"
+          src="/img/hero-markup2.png"
           width={600}
           height={600}
-          alt="will and mohamad"
+          alt="charlotte and ocean"
         />
         {/* <div className="block md:hidden absolute bottom-10 text-lg">
           👇 Scroll Down 👇
