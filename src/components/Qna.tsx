@@ -94,7 +94,7 @@ function Qna({}: Props) {
           🎉🔥
         </div>
         <div className="flex flex-col md:flex-row md:space-x-4">
-          <button className="buttonMobile md:button mt-2 md:mt-3 text-md md:text-xl 2xl:mt-16">
+          <button className="buttonMobile md:button mt-2 md:mt-3 text-md md:text-xl 2xl:mt-5">
             <Link
               href="https://calendly.com/setthawut-kul/onboarding"
               target="_blank"
@@ -103,7 +103,7 @@ function Qna({}: Props) {
               Schedule with Boom
             </Link>
           </button>
-          <button className="buttonMobile md:button mt-2 md:mt-3 text-md md:text-xl 2xl:mt-16">
+          <button className="buttonMobile md:button mt-2 md:mt-3 text-md md:text-xl 2xl:mt-5">
             <Link
               href="https://calendly.com/kailicen/kaikul-beta-onboarding"
               target="_blank"
