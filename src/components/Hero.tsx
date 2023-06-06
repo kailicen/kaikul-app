@@ -51,7 +51,7 @@ function Hero({}: Props) {
             Schedule an onboarding call with our team below at your preferred
             time 👇
           </p>
-          <button className="buttonMobile md:button mt-2 md:mt-3 text-xl md:text-2xl 2xl:mt-16">
+          <button className="buttonMobile md:button mt-2 md:mt-3 text-xl md:text-2xl 2xl:mt-5">
             <Link
               href="https://calendly.com/kailicen/kaikul-beta-onboarding"
               target="_blank"
@@ -60,7 +60,7 @@ function Hero({}: Props) {
               Schedule with Kaili
             </Link>
           </button>
-          <button className="buttonMobile md:button mt-2 md:mt-3 text-xl md:text-2xl 2xl:mt-16">
+          <button className="buttonMobile md:button mt-2 md:mt-3 text-xl md:text-2xl 2xl:mt-5">
             <Link
               href="https://calendly.com/setthawut-kul/onboarding"
               target="_blank"
