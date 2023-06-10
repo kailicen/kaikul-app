@@ -161,7 +161,7 @@ export default function Home() {
           </button> */}
           <button className="buttonMobile md:button">
             <Link
-              href="https://calendly.com/setthawut-kul/onboarding"
+              href="https://app.reclaim.ai/m/setthawut-kul/flexible-quick-meeting"
               target="_blank"
               onClick={() => va.track("GetStarted")}
             >
@@ -243,7 +243,7 @@ export default function Home() {
               onClick={toggleMenu}
             >
               <Link
-                href="https://calendly.com/setthawut-kul/onboarding"
+                href="https://app.reclaim.ai/m/setthawut-kul/flexible-quick-meeting"
                 target="_blank"
                 onClick={() => va.track("JoinNowFromMobile")}
               >

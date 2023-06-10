@@ -96,7 +96,7 @@ function Qna({}: Props) {
         <div className="flex flex-col md:flex-row md:space-x-4">
           <button className="buttonMobile md:button mt-2 md:mt-3 text-md md:text-xl 2xl:mt-5">
             <Link
-              href="https://calendly.com/setthawut-kul/onboarding"
+              href="https://app.reclaim.ai/m/setthawut-kul/flexible-quick-meeting"
               target="_blank"
               onClick={() => va.track("qnaJoinBoom")}
             >
@@ -105,7 +105,7 @@ function Qna({}: Props) {
           </button>
           <button className="buttonMobile md:button mt-2 md:mt-3 text-md md:text-xl 2xl:mt-5">
             <Link
-              href="https://calendly.com/kailicen/kaikul-beta-onboarding"
+              href="https://app.reclaim.ai/m/kaili-cen/flexible-quick-meeting"
               target="_blank"
               onClick={() => va.track("qnaJoinKaili")}
             >

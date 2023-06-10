@@ -53,7 +53,7 @@ function Hero({}: Props) {
           </p>
           <button className="buttonMobile md:button mt-2 md:mt-3 text-xl md:text-2xl 2xl:mt-5">
             <Link
-              href="https://calendly.com/setthawut-kul/onboarding"
+              href="https://app.reclaim.ai/m/setthawut-kul/flexible-quick-meeting"
               target="_blank"
               onClick={() => va.track("withBoom")}
             >
@@ -62,7 +62,7 @@ function Hero({}: Props) {
           </button>
           <button className="buttonMobile md:button mt-2 md:mt-3 text-xl md:text-2xl 2xl:mt-5">
             <Link
-              href="https://calendly.com/kailicen/kaikul-beta-onboarding"
+              href="https://app.reclaim.ai/m/kaili-cen/flexible-quick-meeting"
               target="_blank"
               onClick={() => va.track("withKaili")}
             >
