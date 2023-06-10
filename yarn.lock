@@ -2909,6 +2909,13 @@
   "resolved" "https://registry.npmjs.org/react-icons/-/react-icons-4.8.0.tgz"
   "version" "4.8.0"
 
+"react-iframe@^1.8.5":
+  "integrity" "sha512-F4cQJGs3ydaG6fJWfuz9yLwOU0Trzl6kttXuUG+vYwosH8enOOFxZWEDQCSbNVO8ayjfYZeqLxEvdvcsSy4GvA=="
+  "resolved" "https://registry.npmjs.org/react-iframe/-/react-iframe-1.8.5.tgz"
+  "version" "1.8.5"
+  dependencies:
+    "object-assign" "^4.1.1"
+
 "react-is@^16.13.1":
   "integrity" "sha512-24e6ynE2H+OKt4kqsOvNd8kBpV65zoxbA4BVsEOB3ARVWQki/DHzaUoC5KuON/BiccDaCCTZBuOcfZs70kR8bQ=="
   "resolved" "https://registry.npmjs.org/react-is/-/react-is-16.13.1.tgz"
@@ -2921,7 +2928,7 @@
   dependencies:
     "prop-types" "^15.7.2"
 
-"react@*", "react@^16.8.0 || ^17 || ^18", "react@^16.8||^17||^18", "react@^18.2.0", "react@>= 16", "react@>= 16.8.0", "react@>= 16.8.0 || 17.x.x || ^18.0.0-0", "react@15.x.x || 16.x.x || 17.x.x || 18.x.x", "react@18.2.0":
+"react@*", "react@^16.8.0 || ^17 || ^18", "react@^16.8||^17||^18", "react@^18.2.0", "react@>= 16", "react@>= 16.8.0", "react@>= 16.8.0 || 17.x.x || ^18.0.0-0", "react@>=16.x.x", "react@15.x.x || 16.x.x || 17.x.x || 18.x.x", "react@18.2.0":
   "integrity" "sha512-/3IjMdb2L9QbBdWiW5e3P2/npwMBaU9mHCSCUzNln0ZCYbcfTsGbTJrU/kGemdH2IWmB2ioZ+zkxtmq6g09fGQ=="
   "resolved" "https://registry.npmjs.org/react/-/react-18.2.0.tgz"
   "version" "18.2.0"

@@ -1,5 +1,6 @@
 import React from "react";
 import Image from "next/image";
+import Iframe from "react-iframe";
 
 type Props = {};
 
@@ -73,6 +74,11 @@ function Features({}: Props) {
         src="https://www.figma.com/embed?embed_host=share&url=https%3A%2F%2Fwww.figma.com%2Fproto%2FI3u5Fl4KTXqMPDU35PnpOM%2FKaiKul%3Fnode-id%3D233-33%26starting-point-node-id%3D233%253A33%26scaling%3Dscale-down"
         allowFullScreen
       ></iframe> */}
+      <iframe
+        className="my-10 px-1 w-full h-full md:w-[800px] md:h-[450px]"
+        src="https://www.loom.com/embed/1b34655df4c24defa9cd0499b44cc2d4"
+        allowFullScreen
+      ></iframe>
     </div>
   );
 }
