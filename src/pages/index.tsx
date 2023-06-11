@@ -120,6 +120,9 @@ export default function Home() {
           KaiKul
         </div>
         <div className="hidden md:flex md:flex-row items-center space-x-2 md:space-x-5 font-semibold 2xl:text-xl">
+          <Link href="/blog">
+            <div className="hover:text-violet-600">Blog</div>
+          </Link>
           <div
             className="hover:text-violet-600 hover:cursor-pointer"
             onClick={scrollToFeatures}
@@ -175,6 +178,9 @@ export default function Home() {
         />
         {isMenuOpen && (
           <div className="absolute top-20 right-0 w-full p-4 bg-white z-20 flex flex-col items-end">
+            <Link href="/blog">
+              <div className="block py-2 px-4 hover:text-violet-600">Blog</div>
+            </Link>
             <div
               className="block py-2 px-4 hover:text-violet-600 hover:cursor-pointer"
               onClick={() => {
