@@ -59,11 +59,11 @@ function Features({}: Props) {
             alt="self-improvement"
           />
           <h4 className="text-violet-800 mt-2 text-xl font-bold">
-            3. Make Incremental Changes
+            3. Build Your Momentum
           </h4>
           <p>
-            Focus on setting more effective goals and implementing improved
-            strategies in the upcoming week.
+            Understand the reasons behind failing/succeeding a goal, set
+            improved goals with greater intention next week.
           </p>
         </div>
       </div>
