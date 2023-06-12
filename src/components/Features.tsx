@@ -1,88 +1,80 @@
-import React, { useEffect } from "react";
+import React from "react";
 import Image from "next/image";
-import va from "@vercel/analytics";
 
 type Props = {};
 
 function Features({}: Props) {
-  function handleVideoLoad() {
-    va.track("VideoViewed");
-  }
   return (
     <div
-      className="min-h-[50vh] w-screen md:w-auto flex flex-col text-center py-20
-    px-3 md:px-32 mx-auto items-center justify-center max-w-7xl"
+      className="min-h-[50vh] w-screen md:w-auto flex flex-col py-20
+    px-3 mx-auto items-center justify-center max-w-7xl"
     >
-      <h3 className="mb-10 text-3xl font-bold text-violet-800">How it Works</h3>
+      <h3 className="mb-10 text-3xl font-bold text-violet-800">Features</h3>
       {/* <div className="mb-3 w-[800px]">
         Welcome to KaiKul! Our mission is to help you reach your goals (career,
         health, happiness, money, relationship) through personalized
         peer-to-peer matching. Here&apos;s how it works:
       </div> */}
-      <div className="grid md:grid-cols-3 gap-5 px-2 md:px-5">
+      <div className="grid md:grid-cols-3 px-2 md:px-5">
         <div
-          className=" p-2 text-sm md:text-base
-        flex flex-col items-center space-y-4 "
+          className="p-5 text-sm md:text-base
+        flex flex-col items-center space-y-4 bg-violet-100"
         >
-          <Image src="/img/goals.png" width={150} height={150} alt="goals" />
+          {/* <Image src="/img/goals.png" width={150} height={150} alt="goals" /> */}
           <h4 className="text-violet-800 mt-2 text-xl font-bold">
-            1. Set and Track Goals
+            📝 Customizable Goal Template
           </h4>
-          <p>
-            Set actionable and measurable SMART goals with our weekly template
-            and keep track on it weekly.
-          </p>
+          <ul>
+            <li>✅ Put down 3 goals weekly</li>
+            <li>✅ Rate your week and your happiness level</li>
+            <li>✅ Track the focused hours dedicated to your goals</li>
+            <li>✅ Identify your biggest improvement and obstacle</li>
+            <li>✅ Reflect on your most significant lesson learned</li>
+          </ul>
         </div>
         <div
-          className=" p-2 text-sm md:text-base
-         flex flex-col items-center space-y-4"
+          className="p-5 text-sm md:text-base text-violet-50
+        flex flex-col items-center space-y-4 bg-violet-600"
         >
-          <Image
-            src="/img/catchup.png"
-            width={150}
-            height={150}
-            alt="catchup"
-          />
-          <h4 className="text-violet-800 mt-2 text-xl font-bold">
-            2. Join Weekly Meetings
+          {/* <Image src="/img/goals.png" width={150} height={150} alt="goals" /> */}
+          <h4 className="text-violet-50 mt-2 text-xl font-bold">
+            👯 1-1 Weekly Virtual Call
           </h4>
-          <p>
-            Share progress, feedback with a supportive peer and chat about
-            weekly personal development topics.
-          </p>
+          <ul>
+            <li>✅ Connect with a motivated buddy</li>
+            <li>✅ Reflect on your week using a structured checklist</li>
+            <li>✅ Dive into authentic and open conversations</li>
+            <li>
+              ✅ Discuss the &quot;Theme of the Week&quot; (personal development
+              topic)
+            </li>
+            <li>✅ Set your goals next week with a reflective mind</li>
+          </ul>
         </div>
+
         <div
-          className=" p-2 text-sm md:text-base
-         flex flex-col items-center space-y-4"
+          className="p-5 text-sm md:text-base
+        flex flex-col items-center space-y-4 bg-violet-100"
         >
-          <Image
-            src="/img/self-improvement.png"
-            width={150}
-            height={150}
-            alt="self-improvement"
-          />
+          {/* <Image src="/img/goals.png" width={150} height={150} alt="goals" /> */}
           <h4 className="text-violet-800 mt-2 text-xl font-bold">
-            3. Build Your Momentum
+            💖 Reminders And Extra Support
           </h4>
-          <p>
-            Understand the reasons behind failing/succeeding a goal, set
-            improved goals with greater intention next week.
-          </p>
+          <ul>
+            <li>✅ Receive the &quot;Theme of the Week&quot; every Monday</li>
+            <li>
+              ✅ Get notifications and supplementary materials on Wednesday
+            </li>
+            <li>✅ Stay motivated with inspirational quotes every Friday</li>
+            <li>
+              ✅ Seek extra support by asking questions in our KaiKul community
+            </li>
+            <li>
+              ✅ Share your insights and experiences with the KaiKul community
+            </li>
+          </ul>
         </div>
       </div>
-      {/* <iframe
-        className="border"
-        width="800"
-        height="450"
-        src="https://www.figma.com/embed?embed_host=share&url=https%3A%2F%2Fwww.figma.com%2Fproto%2FI3u5Fl4KTXqMPDU35PnpOM%2FKaiKul%3Fnode-id%3D233-33%26starting-point-node-id%3D233%253A33%26scaling%3Dscale-down"
-        allowFullScreen
-      ></iframe> */}
-      <iframe
-        className="my-10 px-1 w-full h-full md:w-[800px] md:h-[450px]"
-        src="https://www.loom.com/embed/1b34655df4c24defa9cd0499b44cc2d4"
-        allowFullScreen
-        onLoad={handleVideoLoad}
-      ></iframe>
     </div>
   );
 }

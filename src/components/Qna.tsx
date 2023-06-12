@@ -54,7 +54,7 @@ function Qna({}: Props) {
       <h3 className="mb-10 text-3xl font-bold text-violet-800">
         Frequently Asked Questions
       </h3>
-      <div className="space-y-4 w-full md:w-[80%] lg:w-[60%] mb-10">
+      <div className="space-y-4 w-full px-3 md:w-[80%] lg:w-[60%] mb-10">
         {questions.map((question) => (
           <div
             key={question.id}

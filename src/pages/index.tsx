@@ -1,5 +1,3 @@
-import Beta from "@/components/Beta";
-import Contact from "@/components/Contact";
 import Features from "@/components/Features";
 import Hero from "@/components/Hero";
 import Team from "@/components/Team";
@@ -13,12 +11,13 @@ import va from "@vercel/analytics";
 import Qna from "@/components/Qna";
 import { Story } from "@/components/Story";
 import PictureWall from "@/components/PictureWall";
+import HowItWorks from "@/components/HowItWorks";
 
 type SectionRef = HTMLDivElement | null;
 
 export default function Home() {
+  const howItWorksRef = useRef<SectionRef>(null);
   const featuresRef = useRef<SectionRef>(null);
-  //const storyRef = useRef<SectionRef>(null);
   const testimonialRef = useRef<SectionRef>(null);
   const qnaRef = useRef<SectionRef>(null);
   //const betaRef = useRef<SectionRef>(null);
@@ -37,17 +36,17 @@ export default function Home() {
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
+  const scrollToHowItWorks = () => {
+    if (howItWorksRef.current) {
+      howItWorksRef.current.scrollIntoView({ behavior: "smooth" });
+    }
+  };
+
   const scrollToFeatures = () => {
     if (featuresRef.current) {
       featuresRef.current.scrollIntoView({ behavior: "smooth" });
     }
   };
-
-  // const scrollToStory = () => {
-  //   if (storyRef.current) {
-  //     storyRef.current.scrollIntoView({ behavior: "smooth" });
-  //   }
-  // };
 
   const scrollToTestimonial = () => {
     if (testimonialRef.current) {
@@ -125,16 +124,16 @@ export default function Home() {
           </Link>
           <div
             className="hover:text-violet-600 hover:cursor-pointer"
-            onClick={scrollToFeatures}
+            onClick={scrollToHowItWorks}
           >
             How It Works
           </div>
-          {/* <div
+          <div
             className="hover:text-violet-600 hover:cursor-pointer"
-            onClick={scrollToStory}
+            onClick={scrollToFeatures}
           >
-            User Story
-          </div> */}
+            Features
+          </div>
           <div
             className="hover:text-violet-600 hover:cursor-pointer"
             onClick={scrollToTestimonial}
@@ -185,20 +184,20 @@ export default function Home() {
               className="block py-2 px-4 hover:text-violet-600 hover:cursor-pointer"
               onClick={() => {
                 toggleMenu();
-                scrollToFeatures();
+                scrollToHowItWorks();
               }}
             >
               How It Works
             </div>
-            {/* <div
+            <div
               className="block py-2 px-4 hover:text-violet-600 hover:cursor-pointer"
               onClick={() => {
                 toggleMenu();
-                scrollToStory();
+                scrollToFeatures();
               }}
             >
-              User Story
-            </div> */}
+              Features
+            </div>
             <div
               className="block py-2 px-4 hover:text-violet-600 hover:cursor-pointer"
               onClick={() => {
@@ -265,6 +264,9 @@ export default function Home() {
           <Hero />
         </section>
 
+        <section id="howItWorks" ref={howItWorksRef}>
+          <HowItWorks />
+        </section>
         <section id="features" ref={featuresRef}>
           <Features />
         </section>
@@ -280,10 +282,6 @@ export default function Home() {
         <section>
           <PictureWall />
         </section>
-
-        {/* <section id="beta" ref={betaRef}>
-          <Beta />
-        </section> */}
 
         <section id="qna" ref={qnaRef}>
           <Qna />
