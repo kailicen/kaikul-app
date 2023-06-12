@@ -1,6 +1,6 @@
 import BlogPostCard from "@/components/BlogPostCard";
 import { createClient } from "contentful";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Document } from "@contentful/rich-text-types";
 import Link from "next/link";
 
@@ -50,15 +50,19 @@ type Props = {
 };
 
 function Blog({ posts }: Props) {
-  const [selectedCategory, setSelectedCategory] = useState("");
+  const [activeCategory, setActiveCategory] = useState("");
+  const [categories, setCategories] = useState<string[]>([]);
+
+  useEffect(() => {
+    const uniqueCategories = Array.from(
+      new Set(posts.map((post) => post.fields.category))
+    );
+    setCategories(uniqueCategories);
+  }, [posts]);
 
   const handleCategoryClick = (category: string) => {
-    setSelectedCategory(category);
+    setActiveCategory(category);
   };
-
-  const filteredPosts = selectedCategory
-    ? posts.filter((post) => post.fields.category === selectedCategory)
-    : posts;
 
   return (
     <div className="min-h-screen z-0 font-sans bg-violet-950 text-violet-50">
@@ -76,7 +80,7 @@ function Blog({ posts }: Props) {
         <div className="flex justify-center space-x-2 mb-4">
           <button
             className={`px-4 py-2 rounded-full ${
-              selectedCategory === ""
+              activeCategory === ""
                 ? "bg-violet-500 text-white"
                 : "bg-gray-200 text-gray-700"
             }`}
@@ -84,23 +88,27 @@ function Blog({ posts }: Props) {
           >
             All
           </button>
-          {posts.map((post: Blog) => (
+          {categories.map((category) => (
             <button
-              key={post.sys.id}
+              key={category}
               className={`px-4 py-2 rounded-full ${
-                selectedCategory === post.fields.category
+                activeCategory === category
                   ? "bg-violet-500 text-white"
                   : "bg-gray-200 text-gray-700"
               }`}
-              onClick={() => handleCategoryClick(post.fields.category)}
+              onClick={() => handleCategoryClick(category)}
             >
-              {post.fields.category}
+              {category}
             </button>
           ))}
         </div>
-        {filteredPosts.map((post: Blog) => (
-          <BlogPostCard key={post.sys.id} post={post} />
-        ))}
+        {posts
+          .filter((post) =>
+            activeCategory ? post.fields.category === activeCategory : true
+          )
+          .map((post: Blog) => (
+            <BlogPostCard key={post.sys.id} post={post} />
+          ))}
       </div>
     </div>
   );
