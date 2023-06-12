@@ -12,7 +12,7 @@
     "@contentful/rich-text-html-renderer": "^16.1.0",
     "@contentful/rich-text-react-renderer": "^15.17.0",
     "@heroicons/react": "^2.0.18",
-    "@hotjar/browser": "^1.0.7",
+    "@hotjar/browser": "^1.0.9",
     "@types/express": "^4.17.17",
     "@types/node": "18.15.11",
     "@types/react": "18.0.35",

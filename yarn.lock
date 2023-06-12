@@ -468,10 +468,10 @@
   "resolved" "https://registry.npmjs.org/@heroicons/react/-/react-2.0.18.tgz"
   "version" "2.0.18"
 
-"@hotjar/browser@^1.0.7":
-  "integrity" "sha512-OS6qRkidT7ACt+kSaYgHwEbOfUSiVCi9tVwmkq45KYAA+4wE0BrZO9Zwob9YJap17yY/yG6moc0vR0R47NJ0EA=="
-  "resolved" "https://registry.npmjs.org/@hotjar/browser/-/browser-1.0.7.tgz"
-  "version" "1.0.7"
+"@hotjar/browser@^1.0.9":
+  "integrity" "sha512-n9akDMod8BLGpYEQCrHwlYWWd63c1HlhUSXNIDfClZtKYXbUjIUOFlNZNNcUxgHTCsi4l2i+SWKsGsO0t93S8w=="
+  "resolved" "https://registry.npmjs.org/@hotjar/browser/-/browser-1.0.9.tgz"
+  "version" "1.0.9"
 
 "@humanwhocodes/config-array@^0.11.8":
   "integrity" "sha512-UybHIJzJnR5Qc/MsD9Kr+RpO2h+/P1GhOwdiLPXK5TWk5sgTdu88bTD9UP+CKbPPh5Rni1u0GjAdYQLemG8g+g=="
