@@ -44,15 +44,17 @@ function BlogPostCard({ post }: Props) {
         <h2 className="text-xl font-semibold">{title}</h2>
         <p className="text-gray-500 mb-2">{date}</p>
         <div className="prose">
-          {documentToReactComponents(content, options)}
+          {content && documentToReactComponents(content, options)}
         </div>
         <div className="my-5">
-          <Image
-            src={`https:${photo.fields.file.url}`}
-            width={photo.fields.file.details.image.width}
-            height={photo.fields.file.details.image.height}
-            alt="photo"
-          />
+          {photo && (
+            <Image
+              src={`https:${photo.fields.file.url}`}
+              width={photo.fields.file.details.image.width}
+              height={photo.fields.file.details.image.height}
+              alt="photo"
+            />
+          )}
         </div>
       </div>
     </>

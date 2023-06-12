@@ -31,6 +31,14 @@
   margin: 0 auto;
 }
 
+.prose p a {
+  color: #ca89ff;
+}
+.prose p a:hover {
+  color: #ca89ff;
+  text-decoration: underline;
+}
+
 @keyframes spin {
   to {
     transform: rotate(360deg);
