@@ -251,7 +251,7 @@ export default function Home() {
               <Link
                 href="https://app.reclaim.ai/m/setthawut-kul/flexible-quick-meeting"
                 target="_blank"
-                onClick={() => va.track("JoinNowFromMobile")}
+                onClick={() => va.track("GetStartedFromMobile")}
               >
                 Get Started
               </Link>

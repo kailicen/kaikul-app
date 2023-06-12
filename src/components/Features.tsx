@@ -1,10 +1,13 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Image from "next/image";
-import Iframe from "react-iframe";
+import va from "@vercel/analytics";
 
 type Props = {};
 
 function Features({}: Props) {
+  function handleVideoLoad() {
+    va.track("VideoViewed");
+  }
   return (
     <div
       className="min-h-[50vh] w-screen md:w-auto flex flex-col text-center py-20
@@ -78,6 +81,7 @@ function Features({}: Props) {
         className="my-10 px-1 w-full h-full md:w-[800px] md:h-[450px]"
         src="https://www.loom.com/embed/1b34655df4c24defa9cd0499b44cc2d4"
         allowFullScreen
+        onLoad={handleVideoLoad}
       ></iframe>
     </div>
   );
