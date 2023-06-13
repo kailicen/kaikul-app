@@ -77,7 +77,7 @@ function Blog({ posts }: Props) {
         </div>
       </header>
       <div className="max-w-2xl 2xl:max-w-3xl mx-auto p-4">
-        <div className="flex justify-center space-x-2 mb-4">
+        <div className="flex justify-start items-center flex-wrap space-x-2 space-y-1 mb-4">
           <button
             className={`px-4 py-2 rounded-full ${
               activeCategory === ""
