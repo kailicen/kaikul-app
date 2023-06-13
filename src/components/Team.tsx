@@ -18,7 +18,7 @@ function Team({}: Props) {
         cardHover "
         >
           <Link
-            className="flex flex-col items-center"
+            className="team__bio flex flex-col items-center"
             href="https://www.linkedin.com/in/setthawutkul/"
             target="_blank"
           >
@@ -33,7 +33,7 @@ function Team({}: Props) {
             <h3 className="text-xl text-violet-800 font-bold mt-6">
               Setthawut Kulsrisuwan (Boom)
             </h3>
-            <p className="text-center mt-2">
+            <p className="team__para text-center mt-2">
               Hi, I&apos;m Boom - your admin for self-discovery sessions and
               community interaction. My mission is to create objective-setting
               and self-awareness sessions, promote collaboration among diverse
@@ -83,7 +83,7 @@ function Team({}: Props) {
             <h3 className="text-xl text-violet-800 font-bold mt-6">
               Kaili Cen
             </h3>
-            <p className="text-center mt-2">
+            <p className="team__para text-center mt-2">
               Hey there, I&apos;m Kaili, based in Hobart, Australia. As a
               technical business analyst for the Tasmanian Department of
               Education, I spend my days juggling work with my passion project -

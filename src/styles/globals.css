@@ -21,6 +21,23 @@
   }
 }
 
+html {
+  position: relative;
+}
+
+body {
+  position: relative;
+  overflow-x: hidden;
+}
+
+header {
+  transition: all 300ms ease;
+}
+
+iframe {
+  border-radius: 16px;
+}
+
 .spinner {
   width: 1.5rem;
   height: 1.5rem;
@@ -54,7 +71,40 @@
 HERO
 
 */
-.hero__btns,
-.hero__btn {
+.hero__btns {
   width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+}
+
+.hero__btn {
+  text-align: center;
+  max-width: 600px;
+  width: 100%;
+}
+
+
+/*
+
+HOW IT WORKS
+
+*/
+.works__perk {
+  margin: 0 16px;
+}
+
+
+/*
+
+TEAM
+
+*/
+.team__bio {
+  height: 100%;
+}
+
+.team__para {
+  flex: 1;
 }
