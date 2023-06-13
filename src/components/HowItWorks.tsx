@@ -21,7 +21,7 @@ function HowItWorks({}: Props) {
       </div> */}
       <div className="grid md:grid-cols-3 gap-5 px-2 md:px-5">
         <div
-          className=" p-2 text-sm md:text-base
+          className="works__perk p-2 text-sm md:text-base
         flex flex-col items-center space-y-4 "
         >
           <Image src="/img/goals.png" width={150} height={150} alt="goals" />
@@ -34,7 +34,7 @@ function HowItWorks({}: Props) {
           </p>
         </div>
         <div
-          className=" p-2 text-sm md:text-base
+          className="works__perk p-2 text-sm md:text-base
          flex flex-col items-center space-y-4"
         >
           <Image
@@ -52,7 +52,7 @@ function HowItWorks({}: Props) {
           </p>
         </div>
         <div
-          className=" p-2 text-sm md:text-base
+          className="works__perk p-2 text-sm md:text-base
          flex flex-col items-center space-y-4"
         >
           <Image

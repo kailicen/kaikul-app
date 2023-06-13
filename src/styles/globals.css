@@ -21,6 +21,15 @@
   }
 }
 
+html {
+  position: relative;
+}
+
+body {
+  position: relative;
+  overflow-x: hidden;
+}
+
 header {
   transition: all 300ms ease;
 }
@@ -70,4 +79,14 @@ HERO
   text-align: center;
   max-width: 600px;
   width: 100%;
+}
+
+
+/*
+
+HOW IT WORKS
+
+*/
+.works__perk {
+  margin: 0 16px;
 }
