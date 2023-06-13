@@ -64,7 +64,9 @@ function Qna({}: Props) {
               className="flex items-center justify-between cursor-pointer"
               onClick={() => handleQuestionClick(question.id)}
             >
-              <h2 className="text-lg font-medium">{question.question}</h2>
+              <h2 className="text-base md:text-lg font-medium">
+                {question.question}
+              </h2>
               <svg
                 className={`w-6 h-6 transition-transform ${
                   question.id === expandedQuestionId ? "rotate-180" : ""
@@ -83,7 +85,9 @@ function Qna({}: Props) {
               </svg>
             </div>
             {question.id === expandedQuestionId && (
-              <p className="mt-4 text-gray-600 text-start">{question.answer}</p>
+              <p className="mt-4 text-gray-600 text-start text-xs md:text-base">
+                {question.answer}
+              </p>
             )}
           </div>
         ))}
