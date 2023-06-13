@@ -51,24 +51,27 @@ function Hero({}: Props) {
             Schedule an onboarding call with our team below at your preferred
             time 👇
           </p>
-          <button className="buttonMobile md:button mt-2 md:mt-3 text-xl md:text-2xl 2xl:mt-5">
-            <Link
-              href="https://app.reclaim.ai/m/setthawut-kul/flexible-quick-meeting"
-              target="_blank"
-              onClick={() => va.track("withBoom")}
-            >
-              Schedule with Boom
-            </Link>
-          </button>
-          <button className="buttonMobile md:button mt-2 md:mt-3 text-xl md:text-2xl 2xl:mt-5">
-            <Link
-              href="https://app.reclaim.ai/m/kaili-cen/flexible-quick-meeting"
-              target="_blank"
-              onClick={() => va.track("withKaili")}
-            >
-              Schedule with Kaili
-            </Link>
-          </button>
+          <div className="hero__btns">
+
+            <button className="btn hero__btn buttonMobile md:button mt-2 md:mt-3 text-xl md:text-2xl 2xl:mt-5">
+              <Link
+                href="https://app.reclaim.ai/m/setthawut-kul/flexible-quick-meeting"
+                target="_blank"
+                onClick={() => va.track("withBoom")}
+              >
+                Schedule with Boom
+              </Link>
+            </button>
+            <button className="btn hero__btn buttonMobile md:button mt-2 md:mt-3 text-xl md:text-2xl 2xl:mt-5">
+              <Link
+                href="https://app.reclaim.ai/m/kaili-cen/flexible-quick-meeting"
+                target="_blank"
+                onClick={() => va.track("withKaili")}
+              >
+                Schedule with Kaili
+              </Link>
+            </button>
+          </div>
 
           {/* <Waitlist /> */}
         </div>

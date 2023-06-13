@@ -44,3 +44,17 @@
     transform: rotate(360deg);
   }
 }
+
+.btn {
+  transition: all 300ms ease;
+}
+
+/*
+
+HERO
+
+*/
+.hero__btns,
+.hero__btn {
+  width: 100%;
+}

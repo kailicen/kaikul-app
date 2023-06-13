@@ -123,37 +123,37 @@ export default function Home() {
             <div className="hover:text-violet-600">Blog</div>
           </Link>
           <div
-            className="hover:text-violet-600 hover:cursor-pointer"
+            className="hover:text-violet-600 hover:cursor-pointer btn"
             onClick={scrollToHowItWorks}
           >
             How It Works
           </div>
           <div
-            className="hover:text-violet-600 hover:cursor-pointer"
+            className="hover:text-violet-600 hover:cursor-pointer btn"
             onClick={scrollToFeatures}
           >
             Features
           </div>
           <div
-            className="hover:text-violet-600 hover:cursor-pointer"
+            className="hover:text-violet-600 hover:cursor-pointer btn"
             onClick={scrollToTestimonial}
           >
             Testimonial
           </div>
           <div
-            className="hover:text-violet-600 hover:cursor-pointer"
+            className="hover:text-violet-600 hover:cursor-pointer btn"
             onClick={scrollToQna}
           >
             FAQ
           </div>
           {/* <div
-            className="hover:text-violet-600 hover:cursor-pointer"
+            className="hover:text-violet-600 hover:cursor-pointer btn"
             onClick={scrollToBeta}
           >
             Beta v1.1
           </div> */}
           <div
-            className="hover:text-violet-600 hover:cursor-pointer"
+            className="hover:text-violet-600 hover:cursor-pointer btn"
             onClick={scrollToTeam}
           >
             Our Team
@@ -161,7 +161,7 @@ export default function Home() {
           {/* <button className="buttonMobile md:button" onClick={scrollToContact}>
             Contact
           </button> */}
-          <button className="buttonMobile md:button">
+          <button className="btn buttonMobile md:button">
             <Link
               href="https://app.reclaim.ai/m/setthawut-kul/flexible-quick-meeting"
               target="_blank"
