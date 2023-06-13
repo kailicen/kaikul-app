@@ -94,3 +94,17 @@ HOW IT WORKS
 .works__perk {
   margin: 0 16px;
 }
+
+
+/*
+
+TEAM
+
+*/
+.team__bio {
+  height: 100%;
+}
+
+.team__para {
+  flex: 1;
+}
