@@ -48,26 +48,18 @@ function Hero({}: Props) {
             🥳 Absolutely free of charge
           </h2>
           <p className="mt-5">
-            Schedule an onboarding call with our team below at your preferred
-            time 👇
+            We are currently in the process of building our Minimum Viable
+            Product (MVP). We kindly request you to stay tuned and join us on
+            our Slack channel for the latest updates. 👇
           </p>
           <div className="hero__btns">
             <button className="btn hero__btn buttonMobile md:button mt-2 md:mt-3 text-xl md:text-2xl 2xl:mt-5">
               <Link
-                href="https://app.reclaim.ai/m/kaili-cen/flexible-quick-meeting"
-                target="_blank"
-                onClick={() => va.track("withKaili")}
-              >
-                Schedule with Kaili
-              </Link>
-            </button>
-            <button className="btn hero__btn buttonMobile md:button mt-2 md:mt-3 text-xl md:text-2xl 2xl:mt-5">
-              <Link
-                href="https://app.reclaim.ai/m/setthawut-kul/flexible-quick-meeting"
+                href="https://join.slack.com/t/kaikul/shared_invite/zt-1wxjzi7xh-7VT6sO8glNU44KSa5i2WyQ"
                 target="_blank"
                 onClick={() => va.track("withBoom")}
               >
-                Schedule with Boom
+                Join Our Slack Community
               </Link>
             </button>
           </div>

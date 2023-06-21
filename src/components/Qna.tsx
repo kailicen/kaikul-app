@@ -93,27 +93,19 @@ function Qna({}: Props) {
         ))}
       </div>
       <div className="bg-violet-200 w-screen py-5 flex flex-col items-center">
-        <div className="text-xl font-bold text-violet-800 mb-5">
-          Don&apos;t hesitate - Schedule an onboarding call with us at no cost!
-          🎉🔥
+        <div className="text-xl font-bold text-violet-800 mb-5 max-w-5xl">
+          We are currently in the process of building our Minimum Viable Product
+          (MVP). We kindly request you to stay tuned and join us on our Slack
+          channel for the latest updates. 👇
         </div>
         <div className="flex flex-col md:flex-row md:space-x-4">
-          <button className="buttonMobile md:button mt-2 md:mt-3 text-md md:text-xl 2xl:mt-5">
+          <button className="btn hero__btn buttonMobile md:button mt-2 md:mt-3 text-xl md:text-2xl 2xl:mt-5">
             <Link
-              href="https://app.reclaim.ai/m/setthawut-kul/flexible-quick-meeting"
+              href="https://join.slack.com/t/kaikul/shared_invite/zt-1wxjzi7xh-7VT6sO8glNU44KSa5i2WyQ"
               target="_blank"
-              onClick={() => va.track("qnaJoinBoom")}
+              onClick={() => va.track("withBoom")}
             >
-              Schedule with Boom
-            </Link>
-          </button>
-          <button className="buttonMobile md:button mt-2 md:mt-3 text-md md:text-xl 2xl:mt-5">
-            <Link
-              href="https://app.reclaim.ai/m/kaili-cen/flexible-quick-meeting"
-              target="_blank"
-              onClick={() => va.track("qnaJoinKaili")}
-            >
-              Schedule with Kaili
+              Join Our Slack Community
             </Link>
           </button>
         </div>

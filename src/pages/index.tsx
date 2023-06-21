@@ -163,7 +163,7 @@ export default function Home() {
           </button> */}
           <button className="btn buttonMobile md:button">
             <Link
-              href="https://app.reclaim.ai/m/setthawut-kul/flexible-quick-meeting"
+              href="https://join.slack.com/t/kaikul/shared_invite/zt-1wxjzi7xh-7VT6sO8glNU44KSa5i2WyQ"
               target="_blank"
               onClick={() => va.track("GetStarted")}
             >
