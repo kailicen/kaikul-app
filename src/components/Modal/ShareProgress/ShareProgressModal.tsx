@@ -75,7 +75,7 @@ const ShareProgressModal: React.FC<ShareProgressModalProps> = ({
         .map(
           (task) =>
             `- ${task.text} (${
-              task.completed ? "(✅ Completed)" : "(❌ Incomplete)"
+              task.completed ? "✅ Completed" : "❌ Incomplete"
             })`
         )
         .join("\n")}\n\n*📝 To do:*\n${todayTasks

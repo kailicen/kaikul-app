@@ -4,28 +4,30 @@ import { useStatistics } from "@/hooks/useStatistics";
 import {
   Box,
   Text,
-  IconButton,
   List,
   ListItem,
   Center,
   VStack,
-  Badge,
   Flex,
   Grid,
   Heading,
   GridItem,
-  Button,
   Tab,
   TabList,
   Tabs,
   Icon,
+  ListIcon,
 } from "@chakra-ui/react";
-import { ChevronLeftIcon, ChevronRightIcon } from "@chakra-ui/icons";
 import "moment/locale/en-gb";
 import moment, { Moment } from "moment";
 import { PieChart, Pie, Cell, Tooltip, Legend, Label } from "recharts";
 import LoadingScreen from "@/components/LoadingScreen";
-import { MdChevronLeft, MdChevronRight } from "react-icons/md";
+import {
+  MdBlockFlipped,
+  MdCheckCircle,
+  MdChevronLeft,
+  MdChevronRight,
+} from "react-icons/md";
 
 moment.locale("en-gb");
 
@@ -114,146 +116,145 @@ function Statistics() {
   return (
     <>
       <AuthenticatedHeader user={user} />
-      <Box
-        p={5}
-        pt="100px"
-        bg="gray.50" // Change background color based on view
-        className="min-h-screen"
-      >
-        {/* Here, pt (padding-top) is used to prevent overlap with the fixed header */}
-        <VStack align="center" spacing={8}>
-          <Tabs
-            variant="soft-rounded"
-            colorScheme="purple"
-            defaultIndex={isWeeklyView ? 0 : 1}
-            onChange={(index) => setIsWeeklyView(index === 0)}
-          >
-            <TabList mb="1em">
-              <Tab>Weekly View</Tab>
-              <Tab>Monthly View</Tab>
-            </TabList>
-          </Tabs>
-          <Flex justify="space-between" align="center">
-            <Box
-              as="button"
-              aria-label="Previous"
-              onClick={() => handlePrevious(setCurrentPeriod)}
-              cursor="pointer"
-              _hover={{ bg: "gray.100" }}
-              p={1}
-              rounded="md"
-              mr={2}
+      <Center>
+        <Box p={5} pt="100px" w="1000px">
+          {/* Here, pt (padding-top) is used to prevent overlap with the fixed header */}
+          <VStack align="center" spacing={8}>
+            <Tabs
+              variant="soft-rounded"
+              colorScheme="purple"
+              defaultIndex={isWeeklyView ? 0 : 1}
+              onChange={(index) => setIsWeeklyView(index === 0)}
             >
-              <Icon as={MdChevronLeft} fontSize="24px" color="gray.500" />
-            </Box>
-            {isWeeklyView ? (
-              <Text fontSize="xl" fontWeight="semibold">
-                {dateRange.label}ly data: {dateRange.start?.format("MMMM D")} -{" "}
-                {dateRange.end?.format("MMMM D")}
-              </Text>
-            ) : (
-              <Text fontSize="xl" fontWeight="semibold">
-                {dateRange.label}ly data: {dateRange.start.format("MMMM")}
-              </Text>
-            )}
-            <Box
-              as="button"
-              aria-label="Next Week"
-              onClick={() => handleNext(setCurrentPeriod)}
-              cursor="pointer"
-              _hover={{ bg: "gray.100" }}
-              p={1}
-              rounded="md"
-              ml={2}
-            >
-              <Icon as={MdChevronRight} fontSize="24px" color="gray.500" />
-            </Box>
-          </Flex>
-
-          <Grid
-            templateColumns={{
-              base: "1fr",
-              md: "repeat(2, 1fr)",
-            }}
-            gap={8}
-          >
-            <GridItem colSpan={{ base: 1, md: 1 }}>
+              <TabList mb="1em">
+                <Tab>Weekly View</Tab>
+                <Tab>Monthly View</Tab>
+              </TabList>
+            </Tabs>
+            <Flex justify="space-between" align="center">
               <Box
-                p={6}
-                boxShadow="lg"
-                bg="white"
-                borderRadius="md"
-                textAlign="center"
+                as="button"
+                aria-label="Previous"
+                onClick={() => handlePrevious(setCurrentPeriod)}
+                cursor="pointer"
+                _hover={{ bg: "gray.100" }}
+                p={1}
+                rounded="md"
+                mr={2}
               >
-                <Heading as="h2" size="md" mb={4}>
-                  Task Completion Rate
-                </Heading>
-                <Center>
-                  <PieChart width={400} height={300}>
-                    <Pie
-                      data={data}
-                      cx="50%"
-                      cy="50%"
-                      innerRadius={60}
-                      outerRadius={80}
-                      fill="#8884d8"
-                      paddingAngle={5}
-                      dataKey="value"
-                    >
-                      {data.map((entry, index) => (
-                        <Cell
-                          key={`cell-${index}`}
-                          fill={COLORS[index % COLORS.length]}
+                <Icon as={MdChevronLeft} fontSize="24px" color="gray.500" />
+              </Box>
+              {isWeeklyView ? (
+                <Text fontSize="xl" fontWeight="semibold">
+                  {dateRange.label}ly data: {dateRange.start?.format("MMMM D")}{" "}
+                  - {dateRange.end?.format("MMMM D")}
+                </Text>
+              ) : (
+                <Text fontSize="xl" fontWeight="semibold">
+                  {dateRange.label}ly data: {dateRange.start.format("MMMM")}
+                </Text>
+              )}
+              <Box
+                as="button"
+                aria-label="Next Week"
+                onClick={() => handleNext(setCurrentPeriod)}
+                cursor="pointer"
+                _hover={{ bg: "gray.100" }}
+                p={1}
+                rounded="md"
+                ml={2}
+              >
+                <Icon as={MdChevronRight} fontSize="24px" color="gray.500" />
+              </Box>
+            </Flex>
+
+            <Grid
+              templateColumns={{
+                base: "1fr",
+                md: "repeat(2, 1fr)",
+              }}
+              gap={8}
+            >
+              <GridItem colSpan={{ base: 1, md: 1 }}>
+                <Box
+                  p={6}
+                  boxShadow="lg"
+                  bg="white"
+                  borderRadius="md"
+                  textAlign="center"
+                >
+                  <Heading as="h2" size="md" mb={4}>
+                    Task Completion Rate
+                  </Heading>
+                  <Center>
+                    <PieChart width={400} height={300}>
+                      <Pie
+                        data={data}
+                        cx="50%"
+                        cy="50%"
+                        innerRadius={60}
+                        outerRadius={80}
+                        fill="#8884d8"
+                        paddingAngle={5}
+                        dataKey="value"
+                      >
+                        {data.map((entry, index) => (
+                          <Cell
+                            key={`cell-${index}`}
+                            fill={COLORS[index % COLORS.length]}
+                          />
+                        ))}
+                        <Label
+                          value={`Total tasks: ${totalTasks}`}
+                          position="center"
                         />
+                      </Pie>
+                      <Tooltip />
+                      <Legend />
+                    </PieChart>
+                  </Center>
+                </Box>
+              </GridItem>
+              <GridItem colSpan={{ base: 1, md: 1 }}>
+                <Box p={6} boxShadow="lg" bg="white" borderRadius="md">
+                  <Heading as="h2" size="md" mb={4}>
+                    Goals
+                  </Heading>
+                  {goals.length > 0 ? (
+                    <List>
+                      {goals.map((goal) => (
+                        <ListItem key={goal.id}>
+                          <ListIcon as={MdCheckCircle} color="green.500" />
+                          {goal.text}
+                        </ListItem>
                       ))}
-                      <Label
-                        value={`Total tasks: ${totalTasks}`}
-                        position="center"
-                      />
-                    </Pie>
-                    <Tooltip />
-                    <Legend />
-                  </PieChart>
-                </Center>
-              </Box>
-            </GridItem>
-            <GridItem colSpan={{ base: 1, md: 1 }}>
-              <Box p={6} boxShadow="lg" bg="white" borderRadius="md">
-                <Heading as="h2" size="md" mb={4}>
-                  Goals
-                </Heading>
-                {goals.length > 0 ? (
-                  <List>
-                    {goals.map((goal) => (
-                      <ListItem key={goal.id}>
-                        <Badge colorScheme="green">{goal.text}</Badge>
-                      </ListItem>
-                    ))}
-                  </List>
-                ) : (
-                  <Text>No goals this {dateRange.label}.</Text>
-                )}
-              </Box>
-              <Box mt={8} p={6} boxShadow="lg" bg="white" borderRadius="md">
-                <Heading as="h2" size="md" mb={4}>
-                  Blockers
-                </Heading>
-                {blockers.length > 0 ? (
-                  <List>
-                    {blockers.map((blocker) => (
-                      <ListItem key={blocker.id}>
-                        <Badge colorScheme="red">{blocker.text}</Badge>
-                      </ListItem>
-                    ))}
-                  </List>
-                ) : (
-                  <Text>No blockers this {dateRange.label}.</Text>
-                )}
-              </Box>
-            </GridItem>
-          </Grid>
-        </VStack>
-      </Box>
+                    </List>
+                  ) : (
+                    <Text>No goals this {dateRange.label}.</Text>
+                  )}
+                </Box>
+                <Box mt={8} p={6} boxShadow="lg" bg="white" borderRadius="md">
+                  <Heading as="h2" size="md" mb={4}>
+                    Blockers
+                  </Heading>
+                  {blockers.length > 0 ? (
+                    <List>
+                      {blockers.map((blocker) => (
+                        <ListItem key={blocker.id}>
+                          <ListIcon as={MdBlockFlipped} color="red.500" />
+                          {blocker.text}
+                        </ListItem>
+                      ))}
+                    </List>
+                  ) : (
+                    <Text>No blockers this {dateRange.label}.</Text>
+                  )}
+                </Box>
+              </GridItem>
+            </Grid>
+          </VStack>
+        </Box>
+      </Center>
     </>
   );
 }
