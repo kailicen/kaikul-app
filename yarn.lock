@@ -970,7 +970,7 @@
   "resolved" "https://registry.npmjs.org/@emotion/sheet/-/sheet-1.2.2.tgz"
   "version" "1.2.2"
 
-"@emotion/styled@^11.0.0":
+"@emotion/styled@^11.0.0", "@emotion/styled@^11.11.0":
   "integrity" "sha512-hM5Nnvu9P3midq5aaXj4I+lnSfNi7Pmd4EWk1fOZ3pxookaQTNew6bp4JaCBYM4HVFZF9g7UjJmsUmC2JlxOng=="
   "resolved" "https://registry.npmjs.org/@emotion/styled/-/styled-11.11.0.tgz"
   "version" "11.11.0"
