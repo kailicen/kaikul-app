@@ -6,10 +6,10 @@ import { RecoilRoot } from "recoil";
 import { ChakraProvider } from "@chakra-ui/react";
 import { theme } from "../chakra/theme";
 
-// const siteId = 3505619;
-// const hotjarVersion = 6;
+const siteId = 3505619;
+const hotjarVersion = 6;
 
-// Hotjar.init(siteId, hotjarVersion);
+Hotjar.init(siteId, hotjarVersion);
 
 export default function App({ Component, pageProps }: AppProps) {
   return (
