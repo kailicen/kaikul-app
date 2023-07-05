@@ -17,10 +17,10 @@ export function Story(props: IStoryProps) {
       className="min-h-[50vh] max-w-7xl md:w-auto flex flex-col 
   pt-20 pb-5 px-3 mx-auto items-center justify-center"
     >
-      <h3 className="mb-10 text-3xl font-bold text-violet-800">Testimonial</h3>
+      <h3 className="mb-10 text-3xl font-bold text-violet-500">Testimonial</h3>
       <div className="grid md:grid-cols-2 gap-5 px-2">
         <div className="flex flex-col order-2 md:order-1">
-          <div className="text-lg lg:text-2xl mb-2 lg:mb-8 text-violet-800 font-semibold">
+          <div className="text-lg lg:text-2xl mb-2 lg:mb-8 text-violet-500 font-semibold">
             &ldquo;{story.keyword}&rdquo;
           </div>
           <div className="font-serif lg:text-xl mb-2 lg:mb-5">

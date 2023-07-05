@@ -11,11 +11,11 @@ function Team({}: Props) {
       className="min-h-[50vh] w-screen md:w-auto flex flex-col text-center
     max-w-7xl py-20 px-3 md:px-32 mx-auto items-center justify-center"
     >
-      <h3 className="mb-10 text-3xl font-bold text-violet-800">Our Team</h3>
+      <h3 className="mb-10 text-3xl font-bold text-violet-500">Our Team</h3>
       <div className="grid md:grid-cols-2 gap-5 px-2 md:px-10">
         <div
-          className="bg-white rounded-lg shadow-md px-2 py-5 md:p-5 text-sm md:text-base
-        cardHover "
+          className="bg-violet-200 rounded-lg shadow-md px-2 py-5 md:p-5 text-sm md:text-base
+        cardHover"
         >
           <Link
             className="team__bio flex flex-col items-center"
@@ -30,10 +30,10 @@ function Team({}: Props) {
                 height={128}
               />
             </div>
-            <h3 className="text-xl text-violet-800 font-bold mt-6">
+            <h3 className="text-xl text-violet-500 font-bold mt-6">
               Setthawut Kulsrisuwan (Boom)
             </h3>
-            <p className="team__para text-center mt-2">
+            <p className="team__para text-center mt-2 text-black">
               Hi, I&apos;m Boom - your admin for self-discovery sessions and
               community interaction. My mission is to create objective-setting
               and self-awareness sessions, promote collaboration among diverse
@@ -64,7 +64,7 @@ function Team({}: Props) {
           </Link>
         </div>
         <div
-          className="bg-white rounded-lg shadow-md px-2 py-5 md:p-5 text-sm md:text-base
+          className="bg-violet-200 rounded-lg shadow-md px-2 py-5 md:p-5 text-sm md:text-base
         cardHover"
         >
           <Link
@@ -80,10 +80,10 @@ function Team({}: Props) {
                 height={128}
               />
             </div>
-            <h3 className="text-xl text-violet-800 font-bold mt-6">
+            <h3 className="text-xl text-violet-500 font-bold mt-6">
               Kaili Cen
             </h3>
-            <p className="team__para text-center mt-2">
+            <p className="team__para text-center mt-2 text-black">
               Hey there, I&apos;m Kaili, based in Hobart, Australia. As a
               technical business analyst for the Tasmanian Department of
               Education, I spend my days juggling work with my passion project -

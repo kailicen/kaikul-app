@@ -51,7 +51,7 @@ function Qna({}: Props) {
       className="min-h-[50vh] w-screen md:w-auto flex flex-col text-center
     max-w-7xl py-20 px-3 md:px-32 mx-auto items-center justify-center"
     >
-      <h3 className="mb-10 text-3xl font-bold text-violet-800">
+      <h3 className="mb-10 text-3xl font-bold text-violet-500">
         Frequently Asked Questions
       </h3>
       <div className="space-y-4 w-full px-3 md:w-[80%] lg:w-[60%] mb-10">
@@ -85,15 +85,15 @@ function Qna({}: Props) {
               </svg>
             </div>
             {question.id === expandedQuestionId && (
-              <p className="mt-4 text-gray-600 text-start text-xs md:text-base">
+              <p className="mt-4 text-start text-xs md:text-base">
                 {question.answer}
               </p>
             )}
           </div>
         ))}
       </div>
-      <div className="bg-violet-200 w-screen py-5 flex flex-col items-center">
-        <div className="text-xl font-bold text-violet-800 mb-5 max-w-5xl">
+      <div className="bg-violet-300 w-screen py-5 flex flex-col items-center">
+        <div className="text-xl font-bold text-violet-600 mb-5 max-w-5xl">
           We are currently in the process of building our Minimum Viable Product
           (MVP). We kindly request you to stay tuned and join us on our Slack
           channel for the latest updates. 👇

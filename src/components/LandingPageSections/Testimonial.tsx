@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 
 const testimonials = [
   {
@@ -91,19 +91,19 @@ function Testimonial({}: Props) {
         className="relative max-w-[800px] min-h-[400px] rounded-lg flex flex-col items-center justify-center
         bg-violet-50 shadow-md px-14 py-8 m-2"
       >
-        <div className="text-lg md:text-2xl mb-8 text-violet-800 font-semibold">
+        <div className="text-lg md:text-2xl mb-8 text-violet-500 font-semibold">
           &ldquo;{testimonials[currentTestimonial].keyword}&rdquo;
         </div>
-        <div className="font-serif lg:text-xl mb-8">
+        <div className="font-serif lg:text-xl mb-8 text-black">
           &ldquo;{testimonials[currentTestimonial].testimonial}&rdquo;
         </div>
-        <div className="text-sm lg:text-base font-semibold">
+        <div className="text-sm lg:text-base font-semibold text-black">
           {testimonials[currentTestimonial].name}
         </div>
-        <div className="text-sm lg:text-base">
+        <div className="text-sm lg:text-base text-black">
           {testimonials[currentTestimonial].role}
         </div>
-        <div className="absolute top-0 left-0 flex items-center h-full">
+        <div className="absolute top-0 left-0 flex items-center h-full text-violet-800">
           <button
             className="p-2 rounded-full hover:bg-violet-300 transition-colors duration-300"
             onClick={navigateToPrevious}
@@ -124,7 +124,7 @@ function Testimonial({}: Props) {
             </svg>
           </button>
         </div>
-        <div className="absolute top-0 right-0 flex items-center h-full">
+        <div className="absolute top-0 right-0 flex items-center h-full text-violet-800">
           <button
             className="p-2 rounded-full hover:bg-violet-300 transition-colors duration-300"
             onClick={navigateToNext}

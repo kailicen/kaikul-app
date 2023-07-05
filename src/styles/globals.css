@@ -7,8 +7,16 @@
   .button {
     @apply bg-violet-500 rounded-full text-white py-3 px-6 hover:bg-violet-600;
   }
+  .buttonSecondary {
+    @apply bg-white rounded-full text-violet-500 border-2 border-violet-500 py-3 px-6 
+    hover:bg-violet-100;
+  }
   .buttonMobile {
     @apply bg-violet-500 rounded-full text-white py-2 px-4 hover:bg-violet-600;
+  }
+  .buttonMobileSecondary {
+    @apply bg-white rounded-full text-violet-500 border-2 border-violet-500 py-2 px-4 
+    hover:bg-violet-200;
   }
   .contactInput {
     @apply outline-none bg-gray-100 rounded-sm border-b px-6 py-4 border-gray-300
@@ -16,7 +24,7 @@
      hover:border-violet-400/40;
   }
   .cardHover {
-    @apply hover:bg-violet-50 hover:shadow-lg 
+    @apply hover:bg-violet-300 hover:shadow-lg 
     transform transition duration-300 hover:-translate-y-1;
   }
 }
@@ -85,7 +93,6 @@ HERO
   width: 100%;
 }
 
-
 /*
 
 HOW IT WORKS
@@ -94,7 +101,6 @@ HOW IT WORKS
 .works__perk {
   margin: 0 16px;
 }
-
 
 /*
 

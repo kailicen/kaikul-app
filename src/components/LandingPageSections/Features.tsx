@@ -1,5 +1,4 @@
 import React from "react";
-import Image from "next/image";
 
 type Props = {};
 
@@ -9,22 +8,17 @@ function Features({}: Props) {
       className="min-h-[50vh] w-screen md:w-auto flex flex-col py-20
     px-3 mx-auto items-center justify-center max-w-7xl"
     >
-      <h3 className="mb-10 text-3xl font-bold text-violet-800">Features</h3>
-      {/* <div className="mb-3 w-[800px]">
-        Welcome to KaiKul! Our mission is to help you reach your goals (career,
-        health, happiness, money, relationship) through personalized
-        peer-to-peer matching. Here&apos;s how it works:
-      </div> */}
+      <h3 className="mb-10 text-3xl font-bold text-violet-500">Features</h3>
       <div className="grid md:grid-cols-3 px-2 md:px-5">
         <div
           className="p-5 text-sm md:text-base
         flex flex-col items-center space-y-4 bg-violet-100"
         >
           {/* <Image src="/img/goals.png" width={150} height={150} alt="goals" /> */}
-          <h4 className="text-violet-800 mt-2 text-xl font-bold">
+          <h4 className="text-violet-500 mt-2 text-xl font-bold">
             📝 Customizable Goal Template
           </h4>
-          <ul>
+          <ul className="text-black">
             <li>✅ Put down 3 goals weekly</li>
             <li>✅ Rate your week and your happiness level</li>
             <li>✅ Track the focused hours dedicated to your goals</li>
@@ -57,10 +51,10 @@ function Features({}: Props) {
         flex flex-col items-center space-y-4 bg-violet-100"
         >
           {/* <Image src="/img/goals.png" width={150} height={150} alt="goals" /> */}
-          <h4 className="text-violet-800 mt-2 text-xl font-bold">
+          <h4 className="text-violet-500 mt-2 text-xl font-bold">
             💖 Reminders And Extra Support
           </h4>
-          <ul>
+          <ul className="text-black">
             <li>✅ Receive the &quot;Theme of the Week&quot; every Monday</li>
             <li>
               ✅ Get notifications and supplementary materials on Wednesday

@@ -13,7 +13,7 @@ function HowItWorks({}: Props) {
       className="min-h-[50vh] w-screen md:w-auto flex flex-col text-center py-20
     px-3 md:px-32 mx-auto items-center justify-center max-w-7xl"
     >
-      <h3 className="mb-10 text-3xl font-bold text-violet-800">How it Works</h3>
+      <h3 className="mb-10 text-3xl font-bold text-violet-500">How it Works</h3>
       {/* <div className="mb-3 w-[800px]">
         Welcome to KaiKul! Our mission is to help you reach your goals (career,
         health, happiness, money, relationship) through personalized
@@ -25,7 +25,7 @@ function HowItWorks({}: Props) {
         flex flex-col items-center space-y-4 "
         >
           <Image src="/img/goals.png" width={150} height={150} alt="goals" />
-          <h4 className="text-violet-800 mt-2 text-xl font-bold">
+          <h4 className="text-violet-500 mt-2 text-xl font-bold">
             1. Set and Track Goals
           </h4>
           <p>
@@ -43,7 +43,7 @@ function HowItWorks({}: Props) {
             height={150}
             alt="catchup"
           />
-          <h4 className="text-violet-800 mt-2 text-xl font-bold">
+          <h4 className="text-violet-500 mt-2 text-xl font-bold">
             2. Join Weekly Meetings
           </h4>
           <p>
@@ -61,7 +61,7 @@ function HowItWorks({}: Props) {
             height={150}
             alt="self-improvement"
           />
-          <h4 className="text-violet-800 mt-2 text-xl font-bold">
+          <h4 className="text-violet-500 mt-2 text-xl font-bold">
             3. Build Your Momentum
           </h4>
           <p>

@@ -10,7 +10,7 @@ function Hero({}: Props) {
   return (
     <div
       className="min-h-screen w-full mx-auto flex flex-col space-y-8 items-center justify-center
-    bg-cover bg-center bg-fixed lg:bg-[url('/img/bg3.jpg')] bg-violet-200 pt-[100px] pb-[30px]"
+    bg-cover bg-center bg-fixed lg:bg-[url('/img/bg3.jpg')] bg-violet-300 pt-[100px] pb-[30px]"
     >
       <a
         className="absolute top-20"
@@ -27,27 +27,27 @@ function Hero({}: Props) {
       </a>
       <div
         className="flex flex-col items-center justify-center lg:flex-row lg:gap-20
-      w-full md:px-10 lg:px-20 xl:px-30 2xl:px-40"
+      w-full md:px-10 lg:px-20 xl:px-30 3xl:px-40"
       >
         <div
           className="flex flex-col items-center lg:items-start justify-center 
-       flex-1 p-2 lg:p-4 xl:p-6 text-center lg:text-start lg:bg-white/80 lg:rounded-lg max-w-[600px] 2xl:max-w-[800px]"
+       flex-1 p-2 lg:p-4 xl:p-6 text-center lg:text-start lg:bg-white/80 lg:rounded-lg max-w-[600px] 3xl:max-w-[800px]"
         >
           <h1
-            className="text-2xl md:text-3xl lg:text-4xl 2xl:text-5xl font-bold lg:max-w-7xl 2xl:leading-normal
+            className="text-2xl md:text-3xl lg:text-4xl 3xl:text-5xl font-bold lg:max-w-7xl 3xl:leading-normal
         max-w-[800px] text-violet-800"
           >
             Make Weekly Improvements <br />
             With Your Peer
           </h1>
-          <h2 className="mt-6 2xl:mt-12 text-md md:text-lg lg:text-xl 2xl:text-2xl px-0 md:text-start max-w-[800px]">
+          <h2 className="mt-6 2xl:mt-12 text-md md:text-lg lg:text-xl 3xl:text-2xl px-0 md:text-start max-w-[800px] text-black">
             🚀 Rapidly attain your goals within weeks
             <br />
             ✨ Get started with 3 simple steps
             <br />
             🥳 Absolutely free of charge
           </h2>
-          <p className="mt-5">
+          <p className="mt-5 text-black">
             We are currently in the process of building our Minimum Viable
             Product (MVP). We kindly request you to stay tuned and join us on
             our Slack channel for the latest updates. 👇
