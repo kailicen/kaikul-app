@@ -1,7 +1,7 @@
 import { atom, DefaultValue, selectorFamily } from "recoil";
 
 export type Task = {
-  id?: string;
+  id: string;
   text: string;
   completed: boolean;
   date: string; // represents a date in the format 'yyyy-mm-dd'

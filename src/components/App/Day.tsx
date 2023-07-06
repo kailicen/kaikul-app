@@ -14,6 +14,8 @@ import {
   Editable,
   EditablePreview,
   EditableTextarea,
+  ButtonGroup,
+  IconButton,
 } from "@chakra-ui/react";
 import { MdAddBox, MdDeleteForever, MdAdd } from "react-icons/md";
 import { ChangeEvent, useState, useRef } from "react";
@@ -23,6 +25,7 @@ import useTasks from "@/hooks/useTasks";
 import { useBlockers } from "@/hooks/useBlockers";
 import { isToday } from "date-fns";
 import { EditableControls } from "./GoalView";
+import { CheckIcon, CloseIcon } from "@chakra-ui/icons";
 
 const Day: React.FC<{ date: string; user: User }> = ({ date, user }) => {
   const [showInput, setShowInput] = useState(false);
@@ -73,9 +76,9 @@ const Day: React.FC<{ date: string; user: User }> = ({ date, user }) => {
       </Text>
 
       {/* task list */}
-      {tasks.map((task, index) => (
+      {tasks.map((task) => (
         <Box
-          key={index}
+          key={task.id}
           p={2}
           m={1}
           borderRadius="md"
@@ -88,12 +91,12 @@ const Day: React.FC<{ date: string; user: User }> = ({ date, user }) => {
           <HStack spacing={2}>
             <Checkbox
               isChecked={task.completed}
-              onChange={() => handleCompleteTask(index)}
+              onChange={() => handleCompleteTask(task.id)}
             ></Checkbox>
             <Editable
               fontSize="xs"
               defaultValue={task.text}
-              onSubmit={(newValue) => handleEditTask(index, newValue)}
+              onSubmit={(newValue) => handleEditTask(task.id, newValue)}
             >
               <EditablePreview />
               <EditableTextarea />
@@ -106,7 +109,7 @@ const Day: React.FC<{ date: string; user: User }> = ({ date, user }) => {
               color="gray.500"
               fontSize={16}
               _hover={{ cursor: "pointer" }}
-              onClick={() => handleDeleteTask(index)}
+              onClick={() => handleDeleteTask(task.id)}
               position="absolute"
               right="2px"
               opacity="0"
@@ -120,12 +123,13 @@ const Day: React.FC<{ date: string; user: User }> = ({ date, user }) => {
       {/* add a task */}
       <InputGroup>
         {showInput && tasks.length < 3 ? (
-          <>
+          <Box>
             <Textarea
               ref={taskInputRef}
               placeholder="New task..."
               size="xs"
               value={newTask}
+              width="100%" // Full width
               onChange={(e: ChangeEvent<HTMLTextAreaElement>) =>
                 setNewTask(e.target.value)
               }
@@ -135,30 +139,24 @@ const Day: React.FC<{ date: string; user: User }> = ({ date, user }) => {
                   setShowInput(false); // Hide input after task is added
                 }
               }}
-              onBlur={(e) => {
-                if (e.relatedTarget !== taskAddButtonRef.current) {
-                  setShowInput(false);
-                }
-              }}
             />
-            <InputRightElement>
-              <Button
-                ref={taskAddButtonRef}
-                variant="icon"
+            <ButtonGroup justifyContent="left" size="xs" mt={1}>
+              <IconButton
+                icon={<CheckIcon />}
+                aria-label="Submit"
                 onClick={() => {
                   handleAddTask();
                   setShowInput(false); // Hide input after task is added
                 }}
                 isDisabled={!newTask}
-              >
-                <Icon
-                  as={MdAddBox}
-                  color={newTask ? "purple.400" : "gray.400"}
-                  fontSize={20}
-                />
-              </Button>
-            </InputRightElement>
-          </>
+              />
+              <IconButton
+                icon={<CloseIcon />}
+                aria-label="Cancel"
+                onClick={() => setShowInput(false)}
+              />
+            </ButtonGroup>
+          </Box>
         ) : tasks.length < 3 ? (
           <Flex align="center" mt={1} mb={2}>
             <Button
@@ -191,9 +189,9 @@ const Day: React.FC<{ date: string; user: User }> = ({ date, user }) => {
       <Text fontSize="md" fontWeight="semibold">
         Blockers:
       </Text>
-      {blockers.map((blocker, index) => (
+      {blockers.map((blocker) => (
         <Box
-          key={index}
+          key={blocker.id}
           p={2}
           m={1}
           bg={"yellow.200"}
@@ -207,10 +205,11 @@ const Day: React.FC<{ date: string; user: User }> = ({ date, user }) => {
             <Editable
               fontSize="xs"
               defaultValue={blocker.text}
-              onSubmit={(newValue) => handleEditBlocker(index, newValue)}
+              onSubmit={(newValue) => handleEditBlocker(blocker.id, newValue)}
             >
               <EditablePreview />
               <EditableTextarea />
+              <EditableControls />
             </Editable>
             <Spacer />
             <Icon
@@ -218,7 +217,7 @@ const Day: React.FC<{ date: string; user: User }> = ({ date, user }) => {
               color="gray.500"
               fontSize={16}
               _hover={{ cursor: "pointer" }}
-              onClick={() => handleDeleteBlocker(index)}
+              onClick={() => handleDeleteBlocker(blocker.id)}
               position="absolute"
               right="2px"
               opacity="0"
@@ -231,12 +230,13 @@ const Day: React.FC<{ date: string; user: User }> = ({ date, user }) => {
 
       <InputGroup>
         {showBlockerInput && blockers.length < 1 ? (
-          <>
+          <Box>
             <Textarea
               ref={blockerInputRef}
               placeholder="New blocker..."
               size="xs"
               value={newBlocker}
+              width="100%" // Full width
               onChange={(e: ChangeEvent<HTMLTextAreaElement>) =>
                 setNewBlocker(e.target.value)
               }
@@ -246,31 +246,25 @@ const Day: React.FC<{ date: string; user: User }> = ({ date, user }) => {
                   setShowBlockerInput(false); // Hide input after blocker is added
                 }
               }}
-              onBlur={(e) => {
-                if (e.relatedTarget !== blockerAddButtonRef.current) {
-                  setShowBlockerInput(false);
-                }
-              }}
               autoFocus
             />
-            <InputRightElement>
-              <Button
-                ref={blockerAddButtonRef}
-                variant="icon"
+            <ButtonGroup justifyContent="left" size="xs" mt={1}>
+              <IconButton
+                icon={<CheckIcon />}
+                aria-label="Submit"
                 onClick={() => {
                   handleAddBlocker();
                   setShowBlockerInput(false); // Hide input after blocker is added
                 }}
                 isDisabled={!newBlocker}
-              >
-                <Icon
-                  as={MdAddBox}
-                  color={newBlocker ? "purple.400" : "gray.400"}
-                  fontSize={20}
-                />
-              </Button>
-            </InputRightElement>
-          </>
+              />
+              <IconButton
+                icon={<CloseIcon />}
+                aria-label="Cancel"
+                onClick={() => setShowBlockerInput(false)}
+              />
+            </ButtonGroup>
+          </Box>
         ) : blockers.length < 1 ? (
           <Flex align="center" mt={1} mb={2}>
             <Button

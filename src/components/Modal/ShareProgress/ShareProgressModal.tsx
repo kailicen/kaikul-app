@@ -20,6 +20,7 @@ import {
 } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import useProgress, { ProgressOption } from "@/hooks/useProgress";
+import { format } from "date-fns";
 
 type ShareProgressModalProps = {
   isOpen: boolean;
@@ -50,6 +51,8 @@ const ShareProgressModal: React.FC<ShareProgressModalProps> = ({
     "Weekly Progress",
   ];
 
+  const dayOfWeek = format(new Date(), "EEEE");
+
   const {
     user,
     yesterdayTasks,
@@ -71,31 +74,51 @@ const ShareProgressModal: React.FC<ShareProgressModalProps> = ({
     let text = `*Posted by ${userName}*\n`;
 
     if (selectedProgress === "Daily Progress") {
-      text += `*Daily Progress:*\n(💼 Scrum Master Format)\n\n*✔️ Done:*\n${yesterdayTasks
-        .map(
-          (task) =>
-            `- ${task.text} (${
-              task.completed ? "✅ Completed" : "❌ Incomplete"
-            })`
-        )
-        .join("\n")}\n\n*📝 To do:*\n${todayTasks
-        .map((task) => `- ${task.text}`)
-        .join("\n")}\n\n*🚧 Blockers:*\n${blockers
-        .map((blocker) => `- ${blocker.text}`)
-        .join("\n")}`;
+      text += `*${dayOfWeek}'s Sprint:*\n`;
+
+      if (yesterdayTasks.length > 0) {
+        text += `*✔️ Done:*\n${yesterdayTasks
+          .map(
+            (task) =>
+              `- ${task.text} (${
+                task.completed ? "✅ Completed" : "❌ Incomplete"
+              })`
+          )
+          .join("\n")}\n\n`;
+      }
+
+      if (todayTasks.length > 0) {
+        text += `*📝 To do:*\n${todayTasks
+          .map((task) => `- ${task.text}`)
+          .join("\n")}\n\n`;
+      }
+
+      if (blockers.length > 0) {
+        text += `*🚧 Blockers:*\n${blockers
+          .map((blocker) => `- ${blocker.text}`)
+          .join("\n")}`;
+      }
     } else if (selectedProgress === "Weekly Progress") {
-      text += `*Weekly Progress:*\n\n*🎯 Goals:*\n${weeklyGoals
-        .map(
-          (goal) =>
-            `- ${goal.text} (${
-              goal.completed ? "(✅ Completed)" : "(❌ Incomplete)"
-            })`
-        )
-        .join(
-          "\n"
-        )}\n\n*📊 Task Completion:* ${completedTasks}/${totalTasks}\n\n*🚧 Blockers:*\n${weeklyBlockers
-        .map((blocker) => `- ${blocker.text}`)
-        .join("\n")}`;
+      text += `*Weekly Progress:*\n\n`;
+
+      if (weeklyGoals.length > 0) {
+        text += `*🎯 Goals:*\n${weeklyGoals
+          .map(
+            (goal) =>
+              `- ${goal.text} (${
+                goal.completed ? "(✅ Completed)" : "(❌ Incomplete)"
+              })`
+          )
+          .join("\n")}\n\n`;
+      }
+
+      text += `*📊 Task Completion:* ${completedTasks}/${totalTasks}\n\n`;
+
+      if (weeklyBlockers.length > 0) {
+        text += `*🚧 Blockers:*\n${weeklyBlockers
+          .map((blocker) => `- ${blocker.text}`)
+          .join("\n")}`;
+      }
     }
 
     try {

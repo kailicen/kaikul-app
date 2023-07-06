@@ -1,7 +1,7 @@
 import { atom, DefaultValue, selectorFamily } from "recoil";
 
 export type WeeklyGoal = {
-  id?: string;
+  id: string;
   text: string;
   completed: boolean;
   weekStart: string; // represents the first day of a week in the format 'yyyy-mm-dd'

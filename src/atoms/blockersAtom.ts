@@ -1,7 +1,7 @@
 import { atom, DefaultValue, selectorFamily } from "recoil";
 
 export type Blocker = {
-  id?: string;
+  id: string;
   text: string;
   date: string;
   userId: string | null;

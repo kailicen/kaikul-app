@@ -16,13 +16,11 @@ import { User } from "firebase/auth";
 export const useBlockers = (date: string, user: User) => {
   const [blockers, setBlockers] = useState<Blocker[]>([]);
   const [newBlocker, setNewBlocker] = useState<string>("");
-  const [isEditingBlocker, setIsEditingBlocker] = useState<null | number>(null);
-  const [editBlockerText, setEditBlockerText] = useState<string>("");
 
-  // New handler to add a blocker
   const handleAddBlocker = async () => {
     if (blockers.length < 3) {
       const blockerToAdd: Blocker = {
+        id: "", // Placeholder value, will be updated after adding the document
         text: newBlocker,
         date: date,
         userId: user.uid,
@@ -32,7 +30,7 @@ export const useBlockers = (date: string, user: User) => {
           collection(firestore, "blockers"),
           blockerToAdd
         );
-        blockerToAdd.id = docRef.id;
+        blockerToAdd.id = docRef.id; // Update the id value
         setBlockers([...blockers, blockerToAdd]);
         setNewBlocker("");
       } catch (error) {
@@ -41,27 +39,28 @@ export const useBlockers = (date: string, user: User) => {
     }
   };
 
-  // New handler to edit a blocker
-  const handleEditBlocker = async (index: number, newValue: string) => {
-    setIsEditingBlocker(null);
-    const blockerToEdit = { ...blockers[index], text: newValue };
-    if (blockerToEdit.id) {
-      await updateDoc(
-        doc(firestore, "blockers", blockerToEdit.id),
-        blockerToEdit
-      );
-      setBlockers(
-        blockers.map((blocker, i) => (i === index ? blockerToEdit : blocker))
-      );
+  const handleEditBlocker = async (id: string, newValue: string) => {
+    const updatedBlockers = blockers.map((blocker) =>
+      blocker.id === id ? { ...blocker, text: newValue } : blocker
+    );
+
+    try {
+      await updateDoc(doc(firestore, "blockers", id), {
+        text: updatedBlockers.find((blocker) => blocker.id === id)?.text,
+      });
+      setBlockers(updatedBlockers);
+    } catch (error) {
+      console.error("Error updating document: ", error);
     }
   };
 
-  // New handler to delete a blocker
-  const handleDeleteBlocker = async (index: number) => {
-    const blockerToDelete = blockers[index];
-    if (blockerToDelete.id) {
-      await deleteDoc(doc(firestore, "blockers", blockerToDelete.id));
-      setBlockers(blockers.filter((_, i) => i !== index));
+  const handleDeleteBlocker = async (id: string) => {
+    setBlockers(blockers.filter((blocker) => blocker.id !== id));
+
+    try {
+      await deleteDoc(doc(firestore, "blockers", id));
+    } catch (error) {
+      console.error("Error deleting document: ", error);
     }
   };
 
@@ -70,7 +69,7 @@ export const useBlockers = (date: string, user: User) => {
       const q = query(
         collection(firestore, "blockers"),
         where("date", "==", date),
-        where("userId", "==", user.uid) // Filter goals by user ID
+        where("userId", "==", user.uid)
       );
       const querySnapshot = await getDocs(q);
       const blockersForDay: Blocker[] = [];
@@ -87,11 +86,7 @@ export const useBlockers = (date: string, user: User) => {
   return {
     blockers,
     newBlocker,
-    isEditingBlocker,
-    editBlockerText,
     setNewBlocker,
-    setIsEditingBlocker,
-    setEditBlockerText,
     handleAddBlocker,
     handleEditBlocker,
     handleDeleteBlocker,

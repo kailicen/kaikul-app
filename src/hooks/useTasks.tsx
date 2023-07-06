@@ -16,12 +16,13 @@ import { User } from "firebase/auth";
 export const useTasks = (date: string, user: User) => {
   const [tasks, setTasks] = useState<Task[]>([]);
   const [newTask, setNewTask] = useState<string>("");
-  const [isEditing, setIsEditing] = useState<null | number>(null);
+  const [isEditing, setIsEditing] = useState<null | string>(null);
   const [editText, setEditText] = useState<string>("");
 
   const handleAddTask = async () => {
     if (tasks.length < 3) {
       const taskToAdd: Task = {
+        id: "",
         text: newTask,
         completed: false,
         date: date,
@@ -38,36 +39,44 @@ export const useTasks = (date: string, user: User) => {
     }
   };
 
-  const handleCompleteTask = async (index: number) => {
-    const taskToComplete = {
-      ...tasks[index],
-      completed: !tasks[index].completed,
-    };
-    if (taskToComplete.id) {
-      // Check if id exists
-      await updateDoc(
-        doc(firestore, "tasks", taskToComplete.id),
-        taskToComplete
-      );
-      setTasks(tasks.map((task, i) => (i === index ? taskToComplete : task)));
+  const handleCompleteTask = async (id: string) => {
+    const updatedTasks = tasks.map((task) =>
+      task.id === id ? { ...task, completed: !task.completed } : task
+    );
+    setTasks(updatedTasks);
+
+    try {
+      await updateDoc(doc(firestore, "tasks", id), {
+        completed: updatedTasks.find((task) => task.id === id)?.completed,
+      });
+    } catch (error) {
+      console.error("Error updating document: ", error);
     }
   };
 
-  const handleEditTask = async (index: number, newValue: string) => {
+  const handleEditTask = async (id: string, newValue: string) => {
     setIsEditing(null);
-    const taskToEdit = { ...tasks[index], text: newValue };
-    if (taskToEdit.id) {
-      await updateDoc(doc(firestore, "tasks", taskToEdit.id), taskToEdit);
-      setTasks(tasks.map((task, i) => (i === index ? taskToEdit : task)));
+    const updatedTasks = tasks.map((task) =>
+      task.id === id ? { ...task, text: newValue } : task
+    );
+    setTasks(updatedTasks);
+
+    try {
+      await updateDoc(doc(firestore, "tasks", id), {
+        text: updatedTasks.find((task) => task.id === id)?.text,
+      });
+    } catch (error) {
+      console.error("Error updating document: ", error);
     }
   };
 
-  const handleDeleteTask = async (index: number) => {
-    const taskToDelete = tasks[index];
-    if (taskToDelete.id) {
-      // Check if id exists
-      await deleteDoc(doc(firestore, "tasks", taskToDelete.id));
-      setTasks(tasks.filter((_, i) => i !== index));
+  const handleDeleteTask = async (id: string) => {
+    setTasks(tasks.filter((task) => task.id !== id));
+
+    try {
+      await deleteDoc(doc(firestore, "tasks", id));
+    } catch (error) {
+      console.error("Error deleting document: ", error);
     }
   };
 

@@ -102,9 +102,9 @@ function GoalView({ user, startOfDay, startOfWeek }: GoalViewProps) {
           Sprint Goals:{" "}
         </Text>
         <Grid templateColumns={{ base: "1fr", md: "1fr 1fr 1fr" }} gap={3}>
-          {goals.map((goal, index) => (
+          {goals.map((goal) => (
             <Flex
-              key={index}
+              key={goal.id}
               px={3}
               py={1}
               shadow="sm"
@@ -116,7 +116,7 @@ function GoalView({ user, startOfDay, startOfWeek }: GoalViewProps) {
                 <Editable
                   defaultValue={goal.text}
                   fontSize="sm"
-                  onSubmit={(newText) => handleUpdateGoal(index, newText)}
+                  onSubmit={(newText) => handleUpdateGoal(goal.id, newText)}
                   flex={1} // add this
                 >
                   <EditablePreview
@@ -141,7 +141,7 @@ function GoalView({ user, startOfDay, startOfWeek }: GoalViewProps) {
                   fontSize={16}
                   color={goal.completed ? "green.600" : "gray.600"}
                   cursor="pointer"
-                  onClick={() => handleCompleteGoal(index)}
+                  onClick={() => handleCompleteGoal(goal.id)}
                 />
 
                 <Icon
@@ -150,7 +150,7 @@ function GoalView({ user, startOfDay, startOfWeek }: GoalViewProps) {
                   fontSize={16}
                   color="gray.500"
                   cursor="pointer"
-                  onClick={() => handleDeleteGoal(index)}
+                  onClick={() => handleDeleteGoal(goal.id)}
                 />
               </Flex>
             </Flex>
