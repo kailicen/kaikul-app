@@ -7,7 +7,7 @@ import {
   Icon,
   Flex,
   MenuDivider,
-  Image,
+  Avatar,
 } from "@chakra-ui/react";
 import { User, signOut } from "firebase/auth";
 import { VscAccount } from "react-icons/vsc";
@@ -31,21 +31,13 @@ const UserMenu: React.FC<UserMenuProps> = ({ user }) => {
       <MenuButton cursor="pointer" padding="0px 6px" borderRadius={4}>
         <Flex align="center">
           {user?.photoURL ? (
-            <Image
-              boxSize="36px"
-              borderRadius="full"
+            <Avatar
+              size="sm"
+              name={user.displayName || "User"}
               src={user.photoURL}
-              alt={user.displayName || "User"}
-              mr={1}
             />
           ) : (
-            <Icon
-              fontSize={36}
-              color="purple.400"
-              _hover={{ color: "purple.600" }}
-              mr={1}
-              as={VscAccount}
-            />
+            <Avatar size="sm" bg="gray.500" />
           )}
         </Flex>
       </MenuButton>
@@ -76,4 +68,5 @@ const UserMenu: React.FC<UserMenuProps> = ({ user }) => {
     </Menu>
   );
 };
+
 export default UserMenu;

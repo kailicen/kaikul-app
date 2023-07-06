@@ -99,7 +99,7 @@ function GoalView({ user, startOfDay, startOfWeek }: GoalViewProps) {
     <Center>
       <Box width="100%" p={4}>
         <Text mb={2} fontWeight="semibold">
-          My Weekly Goals:{" "}
+          Sprint Goals:{" "}
         </Text>
         <Grid templateColumns={{ base: "1fr", md: "1fr 1fr 1fr" }} gap={3}>
           {goals.map((goal, index) => (

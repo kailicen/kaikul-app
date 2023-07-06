@@ -31,7 +31,6 @@ const WeekNavigation: React.FC<WeekNavigationProps> = ({
             onClick={onPreviousWeek}
             cursor="pointer"
             _hover={{ bg: "gray.100" }}
-            p={1}
             rounded="md"
           >
             <Icon as={MdChevronLeft} fontSize="24px" color="gray.500" />
