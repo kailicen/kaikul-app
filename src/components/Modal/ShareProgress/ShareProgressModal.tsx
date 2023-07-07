@@ -165,7 +165,7 @@ const ShareProgressModal: React.FC<ShareProgressModalProps> = ({
     <Modal isOpen={isOpen} onClose={onClose} size="xl">
       <ModalOverlay />
       <ModalContent>
-        <ModalHeader>Share Progress as {user?.displayName}</ModalHeader>
+        <ModalHeader>Share to Slack as {user?.displayName}</ModalHeader>
         <ModalCloseButton />
         <ModalBody>
           <FormControl as="fieldset" mb={4}>
@@ -255,7 +255,7 @@ const ShareProgressModal: React.FC<ShareProgressModalProps> = ({
         </ModalBody>
         <ModalFooter>
           <Button onClick={handleShare} colorScheme="blue" mr={3}>
-            Share
+            Share to #daily-sprint
           </Button>
           <Button onClick={onClose}>Cancel</Button>
         </ModalFooter>
