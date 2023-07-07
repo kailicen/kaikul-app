@@ -1,6 +1,6 @@
-import Link from "next/link";
 import React, { useState } from "react";
-import va from "@vercel/analytics";
+import { useSetRecoilState } from "recoil";
+import { authModalState } from "@/atoms/authModalAtom";
 
 const questions = [
   {
@@ -19,7 +19,7 @@ const questions = [
     id: 3,
     question: "How do I get started?",
     answer:
-      "Initiate a 15-20 minute onboarding call with our team by clicking the 'Schedule with Boom/Kaili' button on our homepage. During the call, we will provide you with detailed information about the onboarding process and discuss the range of benefits we offer. ",
+      "1. Sign in to our KaiKul platform to set your goals. 2. Join our Slack community for daily progress sharing. 3. Participate in our weekly meetups (schedule through Eventbrite) to connect with accountability buddies. ",
   },
   {
     id: 4,
@@ -30,8 +30,7 @@ const questions = [
   {
     id: 5,
     question: "Is KaiKul free?",
-    answer:
-      "Absolutely! But act fast, as we have a limited beta program with only 100 spots available until June 2023. ",
+    answer: "Absolutely! ",
   },
 ];
 
@@ -39,6 +38,7 @@ type Props = {};
 
 function Qna({}: Props) {
   const [expandedQuestionId, setExpandedQuestionId] = useState(null);
+  const setAuthModalState = useSetRecoilState(authModalState);
 
   const handleQuestionClick = (questionId: any) => {
     setExpandedQuestionId(
@@ -94,19 +94,14 @@ function Qna({}: Props) {
       </div>
       <div className="bg-violet-300 w-screen py-5 flex flex-col items-center">
         <div className="text-xl font-bold text-violet-600 mb-5 max-w-5xl">
-          We are currently in the process of building our Minimum Viable Product
-          (MVP). We kindly request you to stay tuned and join us on our Slack
-          channel for the latest updates. 👇
+          Smash My Goals 👇
         </div>
         <div className="flex flex-col md:flex-row md:space-x-4">
-          <button className="btn hero__btn buttonMobile md:button mt-2 md:mt-3 text-xl md:text-2xl 2xl:mt-5">
-            <Link
-              href="https://join.slack.com/t/kaikul/shared_invite/zt-1wxjzi7xh-7VT6sO8glNU44KSa5i2WyQ"
-              target="_blank"
-              onClick={() => va.track("withBoom")}
-            >
-              Join Our Slack Community
-            </Link>
+          <button
+            onClick={() => setAuthModalState({ open: true, view: "login" })}
+            className="btn hero__btn buttonMobile md:button mt-2 md:mt-3 text-xl md:text-2xl 2xl:mt-5"
+          >
+            Get Started
           </button>
         </div>
       </div>

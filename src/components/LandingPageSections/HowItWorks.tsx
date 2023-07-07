@@ -14,11 +14,6 @@ function HowItWorks({}: Props) {
     px-3 md:px-32 mx-auto items-center justify-center max-w-7xl"
     >
       <h3 className="mb-10 text-3xl font-bold text-violet-500">How it Works</h3>
-      {/* <div className="mb-3 w-[800px]">
-        Welcome to KaiKul! Our mission is to help you reach your goals (career,
-        health, happiness, money, relationship) through personalized
-        peer-to-peer matching. Here&apos;s how it works:
-      </div> */}
       <div className="grid md:grid-cols-3 gap-5 px-2 md:px-5">
         <div
           className="works__perk p-2 text-sm md:text-base
@@ -29,8 +24,7 @@ function HowItWorks({}: Props) {
             1. Set and Track Goals
           </h4>
           <p>
-            Set actionable and measurable SMART goals with our weekly template
-            and keep track on it weekly.
+            Set weekly goals and break them down into our weekly to-do calendar.
           </p>
         </div>
         <div
@@ -65,8 +59,8 @@ function HowItWorks({}: Props) {
             3. Build Your Momentum
           </h4>
           <p>
-            Understand the reasons behind failing/succeeding a goal, set
-            improved goals with greater intention next week.
+            Analyze your weekly metrics to strategize and improve task
+            completion and goal attainment for the next week.
           </p>
         </div>
       </div>

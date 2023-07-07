@@ -17,6 +17,7 @@ import {
   Radio,
   Stack,
   useToast,
+  Link,
 } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import useProgress, { ProgressOption } from "@/hooks/useProgress";
@@ -170,7 +171,11 @@ const ShareProgressModal: React.FC<ShareProgressModalProps> = ({
         <ModalBody>
           <FormControl as="fieldset" mb={4}>
             <FormLabel as="legend" mb={2}>
-              Select the progress to share:
+              Please{" "}
+              <Link href="http://slack.com" isExternal color="purple.500">
+                join us on Slack
+              </Link>{" "}
+              and share your day
             </FormLabel>
             <RadioGroup
               value={selectedProgress}

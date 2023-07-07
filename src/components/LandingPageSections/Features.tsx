@@ -16,14 +16,20 @@ function Features({}: Props) {
         >
           {/* <Image src="/img/goals.png" width={150} height={150} alt="goals" /> */}
           <h4 className="text-violet-500 mt-2 text-xl font-bold">
-            📝 Customizable Goal Template
+            📝 Weekly Sprint App
           </h4>
           <ul className="text-black">
-            <li>✅ Put down 3 goals weekly</li>
-            <li>✅ Rate your week and your happiness level</li>
-            <li>✅ Track the focused hours dedicated to your goals</li>
-            <li>✅ Identify your biggest improvement and obstacle</li>
-            <li>✅ Reflect on your most significant lesson learned</li>
+            <li>✅ Set overarching weekly goals</li>
+            <li>
+              ✅ Break goals into manageable weekly tasks visually in a to-do
+              calendar
+            </li>
+            <li>
+              ✅ Track daily tasks and reflect on obstacles using our sprint
+              framework
+            </li>
+            <li>✅ Share daily sprints on Slack</li>
+            <li>✅ Analyze your weekly progress</li>
           </ul>
         </div>
         <div
@@ -57,11 +63,12 @@ function Features({}: Props) {
           <ul className="text-black">
             <li>✅ Receive the &quot;Theme of the Week&quot; every Monday</li>
             <li>
-              ✅ Get notifications and supplementary materials on Wednesday
+              ✅ Stay motivated with supplementary materials and inspirational
+              quotes every Friday
             </li>
-            <li>✅ Stay motivated with inspirational quotes every Friday</li>
             <li>
-              ✅ Seek extra support by asking questions in our KaiKul community
+              ✅ Seek extra support by asking questions in our KaiKul Slack
+              channel
             </li>
             <li>
               ✅ Share your insights and experiences with the KaiKul community

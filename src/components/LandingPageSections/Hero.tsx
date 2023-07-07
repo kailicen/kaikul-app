@@ -1,12 +1,13 @@
 import React from "react";
 //import Waitlist from "@/components/Waitlist";
-import Link from "next/link";
-import va from "@vercel/analytics";
 import Image from "next/image";
+import { useSetRecoilState } from "recoil";
+import { authModalState } from "@/atoms/authModalAtom";
 
 type Props = {};
 
 function Hero({}: Props) {
+  const setAuthModalState = useSetRecoilState(authModalState);
   return (
     <div
       className="min-h-screen w-full mx-auto flex flex-col space-y-8 items-center justify-center
@@ -47,20 +48,13 @@ function Hero({}: Props) {
             <br />
             🥳 Absolutely free of charge
           </h2>
-          <p className="mt-5 text-black">
-            We are currently in the process of building our Minimum Viable
-            Product (MVP). We kindly request you to stay tuned and join us on
-            our Slack channel for the latest updates. 👇
-          </p>
+
           <div className="hero__btns">
-            <button className="btn hero__btn buttonMobile md:button mt-2 md:mt-3 text-xl md:text-2xl 2xl:mt-5">
-              <Link
-                href="https://join.slack.com/t/kaikul/shared_invite/zt-1wxjzi7xh-7VT6sO8glNU44KSa5i2WyQ"
-                target="_blank"
-                onClick={() => va.track("withBoom")}
-              >
-                Join Our Slack Community
-              </Link>
+            <button
+              onClick={() => setAuthModalState({ open: true, view: "login" })}
+              className="btn hero__btn buttonMobile md:button mt-10 text-xl md:text-2xl 2xl:mt-5"
+            >
+              Set My Goals
             </button>
           </div>
 
