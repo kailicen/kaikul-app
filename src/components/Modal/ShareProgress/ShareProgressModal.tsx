@@ -172,7 +172,11 @@ const ShareProgressModal: React.FC<ShareProgressModalProps> = ({
           <FormControl as="fieldset" mb={4}>
             <FormLabel as="legend" mb={2}>
               Please{" "}
-              <Link href="http://slack.com" isExternal color="purple.500">
+              <Link
+                href="https://join.slack.com/t/kaikul/shared_invite/zt-1xx8xt5mr-0xZAruch9xbXPLxRsK59Tw"
+                isExternal
+                color="purple.500"
+              >
                 join us on Slack
               </Link>{" "}
               and share your day
