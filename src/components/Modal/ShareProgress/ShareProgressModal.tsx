@@ -78,24 +78,19 @@ const ShareProgressModal: React.FC<ShareProgressModalProps> = ({
 
       if (yesterdayTasks.length > 0) {
         text += `*✔️ Done:*\n${yesterdayTasks
-          .map(
-            (task) =>
-              `- ${task.text} (${
-                task.completed ? "✅ Completed" : "❌ Incomplete"
-              })`
-          )
-          .join("\n")}\n\n`;
-      }
-
-      if (todayTasks.length > 0) {
-        text += `*📝 To do:*\n${todayTasks
-          .map((task) => `- ${task.text}`)
+          .map((task) => `- ${task.text} ${task.completed ? "✅" : "❌"}`)
           .join("\n")}\n\n`;
       }
 
       if (blockers.length > 0) {
         text += `*🚧 Blockers:*\n${blockers
           .map((blocker) => `- ${blocker.text}`)
+          .join("\n")}\n\n`;
+      }
+
+      if (todayTasks.length > 0) {
+        text += `*📝 To do:*\n${todayTasks
+          .map((task) => `- ${task.text}`)
           .join("\n")}`;
       }
     } else if (selectedProgress === "Weekly Progress") {
@@ -119,6 +114,8 @@ const ShareProgressModal: React.FC<ShareProgressModalProps> = ({
           .map((blocker) => `- ${blocker.text}`)
           .join("\n")}`;
       }
+
+      text += `\n\nThis is the accountability partner platform powered by [KaiKul](http://kaikul.com/).`;
     }
 
     try {
@@ -128,7 +125,7 @@ const ShareProgressModal: React.FC<ShareProgressModalProps> = ({
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          channel: "#test", // replace with your channel id
+          channel: "#daily-sprint", // replace with your channel id
           text: text,
         }),
       });
@@ -210,18 +207,18 @@ const ShareProgressModal: React.FC<ShareProgressModalProps> = ({
                 </UnorderedList>
               </Box>
               <Box mb={4}>
-                <Text mb={2}>📝 To do: </Text>
-                <UnorderedList pl={4}>
-                  {todayTasks.map((task) => (
-                    <ListItem key={task.id}>{task.text}</ListItem>
-                  ))}
-                </UnorderedList>
-              </Box>
-              <Box mb={4}>
                 <Text mb={2}>🚧 Blockers: </Text>
                 <UnorderedList pl={4}>
                   {blockers.map((blocker) => (
                     <ListItem key={blocker.id}>{blocker.text}</ListItem>
+                  ))}
+                </UnorderedList>
+              </Box>
+              <Box mb={4}>
+                <Text mb={2}>📝 To do: </Text>
+                <UnorderedList pl={4}>
+                  {todayTasks.map((task) => (
+                    <ListItem key={task.id}>{task.text}</ListItem>
                   ))}
                 </UnorderedList>
               </Box>
