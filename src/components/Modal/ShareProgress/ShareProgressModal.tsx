@@ -12,16 +12,15 @@ import {
   Button,
   Box,
   FormControl,
-  FormLabel,
   RadioGroup,
   Radio,
   Stack,
   useToast,
-  Link,
 } from "@chakra-ui/react";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import useProgress, { ProgressOption } from "@/hooks/useProgress";
 import { format } from "date-fns";
+import { toPng } from "html-to-image";
 
 type ShareProgressModalProps = {
   isOpen: boolean;
@@ -67,6 +66,8 @@ const ShareProgressModal: React.FC<ShareProgressModalProps> = ({
 
   const toast = useToast();
 
+  const progressContainerRef = useRef(null);
+
   const handleShare = async () => {
     // Implement share function
     // Share the selectedProgress to Slack
@@ -84,7 +85,7 @@ const ShareProgressModal: React.FC<ShareProgressModalProps> = ({
       }
 
       if (blockers.length > 0) {
-        text += `*🚧 Blockers:*\n${blockers
+        text += `*💡 Reflection:*\n${blockers
           .map((blocker) => `- ${blocker.text}`)
           .join("\n")}\n\n`;
       }
@@ -111,7 +112,7 @@ const ShareProgressModal: React.FC<ShareProgressModalProps> = ({
       text += `*📊 Task Completion:* ${completedTasks}/${totalTasks}\n\n`;
 
       if (weeklyBlockers.length > 0) {
-        text += `*🚧 Blockers:*\n${weeklyBlockers
+        text += `*💡 Reflection:*\n${weeklyBlockers
           .map((blocker) => `- ${blocker.text}`)
           .join("\n")}`;
       }
@@ -162,25 +163,34 @@ const ShareProgressModal: React.FC<ShareProgressModalProps> = ({
     }
   };
 
+  const handleExportAsImage = () => {
+    const node = progressContainerRef.current;
+
+    if (!node) {
+      console.error("Could not find the element to export");
+      return;
+    }
+
+    toPng(node)
+      .then((dataUrl) => {
+        const link = document.createElement("a");
+        link.download = "kaikul-sprint.png";
+        link.href = dataUrl;
+        link.click();
+      })
+      .catch((error) => {
+        console.error("oops, something went wrong!", error);
+      });
+  };
+
   return (
     <Modal isOpen={isOpen} onClose={onClose} size="xl">
       <ModalOverlay />
       <ModalContent>
-        <ModalHeader>Share to Slack as {user?.displayName}</ModalHeader>
+        <ModalHeader>Share</ModalHeader>
         <ModalCloseButton />
-        <ModalBody>
+        <ModalBody ref={progressContainerRef} bg="white">
           <FormControl as="fieldset" mb={4}>
-            <FormLabel as="legend" mb={2}>
-              Please{" "}
-              <Link
-                href="https://join.slack.com/t/kaikul/shared_invite/zt-1xx8xt5mr-0xZAruch9xbXPLxRsK59Tw"
-                isExternal
-                color="purple.500"
-              >
-                join us on Slack
-              </Link>{" "}
-              and share your day
-            </FormLabel>
             <RadioGroup
               value={selectedProgress}
               onChange={(value: ProgressOption) => handleSelectProgress(value)}
@@ -203,9 +213,8 @@ const ShareProgressModal: React.FC<ShareProgressModalProps> = ({
           </FormControl>
           {selectedProgress === "Daily Progress" && (
             <>
-              <Text mb={2}>(💼 Scrum Master Format)</Text>
               <Box mb={4}>
-                <Text mb={2}>✔️ Done: </Text>
+                <Text mb={2}>✔️ Track yesterday: </Text>
                 <UnorderedList pl={4}>
                   {yesterdayTasks.map((task) => (
                     <ListItem key={task.id}>
@@ -216,7 +225,7 @@ const ShareProgressModal: React.FC<ShareProgressModalProps> = ({
                 </UnorderedList>
               </Box>
               <Box mb={4}>
-                <Text mb={2}>🚧 Blockers: </Text>
+                <Text mb={2}>💡 Reflection: </Text>
                 <UnorderedList pl={4}>
                   {blockers.map((blocker) => (
                     <ListItem key={blocker.id}>{blocker.text}</ListItem>
@@ -224,13 +233,19 @@ const ShareProgressModal: React.FC<ShareProgressModalProps> = ({
                 </UnorderedList>
               </Box>
               <Box mb={4}>
-                <Text mb={2}>📝 To do: </Text>
+                <Text mb={2}>📝 To do for today: </Text>
                 <UnorderedList pl={4}>
                   {todayTasks.map((task) => (
                     <ListItem key={task.id}>{task.text}</ListItem>
                   ))}
                 </UnorderedList>
               </Box>
+              <Text fontSize="sm">
+                This is the accountability partner platform powered by{" "}
+                <Text as="b" color="purple.700">
+                  KaiKul.com
+                </Text>
+              </Text>
             </>
           )}
           {selectedProgress === "Weekly Progress" && (
@@ -252,7 +267,7 @@ const ShareProgressModal: React.FC<ShareProgressModalProps> = ({
                 </Text>
               </Box>
               <Box mb={4}>
-                <Text mb={2}>🚧 Blockers: </Text>
+                <Text mb={2}>💡 Reflection: </Text>
                 <UnorderedList pl={4}>
                   {weeklyBlockers.map((blocker) => (
                     <ListItem key={blocker.id}>{blocker.text}</ListItem>
@@ -263,8 +278,11 @@ const ShareProgressModal: React.FC<ShareProgressModalProps> = ({
           )}
         </ModalBody>
         <ModalFooter>
+          <Button onClick={handleExportAsImage} colorScheme="blue" mr={3}>
+            Export as Image
+          </Button>
           <Button onClick={handleShare} colorScheme="blue" mr={3}>
-            Share to #daily-sprint
+            Share to KaiKul Slack
           </Button>
           <Button onClick={onClose}>Cancel</Button>
         </ModalFooter>
