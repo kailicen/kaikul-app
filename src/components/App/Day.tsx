@@ -16,6 +16,7 @@ import {
   EditableTextarea,
   ButtonGroup,
   IconButton,
+  useEditableControls,
 } from "@chakra-ui/react";
 import { MdAddBox, MdDeleteForever, MdAdd } from "react-icons/md";
 import { ChangeEvent, useState, useRef } from "react";
@@ -24,8 +25,33 @@ import moment from "moment";
 import useTasks from "@/hooks/useTasks";
 import { useBlockers } from "@/hooks/useBlockers";
 import { isToday } from "date-fns";
-import { EditableControls } from "./GoalView";
 import { CheckIcon, CloseIcon } from "@chakra-ui/icons";
+
+export function EditableControls() {
+  const {
+    isEditing,
+    getSubmitButtonProps,
+    getCancelButtonProps,
+    getEditButtonProps,
+  } = useEditableControls();
+
+  return isEditing ? (
+    <ButtonGroup justifyContent="center" size="xs">
+      <IconButton
+        icon={<CheckIcon />}
+        aria-label="Submit"
+        {...getSubmitButtonProps()}
+      />
+      <IconButton
+        icon={<CloseIcon />}
+        aria-label="Cancel"
+        {...getCancelButtonProps()}
+      />
+    </ButtonGroup>
+  ) : (
+    <></>
+  );
+}
 
 const Day: React.FC<{ date: string; user: User }> = ({ date, user }) => {
   const [showInput, setShowInput] = useState(false);

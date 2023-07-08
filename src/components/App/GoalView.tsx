@@ -1,63 +1,41 @@
-import React, { useRef, useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Text,
-  InputGroup,
-  InputRightElement,
   Box,
-  Icon,
   Center,
-  Input,
-  Editable,
-  EditablePreview,
   Flex,
   Grid,
-  EditableTextarea,
-  useEditableControls,
-  ButtonGroup,
-  IconButton,
   useMediaQuery,
+  Drawer,
+  DrawerBody,
+  DrawerHeader,
+  DrawerOverlay,
+  DrawerContent,
+  DrawerCloseButton,
+  useDisclosure,
+  Button,
+  Input,
+  Spacer,
+  IconButton,
+  Badge,
+  Switch,
+  FormControl,
+  FormLabel,
+  useToast,
+  Icon,
 } from "@chakra-ui/react";
 import { User } from "firebase/auth";
-import { MdAdd, MdAddBox, MdCheck, MdDelete } from "react-icons/md";
+import { MdAdd, MdDelete } from "react-icons/md";
 import { useGoals } from "@/hooks/useGoals";
-import { CheckIcon, CloseIcon, EditIcon } from "@chakra-ui/icons";
 import moment from "moment";
-
-export function EditableControls() {
-  const {
-    isEditing,
-    getSubmitButtonProps,
-    getCancelButtonProps,
-    getEditButtonProps,
-  } = useEditableControls();
-
-  return isEditing ? (
-    <ButtonGroup justifyContent="center" size="xs">
-      <IconButton
-        icon={<CheckIcon />}
-        aria-label="Submit"
-        {...getSubmitButtonProps()}
-      />
-      <IconButton
-        icon={<CloseIcon />}
-        aria-label="Cancel"
-        {...getCancelButtonProps()}
-      />
-    </ButtonGroup>
-  ) : (
-    <></>
-  );
-}
+import { Formik, Field, Form, FieldInputProps } from "formik";
 
 type GoalViewProps = { user: User; startOfDay: string; startOfWeek: string };
 
 function GoalView({ user, startOfDay, startOfWeek }: GoalViewProps) {
   const [isLargerThan768] = useMediaQuery("(min-width: 768px)");
-  const goalInputRef = useRef<HTMLInputElement>(null);
-  const [showInput, setShowInput] = useState(false);
-  const goalAddButtonRef = useRef<HTMLButtonElement>(null);
-
   const [mobileStartOfWeek, setMobileStartOfWeek] = useState(startOfWeek);
+  const toast = useToast();
 
   useEffect(() => {
     if (!isLargerThan768) {
@@ -78,22 +56,41 @@ function GoalView({ user, startOfDay, startOfWeek }: GoalViewProps) {
     handleDeleteGoal,
   } = useGoals(user, isLargerThan768 ? startOfWeek : mobileStartOfWeek);
 
-  useEffect(() => {
-    const handleOutsideClick = (event: MouseEvent) => {
-      if (
-        goalInputRef.current &&
-        !goalInputRef.current.contains(event.target as Node) &&
-        !goalAddButtonRef.current?.contains(event.target as Node)
-      ) {
-        setShowInput(false);
-      }
-    };
+  const { isOpen, onOpen, onClose } = useDisclosure();
+  const [selectedGoalId, setSelectedGoalId] = useState<string | null>(null);
+  const [selectedGoalText, setSelectedGoalText] = useState("");
+  const [selectedGoalCompleted, setSelectedGoalCompleted] = useState(false);
 
-    document.addEventListener("mousedown", handleOutsideClick);
-    return () => {
-      document.removeEventListener("mousedown", handleOutsideClick);
-    };
-  }, []);
+  const openDrawer = (id?: string, text?: string, completed?: boolean) => {
+    onOpen();
+    setSelectedGoalId(id || null);
+    setSelectedGoalText(text || "");
+    setSelectedGoalCompleted(completed || false);
+  };
+
+  const handleFormSubmit = (values: { goal: string }) => {
+    setNewGoal(values.goal); // set new goal value
+    if (selectedGoalId) {
+      handleUpdateGoal(selectedGoalId, values.goal);
+    } else {
+      handleAddGoal();
+    }
+    onClose();
+    setSelectedGoalId(null);
+    setSelectedGoalText("");
+  };
+
+  const handleDelete = (id: string) => {
+    handleDeleteGoal(id);
+    toast({
+      title: "Goal deleted.",
+      description: "Your goal has been deleted successfully.",
+      status: "success",
+      duration: 5000,
+      isClosable: true,
+    });
+    onClose();
+  };
 
   return (
     <Center>
@@ -111,109 +108,83 @@ function GoalView({ user, startOfDay, startOfWeek }: GoalViewProps) {
               borderWidth="1px"
               borderRadius="md"
               _hover={{ shadow: "md" }}
+              onClick={() => openDrawer(goal.id, goal.text, goal.completed)}
             >
-              <Box flexGrow={1}>
-                <Editable
-                  defaultValue={goal.text}
-                  fontSize="sm"
-                  onSubmit={(newText) => handleUpdateGoal(goal.id, newText)}
-                  flex={1} // add this
-                >
-                  <EditablePreview
-                    style={{
-                      textDecoration: goal.completed ? "line-through" : "none",
-                      cursor: "pointer",
-                    }}
-                  />
-                  <EditableTextarea
-                    style={{
-                      textDecoration: goal.completed ? "line-through" : "none",
-                    }}
-                  />
-                  <EditableControls />
-                </Editable>
-              </Box>
-
-              <Flex align="center" justify="center" gap={2}>
-                <Icon
-                  as={MdCheck}
-                  aria-label="Mark as done"
-                  fontSize={16}
-                  color={goal.completed ? "green.600" : "gray.600"}
-                  cursor="pointer"
-                  onClick={() => handleCompleteGoal(goal.id)}
-                />
-
-                <Icon
-                  as={MdDelete}
-                  aria-label="Delete"
-                  fontSize={16}
-                  color="gray.500"
-                  cursor="pointer"
-                  onClick={() => handleDeleteGoal(goal.id)}
-                />
-              </Flex>
+              <Text fontSize="sm" flexGrow={1}>
+                {goal.text}
+              </Text>
+              {goal.completed && (
+                <Badge colorScheme="green" ml="1">
+                  Completed
+                </Badge>
+              )}
             </Flex>
           ))}
-          <InputGroup>
-            {showInput ? (
-              <>
-                <Input
-                  ref={goalInputRef}
-                  placeholder="New goal..."
-                  value={newGoal}
-                  onChange={(e) => setNewGoal(e.target.value)}
-                  onKeyPress={(e) => {
-                    if (e.key === "Enter" && newGoal) {
-                      handleAddGoal();
-                      setShowInput(false); // Hide input after goal is added
-                    }
-                  }}
-                />
-                <InputRightElement>
-                  <Icon
-                    as={MdAddBox}
-                    color={newGoal ? "purple.400" : "gray.400"}
-                    fontSize={32}
-                    cursor="pointer"
-                    onClick={() => {
-                      handleAddGoal();
-                      setShowInput(false); // Hide input after goal is added
-                    }}
-                    opacity={newGoal ? 1 : 0.5}
-                  />
-                </InputRightElement>
-              </>
-            ) : (
-              <Flex align="center">
-                <Icon
-                  as={MdAdd}
-                  color="gray.400"
-                  fontSize={26}
-                  cursor="pointer"
-                  onClick={() => {
-                    setShowInput(true);
-                    setTimeout(() => goalInputRef.current?.focus(), 0); // set focus when the state has been updated
-                  }}
-                />
-                {goals.length === 0 && (
-                  <Text
-                    color="gray.400"
-                    ml={1}
-                    cursor="pointer"
-                    onClick={() => {
-                      setShowInput(true);
-                      setTimeout(() => goalInputRef.current?.focus(), 0); // set focus when the state has been updated
-                    }}
-                  >
-                    Add a new goal
-                  </Text>
-                )}
-              </Flex>
-            )}
-          </InputGroup>
+          <Flex align="center">
+            <Icon
+              as={MdAdd}
+              color="gray.400"
+              fontSize={26}
+              cursor="pointer"
+              onClick={() => openDrawer()}
+            />
+          </Flex>
         </Grid>
       </Box>
+      <Drawer isOpen={isOpen} placement="right" onClose={onClose} size="xl">
+        <DrawerOverlay>
+          <DrawerContent>
+            <DrawerCloseButton />
+            <DrawerHeader>
+              {selectedGoalId ? "Edit Goal" : "Create New Goal"}
+            </DrawerHeader>
+            <DrawerBody>
+              <Formik
+                initialValues={{ goal: selectedGoalText }}
+                onSubmit={handleFormSubmit}
+              >
+                {({ isSubmitting }) => (
+                  <Form>
+                    <Field
+                      name="goal"
+                      render={({ field }: { field: FieldInputProps<any> }) => (
+                        <Input {...field} placeholder="New goal..." />
+                      )}
+                    />
+                    {selectedGoalId && (
+                      <FormControl display="flex" alignItems="center" mt={4}>
+                        <FormLabel mb="0">Completed:</FormLabel>
+                        <Switch
+                          isChecked={selectedGoalCompleted}
+                          onChange={() => {
+                            handleCompleteGoal(selectedGoalId);
+                            setSelectedGoalCompleted(!selectedGoalCompleted);
+                          }}
+                        />
+                        <Spacer />
+                        <IconButton
+                          aria-label="Delete"
+                          icon={<MdDelete />}
+                          colorScheme="red"
+                          onClick={() => handleDelete(selectedGoalId)}
+                        />
+                      </FormControl>
+                    )}
+                    <Button
+                      mt={4}
+                      colorScheme="blue"
+                      isLoading={isSubmitting}
+                      type="submit"
+                    >
+                      {selectedGoalId ? "Update" : "Create"}
+                    </Button>
+                  </Form>
+                )}
+              </Formik>
+            </DrawerBody>
+          </DrawerContent>
+        </DrawerOverlay>
+      </Drawer>
     </Center>
   );
 }
