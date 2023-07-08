@@ -187,7 +187,7 @@ const Day: React.FC<{ date: string; user: User }> = ({ date, user }) => {
 
       {/* New UI for blockers */}
       <Text fontSize="md" fontWeight="semibold">
-        Blockers:
+        Reflection:
       </Text>
       {blockers.map((blocker) => (
         <Box
@@ -286,7 +286,7 @@ const Day: React.FC<{ date: string; user: User }> = ({ date, user }) => {
                   setTimeout(() => blockerInputRef.current?.focus(), 0); // set focus when the state has been updated
                 }}
               >
-                Add a new blocker
+                Reflect on my day
               </Text>
             )}
           </Flex>

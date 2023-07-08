@@ -23,7 +23,7 @@ import moment, { Moment } from "moment";
 import { PieChart, Pie, Cell, Tooltip, Legend, Label } from "recharts";
 import LoadingScreen from "@/components/LoadingScreen";
 import {
-  MdBlockFlipped,
+  MdLightbulb,
   MdCheckCircle,
   MdChevronLeft,
   MdChevronRight,
@@ -235,19 +235,19 @@ function Statistics() {
                 </Box>
                 <Box mt={8} p={6} boxShadow="lg" bg="white" borderRadius="md">
                   <Heading as="h2" size="md" mb={4}>
-                    Blockers
+                    Reflection
                   </Heading>
                   {blockers.length > 0 ? (
                     <List>
                       {blockers.map((blocker) => (
                         <ListItem key={blocker.id}>
-                          <ListIcon as={MdBlockFlipped} color="red.500" />
+                          <ListIcon as={MdLightbulb} color="orange.500" />
                           {blocker.text}
                         </ListItem>
                       ))}
                     </List>
                   ) : (
-                    <Text>No blockers this {dateRange.label}.</Text>
+                    <Text>No reflection this {dateRange.label}.</Text>
                   )}
                 </Box>
               </GridItem>
