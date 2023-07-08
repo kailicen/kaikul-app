@@ -72,7 +72,13 @@ const ShareProgressModal: React.FC<ShareProgressModalProps> = ({
     // Implement share function
     // Share the selectedProgress to Slack
 
-    const userName = user?.displayName; // replace with the actual user's name
+    let userName = user?.displayName;
+
+    if (!userName) {
+      // If displayName is null, fallback to using email
+      userName = user?.email;
+    }
+
     let text = `*Posted by ${userName}*\n`;
 
     if (selectedProgress === "Daily Progress") {
