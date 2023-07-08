@@ -7,12 +7,16 @@ type WeekNavigationProps = {
   onPreviousWeek: () => void;
   onNextWeek: () => void;
   startOfWeek: string;
+  setActiveTab: (value: "me" | "team") => void; // <- Define this here
+  activeTab: "me" | "team"; // New prop
 };
 
 const WeekNavigation: React.FC<WeekNavigationProps> = ({
   onPreviousWeek,
   onNextWeek,
   startOfWeek,
+  setActiveTab, // <- Add this here
+  activeTab, // New argument
 }) => {
   const currentDate = moment(startOfWeek);
   const currentMonth = currentDate.format("MMM YYYY");
@@ -68,25 +72,27 @@ const WeekNavigation: React.FC<WeekNavigationProps> = ({
           )}
         </Text>
       </Flex>
-      {/* <Flex align="center">
+      <Flex align="center">
         <Button
-          colorScheme="gray"
+          onClick={() => setActiveTab("me")}
+          colorScheme={activeTab === "me" ? "purple" : "gray"} // Changed colorScheme
           variant="outline"
           borderRadius="md"
           _hover={{ bg: "gray.100" }}
           mr={1}
         >
-          Week
+          Me
         </Button>
         <Button
-          colorScheme="gray"
+          onClick={() => setActiveTab("team")}
+          colorScheme={activeTab === "team" ? "purple" : "gray"} // Changed colorScheme
           variant="outline"
           borderRadius="md"
           _hover={{ bg: "gray.100" }}
         >
-          Day
+          Team
         </Button>
-      </Flex> */}
+      </Flex>
     </Flex>
   );
 };

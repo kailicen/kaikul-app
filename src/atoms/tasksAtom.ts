@@ -6,6 +6,7 @@ export type Task = {
   completed: boolean;
   date: string; // represents a date in the format 'yyyy-mm-dd'
   userId: string | null;
+  goalId: string | null; // This is the ID of the associated goal
 };
 
 interface TaskState {

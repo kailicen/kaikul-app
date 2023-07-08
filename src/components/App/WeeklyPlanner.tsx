@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import GoalView from "./GoalView";
 import WeekView from "./WeekView";
 import { User } from "firebase/auth";
-import { Flex } from "@chakra-ui/react";
+import { Flex, Text } from "@chakra-ui/react";
 import WeekNavigation from "./WeekNavigation";
 import moment from "moment";
 import "moment/locale/en-gb";
@@ -19,6 +19,8 @@ moment.updateLocale("en", {
 type Props = { user: User };
 
 function WeeklyPlanner({ user }: Props) {
+  const [activeTab, setActiveTab] = useState<"me" | "team">("me");
+
   const [isLargerThan768] = useMediaQuery("(min-width: 768px)");
 
   const [startOfWeek, setStartOfWeek] = useState(
@@ -53,19 +55,35 @@ function WeeklyPlanner({ user }: Props) {
           onPreviousWeek={handlePreviousWeek}
           onNextWeek={handleNextWeek}
           startOfWeek={startOfWeek}
+          setActiveTab={setActiveTab} // <- Pass down the setActiveTab function
+          activeTab={activeTab}
         />
       ) : (
         <DayNavigation
           onPreviousDay={handlePreviousDay}
           onNextDay={handleNextDay}
           startOfDay={startOfDay}
+          setActiveTab={setActiveTab} // <- Pass down the setActiveTab function
+          activeTab={activeTab}
         />
       )}
-      <GoalView user={user} startOfDay={startOfDay} startOfWeek={startOfWeek} />
-      {isLargerThan768 ? (
-        <WeekView user={user} startOfWeek={startOfWeek} />
+      {activeTab === "me" ? (
+        <>
+          <GoalView
+            user={user}
+            startOfDay={startOfDay}
+            startOfWeek={startOfWeek}
+          />
+          {isLargerThan768 ? (
+            <WeekView user={user} startOfWeek={startOfWeek} />
+          ) : (
+            <Day user={user} date={startOfDay} />
+          )}
+        </>
+      ) : isLargerThan768 ? (
+        <Text>More feature to come...</Text>
       ) : (
-        <Day user={user} date={startOfDay} />
+        <div>More feature to come...</div>
       )}
     </Flex>
   );

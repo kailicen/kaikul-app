@@ -6,6 +6,8 @@ export type WeeklyGoal = {
   completed: boolean;
   weekStart: string; // represents the first day of a week in the format 'yyyy-mm-dd'
   userId: string | null;
+  tasks: string[]; // This is an array of task IDs
+  color: string; // This is the selected color for the goal
 };
 
 interface WeeklyGoalState {
