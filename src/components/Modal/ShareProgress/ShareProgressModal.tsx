@@ -21,6 +21,8 @@ import { useEffect, useRef, useState } from "react";
 import useProgress, { ProgressOption } from "@/hooks/useProgress";
 import { format } from "date-fns";
 import { toPng } from "html-to-image";
+import { doc, getDoc } from "firebase/firestore";
+import { firestore } from "../../../firebase/clientApp";
 
 type ShareProgressModalProps = {
   isOpen: boolean;
@@ -68,18 +70,29 @@ const ShareProgressModal: React.FC<ShareProgressModalProps> = ({
 
   const progressContainerRef = useRef(null);
 
+  const [username, setUsername] = useState<string>("");
+
+  useEffect(() => {
+    if (user) {
+      const fetchUserData = async () => {
+        const userDocRef = doc(firestore, "users", user.uid);
+        const userDoc = await getDoc(userDocRef);
+        if (userDoc.exists()) {
+          const userData = userDoc.data();
+          setUsername(userData?.displayName || "");
+        } else {
+          setUsername(user.displayName || "");
+        }
+      };
+      fetchUserData();
+    }
+  }, [user]);
+
   const handleShare = async () => {
     // Implement share function
     // Share the selectedProgress to Slack
 
-    let userName = user?.displayName;
-
-    if (!userName) {
-      // If displayName is null, fallback to using email
-      userName = user?.email;
-    }
-
-    let text = `*Posted by ${userName}*\n`;
+    let text = `*Posted by ${username}*\n`;
 
     if (selectedProgress === "Daily Progress") {
       text += `*${dayOfWeek}'s Sprint:*\n`;
