@@ -122,7 +122,7 @@ const Day: React.FC<{ date: string; user: User }> = ({ date, user }) => {
 
       {/* add a task */}
       <InputGroup>
-        {showInput && tasks.length < 3 ? (
+        {showInput && tasks.length < 5 ? (
           <Box>
             <Textarea
               ref={taskInputRef}
@@ -157,7 +157,7 @@ const Day: React.FC<{ date: string; user: User }> = ({ date, user }) => {
               />
             </ButtonGroup>
           </Box>
-        ) : tasks.length < 3 ? (
+        ) : tasks.length < 5 ? (
           <Flex align="center" mt={1} mb={2}>
             <Button
               variant="icon"

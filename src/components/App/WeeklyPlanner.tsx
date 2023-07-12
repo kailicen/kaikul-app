@@ -9,6 +9,7 @@ import "moment/locale/en-gb";
 import { useMediaQuery } from "@chakra-ui/react";
 import Day from "./Day";
 import DayNavigation from "./DayNavigation";
+import FloatingFeedbackButton from "./FloatingFeedbackButton";
 
 moment.updateLocale("en", {
   week: {
@@ -67,6 +68,7 @@ function WeeklyPlanner({ user }: Props) {
       ) : (
         <Day user={user} date={startOfDay} />
       )}
+      <FloatingFeedbackButton /> {/* Add the feedback button */}
     </Flex>
   );
 }
