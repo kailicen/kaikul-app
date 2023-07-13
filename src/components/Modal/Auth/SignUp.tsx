@@ -28,7 +28,17 @@ const SignUp: React.FC = () => {
       return;
     }
     // passwords match
-    createUserWithEmailAndPassword(signUpForm.email, signUpForm.password);
+    createUserWithEmailAndPassword(signUpForm.email, signUpForm.password)
+      .then((userCredential) => {
+        // User has been created, now we can create the Firestore document
+        if (userCredential && userCredential.user) {
+          createUserDocument(userCredential.user);
+        }
+      })
+      .catch((err) => {
+        // Handle errors here
+        console.error(err);
+      });
   };
 
   const onChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -40,17 +50,14 @@ const SignUp: React.FC = () => {
   };
 
   const createUserDocument = async (user: User) => {
-    await setDoc(
-      doc(firestore, "users", user.uid),
-      JSON.parse(JSON.stringify(user))
-    );
+    const userData = {
+      email: user.email,
+      displayName: user.displayName,
+      photoURL: user.photoURL,
+      // Add more user fields here if needed
+    };
+    await setDoc(doc(firestore, "users", user.uid), userData);
   };
-
-  useEffect(() => {
-    if (userCred) {
-      createUserDocument(userCred.user);
-    }
-  }, [userCred]);
 
   return (
     <form onSubmit={onSubmit}>

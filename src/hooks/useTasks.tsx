@@ -20,7 +20,7 @@ export const useTasks = (date: string, user: User) => {
   const [editText, setEditText] = useState<string>("");
 
   const handleAddTask = async () => {
-    if (tasks.length < 3) {
+    if (tasks.length < 5) {
       const taskToAdd: Task = {
         id: "",
         text: newTask,
