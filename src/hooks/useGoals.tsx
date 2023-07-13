@@ -21,10 +21,14 @@ export const useGoals = (user: User, startOfWeek: string) => {
   const [newGoal, setNewGoal] = useState("");
   const [goals, setGoals] = useState<WeeklyGoal[]>([]);
 
-  const handleAddGoal = async (description: string, color: string) => {
+  const handleAddGoal = async (
+    goal: string,
+    description: string,
+    color: string
+  ) => {
     const goalToAdd: WeeklyGoal = {
       id: "", // Placeholder value, will be updated after adding the document
-      text: newGoal,
+      text: goal,
       completed: false,
       weekStart: startOfWeek,
       userId: user.uid,

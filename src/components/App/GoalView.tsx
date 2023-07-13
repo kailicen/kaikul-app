@@ -99,8 +99,8 @@ function GoalView({ user, startOfDay, startOfWeek }: GoalViewProps) {
         values.description,
         values.color
       );
-    } else if (newGoal) {
-      handleAddGoal(values.description, values.color);
+    } else {
+      handleAddGoal(values.goal, values.description, values.color);
     }
     onClose();
     setSelectedGoalId(null);
