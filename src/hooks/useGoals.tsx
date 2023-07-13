@@ -21,13 +21,15 @@ export const useGoals = (user: User, startOfWeek: string) => {
   const [newGoal, setNewGoal] = useState("");
   const [goals, setGoals] = useState<WeeklyGoal[]>([]);
 
-  const handleAddGoal = async () => {
+  const handleAddGoal = async (description: string, color: string) => {
     const goalToAdd: WeeklyGoal = {
       id: "", // Placeholder value, will be updated after adding the document
       text: newGoal,
       completed: false,
       weekStart: startOfWeek,
       userId: user.uid,
+      description, // add the description
+      color, // add the color
     };
     try {
       const docRef = await addDoc(
@@ -41,7 +43,6 @@ export const useGoals = (user: User, startOfWeek: string) => {
       console.error("Error adding document: ", error);
     }
   };
-
   const handleCompleteGoal = async (id: string) => {
     const updatedGoals = goals.map((goal) =>
       goal.id === id ? { ...goal, completed: !goal.completed } : goal
@@ -57,14 +58,28 @@ export const useGoals = (user: User, startOfWeek: string) => {
     }
   };
 
-  const handleUpdateGoal = async (id: string, newText: string) => {
+  const handleUpdateGoal = async (
+    id: string,
+    newText: string,
+    newDescription: string,
+    newColor: string
+  ) => {
     const updatedGoals = goals.map((goal) =>
-      goal.id === id ? { ...goal, text: newText } : goal
+      goal.id === id
+        ? {
+            ...goal,
+            text: newText,
+            description: newDescription,
+            color: newColor,
+          }
+        : goal
     );
 
     try {
       await updateDoc(doc(firestore, "weeklyGoals", id), {
         text: updatedGoals.find((goal) => goal.id === id)?.text,
+        description: updatedGoals.find((goal) => goal.id === id)?.description,
+        color: updatedGoals.find((goal) => goal.id === id)?.color,
       });
       setGoals(updatedGoals);
     } catch (error) {

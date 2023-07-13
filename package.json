@@ -41,6 +41,7 @@
     "nodemailer": "^6.9.3",
     "postcss": "8.4.25",
     "react": "18.2.0",
+    "react-color": "^2.19.3",
     "react-dom": "18.2.0",
     "react-firebase-hooks": "^5.1.1",
     "react-hook-form": "^7.45.1",
@@ -54,6 +55,7 @@
     "yup": "^1.2.0"
   },
   "devDependencies": {
-    "@types/glob": "^8.1.0"
+    "@types/glob": "^8.1.0",
+    "@types/react-color": "^3.0.6"
   }
 }

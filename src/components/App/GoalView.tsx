@@ -16,19 +16,27 @@ import {
   Button,
   Input,
   Spacer,
-  IconButton,
   Badge,
   Switch,
   FormControl,
   FormLabel,
   useToast,
   Icon,
+  Textarea,
+  Menu,
+  MenuButton,
+  MenuItem,
+  MenuList,
+  IconButton,
+  useColorModeValue,
 } from "@chakra-ui/react";
 import { User } from "firebase/auth";
-import { MdAdd, MdDelete } from "react-icons/md";
+import { MdAdd } from "react-icons/md";
 import { useGoals } from "@/hooks/useGoals";
 import moment from "moment";
 import { Formik, Field, Form, FieldInputProps } from "formik";
+import { CirclePicker } from "react-color";
+import { ChevronDownIcon } from "@chakra-ui/icons";
 
 type GoalViewProps = { user: User; startOfDay: string; startOfWeek: string };
 
@@ -60,20 +68,39 @@ function GoalView({ user, startOfDay, startOfWeek }: GoalViewProps) {
   const [selectedGoalId, setSelectedGoalId] = useState<string | null>(null);
   const [selectedGoalText, setSelectedGoalText] = useState("");
   const [selectedGoalCompleted, setSelectedGoalCompleted] = useState(false);
+  const [selectedGoalDescription, setSelectedGoalDescription] = useState("");
+  const [selectedGoalColor, setSelectedGoalColor] = useState("");
 
-  const openDrawer = (id?: string, text?: string, completed?: boolean) => {
+  const openDrawer = (
+    id?: string,
+    text?: string,
+    completed?: boolean,
+    description?: string,
+    color?: string
+  ) => {
     onOpen();
     setSelectedGoalId(id || null);
     setSelectedGoalText(text || "");
     setSelectedGoalCompleted(completed || false);
+    setSelectedGoalDescription(description || "");
+    setSelectedGoalColor(color || "");
   };
 
-  const handleFormSubmit = (values: { goal: string }) => {
+  const handleFormSubmit = (values: {
+    goal: string;
+    description: string;
+    color: string;
+  }) => {
     setNewGoal(values.goal); // set new goal value
     if (selectedGoalId) {
-      handleUpdateGoal(selectedGoalId, values.goal);
-    } else {
-      handleAddGoal();
+      handleUpdateGoal(
+        selectedGoalId,
+        values.goal,
+        values.description,
+        values.color
+      );
+    } else if (newGoal) {
+      handleAddGoal(values.description, values.color);
     }
     onClose();
     setSelectedGoalId(null);
@@ -102,19 +129,30 @@ function GoalView({ user, startOfDay, startOfWeek }: GoalViewProps) {
           {goals.map((goal) => (
             <Flex
               key={goal.id}
-              px={3}
-              py={1}
+              px={4}
+              py={2}
+              align="center"
               shadow="sm"
               borderWidth="1px"
               borderRadius="md"
               _hover={{ shadow: "md" }}
-              onClick={() => openDrawer(goal.id, goal.text, goal.completed)}
+              cursor="pointer"
+              bg={goal.color}
+              onClick={() =>
+                openDrawer(
+                  goal.id,
+                  goal.text,
+                  goal.completed,
+                  goal.description,
+                  goal.color
+                )
+              }
             >
               <Text fontSize="sm" flexGrow={1}>
                 {goal.text}
               </Text>
               {goal.completed && (
-                <Badge colorScheme="green" ml="1">
+                <Badge colorScheme="green" ml="1" h="5">
                   Completed
                 </Badge>
               )}
@@ -131,7 +169,7 @@ function GoalView({ user, startOfDay, startOfWeek }: GoalViewProps) {
           </Flex>
         </Grid>
       </Box>
-      <Drawer isOpen={isOpen} placement="right" onClose={onClose} size="xl">
+      <Drawer isOpen={isOpen} placement="right" onClose={onClose} size="md">
         <DrawerOverlay>
           <DrawerContent>
             <DrawerCloseButton />
@@ -140,7 +178,11 @@ function GoalView({ user, startOfDay, startOfWeek }: GoalViewProps) {
             </DrawerHeader>
             <DrawerBody>
               <Formik
-                initialValues={{ goal: selectedGoalText }}
+                initialValues={{
+                  goal: selectedGoalText,
+                  description: selectedGoalDescription,
+                  color: selectedGoalColor,
+                }}
                 onSubmit={handleFormSubmit}
               >
                 {({ isSubmitting }) => (
@@ -151,6 +193,72 @@ function GoalView({ user, startOfDay, startOfWeek }: GoalViewProps) {
                         <Input {...field} placeholder="New goal..." />
                       )}
                     />
+                    <Field
+                      name="description"
+                      render={({ field }: { field: FieldInputProps<any> }) => (
+                        <Textarea
+                          {...field}
+                          placeholder="Description..."
+                          mt={4}
+                        />
+                      )}
+                    />
+
+                    <Field name="color">
+                      {({
+                        field,
+                        form,
+                      }: {
+                        field: FieldInputProps<any>;
+                        form: any;
+                      }) => (
+                        <Box mt={4}>
+                          <Menu>
+                            <MenuButton
+                              as={Button}
+                              rightIcon={<ChevronDownIcon />}
+                              size="sm"
+                              colorScheme="transparent"
+                              variant="outline"
+                              borderColor="gray.300"
+                            >
+                              <Box
+                                w="20px"
+                                h="20px"
+                                borderRadius="4px"
+                                bg={form.values.color || "#FFFFFF"}
+                                mr="2"
+                              />
+                            </MenuButton>
+                            <MenuList>
+                              <MenuItem onSelect={() => {}}>
+                                <CirclePicker
+                                  color={form.values.color}
+                                  onChangeComplete={(color) => {
+                                    form.setFieldValue("color", color.hex);
+                                    form.setFieldTouched("color", true);
+                                  }}
+                                  colors={[
+                                    "#FFB6C1", // LightPink
+                                    "#FFD700", // Gold
+                                    "#FFA500", // Orange
+                                    "#87CEFA", // LightSkyBlue
+                                    "#6495ED", // CornflowerBlue
+                                    "#3CB371", // MediumSeaGreen
+                                    "#f4eec2", // GreenYellow
+                                    "#ea8c87", // PaleVioletRed
+                                    "#b795ec", // MediumOrchid
+                                    "#f9fafa", // Peru
+                                    "#D8BFD8", // Thistle
+                                    "#20B2AA", // LightSeaGreen
+                                  ]}
+                                />
+                              </MenuItem>
+                            </MenuList>
+                          </Menu>
+                        </Box>
+                      )}
+                    </Field>
                     {selectedGoalId && (
                       <FormControl display="flex" alignItems="center" mt={4}>
                         <FormLabel mb="0">Completed:</FormLabel>
@@ -162,12 +270,6 @@ function GoalView({ user, startOfDay, startOfWeek }: GoalViewProps) {
                           }}
                         />
                         <Spacer />
-                        <IconButton
-                          aria-label="Delete"
-                          icon={<MdDelete />}
-                          colorScheme="red"
-                          onClick={() => handleDelete(selectedGoalId)}
-                        />
                       </FormControl>
                     )}
                     <Button
@@ -178,6 +280,15 @@ function GoalView({ user, startOfDay, startOfWeek }: GoalViewProps) {
                     >
                       {selectedGoalId ? "Update" : "Create"}
                     </Button>
+                    {selectedGoalId && (
+                      <Button
+                        mt={4}
+                        ml={2}
+                        onClick={() => handleDelete(selectedGoalId)}
+                      >
+                        Delete
+                      </Button>
+                    )}
                   </Form>
                 )}
               </Formik>
