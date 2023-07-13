@@ -51,7 +51,7 @@ const UserMenu: React.FC<UserMenuProps> = ({ user }) => {
     <Menu>
       <MenuButton cursor="pointer" padding="0px 6px" borderRadius={4}>
         <Flex align="center">
-          {user?.photoURL ? (
+          {imagePreview != "" ? (
             <Avatar size="sm" name={username} src={imagePreview} />
           ) : (
             <Avatar size="sm" bg="gray.500" />

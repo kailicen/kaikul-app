@@ -209,7 +209,7 @@ const ShareProgressModal: React.FC<ShareProgressModalProps> = ({
     <Modal isOpen={isOpen} onClose={onClose} size="xl">
       <ModalOverlay />
       <ModalContent>
-        <ModalHeader>Share</ModalHeader>
+        <ModalHeader>Share as {username}</ModalHeader>
         <ModalCloseButton />
         <ModalBody ref={progressContainerRef} bg="white">
           <FormControl as="fieldset" mb={4}>

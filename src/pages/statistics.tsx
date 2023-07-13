@@ -99,13 +99,14 @@ function Statistics() {
   };
 
   const taskCompletionRate = calculateCompletionRate(tasks, "tasks");
+  const completionRatePercentage = Math.round(taskCompletionRate * 100);
 
   const data = [
-    { name: "Completed Tasks", value: taskCompletionRate * 100 },
-    { name: "Incomplete Tasks", value: (1 - taskCompletionRate) * 100 },
+    { name: "Completed Tasks", value: completionRatePercentage },
+    { name: "Incomplete Tasks", value: 100 - completionRatePercentage },
   ];
 
-  const COLORS = ["#36A2EB", "#FFCE56"];
+  const COLORS = ["#1dbd88", "#e4726c"];
   const totalTasks = tasks.length;
 
   if (loading) {
@@ -192,8 +193,8 @@ function Statistics() {
                         data={data}
                         cx="50%"
                         cy="50%"
-                        innerRadius={60}
-                        outerRadius={80}
+                        innerRadius={85}
+                        outerRadius={120}
                         fill="#8884d8"
                         paddingAngle={5}
                         dataKey="value"
@@ -205,7 +206,7 @@ function Statistics() {
                           />
                         ))}
                         <Label
-                          value={`Total tasks: ${totalTasks}`}
+                          value={`Completion Rate: ${completionRatePercentage}%`}
                           position="center"
                         />
                       </Pie>
