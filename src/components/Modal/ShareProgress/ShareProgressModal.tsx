@@ -53,7 +53,7 @@ const ShareProgressModal: React.FC<ShareProgressModalProps> = ({
     "Weekly Progress",
   ];
 
-  const dayOfWeek = format(new Date(), "EEEE");
+  const formattedDate = format(new Date(), "yyyy-MM-dd");
 
   const {
     user,
@@ -87,18 +87,20 @@ const ShareProgressModal: React.FC<ShareProgressModalProps> = ({
       fetchUserData();
     }
   }, [user]);
+  useEffect(() => {
+    if (username === "") {
+      setUsername(user?.email as string);
+    }
+  }, [username]);
 
   const handleShare = async () => {
     // Implement share function
     // Share the selectedProgress to Slack
 
-    if (username === "") {
-      setUsername(user?.email as string);
-    }
     let text = `*Posted by ${username}*\n`;
 
     if (selectedProgress === "Daily Progress") {
-      text += `*${dayOfWeek}'s Sprint:*\n`;
+      text += `*${formattedDate}:*\n`;
 
       if (yesterdayTasks.length > 0) {
         text += `*✔️ Done:*\n${yesterdayTasks
@@ -235,6 +237,7 @@ const ShareProgressModal: React.FC<ShareProgressModalProps> = ({
           </FormControl>
           {selectedProgress === "Daily Progress" && (
             <>
+              <Text mb={4}>{formattedDate}:</Text>
               <Box mb={4}>
                 <Text mb={2}>✔️ Track yesterday: </Text>
                 <UnorderedList pl={4}>
@@ -296,6 +299,12 @@ const ShareProgressModal: React.FC<ShareProgressModalProps> = ({
                   ))}
                 </UnorderedList>
               </Box>
+              <Text fontSize="sm">
+                This is the accountability partner platform powered by{" "}
+                <Text as="b" color="purple.700">
+                  KaiKul.com
+                </Text>
+              </Text>
             </>
           )}
         </ModalBody>

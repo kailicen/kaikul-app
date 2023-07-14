@@ -64,13 +64,6 @@ function HowItWorks({}: Props) {
           </p>
         </div>
       </div>
-      {/* <iframe
-        className="border"
-        width="800"
-        height="450"
-        src="https://www.figma.com/embed?embed_host=share&url=https%3A%2F%2Fwww.figma.com%2Fproto%2FI3u5Fl4KTXqMPDU35PnpOM%2FKaiKul%3Fnode-id%3D233-33%26starting-point-node-id%3D233%253A33%26scaling%3Dscale-down"
-        allowFullScreen
-      ></iframe> */}
       <iframe
         className="my-10 px-1 w-full h-[300px] md:w-[800px] md:h-[450px]"
         src="https://www.loom.com/embed/5d10f1c8e1fa48e3b6ebacf71e5b0390"
