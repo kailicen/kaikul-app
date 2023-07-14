@@ -259,7 +259,7 @@ const Day: React.FC<{ date: string; user: User }> = ({ date, user }) => {
           <Box>
             <Textarea
               ref={blockerInputRef}
-              placeholder="New blocker..."
+              placeholder="Reflect on my day..."
               size="xs"
               value={newBlocker}
               width="100%" // Full width

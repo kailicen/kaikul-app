@@ -47,6 +47,7 @@ export const useGoals = (user: User, startOfWeek: string) => {
       console.error("Error adding document: ", error);
     }
   };
+
   const handleCompleteGoal = async (id: string) => {
     const updatedGoals = goals.map((goal) =>
       goal.id === id ? { ...goal, completed: !goal.completed } : goal

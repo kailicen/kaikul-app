@@ -118,7 +118,7 @@ function Statistics() {
     <>
       <AuthenticatedHeader user={user} />
       <Center>
-        <Box p={5} pt="100px" w="1000px">
+        <Box p={5} pt="100px" w="1200px">
           {/* Here, pt (padding-top) is used to prevent overlap with the fixed header */}
           <VStack align="center" spacing={8}>
             <Tabs

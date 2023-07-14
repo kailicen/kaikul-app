@@ -27,8 +27,6 @@ import {
   MenuButton,
   MenuItem,
   MenuList,
-  IconButton,
-  useColorModeValue,
 } from "@chakra-ui/react";
 import { User } from "firebase/auth";
 import { MdAdd } from "react-icons/md";

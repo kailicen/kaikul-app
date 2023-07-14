@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import GoalView from "./GoalView";
 import WeekView from "./WeekView";
 import { User } from "firebase/auth";
-import { Flex, Text } from "@chakra-ui/react";
+import { Flex } from "@chakra-ui/react";
 import WeekNavigation from "./WeekNavigation";
 import moment from "moment";
 import "moment/locale/en-gb";
@@ -10,6 +10,7 @@ import { useMediaQuery } from "@chakra-ui/react";
 import Day from "./Day";
 import DayNavigation from "./DayNavigation";
 import FloatingFeedbackButton from "./FloatingFeedbackButton";
+import TeamTab from "./TeamTab";
 
 moment.updateLocale("en", {
   week: {
@@ -82,7 +83,7 @@ function WeeklyPlanner({ user }: Props) {
           )}
         </>
       ) : isLargerThan768 ? (
-        <Text>More feature to come...</Text>
+        <TeamTab user={user} startOfWeek={startOfWeek} />
       ) : (
         <div>More feature to come...</div>
       )}
