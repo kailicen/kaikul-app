@@ -21,6 +21,7 @@ import { useEffect, useRef, useState } from "react";
 import useProgress, { ProgressOption } from "@/hooks/useProgress";
 import { format } from "date-fns";
 import { toPng } from "html-to-image";
+import * as clipboard from "clipboard-polyfill";
 import { doc, getDoc } from "firebase/firestore";
 import { firestore } from "../../../firebase/clientApp";
 
@@ -187,24 +188,37 @@ const ShareProgressModal: React.FC<ShareProgressModalProps> = ({
     }
   };
 
-  const handleExportAsImage = () => {
-    const node = progressContainerRef.current;
-
-    if (!node) {
-      console.error("Could not find the element to export");
+  const handleCopyToClipboard = async () => {
+    if (!progressContainerRef.current) {
+      console.error("No ref attached");
       return;
     }
 
-    toPng(node)
-      .then((dataUrl) => {
-        const link = document.createElement("a");
-        link.download = "kaikul-sprint.png";
-        link.href = dataUrl;
-        link.click();
-      })
-      .catch((error) => {
-        console.error("oops, something went wrong!", error);
+    try {
+      const dataUrl = await toPng(progressContainerRef.current);
+
+      // Convert DataURL to Blob
+      const response = await fetch(dataUrl);
+      const blob = await response.blob();
+
+      // Use clipboard-polyfill to write the blob as an image to the clipboard
+      await clipboard.write([
+        new clipboard.ClipboardItem({ "image/png": blob }),
+      ]);
+
+      // Display a success toast
+      toast({
+        title: "Copy Successful",
+        description:
+          "Your progress has been successfully copied to the clipboard.",
+        status: "success",
+        duration: 5000,
+        isClosable: true,
       });
+      console.log("Image copied to clipboard");
+    } catch (error) {
+      console.error("Failed to copy", error);
+    }
   };
 
   return (
@@ -309,10 +323,10 @@ const ShareProgressModal: React.FC<ShareProgressModalProps> = ({
           )}
         </ModalBody>
         <ModalFooter>
-          <Button onClick={handleExportAsImage} colorScheme="blue" mr={3}>
-            Export as Image
+          <Button onClick={handleCopyToClipboard} mr={3}>
+            Copy to Clipboard
           </Button>
-          <Button onClick={handleShare} colorScheme="blue" mr={3}>
+          <Button onClick={handleShare} mr={3}>
             Share to KaiKul Slack
           </Button>
           <Button onClick={onClose}>Cancel</Button>
