@@ -82,10 +82,8 @@ function WeeklyPlanner({ user }: Props) {
             <Day user={user} date={startOfDay} />
           )}
         </>
-      ) : isLargerThan768 ? (
-        <TeamTab user={user} startOfWeek={startOfWeek} />
       ) : (
-        <div>More feature to come...</div>
+        <TeamTab user={user} startOfWeek={startOfWeek} />
       )}
       <FloatingFeedbackButton /> {/* Add the feedback button */}
     </Flex>

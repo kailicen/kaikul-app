@@ -150,7 +150,7 @@ function TeamTab({ user, startOfWeek }: Props) {
         p={5}
         w="1200px"
       >
-        <Box>
+        <Box order={{ base: 2, md: 1 }}>
           <Heading size="md" mb={3}>
             Weekly Updates
           </Heading>
@@ -325,11 +325,11 @@ function TeamTab({ user, startOfWeek }: Props) {
           </Drawer>
         </Box>
 
-        <Box p={2}>
+        <Box order={{ base: 1, md: 2 }} p={2}>
           <Heading size="md" mb={3}>
             Team Accountability
           </Heading>
-          <Accordion defaultIndex={[0]} allowMultiple>
+          <Accordion allowMultiple>
             <AccordionItem>
               <h2>
                 <AccordionButton>
