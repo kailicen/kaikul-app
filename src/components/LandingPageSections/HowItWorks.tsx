@@ -73,7 +73,7 @@ function HowItWorks({}: Props) {
       ></iframe> */}
       <iframe
         className="my-10 px-1 w-full h-[300px] md:w-[800px] md:h-[450px]"
-        src="https://www.loom.com/embed/1b34655df4c24defa9cd0499b44cc2d4"
+        src="https://www.loom.com/embed/5d10f1c8e1fa48e3b6ebacf71e5b0390"
         allowFullScreen
         onLoad={handleVideoLoad}
       ></iframe>
