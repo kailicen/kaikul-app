@@ -110,7 +110,7 @@ export const useTeamTab = (user: User, startOfWeek: string) => {
         collection(firestore, "teamTabs"),
         where("startOfWeek", "==", startOfWeek),
         where("userId", "==", user.uid),
-        orderBy("createdAt", "desc")
+        orderBy("startOfWeek", "desc")
       );
       const querySnapshot = await getDocs(q);
       const teamTabsForWeek: TeamTab[] = [];

@@ -163,9 +163,6 @@ function TeamTab({ user, startOfWeek }: Props) {
               Add Update for {formattedStartOfWeek} - {formattedEndOfWeek}
             </Button>
           )}
-          <Button onClick={() => openDrawer()}>
-            Add Update for {formattedStartOfWeek} - {formattedEndOfWeek}
-          </Button>
           {teamTabs.map((teamTab) => {
             const startOfWeekDate = parseISO(teamTab.startOfWeek);
             const formattedStartOfWeek = format(startOfWeekDate, "MMMM do");
