@@ -15,24 +15,28 @@ import { User } from "firebase/auth";
 
 export const useTasks = (date: string, user: User) => {
   const [tasks, setTasks] = useState<Task[]>([]);
-  const [newTask, setNewTask] = useState<string>("");
-  const [isEditing, setIsEditing] = useState<null | string>(null);
-  const [editText, setEditText] = useState<string>("");
 
-  const handleAddTask = async () => {
+  const handleAddTask = async (
+    task: string,
+    description: string,
+    goalId: string,
+    color: string
+  ) => {
     if (tasks.length < 5) {
       const taskToAdd: Task = {
         id: "",
-        text: newTask,
+        text: task,
         completed: false,
         date: date,
         userId: user.uid,
+        description,
+        goalId,
+        color,
       };
       try {
         const docRef = await addDoc(collection(firestore, "tasks"), taskToAdd);
         taskToAdd.id = docRef.id;
         setTasks([...tasks, taskToAdd]);
-        setNewTask("");
       } catch (error) {
         console.error("Error adding document: ", error);
       }
@@ -54,17 +58,41 @@ export const useTasks = (date: string, user: User) => {
     }
   };
 
-  const handleEditTask = async (id: string, newValue: string) => {
-    setIsEditing(null);
+  const handleEditTask = async (
+    id: string,
+    newTask: string,
+    newDescription: string,
+    newGoalId: string,
+    newColor: string
+  ) => {
     const updatedTasks = tasks.map((task) =>
-      task.id === id ? { ...task, text: newValue } : task
+      task.id === id
+        ? {
+            ...task,
+            text: newTask,
+            description: newDescription,
+            goalId: newGoalId,
+            color: newColor,
+          }
+        : task
     );
-    setTasks(updatedTasks);
+
+    const updatedTask = updatedTasks.find((task) => task.id === id);
+
+    if (!updatedTask) {
+      console.error(`Task with id ${id} not found.`);
+      return;
+    }
 
     try {
-      await updateDoc(doc(firestore, "tasks", id), {
-        text: updatedTasks.find((task) => task.id === id)?.text,
+      const taskDocRef = doc(firestore, "tasks", id);
+      await updateDoc(taskDocRef, {
+        text: updatedTask.text,
+        description: updatedTask.description,
+        goalId: updatedTask.goalId,
+        color: updatedTask.color,
       });
+      setTasks(updatedTasks);
     } catch (error) {
       console.error("Error updating document: ", error);
     }
@@ -97,16 +125,10 @@ export const useTasks = (date: string, user: User) => {
       setTasks(tasksForDay);
     };
     loadTasks();
-  }, [user, date, setTasks]);
+  }, [user, date]);
 
   return {
     tasks,
-    newTask,
-    isEditing,
-    editText,
-    setNewTask,
-    setIsEditing,
-    setEditText,
     handleAddTask,
     handleCompleteTask,
     handleEditTask,

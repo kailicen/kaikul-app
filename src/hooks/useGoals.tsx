@@ -18,7 +18,6 @@ export const useGoals = (user: User, startOfWeek: string) => {
   const [weeklyGoals, setWeeklyGoals] = useRecoilState(
     weeklyGoalListState(startOfWeek)
   );
-  const [newGoal, setNewGoal] = useState("");
   const [goals, setGoals] = useState<WeeklyGoal[]>([]);
 
   const handleAddGoal = async (
@@ -42,7 +41,7 @@ export const useGoals = (user: User, startOfWeek: string) => {
       );
       goalToAdd.id = docRef.id; // Update the id value
       setGoals([...goals, goalToAdd]);
-      setNewGoal("");
+      setWeeklyGoals([...goals, goalToAdd]);
     } catch (error) {
       console.error("Error adding document: ", error);
     }
@@ -58,6 +57,7 @@ export const useGoals = (user: User, startOfWeek: string) => {
         completed: updatedGoals.find((goal) => goal.id === id)?.completed,
       });
       setGoals(updatedGoals);
+      setWeeklyGoals(updatedGoals);
     } catch (error) {
       console.error("Error updating document: ", error);
     }
@@ -80,13 +80,22 @@ export const useGoals = (user: User, startOfWeek: string) => {
         : goal
     );
 
+    const updatedGoal = updatedGoals.find((goal) => goal.id === id);
+
+    if (!updatedGoal) {
+      console.error(`Goal with id ${id} not found.`);
+      return;
+    }
+
     try {
-      await updateDoc(doc(firestore, "weeklyGoals", id), {
-        text: updatedGoals.find((goal) => goal.id === id)?.text,
-        description: updatedGoals.find((goal) => goal.id === id)?.description,
-        color: updatedGoals.find((goal) => goal.id === id)?.color,
+      const goalDocRef = doc(firestore, "weeklyGoals", id);
+      await updateDoc(goalDocRef, {
+        text: updatedGoal.text,
+        description: updatedGoal.description,
+        color: updatedGoal.color,
       });
       setGoals(updatedGoals);
+      setWeeklyGoals(updatedGoals);
     } catch (error) {
       console.error("Error updating document: ", error);
     }
@@ -94,6 +103,7 @@ export const useGoals = (user: User, startOfWeek: string) => {
 
   const handleDeleteGoal = async (id: string) => {
     setGoals(goals.filter((goal) => goal.id !== id));
+    setWeeklyGoals(goals.filter((goal) => goal.id !== id));
 
     try {
       await deleteDoc(doc(firestore, "weeklyGoals", id));
@@ -117,14 +127,14 @@ export const useGoals = (user: User, startOfWeek: string) => {
         goalsForWeek.push(goal);
       });
       setGoals(goalsForWeek);
+      setWeeklyGoals(goalsForWeek);
     };
     loadGoals();
-  }, [user, startOfWeek, setGoals]);
+  }, [user, startOfWeek]);
 
   return {
     goals,
-    newGoal,
-    setNewGoal,
+    weeklyGoals,
     handleAddGoal,
     handleCompleteGoal,
     handleUpdateGoal,

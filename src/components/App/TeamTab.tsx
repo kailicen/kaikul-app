@@ -42,15 +42,6 @@ import {
 
 type Props = { user: User; startOfWeek: string };
 
-type TeamUpdates = {
-  rateWeek: number;
-  rateHappiness: number;
-  practiceHours: number;
-  biggestImprovement: string;
-  biggestObstacle: string;
-  lessonLearned: string;
-};
-
 function TeamTab({ user, startOfWeek }: Props) {
   const { teamTabs, handleUpdateTeamTab, handleAddTeamTab } = useTeamTab(
     user,
@@ -230,7 +221,7 @@ function TeamTab({ user, startOfWeek }: Props) {
                 <DrawerHeader>
                   {selectedUpdateId
                     ? "Edit Weekly Update"
-                    : "Create New Weekly Update"}
+                    : "Add Weekly Update"}
                 </DrawerHeader>
 
                 <DrawerBody>

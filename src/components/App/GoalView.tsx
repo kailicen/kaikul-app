@@ -27,6 +27,7 @@ import {
   MenuButton,
   MenuItem,
   MenuList,
+  DrawerFooter,
 } from "@chakra-ui/react";
 import { User } from "firebase/auth";
 import { MdAdd } from "react-icons/md";
@@ -54,8 +55,6 @@ function GoalView({ user, startOfDay, startOfWeek }: GoalViewProps) {
 
   const {
     goals,
-    newGoal,
-    setNewGoal,
     handleAddGoal,
     handleCompleteGoal,
     handleUpdateGoal,
@@ -89,7 +88,6 @@ function GoalView({ user, startOfDay, startOfWeek }: GoalViewProps) {
     description: string;
     color: string;
   }) => {
-    setNewGoal(values.goal); // set new goal value
     if (selectedGoalId) {
       handleUpdateGoal(
         selectedGoalId,
@@ -130,10 +128,9 @@ function GoalView({ user, startOfDay, startOfWeek }: GoalViewProps) {
               px={4}
               py={2}
               align="center"
-              shadow="sm"
-              borderWidth="1px"
               borderRadius="md"
-              _hover={{ shadow: "md" }}
+              boxShadow="md"
+              _hover={{ boxShadow: "0 0 0 2px purple.400" }}
               cursor="pointer"
               bg={goal.color}
               onClick={() =>
@@ -151,7 +148,7 @@ function GoalView({ user, startOfDay, startOfWeek }: GoalViewProps) {
               </Text>
               {goal.completed && (
                 <Badge colorScheme="green" ml="1" h="5">
-                  Completed
+                  done
                 </Badge>
               )}
             </Flex>
@@ -237,18 +234,18 @@ function GoalView({ user, startOfDay, startOfWeek }: GoalViewProps) {
                                     form.setFieldTouched("color", true);
                                   }}
                                   colors={[
+                                    "#EA8C87", // Salmon
                                     "#FFB6C1", // LightPink
+                                    "#FFDCCD", // PeachPuff
+                                    "#F4EEC2", // Champagne
                                     "#FFD700", // Gold
                                     "#FFA500", // Orange
+                                    "#3CB371", // MediumSeaGreen
+                                    "#20B2AA", // LightSeaGreen
                                     "#87CEFA", // LightSkyBlue
                                     "#6495ED", // CornflowerBlue
-                                    "#3CB371", // MediumSeaGreen
-                                    "#f4eec2", // GreenYellow
-                                    "#ea8c87", // PaleVioletRed
-                                    "#b795ec", // MediumOrchid
-                                    "#f9fafa", // Peru
+                                    "#B795EC", // MediumPurple
                                     "#D8BFD8", // Thistle
-                                    "#20B2AA", // LightSeaGreen
                                   ]}
                                 />
                               </MenuItem>
@@ -270,23 +267,27 @@ function GoalView({ user, startOfDay, startOfWeek }: GoalViewProps) {
                         <Spacer />
                       </FormControl>
                     )}
-                    <Button
-                      mt={4}
-                      colorScheme="blue"
-                      isLoading={isSubmitting}
-                      type="submit"
-                    >
-                      {selectedGoalId ? "Update" : "Create"}
-                    </Button>
-                    {selectedGoalId && (
+                    <DrawerFooter>
                       <Button
                         mt={4}
-                        ml={2}
-                        onClick={() => handleDelete(selectedGoalId)}
+                        colorScheme="blue"
+                        isLoading={isSubmitting}
+                        type="submit"
                       >
-                        Delete
+                        {selectedGoalId ? "Update" : "Create"}
                       </Button>
-                    )}
+                      {selectedGoalId && (
+                        <Button
+                          mt={4}
+                          ml={2}
+                          variant="outline"
+                          colorScheme="red"
+                          onClick={() => handleDelete(selectedGoalId)}
+                        >
+                          Delete
+                        </Button>
+                      )}
+                    </DrawerFooter>
                   </Form>
                 )}
               </Formik>

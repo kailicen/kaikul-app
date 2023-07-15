@@ -15,13 +15,12 @@ import { User } from "firebase/auth";
 
 export const useBlockers = (date: string, user: User) => {
   const [blockers, setBlockers] = useState<Blocker[]>([]);
-  const [newBlocker, setNewBlocker] = useState<string>("");
 
-  const handleAddBlocker = async () => {
+  const handleAddBlocker = async (blocker: string) => {
     if (blockers.length < 3) {
       const blockerToAdd: Blocker = {
         id: "", // Placeholder value, will be updated after adding the document
-        text: newBlocker,
+        text: blocker,
         date: date,
         userId: user.uid,
       };
@@ -32,16 +31,15 @@ export const useBlockers = (date: string, user: User) => {
         );
         blockerToAdd.id = docRef.id; // Update the id value
         setBlockers([...blockers, blockerToAdd]);
-        setNewBlocker("");
       } catch (error) {
         console.error("Error adding document: ", error);
       }
     }
   };
 
-  const handleEditBlocker = async (id: string, newValue: string) => {
+  const handleEditBlocker = async (id: string, newBlocker: string) => {
     const updatedBlockers = blockers.map((blocker) =>
-      blocker.id === id ? { ...blocker, text: newValue } : blocker
+      blocker.id === id ? { ...blocker, text: newBlocker } : blocker
     );
 
     try {
@@ -81,12 +79,10 @@ export const useBlockers = (date: string, user: User) => {
       setBlockers(blockersForDay);
     };
     loadBlockers();
-  }, [user, date, setBlockers]);
+  }, [user, date]);
 
   return {
     blockers,
-    newBlocker,
-    setNewBlocker,
     handleAddBlocker,
     handleEditBlocker,
     handleDeleteBlocker,
