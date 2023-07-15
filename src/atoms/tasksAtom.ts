@@ -1,3 +1,4 @@
+import { format } from "date-fns";
 import { atom, DefaultValue, selectorFamily } from "recoil";
 
 export type Task = {
@@ -15,27 +16,56 @@ interface TaskState {
   [date: string]: Task[];
 }
 
-export const taskState = atom<TaskState>({
-  key: "taskState",
+// Define the state for a week's tasks
+export const weekTaskState = atom<TaskState>({
+  key: "weekTaskState",
   default: {},
 });
 
-export const taskListState = selectorFamily<Task[], string>({
-  key: "TaskList",
+// Define the selector family to access tasks for a specific week
+export const weekTaskListState = selectorFamily<Task[], [string, string]>({
+  key: "WeekTaskList",
   get:
-    (day) =>
+    ([startOfWeek, endOfWeek]) =>
     ({ get }) => {
-      const taskStateVal = get(taskState);
-      return taskStateVal[day] || [];
+      const taskStateVal = get(weekTaskState);
+      const weekTasks: Task[] = [];
+
+      // We are going to iterate over each day of the week and gather all tasks
+      const currentDay = new Date(startOfWeek);
+      const endDay = new Date(endOfWeek);
+
+      while (currentDay <= endDay) {
+        const currentDayString = format(currentDay, "yyyy-MM-dd");
+        const tasksForDay = taskStateVal[currentDayString] || [];
+        weekTasks.push(...tasksForDay);
+        currentDay.setDate(currentDay.getDate() + 1); // move to next day
+      }
+
+      return weekTasks;
     },
   set:
-    (day) =>
+    ([startOfWeek, endOfWeek]) =>
     ({ set }, newValue) => {
-      set(taskState, (oldTaskState) => {
-        const updatedTaskState = { ...oldTaskState };
-        updatedTaskState[day] =
-          newValue instanceof DefaultValue ? [] : newValue;
-        return updatedTaskState;
+      set(weekTaskState, (oldWeekTaskState) => {
+        const updatedWeekTaskState = { ...oldWeekTaskState };
+        const currentDay = new Date(startOfWeek);
+        const endDay = new Date(endOfWeek);
+
+        while (currentDay <= endDay) {
+          const currentDayString = format(currentDay, "yyyy-MM-dd");
+          updatedWeekTaskState[currentDayString] =
+            newValue instanceof DefaultValue
+              ? []
+              : newValue.filter(
+                  (task) =>
+                    format(new Date(task.date), "yyyy-MM-dd") ===
+                    currentDayString
+                );
+          currentDay.setDate(currentDay.getDate() + 1); // move to next day
+        }
+
+        return updatedWeekTaskState;
       });
     },
 });

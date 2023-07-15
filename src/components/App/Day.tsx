@@ -22,15 +22,20 @@ import {
 } from "@chakra-ui/react";
 import { Formik, Form, Field, FieldInputProps } from "formik";
 import { MdAdd } from "react-icons/md";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { User } from "firebase/auth";
 import moment from "moment";
 import useTasks from "@/hooks/useTasks";
 import { useBlockers } from "@/hooks/useBlockers";
-import { format, isToday, startOfWeek } from "date-fns";
+import { format, isToday, startOfDay, startOfWeek } from "date-fns";
 import { useGoals } from "@/hooks/useGoals";
+import { Task } from "@/atoms/tasksAtom";
 
-const Day: React.FC<{ date: string; user: User }> = ({ date, user }) => {
+const Day: React.FC<{ date: string; user: User; recoilTasks: Task[] }> = ({
+  date,
+  user,
+  recoilTasks,
+}) => {
   const taskDrawerDisclosure = useDisclosure();
   const blockerDrawerDisclosure = useDisclosure();
 
@@ -54,6 +59,7 @@ const Day: React.FC<{ date: string; user: User }> = ({ date, user }) => {
 
   const {
     tasks,
+    setTasks,
     handleAddTask,
     handleCompleteTask,
     handleEditTask,
@@ -64,7 +70,7 @@ const Day: React.FC<{ date: string; user: User }> = ({ date, user }) => {
     useBlockers(date, user);
 
   //use recoil state
-  const { weeklyGoals } = useGoals(user, startOfWeekString);
+  const { recoilGoals } = useGoals(user, startOfWeekString);
 
   const openDrawer = (
     id?: string,
@@ -73,7 +79,6 @@ const Day: React.FC<{ date: string; user: User }> = ({ date, user }) => {
     goalId?: string
   ) => {
     taskDrawerDisclosure.onOpen();
-    console.log(`goalid:${goalId}`);
     setSelectedTaskId(id || null);
     setSelectedTaskText(text || "");
     setSelectedTaskDescription(description || "");
@@ -91,7 +96,7 @@ const Day: React.FC<{ date: string; user: User }> = ({ date, user }) => {
     description: string;
     goalId: string;
   }) => {
-    const selectedGoal = weeklyGoals.find((goal) => goal.id === values.goalId);
+    const selectedGoal = recoilGoals.find((goal) => goal.id === values.goalId);
     const color = selectedGoal ? selectedGoal.color : ""; // Get the color from the selected goal
 
     if (selectedTaskId) {
@@ -150,6 +155,19 @@ const Day: React.FC<{ date: string; user: User }> = ({ date, user }) => {
     blockerDrawerDisclosure.onClose();
   };
 
+  useEffect(() => {
+    if (recoilTasks) {
+      const currentDateTasks = recoilTasks.filter((task) => {
+        const taskDate = startOfDay(new Date(task.date));
+        const currentDate = startOfDay(new Date(date));
+        return (
+          format(taskDate, "yyyy-MM-dd") === format(currentDate, "yyyy-MM-dd")
+        );
+      });
+      setTasks(currentDateTasks);
+    }
+  }, [recoilTasks, date]);
+
   return (
     <VStack
       align="stretch"
@@ -157,13 +175,14 @@ const Day: React.FC<{ date: string; user: User }> = ({ date, user }) => {
       border="1px"
       borderColor="gray.200"
       p={4}
-      bg={isCurrentDay ? "purple.100" : undefined} // set a distinct background color for the current day
+      bg={isCurrentDay ? "gray.100" : undefined} // set a distinct background color for the current day
       mb={4} // add bottom margin
     >
       <Text fontSize="lg" fontWeight="semibold">
         {moment(date).format("ddd DD")}
       </Text>
       {/* task list */}
+
       {tasks.map((task) => (
         <Box
           key={task.id}
@@ -187,13 +206,18 @@ const Day: React.FC<{ date: string; user: User }> = ({ date, user }) => {
             >
               <Checkbox
                 isChecked={task.completed}
+                colorScheme="gray"
                 onChange={(e) => {
                   handleCompleteTask(task.id);
                 }}
               />
             </Flex>
 
-            <Text fontSize="sm" flexGrow={1}>
+            <Text
+              fontSize="sm"
+              flexGrow={1}
+              textDecoration={task.completed ? "line-through" : "none"}
+            >
               {task.text}
             </Text>
           </HStack>
@@ -277,7 +301,7 @@ const Day: React.FC<{ date: string; user: User }> = ({ date, user }) => {
                               setFieldValue("goalId", e.target.value);
                             }}
                           >
-                            {weeklyGoals.map((goal) => (
+                            {recoilGoals.map((goal) => (
                               <option key={goal.id} value={goal.id}>
                                 {goal.text}
                               </option>
@@ -322,7 +346,7 @@ const Day: React.FC<{ date: string; user: User }> = ({ date, user }) => {
         <Box
           key={blocker.id}
           p={2}
-          bg={"yellow.200"}
+          bg={"gray.200"}
           borderRadius="md"
           _hover={{ boxShadow: "0 0 0 2px purple.400" }}
           position="relative"

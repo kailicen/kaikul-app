@@ -10,15 +10,25 @@ import {
   getDocs,
   query,
   doc,
+  writeBatch,
 } from "firebase/firestore";
 import { firestore } from "../firebase/clientApp";
 import { useRecoilState } from "recoil";
+import { useStatistics } from "./useStatistics";
+import moment from "moment";
+import { Task, weekTaskListState } from "@/atoms/tasksAtom";
 
 export const useGoals = (user: User, startOfWeek: string) => {
-  const [weeklyGoals, setWeeklyGoals] = useRecoilState(
+  const [recoilGoals, setRecoilGoals] = useRecoilState(
     weeklyGoalListState(startOfWeek)
   );
+  // Fetch tasks for the current week
+  const endOfWeek = moment(startOfWeek).add(6, "days").format("YYYY-MM-DD");
+  const [weekTasks, setWeekTasks] = useRecoilState(
+    weekTaskListState([startOfWeek, endOfWeek])
+  );
   const [goals, setGoals] = useState<WeeklyGoal[]>([]);
+  const { fetchTasks } = useStatistics();
 
   const handleAddGoal = async (
     goal: string,
@@ -41,7 +51,7 @@ export const useGoals = (user: User, startOfWeek: string) => {
       );
       goalToAdd.id = docRef.id; // Update the id value
       setGoals([...goals, goalToAdd]);
-      setWeeklyGoals([...goals, goalToAdd]);
+      setRecoilGoals([...goals, goalToAdd]);
     } catch (error) {
       console.error("Error adding document: ", error);
     }
@@ -57,7 +67,7 @@ export const useGoals = (user: User, startOfWeek: string) => {
         completed: updatedGoals.find((goal) => goal.id === id)?.completed,
       });
       setGoals(updatedGoals);
-      setWeeklyGoals(updatedGoals);
+      setRecoilGoals(updatedGoals);
     } catch (error) {
       console.error("Error updating document: ", error);
     }
@@ -95,7 +105,35 @@ export const useGoals = (user: User, startOfWeek: string) => {
         color: updatedGoal.color,
       });
       setGoals(updatedGoals);
-      setWeeklyGoals(updatedGoals);
+      setRecoilGoals(updatedGoals);
+
+      const tasks = await fetchTasks(
+        new Date(startOfWeek),
+        new Date(endOfWeek)
+      );
+
+      let updatedTasks: Task[] = [];
+      const batch = writeBatch(firestore);
+
+      // Update the color of the tasks associated with the updated goal
+      for (const task of tasks) {
+        let updatedTask = { ...task };
+        if (task.goalId === id) {
+          const taskDocRef = doc(firestore, "tasks", task.id);
+          batch.update(taskDocRef, {
+            color: updatedGoal.color,
+          });
+
+          updatedTask.color = updatedGoal.color;
+        }
+        updatedTasks.push(updatedTask);
+      }
+
+      // Commit the batch
+      await batch.commit();
+
+      // Update Recoil state
+      setWeekTasks(updatedTasks);
     } catch (error) {
       console.error("Error updating document: ", error);
     }
@@ -103,7 +141,7 @@ export const useGoals = (user: User, startOfWeek: string) => {
 
   const handleDeleteGoal = async (id: string) => {
     setGoals(goals.filter((goal) => goal.id !== id));
-    setWeeklyGoals(goals.filter((goal) => goal.id !== id));
+    setRecoilGoals(goals.filter((goal) => goal.id !== id));
 
     try {
       await deleteDoc(doc(firestore, "weeklyGoals", id));
@@ -127,14 +165,14 @@ export const useGoals = (user: User, startOfWeek: string) => {
         goalsForWeek.push(goal);
       });
       setGoals(goalsForWeek);
-      setWeeklyGoals(goalsForWeek);
+      setRecoilGoals(goalsForWeek);
     };
     loadGoals();
   }, [user, startOfWeek]);
 
   return {
     goals,
-    weeklyGoals,
+    recoilGoals: recoilGoals,
     handleAddGoal,
     handleCompleteGoal,
     handleUpdateGoal,

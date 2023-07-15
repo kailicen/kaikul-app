@@ -27,6 +27,7 @@ import {
   MdCheckCircle,
   MdChevronLeft,
   MdChevronRight,
+  MdClear,
 } from "react-icons/md";
 
 moment.locale("en-gb");
@@ -98,16 +99,26 @@ function Statistics() {
     end: currentPeriod.clone().endOf(isWeeklyView ? "week" : "month"),
   };
 
-  const taskCompletionRate = calculateCompletionRate(tasks, "tasks");
+  const taskCompletionRate = calculateCompletionRate(
+    tasks,
+    "tasks"
+  ).completionRate;
   const completionRatePercentage = Math.round(taskCompletionRate * 100);
+  const COLORS = ["#1dbd88", "#e4726c"];
+
+  const completionCount = calculateCompletionRate(
+    tasks,
+    "tasks"
+  ).completedCount;
+  const totalTasks = tasks.length;
 
   const data = [
-    { name: "Completed Tasks", value: completionRatePercentage },
-    { name: "Incomplete Tasks", value: 100 - completionRatePercentage },
+    { name: `Completed Tasks: ${completionCount}`, value: completionCount },
+    {
+      name: `Incomplete Tasks: ${totalTasks - completionCount}`,
+      value: totalTasks - completionCount,
+    },
   ];
-
-  const COLORS = ["#1dbd88", "#e4726c"];
-  const totalTasks = tasks.length;
 
   if (loading) {
     // Here, you can return a loader if the authentication state is still being determined.
@@ -206,11 +217,11 @@ function Statistics() {
                           />
                         ))}
                         <Label
-                          value={`Completion Rate: ${completionRatePercentage}%`}
+                          value={`${completionRatePercentage}%`}
                           position="center"
+                          fontSize={26}
                         />
                       </Pie>
-                      <Tooltip />
                       <Legend />
                     </PieChart>
                   </Center>
@@ -225,7 +236,12 @@ function Statistics() {
                     <List>
                       {goals.map((goal) => (
                         <ListItem key={goal.id}>
-                          <ListIcon as={MdCheckCircle} color="green.500" />
+                          {goal.completed === true ? (
+                            <ListIcon as={MdCheckCircle} color="green.500" />
+                          ) : (
+                            <ListIcon as={MdClear} color="red.500" />
+                          )}
+
                           {goal.text}
                         </ListItem>
                       ))}

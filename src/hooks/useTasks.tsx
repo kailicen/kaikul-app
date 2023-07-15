@@ -12,6 +12,7 @@ import {
 } from "firebase/firestore";
 import { firestore } from "../firebase/clientApp";
 import { User } from "firebase/auth";
+import { useRecoilState } from "recoil";
 
 export const useTasks = (date: string, user: User) => {
   const [tasks, setTasks] = useState<Task[]>([]);
@@ -129,6 +130,7 @@ export const useTasks = (date: string, user: User) => {
 
   return {
     tasks,
+    setTasks,
     handleAddTask,
     handleCompleteTask,
     handleEditTask,

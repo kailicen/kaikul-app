@@ -29,7 +29,10 @@ export const useStatistics = () => {
       const taskSnapshots = await getDocs(tasksQuery);
 
       // Update the Recoil state for the current week's tasks
-      const tasks = taskSnapshots.docs.map((doc) => doc.data() as Task);
+      const tasks = taskSnapshots.docs.map((doc) => ({
+        ...(doc.data() as Task), // spread the document data first
+        id: doc.id, // then set the id property
+      }));
       setTasks(tasks);
 
       return tasks; // Return the fetched tasks
@@ -87,20 +90,18 @@ export const useStatistics = () => {
     [user]
   );
 
-  // Function to calculate completion rate
+  // Function to calculate completion rate and count of completed items
   const calculateCompletionRate = (
     data: (Task | WeeklyGoal)[],
     dataType: "tasks" | "goals"
   ) => {
-    if (data.length === 0) return 0;
+    if (data.length === 0) return { completionRate: 0, completedCount: 0 };
 
-    const completedItems = data.filter((item) => {
-      // For WeeklyGoal, we use the 'completed' field
-      // For Task, we also use the 'completed' field
-      return item.completed === true;
-    });
+    const completedItems = data.filter((item) => item.completed === true);
+    const completionRate = completedItems.length / data.length;
+    const completedCount = completedItems.length;
 
-    return completedItems.length / data.length;
+    return { completionRate, completedCount };
   };
 
   return {

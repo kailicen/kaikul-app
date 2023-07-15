@@ -11,6 +11,8 @@ import Day from "./Day";
 import DayNavigation from "./DayNavigation";
 import FloatingFeedbackButton from "./FloatingFeedbackButton";
 import TeamTab from "./TeamTab";
+import { useRecoilState, useRecoilValue } from "recoil";
+import { weekTaskListState } from "@/atoms/tasksAtom";
 
 moment.updateLocale("en", {
   week: {
@@ -32,6 +34,11 @@ function WeeklyPlanner({ user }: Props) {
     moment().startOf("day").format("YYYY-MM-DD")
   );
 
+  const endOfWeek = moment(startOfWeek).add(6, "days").format("YYYY-MM-DD");
+  const [weekTasks, setWeekTasks] = useRecoilState(
+    weekTaskListState([startOfWeek, endOfWeek])
+  );
+
   const handlePreviousWeek = () => {
     setStartOfWeek(
       moment(startOfWeek).subtract(1, "week").format("YYYY-MM-DD")
@@ -51,7 +58,7 @@ function WeeklyPlanner({ user }: Props) {
   };
 
   return (
-    <Flex direction="column" gap={4}>
+    <Flex direction="column" gap={2}>
       {isLargerThan768 ? (
         <WeekNavigation
           onPreviousWeek={handlePreviousWeek}
@@ -79,7 +86,7 @@ function WeeklyPlanner({ user }: Props) {
           {isLargerThan768 ? (
             <WeekView user={user} startOfWeek={startOfWeek} />
           ) : (
-            <Day user={user} date={startOfDay} />
+            <Day user={user} date={startOfDay} recoilTasks={weekTasks} />
           )}
         </>
       ) : (

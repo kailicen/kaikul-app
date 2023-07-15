@@ -143,11 +143,11 @@ function GoalView({ user, startOfDay, startOfWeek }: GoalViewProps) {
                 )
               }
             >
-              <Text fontSize="sm" flexGrow={1}>
+              <Text fontSize="sm" fontWeight="semibold" flexGrow={1}>
                 {goal.text}
               </Text>
               {goal.completed && (
-                <Badge colorScheme="green" ml="1" h="5">
+                <Badge ml="1" h="5">
                   done
                 </Badge>
               )}

@@ -1,5 +1,14 @@
 import React from "react";
-import { Box, Icon, Text, Tooltip, Flex, Button } from "@chakra-ui/react";
+import {
+  Box,
+  Icon,
+  Text,
+  Tooltip,
+  Flex,
+  Tabs,
+  TabList,
+  Tab,
+} from "@chakra-ui/react";
 import { MdChevronLeft, MdChevronRight } from "react-icons/md";
 import moment from "moment";
 
@@ -19,16 +28,24 @@ const WeekNavigation: React.FC<WeekNavigationProps> = ({
   activeTab, // New argument
 }) => {
   const currentDate = moment(startOfWeek);
-  const currentMonth = currentDate.format("MMM YYYY");
-  const nextWeek = currentDate.clone().add(1, "week");
-  const nextMonth = nextWeek.format("MMM YYYY");
+  const startOfWeekDate = currentDate.format("MMM Do");
+  const endOfWeekDate = currentDate
+    .clone()
+    .add(6, "days")
+    .format("MMM Do, YYYY");
 
-  const isTransitionWeek = currentDate.month() !== nextWeek.month();
+  const handleTabChange = (index: any) => {
+    if (index === 0) {
+      setActiveTab("me");
+    } else if (index === 1) {
+      setActiveTab("team");
+    }
+  };
 
   return (
-    <Flex align="center" justify="space-between">
+    <Flex align="center" justify="space-between" h={12}>
       <Flex align="center">
-        {activeTab == "me" && (
+        {activeTab === "me" && (
           <>
             <Tooltip label="Previous Week" placement="top">
               <Box
@@ -57,45 +74,25 @@ const WeekNavigation: React.FC<WeekNavigationProps> = ({
               </Box>
             </Tooltip>
             <Text fontSize="xl" fontWeight="semibold" ml={2}>
-              {isTransitionWeek ? (
-                <>
-                  <Text display="inline" mr={1}>
-                    {currentMonth.split(" ")[0]}
-                  </Text>
-                  <Text display="inline" color="gray.500" fontSize="sm">
-                    -
-                  </Text>
-                  <Text display="inline" ml={1}>
-                    {nextMonth}
-                  </Text>
-                </>
-              ) : (
-                currentMonth
-              )}
+              {startOfWeekDate} - {endOfWeekDate}
             </Text>
           </>
         )}
       </Flex>
       <Flex align="center">
-        <Button
-          onClick={() => setActiveTab("me")}
-          colorScheme={activeTab === "me" ? "purple" : "gray"} // Changed colorScheme
-          variant="outline"
-          borderRadius="md"
-          _hover={{ bg: "gray.100" }}
-          mr={1}
+        <Tabs
+          variant="soft-rounded"
+          colorScheme="purple"
+          defaultIndex={activeTab === "me" ? 0 : 1}
+          onChange={handleTabChange}
+          mr={{ base: 2, md: 10 }}
+          mb={5}
         >
-          Me
-        </Button>
-        <Button
-          onClick={() => setActiveTab("team")}
-          colorScheme={activeTab === "team" ? "purple" : "gray"} // Changed colorScheme
-          variant="outline"
-          borderRadius="md"
-          _hover={{ bg: "gray.100" }}
-        >
-          Team
-        </Button>
+          <TabList>
+            <Tab>Me</Tab>
+            <Tab>Team</Tab>
+          </TabList>
+        </Tabs>
       </Flex>
     </Flex>
   );
