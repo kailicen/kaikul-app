@@ -431,6 +431,7 @@ const Day: React.FC<{ date: string; user: User; recoilTasks: Task[] }> = ({
                           <Textarea
                             {...field}
                             placeholder="Reflect on my day..."
+                            rows={10}
                           />
                           <ErrorMessage
                             name="blocker"
