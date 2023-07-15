@@ -20,7 +20,7 @@ import {
   Select,
   DrawerFooter,
 } from "@chakra-ui/react";
-import { Formik, Form, Field, FieldInputProps } from "formik";
+import { Formik, Form, Field, FieldInputProps, ErrorMessage } from "formik";
 import { MdAdd } from "react-icons/md";
 import { useEffect, useState } from "react";
 import { User } from "firebase/auth";
@@ -265,13 +265,27 @@ const Day: React.FC<{ date: string; user: User; recoilTasks: Task[] }> = ({
                   goalId: selectedGoalId as string,
                 }}
                 onSubmit={handleFormSubmit}
+                validate={(values) => {
+                  const errors: any = {};
+                  if (!values.task.trim()) {
+                    errors.task = "Task is required";
+                  }
+                  return errors;
+                }}
               >
                 {({ isSubmitting, setFieldValue }) => (
                   <Form>
                     <Field
                       name="task"
                       render={({ field }: { field: FieldInputProps<any> }) => (
-                        <Input {...field} placeholder="New task..." />
+                        <div>
+                          <Input {...field} placeholder="New task..." />
+                          <ErrorMessage
+                            name="task"
+                            component="div"
+                            style={{ color: "red" }}
+                          />
+                        </div>
                       )}
                     />
                     <Field
@@ -281,6 +295,7 @@ const Day: React.FC<{ date: string; user: User; recoilTasks: Task[] }> = ({
                           {...field}
                           placeholder="Description..."
                           mt={4}
+                          rows={10}
                         />
                       )}
                     />
@@ -399,16 +414,30 @@ const Day: React.FC<{ date: string; user: User; recoilTasks: Task[] }> = ({
                   blocker: selectedBlockerText,
                 }}
                 onSubmit={handleBlockerFormSubmit}
+                validate={(values) => {
+                  const errors: any = {};
+                  if (!values.blocker.trim()) {
+                    errors.blocker = "Reflection is required";
+                  }
+                  return errors;
+                }}
               >
                 {({ isSubmitting }) => (
                   <Form>
                     <Field
                       name="blocker"
                       render={({ field }: { field: FieldInputProps<any> }) => (
-                        <Textarea
-                          {...field}
-                          placeholder="Reflect on my day..."
-                        />
+                        <div>
+                          <Textarea
+                            {...field}
+                            placeholder="Reflect on my day..."
+                          />
+                          <ErrorMessage
+                            name="blocker"
+                            component="div"
+                            style={{ color: "red" }}
+                          />
+                        </div>
                       )}
                     />
                     <DrawerFooter>

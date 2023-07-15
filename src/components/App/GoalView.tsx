@@ -33,7 +33,7 @@ import { User } from "firebase/auth";
 import { MdAdd } from "react-icons/md";
 import { useGoals } from "@/hooks/useGoals";
 import moment from "moment";
-import { Formik, Field, Form, FieldInputProps } from "formik";
+import { Formik, Field, Form, FieldInputProps, ErrorMessage } from "formik";
 import { CirclePicker } from "react-color";
 import { ChevronDownIcon } from "@chakra-ui/icons";
 
@@ -179,15 +179,30 @@ function GoalView({ user, startOfDay, startOfWeek }: GoalViewProps) {
                   color: selectedGoalColor,
                 }}
                 onSubmit={handleFormSubmit}
+                validate={(values) => {
+                  const errors: any = {};
+                  if (!values.goal.trim()) {
+                    errors.goal = "Goal is required";
+                  }
+                  return errors;
+                }}
               >
                 {({ isSubmitting }) => (
                   <Form>
                     <Field
                       name="goal"
                       render={({ field }: { field: FieldInputProps<any> }) => (
-                        <Input {...field} placeholder="New goal..." />
+                        <div>
+                          <Input {...field} placeholder="New goal..." />
+                          <ErrorMessage
+                            name="goal"
+                            component="div"
+                            style={{ color: "red" }}
+                          />
+                        </div>
                       )}
                     />
+
                     <Field
                       name="description"
                       render={({ field }: { field: FieldInputProps<any> }) => (
@@ -195,6 +210,7 @@ function GoalView({ user, startOfDay, startOfWeek }: GoalViewProps) {
                           {...field}
                           placeholder="Description..."
                           mt={4}
+                          rows={15}
                         />
                       )}
                     />
