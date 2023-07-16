@@ -163,21 +163,21 @@ function Review() {
   return (
     <>
       <AuthenticatedHeader user={user} />
-      <Center>
-        <Box p={5} pt="80px" w="1200px">
-          {/* <Center>
-            <Tabs
-              variant="soft-rounded"
-              colorScheme="purple"
-              defaultIndex={activeTab === "me" ? 0 : 1}
-              onChange={handleTabChange}
-            >
-              <TabList mb="1em">
-                <Tab>Reflect</Tab>
-                <Tab>Connect</Tab>
-              </TabList>
-            </Tabs>
-          </Center> */}
+      <Box p={5} pt="80px" maxW="1200px">
+        {/* <Center>
+          <Tabs
+            variant="soft-rounded"
+            colorScheme="purple"
+            defaultIndex={activeTab === "me" ? 0 : 1}
+            onChange={handleTabChange}
+          >
+            <TabList mb="1em">
+              <Tab>Reflect</Tab>
+              <Tab>Connect</Tab>
+            </TabList>
+          </Tabs>
+        </Center> */}
+        <Center>
           {activeTab === "me" ? (
             <Grid
               templateColumns={{ base: "1fr", md: "2fr 1fr" }}
@@ -459,9 +459,9 @@ function Review() {
           ) : (
             <Connect />
           )}
-        </Box>
-        <FloatingFeedbackButton /> {/* Add the feedback button */}
-      </Center>
+          <FloatingFeedbackButton /> {/* Add the feedback button */}
+        </Center>
+      </Box>
     </>
   );
 }
