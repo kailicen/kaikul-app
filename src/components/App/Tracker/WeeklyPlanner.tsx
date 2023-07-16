@@ -9,8 +9,8 @@ import "moment/locale/en-gb";
 import { useMediaQuery } from "@chakra-ui/react";
 import Day from "./Day";
 import DayNavigation from "./DayNavigation";
-import FloatingFeedbackButton from "./FloatingFeedbackButton";
-import TeamTab from "./TeamTab";
+import FloatingFeedbackButton from "../FloatingFeedbackButton";
+import TeamTab from "../TeamTab";
 import { useRecoilState, useRecoilValue } from "recoil";
 import { weekTaskListState } from "@/atoms/tasksAtom";
 

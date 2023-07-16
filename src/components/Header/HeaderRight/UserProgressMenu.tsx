@@ -4,6 +4,7 @@ import { useState } from "react";
 import { VscGraph } from "react-icons/vsc";
 import { AiOutlineShareAlt } from "react-icons/ai";
 import { BsCalendarWeek } from "react-icons/bs";
+import { MdOutlineForum } from "react-icons/md";
 import { User } from "firebase/auth";
 import ShareProgressModal from "@/components/Modal/ShareProgress/ShareProgressModal";
 
@@ -23,8 +24,12 @@ const UserProgressMenu: React.FC<UserProgressMenuProps> = ({ user }) => {
     setIsShareModalOpen(false);
   };
 
-  const showStatistics = () => {
-    router.push("/statistics");
+  const showStats = () => {
+    router.push("/stats");
+  };
+
+  const showWeeklyReview = () => {
+    router.push("/review");
   };
 
   const isMobile = useBreakpointValue({ base: true, md: false });
@@ -46,13 +51,13 @@ const UserProgressMenu: React.FC<UserProgressMenuProps> = ({ user }) => {
             leftIcon={<BsCalendarWeek />}
             onClick={() => router.push("/")}
           >
-            My Week
+            Tracker
           </Button>
         )}
 
         {isMobile ? (
           <IconButton
-            aria-label="Export Progress"
+            aria-label="Share"
             icon={<AiOutlineShareAlt />}
             onClick={openShareModal}
             borderRadius="full"
@@ -61,7 +66,7 @@ const UserProgressMenu: React.FC<UserProgressMenuProps> = ({ user }) => {
           />
         ) : (
           <Button leftIcon={<AiOutlineShareAlt />} onClick={openShareModal}>
-            Share Progress
+            Share
           </Button>
         )}
 
@@ -69,13 +74,27 @@ const UserProgressMenu: React.FC<UserProgressMenuProps> = ({ user }) => {
           <IconButton
             aria-label="Weekly Statistics"
             icon={<VscGraph />}
-            onClick={showStatistics}
+            onClick={showStats}
             borderRadius="full"
             size="md"
           />
         ) : (
-          <Button leftIcon={<VscGraph />} onClick={showStatistics}>
-            Weekly Statistics
+          <Button leftIcon={<VscGraph />} onClick={showStats}>
+            Stats
+          </Button>
+        )}
+
+        {isMobile ? (
+          <IconButton
+            aria-label="Weekly Updates"
+            icon={<MdOutlineForum />}
+            onClick={showWeeklyReview}
+            borderRadius="full"
+            size="md"
+          />
+        ) : (
+          <Button leftIcon={<MdOutlineForum />} onClick={showWeeklyReview}>
+            Reflect & Connect
           </Button>
         )}
       </Flex>

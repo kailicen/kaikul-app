@@ -19,7 +19,7 @@ import {
 } from "@chakra-ui/react";
 import { useEffect, useRef, useState } from "react";
 import useProgress, { ProgressOption } from "@/hooks/useProgress";
-import { format } from "date-fns";
+import { endOfWeek, format, startOfWeek } from "date-fns";
 import { toPng } from "html-to-image";
 import * as clipboard from "clipboard-polyfill";
 import { doc, getDoc } from "firebase/firestore";
@@ -35,7 +35,7 @@ const ShareProgressModal: React.FC<ShareProgressModalProps> = ({
   onClose,
 }) => {
   const [selectedProgress, setSelectedProgress] =
-    useState<ProgressOption>("Daily Progress");
+    useState<ProgressOption>("Daily Sprint");
 
   // Add new state variable
   const [lastOpened, setLastOpened] = useState<Date>(new Date());
@@ -49,12 +49,20 @@ const ShareProgressModal: React.FC<ShareProgressModalProps> = ({
     setSelectedProgress(progress);
   };
 
-  const progressOptions: ProgressOption[] = [
-    "Daily Progress",
-    "Weekly Progress",
-  ];
+  const progressOptions: ProgressOption[] = ["Daily Sprint", "Weekly Sprint"];
 
-  const formattedDate = format(new Date(), "yyyy-MM-dd");
+  // Get current date
+  const now = new Date();
+
+  const formattedDate = format(now, "EEEE, MMM do, yyyy");
+
+  // Get the start (Monday) and end (Sunday) of the week
+  const start = startOfWeek(now, { weekStartsOn: 1 }); // weekStartsOn: 1 makes week start from Monday
+  const end = endOfWeek(now, { weekStartsOn: 1 });
+
+  // Format these dates
+  const formattedStart = format(start, "MMM do");
+  const formattedEnd = format(end, "MMM do, yyyy");
 
   const {
     user,
@@ -100,7 +108,7 @@ const ShareProgressModal: React.FC<ShareProgressModalProps> = ({
 
     let text = `*Posted by ${username}*\n`;
 
-    if (selectedProgress === "Daily Progress") {
+    if (selectedProgress === "Daily Sprint") {
       text += `*${formattedDate}:*\n`;
 
       if (yesterdayTasks.length > 0) {
@@ -120,8 +128,8 @@ const ShareProgressModal: React.FC<ShareProgressModalProps> = ({
           .map((task) => `- ${task.text}`)
           .join("\n")}`;
       }
-    } else if (selectedProgress === "Weekly Progress") {
-      text += `*Weekly Progress:*\n\n`;
+    } else if (selectedProgress === "Weekly Sprint") {
+      text += `*${formattedStart} - ${formattedEnd}:*\n\n`;
 
       if (weeklyGoals.length > 0) {
         text += `*🎯 Goals:*\n${weeklyGoals
@@ -141,8 +149,6 @@ const ShareProgressModal: React.FC<ShareProgressModalProps> = ({
           .map((blocker) => `- ${blocker.text}`)
           .join("\n")}`;
       }
-
-      text += `\n\nThis is the accountability partner platform powered by [KaiKul](http://kaikul.com/).`;
     }
 
     try {
@@ -237,6 +243,13 @@ const ShareProgressModal: React.FC<ShareProgressModalProps> = ({
       });
       console.log("Image copied to clipboard");
     } catch (error) {
+      toast({
+        title: "Fail to process",
+        description: "Please contact KaiKul team for further assistance.",
+        status: "error",
+        duration: 5000,
+        isClosable: true,
+      });
       console.error("Failed to copy", error);
     }
   };
@@ -269,7 +282,7 @@ const ShareProgressModal: React.FC<ShareProgressModalProps> = ({
               </Stack>
             </RadioGroup>
           </FormControl>
-          {selectedProgress === "Daily Progress" && (
+          {selectedProgress === "Daily Sprint" && (
             <>
               <Text mb={4}>{formattedDate}:</Text>
               <Box mb={4}>
@@ -307,8 +320,11 @@ const ShareProgressModal: React.FC<ShareProgressModalProps> = ({
               </Text>
             </>
           )}
-          {selectedProgress === "Weekly Progress" && (
+          {selectedProgress === "Weekly Sprint" && (
             <>
+              <Text mb={4}>
+                {formattedStart} - {formattedEnd}:
+              </Text>
               <Box mb={4}>
                 <Text mb={2}>🎯 Goals: </Text>
                 <UnorderedList pl={4}>

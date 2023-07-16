@@ -143,6 +143,30 @@ export const useGoals = (user: User, startOfWeek: string) => {
     setGoals(goals.filter((goal) => goal.id !== id));
     setRecoilGoals(goals.filter((goal) => goal.id !== id));
 
+    // Fetch tasks associated with the goal
+    const tasks = await fetchTasks(new Date(startOfWeek), new Date(endOfWeek));
+    const tasksForGoal = tasks.filter((task) => task.goalId === id);
+
+    if (tasksForGoal.length > 0) {
+      const batch = writeBatch(firestore);
+
+      tasksForGoal.forEach((task) => {
+        const taskDocRef = doc(firestore, "tasks", task.id);
+        batch.update(taskDocRef, {
+          goalId: "", // Unlink the task from the goal
+          color: "",
+        });
+      });
+
+      await batch.commit();
+
+      // Update the Recoil state
+      const updatedWeekTasks = tasks.map((task) =>
+        task.goalId === id ? { ...task, goalId: "", color: "" } : task
+      );
+      setWeekTasks(updatedWeekTasks);
+    }
+
     try {
       await deleteDoc(doc(firestore, "weeklyGoals", id));
     } catch (error) {

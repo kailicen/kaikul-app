@@ -59,7 +59,7 @@ const DayNavigation: React.FC<DayNavigationProps> = ({
           {currentDay}
         </Text>
       </Flex>
-      <Flex align="center">
+      {/* <Flex align="center">
         <Tabs
           variant="soft-rounded"
           colorScheme="purple"
@@ -73,7 +73,7 @@ const DayNavigation: React.FC<DayNavigationProps> = ({
             <Tab>Team</Tab>
           </TabList>
         </Tabs>
-      </Flex>
+      </Flex> */}
     </Flex>
   );
 };

@@ -12,7 +12,7 @@ import HowItWorks from "@/components/LandingPageSections/HowItWorks";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { auth } from "../firebase/clientApp";
 import { useColorMode } from "@chakra-ui/react";
-import WeeklyPlanner from "@/components/App/WeeklyPlanner";
+import WeeklyPlanner from "@/components/App/Tracker/WeeklyPlanner";
 import UnauthenticatedHeader from "@/components/Header/UnauthenticatedHeader";
 import AuthenticatedHeader from "@/components/Header/AuthenticatedHeader";
 import LoadingScreen from "@/components/LoadingScreen";
@@ -128,7 +128,7 @@ export default function Home() {
       )}
 
       {user ? (
-        <div className="pt-[100px] px-2 md:px-10 3xl:px-32">
+        <div className="pt-[80px] px-2 md:px-10 3xl:px-32">
           <WeeklyPlanner user={user} />
         </div>
       ) : (

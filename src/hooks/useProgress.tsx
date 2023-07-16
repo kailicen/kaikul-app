@@ -7,7 +7,7 @@ import { Blocker } from "@/atoms/blockersAtom";
 import { Task } from "@/atoms/tasksAtom";
 import { WeeklyGoal } from "@/atoms/weeklyGoalsAtom";
 
-export type ProgressOption = "Daily Progress" | "Weekly Progress";
+export type ProgressOption = "Daily Sprint" | "Weekly Sprint";
 
 const useProgress = (selectedProgress: ProgressOption, lastOpened: Date) => {
   const [user] = useAuthState(auth);
@@ -116,13 +116,13 @@ const useProgress = (selectedProgress: ProgressOption, lastOpened: Date) => {
       }
     };
 
-    if (selectedProgress === "Daily Progress") {
+    if (selectedProgress === "Daily Sprint") {
       fetchDailyProgress().catch((error) => {
-        console.error("Error fetching daily progress:", error);
+        console.error("Error fetching daily sprint:", error);
       });
-    } else if (selectedProgress === "Weekly Progress") {
+    } else if (selectedProgress === "Weekly Sprint") {
       fetchWeeklyProgress().catch((error) => {
-        console.error("Error fetching weekly progress:", error);
+        console.error("Error fetching weekly sprint:", error);
       });
     }
   }, [user, selectedProgress, , lastOpened]);

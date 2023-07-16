@@ -49,7 +49,6 @@ function TeamTab({ user, startOfWeek }: Props) {
   );
 
   const currentDate = new Date();
-  const currentWeek = getWeek(currentDate);
 
   // Format the start and end of week for the button display
   const startOfWeekDate = startOfWeekDateFns(currentDate, { weekStartsOn: 1 }); // Monday
@@ -156,10 +155,10 @@ function TeamTab({ user, startOfWeek }: Props) {
           )}
           {teamTabs.map((teamTab) => {
             const startOfWeekDate = parseISO(teamTab.startOfWeek);
-            const formattedStartOfWeek = format(startOfWeekDate, "MMMM do");
+            const formattedStartOfWeek = format(startOfWeekDate, "MMM do");
 
             const endOfWeekDate = addDays(startOfWeekDate, 6);
-            const formattedEndOfWeek = format(endOfWeekDate, "MMMM do, yyyy");
+            const formattedEndOfWeek = format(endOfWeekDate, "MMM do, yyyy");
 
             return (
               <Box

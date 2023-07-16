@@ -29,6 +29,7 @@ import {
   MdChevronRight,
   MdClear,
 } from "react-icons/md";
+import FloatingFeedbackButton from "@/components/App/FloatingFeedbackButton";
 
 moment.locale("en-gb");
 
@@ -129,7 +130,7 @@ function Statistics() {
     <>
       <AuthenticatedHeader user={user} />
       <Center>
-        <Box p={5} pt="100px" w="1200px">
+        <Box p={5} pt="80px" w="1200px">
           {/* Here, pt (padding-top) is used to prevent overlap with the fixed header */}
           <VStack align="center" spacing={8}>
             <Tabs
@@ -271,6 +272,7 @@ function Statistics() {
             </Grid>
           </VStack>
         </Box>
+        <FloatingFeedbackButton /> {/* Add the feedback button */}
       </Center>
     </>
   );

@@ -79,7 +79,7 @@ const WeekNavigation: React.FC<WeekNavigationProps> = ({
           </>
         )}
       </Flex>
-      <Flex align="center">
+      {/* <Flex align="center">
         <Tabs
           variant="soft-rounded"
           colorScheme="purple"
@@ -93,7 +93,7 @@ const WeekNavigation: React.FC<WeekNavigationProps> = ({
             <Tab>Team</Tab>
           </TabList>
         </Tabs>
-      </Flex>
+      </Flex> */}
     </Flex>
   );
 };
