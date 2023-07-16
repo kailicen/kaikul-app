@@ -163,7 +163,7 @@ function Review() {
   return (
     <>
       <AuthenticatedHeader user={user} />
-      <Box p={5} pt="80px" maxW="1200px">
+      <Box p={5} pt="80px">
         {/* <Center>
           <Tabs
             variant="soft-rounded"
