@@ -201,10 +201,30 @@ const ShareProgressModal: React.FC<ShareProgressModalProps> = ({
       const response = await fetch(dataUrl);
       const blob = await response.blob();
 
-      // Use clipboard-polyfill to write the blob as an image to the clipboard
-      await clipboard.write([
-        new clipboard.ClipboardItem({ "image/png": blob }),
-      ]);
+      // Check if the device is a mobile
+      const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+
+      if (isMobile) {
+        // Mobile: Provide a download link
+        const blobUrl = URL.createObjectURL(blob);
+
+        // Create a download link
+        let a = document.createElement("a");
+        a.href = blobUrl;
+        a.download = "image.png";
+        a.style.display = "none"; // Hide the link
+        document.body.appendChild(a); // Append the link to the body
+        a.click(); // Simulate a click
+
+        // Cleanup: remove the link and revoke the blob URL
+        document.body.removeChild(a);
+        URL.revokeObjectURL(blobUrl);
+      } else {
+        // Desktop: Use clipboard-polyfill to write the blob as an image to the clipboard
+        await clipboard.write([
+          new clipboard.ClipboardItem({ "image/png": blob }),
+        ]);
+      }
 
       // Display a success toast
       toast({
