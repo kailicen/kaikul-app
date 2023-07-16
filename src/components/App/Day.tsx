@@ -311,7 +311,7 @@ const Day: React.FC<{ date: string; user: User; recoilTasks: Task[] }> = ({
                           <Select
                             {...field}
                             placeholder="Link with a goal (optional)"
-                            value={selectedGoalId || ""} // Set the selected value
+                            value={field.value} // Set the selected value
                             onChange={(e) => {
                               setFieldValue("goalId", e.target.value);
                             }}
