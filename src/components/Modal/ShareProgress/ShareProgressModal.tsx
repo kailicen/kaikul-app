@@ -222,7 +222,7 @@ const ShareProgressModal: React.FC<ShareProgressModalProps> = ({
       } else {
         // Desktop: Use clipboard-polyfill to write the blob as an image to the clipboard
         await clipboard.write([
-          new clipboard.ClipboardItem({ "Share-KaiKul/png": blob }),
+          new clipboard.ClipboardItem({ "image/png": blob }),
         ]);
       }
 
