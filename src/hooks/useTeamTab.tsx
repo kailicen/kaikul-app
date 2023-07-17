@@ -27,6 +27,8 @@ type TeamTab = {
 
 export const useTeamTab = (user: User, startOfWeek: string) => {
   const [teamTabs, setTeamTabs] = useState<TeamTab[]>([]);
+  const [isCurrentWeekDataExist, setIsCurrentWeekDataExist] =
+    useState<boolean>(false);
 
   const handleAddTeamTab = async (
     startOfWeek: string,
@@ -106,27 +108,33 @@ export const useTeamTab = (user: User, startOfWeek: string) => {
 
   useEffect(() => {
     const loadTeamTabs = async () => {
-      const q = query(
-        collection(firestore, "teamTabs"),
-        where("startOfWeek", "==", startOfWeek),
-        where("userId", "==", user.uid),
-        orderBy("startOfWeek", "desc")
-      );
-      const querySnapshot = await getDocs(q);
-      const teamTabsForWeek: TeamTab[] = [];
-      querySnapshot.forEach((doc) => {
-        const teamTab = doc.data() as TeamTab;
-        teamTab.id = doc.id;
-        teamTabsForWeek.push(teamTab);
-      });
-      setTeamTabs(teamTabsForWeek);
+      if (user && user.uid) {
+        // add this line
+        const q = query(
+          collection(firestore, "teamTabs"),
+          where("userId", "==", user.uid),
+          orderBy("startOfWeek", "desc")
+        );
+        const querySnapshot = await getDocs(q);
+        const teamTabs: TeamTab[] = [];
+        querySnapshot.forEach((doc) => {
+          const teamTab = doc.data() as TeamTab;
+          teamTab.id = doc.id;
+          teamTabs.push(teamTab);
+          if (teamTab.startOfWeek === startOfWeek) {
+            setIsCurrentWeekDataExist(true);
+          }
+        });
+        setTeamTabs(teamTabs);
+      } // and this line
     };
     loadTeamTabs();
-  }, [user, startOfWeek, setTeamTabs]);
+  }, [user, startOfWeek]);
 
   return {
     teamTabs,
     handleUpdateTeamTab,
     handleAddTeamTab,
+    isCurrentWeekDataExist,
   };
 };

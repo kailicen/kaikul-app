@@ -89,22 +89,17 @@ function Review() {
     }
   };
 
-  const { teamTabs, handleUpdateTeamTab, handleAddTeamTab } = useTeamTab(
-    user as User,
-    startOfWeek
-  );
+  const {
+    teamTabs,
+    handleUpdateTeamTab,
+    handleAddTeamTab,
+    isCurrentWeekDataExist,
+  } = useTeamTab(user as User, startOfWeek);
 
   if (loading) {
     // Here, you can return a loader if the authentication state is still being determined.
     return <LoadingScreen />;
   }
-
-  // Check if update already exists for current week
-  const isUpdateAlreadyExists = teamTabs.some(
-    (teamTab) =>
-      isBefore(new Date(teamTab.startOfWeek), endOfWeekDate) ||
-      isEqual(new Date(teamTab.startOfWeek), endOfWeekDate)
-  );
 
   const openDrawer = (
     id?: string,
@@ -193,7 +188,7 @@ function Review() {
                   Track your week&apos;s highlights effortlessly! Fill out your
                   weekly updates, a fun, vital part of our sessions.
                 </Text>
-                {!isUpdateAlreadyExists && (
+                {!isCurrentWeekDataExist && (
                   <Button onClick={() => openDrawer()}>
                     Add Update for {formattedStartOfWeek} - {formattedEndOfWeek}
                   </Button>
