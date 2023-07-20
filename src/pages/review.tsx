@@ -47,7 +47,7 @@ import {
 } from "date-fns";
 import { Formik, Form, Field } from "formik";
 import { useTeamTab } from "@/hooks/useTeamTab";
-import Connect from "@/components/App/Connect";
+import Connect from "@/components/App/Connect/Connect";
 import FloatingFeedbackButton from "@/components/App/FloatingFeedbackButton";
 
 moment.locale("en-gb");
@@ -159,7 +159,7 @@ function Review() {
     <>
       <AuthenticatedHeader user={user} />
       <Box p={5} pt="80px">
-        {/* <Center>
+        <Center>
           <Tabs
             variant="soft-rounded"
             colorScheme="purple"
@@ -171,13 +171,12 @@ function Review() {
               <Tab>Connect</Tab>
             </TabList>
           </Tabs>
-        </Center> */}
+        </Center>
         <Center>
           {activeTab === "me" ? (
             <Grid
               templateColumns={{ base: "1fr", md: "2fr 1fr" }}
               gap={10}
-              p={5}
               w="1200px"
             >
               <Box order={{ base: 2, md: 1 }}>

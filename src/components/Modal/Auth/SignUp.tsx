@@ -29,12 +29,12 @@ const SignUp: React.FC = () => {
     }
     // passwords match
     createUserWithEmailAndPassword(signUpForm.email, signUpForm.password)
-      .then((userCredential) => {
-        // User has been created, now we can create the Firestore document
-        if (userCredential && userCredential.user) {
-          createUserDocument(userCredential.user);
-        }
-      })
+      // .then((userCredential) => {
+      //   // User has been created, now we can create the Firestore document
+      //   if (userCredential && userCredential.user) {
+      //     createUserDocument(userCredential.user);
+      //   }
+      // })
       .catch((err) => {
         // Handle errors here
         console.error(err);
@@ -49,15 +49,15 @@ const SignUp: React.FC = () => {
     }));
   };
 
-  const createUserDocument = async (user: User) => {
-    const userData = {
-      email: user.email,
-      displayName: user.displayName,
-      photoURL: user.photoURL,
-      // Add more user fields here if needed
-    };
-    await setDoc(doc(firestore, "users", user.uid), userData);
-  };
+  // const createUserDocument = async (user: User) => {
+  //   const userData = {
+  //     email: user.email,
+  //     displayName: user.displayName,
+  //     photoURL: user.photoURL,
+  //     // Add more user fields here if needed
+  //   };
+  //   await setDoc(doc(firestore, "users", user.uid), userData);
+  // };
 
   return (
     <form onSubmit={onSubmit}>
