@@ -10,8 +10,7 @@ import { useMediaQuery } from "@chakra-ui/react";
 import Day from "./Day";
 import DayNavigation from "./DayNavigation";
 import FloatingFeedbackButton from "../FloatingFeedbackButton";
-import TeamTab from "../TeamTab";
-import { useRecoilState, useRecoilValue } from "recoil";
+import { useRecoilState } from "recoil";
 import { weekTaskListState } from "@/atoms/tasksAtom";
 
 moment.updateLocale("en", {
@@ -23,6 +22,7 @@ moment.updateLocale("en", {
 type Props = { user: User };
 
 function WeeklyPlanner({ user }: Props) {
+  // might have future feature regarding to me/team tab
   const [activeTab, setActiveTab] = useState<"me" | "team">("me");
 
   const [isLargerThan768] = useMediaQuery("(min-width: 768px)");
@@ -76,21 +76,11 @@ function WeeklyPlanner({ user }: Props) {
           activeTab={activeTab}
         />
       )}
-      {activeTab === "me" ? (
-        <>
-          <GoalView
-            user={user}
-            startOfDay={startOfDay}
-            startOfWeek={startOfWeek}
-          />
-          {isLargerThan768 ? (
-            <WeekView user={user} startOfWeek={startOfWeek} />
-          ) : (
-            <Day user={user} date={startOfDay} recoilTasks={weekTasks} />
-          )}
-        </>
+      <GoalView user={user} startOfDay={startOfDay} startOfWeek={startOfWeek} />
+      {isLargerThan768 ? (
+        <WeekView user={user} startOfWeek={startOfWeek} />
       ) : (
-        <TeamTab user={user} startOfWeek={startOfWeek} />
+        <Day user={user} date={startOfDay} recoilTasks={weekTasks} />
       )}
       <FloatingFeedbackButton /> {/* Add the feedback button */}
     </Flex>

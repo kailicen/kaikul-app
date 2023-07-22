@@ -14,9 +14,10 @@ import { BsCalendarWeek } from "react-icons/bs";
 import { MdOutlineForum } from "react-icons/md";
 import { User } from "firebase/auth";
 import ShareProgressModal from "@/components/Modal/ShareProgress/ShareProgressModal";
-import { BuddyRequest } from "@/components/Modal/Connect/SelectFromCommunityModal";
 import { collection, query, where, getDocs } from "firebase/firestore";
 import { firestore } from "@/firebase/clientApp";
+import { BuddyRequest, buddyRequestState } from "@/atoms/buddyRequestsAtom";
+import { useRecoilState } from "recoil";
 
 type UserProgressMenuProps = {
   user?: User | null;
@@ -69,6 +70,7 @@ const ReflectConnectButton: React.FC<ReflectConnectProps> = ({
 
 const UserProgressMenu: React.FC<UserProgressMenuProps> = ({ user }) => {
   const router = useRouter();
+  const [buddyRequests, setBuddyRequests] = useRecoilState(buddyRequestState);
   const [isShareModalOpen, setIsShareModalOpen] = useState(false);
   const [pendingRequests, setPendingRequests] = useState(0);
 
@@ -92,28 +94,39 @@ const UserProgressMenu: React.FC<UserProgressMenuProps> = ({ user }) => {
 
   useEffect(() => {
     if (user) {
-      const fetchData = async () => {
-        const q = query(
-          collection(firestore, "buddyRequests"),
-          where("toUserId", "==", user.uid),
-          where("status", "==", "pending")
-        );
-        const querySnapshot = await getDocs(q);
-        const requests: BuddyRequest[] = querySnapshot.docs.map((doc) => ({
-          id: doc.id,
-          fromUserId: doc.data().fromUserId,
-          toUserId: doc.data().toUserId,
-          status: doc.data().status,
-          timestamp: doc.data().timestamp,
-        })) as BuddyRequest[];
+      // If there are no buddy requests in the Recoil state, fetch from Firestore
+      if (!buddyRequests.length) {
+        const fetchData = async () => {
+          const q = query(
+            collection(firestore, "buddyRequests"),
+            where("toUserId", "==", user.uid),
+            where("status", "==", "pending")
+          );
+          const querySnapshot = await getDocs(q);
+          const requests: BuddyRequest[] = querySnapshot.docs.map((doc) => ({
+            id: doc.id,
+            fromUserId: doc.data().fromUserId,
+            fromUserDisplayName: doc.data().fromUserDisplayName,
+            fromUserEmail: doc.data().fromUserEmail,
+            fromUserPhotoURL: doc.data().fromUserPhotoURL,
+            toUserId: doc.data().toUserId,
+            status: doc.data().status,
+            timestamp: doc.data().timestamp,
+          })) as BuddyRequest[];
 
-        setPendingRequests(requests.length);
-      };
+          // set recoil state
+          setBuddyRequests(requests);
+        };
 
-      fetchData();
-      fetchData();
+        fetchData();
+      }
+
+      // Update pendingRequests either way
+      setPendingRequests(
+        buddyRequests.filter((request) => request.status === "pending").length
+      );
     }
-  }, [user]);
+  }, [user, buddyRequests]);
 
   return (
     <>

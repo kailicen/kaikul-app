@@ -1,23 +1,14 @@
 import React, { useState } from "react";
-import {
-  Button,
-  Menu,
-  MenuButton,
-  MenuList,
-  MenuItem,
-  Modal,
-  ModalOverlay,
-  ModalContent,
-  ModalHeader,
-  ModalCloseButton,
-  ModalBody,
-  ModalFooter,
-} from "@chakra-ui/react";
+import { Button, Menu, MenuButton, MenuList, MenuItem } from "@chakra-ui/react";
 import { ChevronDownIcon } from "@chakra-ui/icons";
 import InviteFriendModal from "@/components/Modal/Connect/InviteFriendModal";
 import SelectFromCommunityModal from "@/components/Modal/Connect/SelectFromCommunityModal";
+import { useAuthState } from "react-firebase-hooks/auth";
+import { auth } from "@/firebase/clientApp";
+import { User } from "firebase/auth";
 
 const AddBuddy = () => {
+  const [user] = useAuthState(auth);
   const [isInviteFriendModalOpen, setInviteFriendModalOpen] = useState(false);
   const [isSelectFromCommunityModalOpen, setSelectFromCommunityModalOpen] =
     useState(false);
@@ -33,7 +24,11 @@ const AddBuddy = () => {
   return (
     <>
       <Menu>
-        <MenuButton as={Button} rightIcon={<ChevronDownIcon />}>
+        <MenuButton
+          as={Button}
+          variant="outline"
+          rightIcon={<ChevronDownIcon />}
+        >
           Add Buddy
         </MenuButton>
         <MenuList>
@@ -45,6 +40,7 @@ const AddBuddy = () => {
       </Menu>
 
       <InviteFriendModal
+        user={user as User}
         isOpen={isInviteFriendModalOpen}
         onClose={closeInviteFriendModal}
       />

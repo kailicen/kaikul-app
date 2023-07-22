@@ -10,17 +10,20 @@ import {
   Avatar,
 } from "@chakra-ui/react";
 import { User, signOut } from "firebase/auth";
-import { VscAccount } from "react-icons/vsc";
 import { CgProfile } from "react-icons/cg";
 import { MdOutlineLogin } from "react-icons/md";
 import { auth, firestore } from "../../../firebase/clientApp";
 import { useRouter } from "next/router";
 import { doc, getDoc } from "firebase/firestore";
+import { useResetRecoilState } from "recoil";
+import { buddyRequestState } from "@/atoms/buddyRequestsAtom";
 
 type UserMenuProps = { user?: User | null };
 
 const UserMenu: React.FC<UserMenuProps> = ({ user }) => {
   const router = useRouter();
+  const resetBuddyRequests = useResetRecoilState(buddyRequestState);
+
   const [imagePreview, setImagePreview] = useState<string>("");
   const [username, setUsername] = useState<string>("");
 
@@ -43,8 +46,11 @@ const UserMenu: React.FC<UserMenuProps> = ({ user }) => {
   }, [user]);
 
   const logout = async () => {
-    router.push("/");
+    // Reset the recoil state
+    resetBuddyRequests();
+
     await signOut(auth);
+    router.push("/");
   };
 
   return (

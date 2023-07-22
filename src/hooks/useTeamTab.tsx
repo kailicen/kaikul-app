@@ -11,9 +11,8 @@ import {
 } from "firebase/firestore";
 import { firestore } from "../firebase/clientApp";
 import { useEffect, useState } from "react";
-import { WeeklyGoal } from "@/atoms/weeklyGoalsAtom";
 
-type TeamTab = {
+export type TeamTab = {
   id: string;
   startOfWeek: string;
   rateWeek: number;
@@ -23,6 +22,7 @@ type TeamTab = {
   biggestObstacle: string;
   lessonLearned: string;
   userId: string;
+  discussion?: string;
 };
 
 export const useTeamTab = (user: User, startOfWeek: string) => {

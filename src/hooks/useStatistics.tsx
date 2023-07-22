@@ -5,7 +5,7 @@ import { auth, firestore } from "@/firebase/clientApp";
 import { Blocker } from "@/atoms/blockersAtom";
 import { Task } from "@/atoms/tasksAtom";
 import { WeeklyGoal } from "@/atoms/weeklyGoalsAtom";
-import moment from "moment";
+import { format } from "date-fns";
 
 export const useStatistics = () => {
   const [user] = useAuthState(auth);
@@ -15,8 +15,8 @@ export const useStatistics = () => {
 
   const fetchTasks = useCallback(
     async (start: Date, end: Date) => {
-      const startString = moment(start).format("YYYY-MM-DD");
-      const endString = moment(end).format("YYYY-MM-DD");
+      const startString = format(start, "yyyy-MM-dd");
+      const endString = format(end, "yyyy-MM-dd");
 
       const tasksQuery = query(
         collection(firestore, "tasks"),
@@ -42,8 +42,8 @@ export const useStatistics = () => {
 
   const fetchBlockers = useCallback(
     async (start: Date, end: Date) => {
-      const startString = moment(start).format("YYYY-MM-DD");
-      const endString = moment(end).format("YYYY-MM-DD");
+      const startString = format(start, "yyyy-MM-dd");
+      const endString = format(end, "yyyy-MM-dd");
 
       const blockersQuery = query(
         collection(firestore, "blockers"),
@@ -68,8 +68,8 @@ export const useStatistics = () => {
 
   const fetchGoals = useCallback(
     async (start: Date, end: Date) => {
-      const startString = moment(start).format("YYYY-MM-DD");
-      const endString = moment(end).format("YYYY-MM-DD");
+      const startString = format(start, "yyyy-MM-dd");
+      const endString = format(end, "yyyy-MM-dd");
 
       const goalsQuery = query(
         collection(firestore, "weeklyGoals"),

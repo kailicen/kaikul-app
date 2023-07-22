@@ -18,39 +18,24 @@ export const createUserDocument = functions.auth
     db.collection("users").doc(user.uid).set(newUser);
   });
 
-// Start writing functions
-// https://firebase.google.com/docs/functions/typescript
+exports.updateBuddyLists = functions.firestore
+  .document("buddyRequests/{requestId}")
+  .onUpdate(async (change) => {
+    const newValue = change.after.data();
+    const previousValue = change.before.data();
 
-// export const helloWorld = onRequest((request, response) => {
-//   logger.info("Hello logs!", {structuredData: true});
-//   response.send("Hello from Firebase!");
-// });
+    if (newValue.status === "accepted" && previousValue.status === "pending") {
+      const {fromUserId, toUserId} = newValue;
 
-// const functions = require("firebase-functions");
-// const admin = require("firebase-admin");
-// admin.initializeApp();
+      const usersRef = admin.firestore().collection("users");
 
-// exports.updateBuddyLists = functions.firestore
-//   .document("buddyRequests/{requestId}")
-//   .onUpdate((change, context) => {
-//     const newValue = change.after.data();
-//     const previousValue = change.before.data();
-
-//     if (newValue.status === "accepted"
-// && previousValue.status === "pending") {
-//       const { senderId, receiverId } = newValue;
-
-//       const usersRef = admin.firestore().collection("users");
-
-//       return Promise.all([
-//         usersRef.doc(senderId).update({
-//           buddies: admin.firestore.FieldValue.arrayUnion(receiverId),
-//         }),
-//         usersRef.doc(receiverId).update({
-//           buddies: admin.firestore.FieldValue.arrayUnion(senderId),
-//         }),
-//       ]);
-//     } else {
-//       return null;
-//     }
-//   });
+      await Promise.all([
+        usersRef.doc(fromUserId).update({
+          buddies: admin.firestore.FieldValue.arrayUnion(toUserId),
+        }),
+        usersRef.doc(toUserId).update({
+          buddies: admin.firestore.FieldValue.arrayUnion(fromUserId),
+        }),
+      ]);
+    }
+  });
