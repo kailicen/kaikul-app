@@ -165,7 +165,6 @@ const Day: React.FC<{ date: string; user: User; recoilTasks: Task[] }> = ({
         );
       });
       setTasks(currentDateTasks);
-      console.log(tasks);
     }
   }, [recoilTasks, date]);
 

@@ -10,22 +10,19 @@ admin.initializeApp({
 const firestore = admin.firestore();
 
 const migrateUsers = async () => {
-  const usersSnapshot = await firestore.collection("users").get();
+  // Retrieve all existing users from Firebase Authentication
+  const userRecords = await admin.auth().listUsers();
 
-  // Check if the "users" collection is empty
-  if (usersSnapshot.empty) {
-    // Retrieve all existing users from Firebase Authentication
-    const userRecords = await admin.auth().listUsers();
+  // Loop through each user and migrate to the "users" collection
+  for (const userRecord of userRecords.users) {
+    const { uid, displayName, email, photoURL } = userRecord.toJSON();
 
-    // Filter users who don't have a displayName or photoURL
-    const usersToMigrate = userRecords.users.filter(
-      (userRecord) => !userRecord.displayName || !userRecord.photoURL
-    );
+    // Check if the user already exists in the "users" collection
+    const userDocRef = firestore.collection("users").doc(uid);
+    const userDoc = await userDocRef.get();
 
-    // Migrate each user to the "users" collection
-    for (const userRecord of usersToMigrate) {
-      const { uid, displayName, email, photoURL } = userRecord.toJSON();
-
+    if (!userDoc.exists) {
+      // If the user doesn't exist, migrate them to the "users" collection
       const userData = {
         displayName: displayName || null,
         email,
@@ -33,18 +30,16 @@ const migrateUsers = async () => {
       };
 
       // Create a new document in the "users" collection
-      await firestore
-        .collection("users")
-        .doc(uid)
-        .set(userData, { merge: true });
+      await userDocRef.set(userData);
+      console.log(`User with UID ${uid} migrated successfully.`);
+    } else {
+      console.log(
+        `User with UID ${uid} already exists in the 'users' collection.`
+      );
     }
-
-    console.log("Migration completed successfully.");
-  } else {
-    console.log(
-      "Migration is not needed. The 'users' collection is not empty."
-    );
   }
+
+  console.log("Migration completed successfully.");
 };
 
 migrateUsers();

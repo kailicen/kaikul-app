@@ -19,7 +19,6 @@ import {
   ListIcon,
 } from "@chakra-ui/react";
 import "moment/locale/en-gb";
-import moment, { Moment } from "moment";
 import { PieChart, Pie, Cell, Tooltip, Legend, Label } from "recharts";
 import LoadingScreen from "@/components/LoadingScreen";
 import {
@@ -30,8 +29,15 @@ import {
   MdClear,
 } from "react-icons/md";
 import FloatingFeedbackButton from "@/components/App/FloatingFeedbackButton";
-
-moment.locale("en-gb");
+import {
+  add,
+  endOfMonth,
+  endOfWeek,
+  format,
+  startOfMonth,
+  startOfWeek,
+  sub,
+} from "date-fns";
 
 function Statistics() {
   const [loading, setLoading] = useState(false); // <-- Add this state
@@ -47,7 +53,8 @@ function Statistics() {
     calculateCompletionRate,
   } = useStatistics();
 
-  const [currentPeriod, setCurrentPeriod] = useState<Moment>(moment());
+  const [currentPeriod, setCurrentPeriod] = useState<Date>(new Date());
+
   const [isWeeklyView, setIsWeeklyView] = useState(true);
 
   useEffect(() => {
@@ -56,11 +63,11 @@ function Statistics() {
       let startOfPeriod, endOfPeriod;
 
       if (isWeeklyView) {
-        startOfPeriod = currentPeriod.clone().startOf("week").toDate();
-        endOfPeriod = currentPeriod.clone().endOf("week").toDate();
+        startOfPeriod = startOfWeek(currentPeriod, { weekStartsOn: 1 }); // Assuming week starts on Monday (1)
+        endOfPeriod = endOfWeek(currentPeriod, { weekStartsOn: 1 }); // Assuming week ends on Sunday (0)
       } else {
-        startOfPeriod = currentPeriod.clone().startOf("month").toDate();
-        endOfPeriod = currentPeriod.clone().endOf("month").toDate();
+        startOfPeriod = startOfMonth(currentPeriod);
+        endOfPeriod = endOfMonth(currentPeriod);
       }
 
       await fetchTasks(startOfPeriod, endOfPeriod);
@@ -75,29 +82,47 @@ function Statistics() {
   }, [currentPeriod, isWeeklyView]);
 
   const handlePrevious = (
-    dateSetter: React.Dispatch<React.SetStateAction<Moment>>
+    dateSetter: React.Dispatch<React.SetStateAction<Date>>,
+    isWeeklyView: boolean
   ) => {
     dateSetter((prevDate) =>
-      prevDate
-        .clone()
-        .subtract(isWeeklyView ? 1 : 1, isWeeklyView ? "week" : "month")
+      isWeeklyView ? sub(prevDate, { weeks: 1 }) : sub(prevDate, { months: 1 })
     );
   };
 
   const handleNext = (
-    dateSetter: React.Dispatch<React.SetStateAction<Moment>>
+    dateSetter: React.Dispatch<React.SetStateAction<Date>>,
+    isWeeklyView: boolean
   ) => {
     dateSetter((prevDate) =>
-      prevDate
-        .clone()
-        .add(isWeeklyView ? 1 : 1, isWeeklyView ? "week" : "month")
+      isWeeklyView ? add(prevDate, { weeks: 1 }) : add(prevDate, { months: 1 })
     );
+  };
+
+  const handlePreviousWeekly = () => {
+    handlePrevious(setCurrentPeriod, true);
+  };
+
+  const handleNextWeekly = () => {
+    handleNext(setCurrentPeriod, true);
+  };
+
+  const handlePreviousMonthly = () => {
+    handlePrevious(setCurrentPeriod, false);
+  };
+
+  const handleNextMonthly = () => {
+    handleNext(setCurrentPeriod, false);
   };
 
   const dateRange = {
     label: isWeeklyView ? "Week" : "Month",
-    start: currentPeriod.clone().startOf(isWeeklyView ? "week" : "month"),
-    end: currentPeriod.clone().endOf(isWeeklyView ? "week" : "month"),
+    start: isWeeklyView
+      ? startOfWeek(currentPeriod, { weekStartsOn: 1 }) // Assuming week starts on Monday (1)
+      : startOfMonth(currentPeriod),
+    end: isWeeklyView
+      ? endOfWeek(currentPeriod, { weekStartsOn: 1 }) // Assuming week ends on Sunday (0)
+      : endOfMonth(currentPeriod),
   };
 
   const taskCompletionRate = calculateCompletionRate(
@@ -148,7 +173,9 @@ function Statistics() {
               <Box
                 as="button"
                 aria-label="Previous"
-                onClick={() => handlePrevious(setCurrentPeriod)}
+                onClick={
+                  isWeeklyView ? handlePreviousWeekly : handlePreviousMonthly
+                }
                 cursor="pointer"
                 _hover={{ bg: "gray.100" }}
                 p={1}
@@ -157,20 +184,21 @@ function Statistics() {
               >
                 <Icon as={MdChevronLeft} fontSize="24px" color="gray.500" />
               </Box>
-              {isWeeklyView ? (
-                <Text fontSize="xl" fontWeight="semibold">
-                  {dateRange.label}ly data: {dateRange.start?.format("MMMM D")}{" "}
-                  - {dateRange.end?.format("MMMM D")}
-                </Text>
-              ) : (
-                <Text fontSize="xl" fontWeight="semibold">
-                  {dateRange.label}ly data: {dateRange.start.format("MMMM")}
-                </Text>
-              )}
+              <Text fontSize="xl" fontWeight="semibold">
+                {isWeeklyView
+                  ? `${dateRange.label}ly data: ${format(
+                      dateRange.start,
+                      "MMMM d"
+                    )} - ${format(dateRange.end, "MMMM d")}`
+                  : `${dateRange.label}ly data: ${format(
+                      dateRange.start,
+                      "MMMM"
+                    )}`}
+              </Text>
               <Box
                 as="button"
                 aria-label="Next Week"
-                onClick={() => handleNext(setCurrentPeriod)}
+                onClick={isWeeklyView ? handleNextWeekly : handleNextMonthly}
                 cursor="pointer"
                 _hover={{ bg: "gray.100" }}
                 p={1}
