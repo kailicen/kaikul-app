@@ -1,29 +1,26 @@
 import { useEffect, useState } from "react";
 import { collection, query, where, getDocs } from "firebase/firestore";
-import moment from "moment";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { auth, firestore } from "@/firebase/clientApp";
 import { Blocker } from "@/atoms/blockersAtom";
 import { Task } from "@/atoms/tasksAtom";
-import { WeeklyGoal } from "@/atoms/weeklyGoalsAtom";
+import { format, startOfWeek, subDays } from "date-fns";
+import { TeamTab } from "./useTeamTab";
 
-export type ProgressOption = "Daily Sprint" | "Weekly Sprint";
+export type ProgressOption = "Daily Sprint" | "Weekly Reflection";
 
 const useProgress = (selectedProgress: ProgressOption, lastOpened: Date) => {
   const [user] = useAuthState(auth);
   const [yesterdayTasks, setYesterdayTasks] = useState<Task[]>([]);
   const [todayTasks, setTodayTasks] = useState<Task[]>([]);
   const [blockers, setBlockers] = useState<Blocker[]>([]);
-  const [weeklyGoals, setWeeklyGoals] = useState<WeeklyGoal[]>([]);
-  const [weeklyBlockers, setWeeklyBlockers] = useState<Blocker[]>([]);
-  const [totalTasks, setTotalTasks] = useState<number>(0);
-  const [completedTasks, setCompletedTasks] = useState<number>(0);
+  const [weeklyReflection, setWeeklyReflection] = useState<TeamTab>();
 
   useEffect(() => {
     const fetchDailyProgress = async () => {
       if (user) {
-        const yesterday = moment().subtract(1, "day").format("YYYY-MM-DD");
-        const today = moment().format("YYYY-MM-DD");
+        const yesterday = format(subDays(new Date(), 1), "yyyy-MM-dd");
+        const today = format(new Date(), "yyyy-MM-dd");
 
         // Fetch yesterday's tasks
         const yesterdayTasksQuery = query(
@@ -65,54 +62,25 @@ const useProgress = (selectedProgress: ProgressOption, lastOpened: Date) => {
       }
     };
 
-    const fetchWeeklyProgress = async () => {
+    const fetchWeeklyReflection = async () => {
       if (user) {
-        const weekStart = moment().startOf("week").format("YYYY-MM-DD");
-        const weekEnd = moment().endOf("week").format("YYYY-MM-DD");
+        const weekStart = format(
+          startOfWeek(new Date(), { weekStartsOn: 1 }),
+          "yyyy-MM-dd"
+        );
 
         // Fetch weekly goals
-        const weeklyGoalsQuery = query(
-          collection(firestore, "weeklyGoals"),
+        const weeklyReflectionQuery = query(
+          collection(firestore, "teamTabs"),
           where("userId", "==", user.uid),
-          where("weekStart", ">=", weekStart),
-          where("weekStart", "<=", weekEnd)
+          where("startOfWeek", "==", weekStart)
         );
-        const weeklyGoalsSnapshot = await getDocs(weeklyGoalsQuery);
-        const fetchedWeeklyGoals = weeklyGoalsSnapshot.docs.map(
-          (doc) => doc.data() as WeeklyGoal
+        const weeklyReflectionSnapshot = await getDocs(weeklyReflectionQuery);
+        const fetchedweeklyReflection = weeklyReflectionSnapshot.docs.map(
+          (doc) => doc.data() as TeamTab
         );
 
-        // Fetch tasks for the week
-        const tasksQuery = query(
-          collection(firestore, "tasks"),
-          where("userId", "==", user.uid),
-          where("date", ">=", weekStart),
-          where("date", "<=", weekEnd)
-        );
-        const tasksSnapshot = await getDocs(tasksQuery);
-        const fetchedTasks = tasksSnapshot.docs.map(
-          (doc) => doc.data() as Task
-        );
-        const completedTasksCount = fetchedTasks.filter(
-          (task) => task.completed
-        ).length;
-
-        // Fetch weekly blockers
-        const weeklyBlockersQuery = query(
-          collection(firestore, "blockers"),
-          where("userId", "==", user.uid),
-          where("date", ">=", weekStart),
-          where("date", "<=", weekEnd)
-        );
-        const weeklyBlockersSnapshot = await getDocs(weeklyBlockersQuery);
-        const fetchedWeeklyBlockers = weeklyBlockersSnapshot.docs.map(
-          (doc) => doc.data() as Blocker
-        );
-
-        setWeeklyGoals(fetchedWeeklyGoals);
-        setTotalTasks(fetchedTasks.length);
-        setCompletedTasks(completedTasksCount);
-        setWeeklyBlockers(fetchedWeeklyBlockers);
+        setWeeklyReflection(fetchedweeklyReflection[0]);
       }
     };
 
@@ -120,9 +88,9 @@ const useProgress = (selectedProgress: ProgressOption, lastOpened: Date) => {
       fetchDailyProgress().catch((error) => {
         console.error("Error fetching daily sprint:", error);
       });
-    } else if (selectedProgress === "Weekly Sprint") {
-      fetchWeeklyProgress().catch((error) => {
-        console.error("Error fetching weekly sprint:", error);
+    } else if (selectedProgress === "Weekly Reflection") {
+      fetchWeeklyReflection().catch((error) => {
+        console.error("Error fetching weekly reflection:", error);
       });
     }
   }, [user, selectedProgress, , lastOpened]);
@@ -132,10 +100,7 @@ const useProgress = (selectedProgress: ProgressOption, lastOpened: Date) => {
     yesterdayTasks,
     todayTasks,
     blockers,
-    weeklyGoals,
-    weeklyBlockers,
-    totalTasks,
-    completedTasks,
+    weeklyReflection,
   };
 };
 

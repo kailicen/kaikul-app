@@ -49,7 +49,10 @@ const ShareProgressModal: React.FC<ShareProgressModalProps> = ({
     setSelectedProgress(progress);
   };
 
-  const progressOptions: ProgressOption[] = ["Daily Sprint", "Weekly Sprint"];
+  const progressOptions: ProgressOption[] = [
+    "Daily Sprint",
+    "Weekly Reflection",
+  ];
 
   // Get current date
   const now = new Date();
@@ -64,16 +67,8 @@ const ShareProgressModal: React.FC<ShareProgressModalProps> = ({
   const formattedStart = format(start, "MMM do");
   const formattedEnd = format(end, "MMM do, yyyy");
 
-  const {
-    user,
-    yesterdayTasks,
-    todayTasks,
-    blockers,
-    weeklyGoals,
-    weeklyBlockers,
-    totalTasks,
-    completedTasks,
-  } = useProgress(selectedProgress, lastOpened);
+  const { user, yesterdayTasks, todayTasks, blockers, weeklyReflection } =
+    useProgress(selectedProgress, lastOpened);
 
   const toast = useToast();
 
@@ -128,27 +123,14 @@ const ShareProgressModal: React.FC<ShareProgressModalProps> = ({
           .map((task) => `- ${task.text}`)
           .join("\n")}`;
       }
-    } else if (selectedProgress === "Weekly Sprint") {
+    } else if (selectedProgress === "Weekly Reflection") {
       text += `*${formattedStart} - ${formattedEnd}:*\n\n`;
-
-      if (weeklyGoals.length > 0) {
-        text += `*🎯 Goals:*\n${weeklyGoals
-          .map(
-            (goal) =>
-              `- ${goal.text} (${
-                goal.completed ? "(✅ Completed)" : "(❌ Incomplete)"
-              })`
-          )
-          .join("\n")}\n\n`;
-      }
-
-      text += `*📊 Task Completion:* ${completedTasks}/${totalTasks}\n\n`;
-
-      if (weeklyBlockers.length > 0) {
-        text += `*💡 Reflection:*\n${weeklyBlockers
-          .map((blocker) => `- ${blocker.text}`)
-          .join("\n")}`;
-      }
+      text += `*⭐ Week Rating*: ${weeklyReflection?.rateWeek}/10\n`;
+      text += `*😀 Happiness Rating*: ${weeklyReflection?.rateHappiness}/10\n`;
+      text += `*⏰ Practice Hours*: ${weeklyReflection?.practiceHours}\n`;
+      text += `*😆 Biggest improvement*: \n${weeklyReflection?.biggestImprovement}\n`;
+      text += `*🫠 Biggest obstacle*: \n${weeklyReflection?.biggestObstacle}\n`;
+      text += `*🧑‍🎓 Lesson Learned*: \n${weeklyReflection?.lessonLearned}\n\n`;
     }
 
     try {
@@ -320,35 +302,38 @@ const ShareProgressModal: React.FC<ShareProgressModalProps> = ({
               </Text>
             </>
           )}
-          {selectedProgress === "Weekly Sprint" && (
+          {selectedProgress === "Weekly Reflection" && (
             <>
               <Text mb={4}>
                 {formattedStart} - {formattedEnd}:
               </Text>
               <Box mb={4}>
-                <Text mb={2}>🎯 Goals: </Text>
-                <UnorderedList pl={4}>
-                  {weeklyGoals.map((goal) => (
-                    <ListItem key={goal.id}>
-                      {goal.text} (
-                      {goal.completed ? "✅ Completed" : "❌ Incomplete"})
-                    </ListItem>
-                  ))}
-                </UnorderedList>
+                <Box display="flex" alignItems="center" mt={4} gap={2}>
+                  <Text fontWeight="semibold">⭐ Week Rating:</Text>
+                  <Text> {weeklyReflection?.rateWeek}/10</Text>
+                </Box>
+                <Box display="flex" alignItems="center" mt={4} gap={2}>
+                  <Text fontWeight="semibold">😀 Happiness Rating:</Text>
+                  <Text> {weeklyReflection?.rateHappiness}/10</Text>
+                </Box>
+                <Box display="flex" alignItems="center" mt={4} gap={2}>
+                  <Text fontWeight="semibold">⏰ Practice Hours:</Text>
+                  <Text> {weeklyReflection?.practiceHours}</Text>
+                </Box>
+                <Box display="flex" flexDirection="column" gap={1} mt={4}>
+                  <Text fontWeight="semibold">😆 Biggest improvement:</Text>
+                  <Text> {weeklyReflection?.biggestImprovement}</Text>
+                </Box>
+                <Box display="flex" flexDirection="column" gap={1} mt={4}>
+                  <Text fontWeight="semibold">🫠 Biggest obstacle:</Text>
+                  <Text> {weeklyReflection?.biggestObstacle}</Text>
+                </Box>
+                <Box display="flex" flexDirection="column" gap={1} mt={4}>
+                  <Text fontWeight="semibold">🧑‍🎓 Lesson Learned:</Text>
+                  <Text> {weeklyReflection?.lessonLearned}</Text>
+                </Box>
               </Box>
-              <Box mb={4}>
-                <Text mb={2}>
-                  📊 Task Completion: {completedTasks}/{totalTasks}
-                </Text>
-              </Box>
-              <Box mb={4}>
-                <Text mb={2}>💡 Reflection: </Text>
-                <UnorderedList pl={4}>
-                  {weeklyBlockers.map((blocker) => (
-                    <ListItem key={blocker.id}>{blocker.text}</ListItem>
-                  ))}
-                </UnorderedList>
-              </Box>
+
               <Text fontSize="sm">
                 This is the accountability partner platform powered by{" "}
                 <Text as="b" color="purple.700">
