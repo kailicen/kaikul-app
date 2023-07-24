@@ -259,15 +259,15 @@ function GoalView({ user, startOfDay, startOfWeek }: GoalViewProps) {
                                     "#EA8C87", // Salmon
                                     "#FFB6C1", // LightPink
                                     "#FFA500", // Orange
-                                    "#ffcb77", // NavajoWhite
+                                    "#FFD700", // Gold
                                     "#F4EEC2", // Champagne
-                                    "#a4ac86", // Gold
+                                    "#80ed99",
                                     "#D8BFD8", // Thistle
                                     "#B795EC", // MediumPurple
                                     "#6495ED", // CornflowerBlue
                                     "#87CEFA", // LightSkyBlue
                                     "#3CB371", // MediumSeaGreen
-                                    "#20B2AA", // LightSeaGreen
+                                    "#2ec4b6", // Gold
                                   ]}
                                 />
                               </MenuItem>
