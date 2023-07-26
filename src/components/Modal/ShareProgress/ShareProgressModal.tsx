@@ -16,6 +16,7 @@ import {
   Radio,
   Stack,
   useToast,
+  useBreakpointValue,
 } from "@chakra-ui/react";
 import { useEffect, useRef, useState } from "react";
 import useProgress, { ProgressOption } from "@/hooks/useProgress";
@@ -36,6 +37,8 @@ const ShareProgressModal: React.FC<ShareProgressModalProps> = ({
 }) => {
   const [selectedProgress, setSelectedProgress] =
     useState<ProgressOption>("Daily Sprint");
+
+  const isDesktopOrLaptop = useBreakpointValue({ base: false, md: true });
 
   // Add new state variable
   const [lastOpened, setLastOpened] = useState<Date>(new Date());
@@ -75,6 +78,8 @@ const ShareProgressModal: React.FC<ShareProgressModalProps> = ({
   const progressContainerRef = useRef(null);
 
   const [username, setUsername] = useState<string>("");
+
+  const screenshotInstructions = "Please screenshot to share on mobile";
 
   useEffect(() => {
     if (user) {
@@ -190,29 +195,29 @@ const ShareProgressModal: React.FC<ShareProgressModalProps> = ({
       const blob = await response.blob();
 
       // Check if the device is a mobile
-      const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+      // const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
 
-      if (isMobile) {
-        // Mobile: Provide a download link
-        const blobUrl = URL.createObjectURL(blob);
+      // if (isMobile) {
+      //   // Mobile: Provide a download link
+      //   const blobUrl = URL.createObjectURL(blob);
 
-        // Create a download link
-        let a = document.createElement("a");
-        a.href = blobUrl;
-        a.download = "image.png";
-        a.style.display = "none"; // Hide the link
-        document.body.appendChild(a); // Append the link to the body
-        a.click(); // Simulate a click
+      //   // Create a download link
+      //   let a = document.createElement("a");
+      //   a.href = blobUrl;
+      //   a.download = "image.png";
+      //   a.style.display = "none"; // Hide the link
+      //   document.body.appendChild(a); // Append the link to the body
+      //   a.click(); // Simulate a click
 
-        // Cleanup: remove the link and revoke the blob URL
-        document.body.removeChild(a);
-        URL.revokeObjectURL(blobUrl);
-      } else {
-        // Desktop: Use clipboard-polyfill to write the blob as an image to the clipboard
-        await clipboard.write([
-          new clipboard.ClipboardItem({ "image/png": blob }),
-        ]);
-      }
+      //   // Cleanup: remove the link and revoke the blob URL
+      //   document.body.removeChild(a);
+      //   URL.revokeObjectURL(blobUrl);
+      // } else {
+      // Desktop: Use clipboard-polyfill to write the blob as an image to the clipboard
+      await clipboard.write([
+        new clipboard.ClipboardItem({ "image/png": blob }),
+      ]);
+      //}
 
       // Display a success toast
       toast({
@@ -240,7 +245,9 @@ const ShareProgressModal: React.FC<ShareProgressModalProps> = ({
     <Modal isOpen={isOpen} onClose={onClose} size="xl">
       <ModalOverlay />
       <ModalContent>
-        <ModalHeader>Share as {username}</ModalHeader>
+        <ModalHeader>
+          {isDesktopOrLaptop ? "Share" : screenshotInstructions}
+        </ModalHeader>
         <ModalCloseButton />
         <ModalBody ref={progressContainerRef} bg="white">
           <FormControl as="fieldset" mb={4}>
@@ -344,9 +351,12 @@ const ShareProgressModal: React.FC<ShareProgressModalProps> = ({
           )}
         </ModalBody>
         <ModalFooter>
-          <Button onClick={handleCopyToClipboard} mr={3}>
-            Copy to Clipboard
-          </Button>
+          {isDesktopOrLaptop && (
+            <Button onClick={handleCopyToClipboard} mr={3}>
+              Copy to Clipboard
+            </Button>
+          )}
+
           <Button onClick={handleShare} mr={3}>
             Share to KaiKul Slack
           </Button>
