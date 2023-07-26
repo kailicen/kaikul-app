@@ -56,7 +56,7 @@ export const useTeamTab = (user: User, startOfWeek: string) => {
         teamTabToAdd
       );
       teamTabToAdd.id = docRef.id; // Update the id value
-      setTeamTabs([...teamTabs, teamTabToAdd]);
+      setTeamTabs([teamTabToAdd, ...teamTabs]); // Change this line
     } catch (error) {
       console.error("Error adding document: ", error);
     }
