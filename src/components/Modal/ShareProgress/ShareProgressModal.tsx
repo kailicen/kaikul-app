@@ -112,19 +112,19 @@ const ShareProgressModal: React.FC<ShareProgressModalProps> = ({
       text += `*${formattedDate}:*\n`;
 
       if (yesterdayTasks.length > 0) {
-        text += `*✔️ Done:*\n${yesterdayTasks
+        text += `*✔️ Done (yesterday): *\n${yesterdayTasks
           .map((task) => `- ${task.text} ${task.completed ? "✅" : "❌"}`)
           .join("\n")}\n\n`;
       }
 
       if (blockers.length > 0) {
-        text += `*💡 Reflection:*\n${blockers
+        text += `*💡 Reflection (yesterday):*\n${blockers
           .map((blocker) => `- ${blocker.text}`)
           .join("\n")}\n\n`;
       }
 
       if (todayTasks.length > 0) {
-        text += `*📝 To do:*\n${todayTasks
+        text += `*📝 To do (today):*\n${todayTasks
           .map((task) => `- ${task.text}`)
           .join("\n")}`;
       }
@@ -275,7 +275,7 @@ const ShareProgressModal: React.FC<ShareProgressModalProps> = ({
             <>
               <Text mb={4}>{formattedDate}:</Text>
               <Box mb={4}>
-                <Text mb={2}>✔️ Track yesterday: </Text>
+                <Text mb={2}>✔️ Done (yesterday): </Text>
                 <UnorderedList pl={4}>
                   {yesterdayTasks.map((task) => (
                     <ListItem key={task.id}>
@@ -286,7 +286,7 @@ const ShareProgressModal: React.FC<ShareProgressModalProps> = ({
                 </UnorderedList>
               </Box>
               <Box mb={4}>
-                <Text mb={2}>💡 Reflection: </Text>
+                <Text mb={2}>💡 Reflection (yesterday): </Text>
                 <UnorderedList pl={4}>
                   {blockers.map((blocker) => (
                     <ListItem key={blocker.id}>{blocker.text}</ListItem>
@@ -294,7 +294,7 @@ const ShareProgressModal: React.FC<ShareProgressModalProps> = ({
                 </UnorderedList>
               </Box>
               <Box mb={4}>
-                <Text mb={2}>📝 To do for today: </Text>
+                <Text mb={2}>📝 To do (today): </Text>
                 <UnorderedList pl={4}>
                   {todayTasks.map((task) => (
                     <ListItem key={task.id}>{task.text}</ListItem>
