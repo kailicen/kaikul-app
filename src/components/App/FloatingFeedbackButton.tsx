@@ -49,16 +49,16 @@ function FloatingFeedbackButton() {
               >
                 Schedule a call with Boom
               </Button>
-              {/* <Button
+              <Button
                 variant="ghost"
                 onClick={() =>
                   handleFeedbackClick(
-                    "https://calendar.app.google/..."
+                    "https://calendly.com/pawelbiegun/kaikul-talk-with-co-founder?month=2023-07"
                   )
                 }
               >
                 Schedule a call with Pawel
-              </Button> */}
+              </Button>
               <Button
                 variant="ghost"
                 onClick={() =>
