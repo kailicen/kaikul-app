@@ -10,11 +10,21 @@ import {
   ModalBody,
   Button,
   Flex,
+  Tooltip,
+  Badge,
 } from "@chakra-ui/react";
 import { FaComment } from "react-icons/fa";
+import { keyframes } from "@emotion/react";
 
 function FloatingFeedbackButton() {
   const { isOpen, onOpen, onClose } = useDisclosure();
+
+  // Define pulse animation
+  const pulse = keyframes`
+  0% { transform: scale(1); }
+  50% { transform: scale(1.1); }
+  100% { transform: scale(1); }
+`;
 
   const handleFeedbackClick = (link: string) => {
     window.open(link, "_blank", "noopener,noreferrer");
@@ -22,13 +32,18 @@ function FloatingFeedbackButton() {
 
   return (
     <Box position="fixed" bottom="4" right="4">
-      <IconButton
-        aria-label="Feedback"
-        icon={<FaComment />}
-        size="lg"
-        colorScheme="teal"
-        onClick={onOpen}
-      />
+      <Tooltip label="We want to hear from you!">
+        <IconButton
+          aria-label="Feedback"
+          icon={<FaComment />}
+          size="lg"
+          colorScheme="red"
+          onClick={onOpen}
+          sx={{
+            animation: `${pulse} 2s infinite`,
+          }}
+        />
+      </Tooltip>
 
       <Modal isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />
@@ -40,7 +55,6 @@ function FloatingFeedbackButton() {
             ideas on how we can improve. Let&apos;s connect!
             <Flex direction="column" gap={2} my={3}>
               <Button
-                variant="ghost"
                 onClick={() =>
                   handleFeedbackClick(
                     "https://calendar.app.google/PRrVoW3K29z5j9xGA"
@@ -50,7 +64,6 @@ function FloatingFeedbackButton() {
                 Schedule a call with Boom
               </Button>
               <Button
-                variant="ghost"
                 onClick={() =>
                   handleFeedbackClick(
                     "https://calendly.com/pawelbiegun/kaikul-talk-with-co-founder?month=2023-07"
@@ -60,7 +73,6 @@ function FloatingFeedbackButton() {
                 Schedule a call with Pawel
               </Button>
               <Button
-                variant="ghost"
                 onClick={() =>
                   handleFeedbackClick(
                     "https://calendar.app.google/LzUsyJbkbGQ87JqYA"
