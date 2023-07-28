@@ -8,9 +8,6 @@ import {
   Badge,
   Box,
   Button,
-  Center,
-  Divider,
-  Grid,
   Heading,
   Link,
   Stack,
@@ -56,7 +53,7 @@ function Connect({ user }: Props) {
     };
 
     fetchBuddyIds();
-  }, [user, buddyRequests]);
+  }, [user, pendingRequests]);
 
   return (
     <VStack spacing={4} align="stretch">

@@ -123,6 +123,7 @@ const SelectFromCommunityModal: React.FC<SelectFromCommunityModalProps> = ({
 
   useEffect(() => {
     const fetchData = async () => {
+      console.log(currentUser);
       if (currentUser) {
         const q = query(collection(firestore, "users"));
         const querySnapshot = await getDocs(q);
@@ -145,7 +146,7 @@ const SelectFromCommunityModal: React.FC<SelectFromCommunityModalProps> = ({
     };
 
     fetchData();
-  }, [currentUser, buddyRequests]);
+  }, [currentUser]);
 
   useEffect(() => {
     if (searchTerm === "") {
@@ -159,7 +160,7 @@ const SelectFromCommunityModal: React.FC<SelectFromCommunityModalProps> = ({
       );
       setSearchResults(results);
     }
-  }, [searchTerm, users]);
+  }, [searchTerm]);
 
   return (
     <Modal isOpen={isOpen} onClose={onClose}>
