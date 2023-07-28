@@ -17,6 +17,7 @@ import {
   Stack,
   useToast,
   useBreakpointValue,
+  List,
 } from "@chakra-ui/react";
 import { useEffect, useRef, useState } from "react";
 import useProgress, { ProgressOption } from "@/hooks/useProgress";
@@ -112,30 +113,30 @@ const ShareProgressModal: React.FC<ShareProgressModalProps> = ({
       text += `*${formattedDate}:*\n`;
 
       if (yesterdayTasks.length > 0) {
-        text += `*✔️ Done (yesterday): *\n${yesterdayTasks
-          .map((task) => `- ${task.text} ${task.completed ? "✅" : "❌"}`)
+        text += `*Tracker (yesterday): *\n${yesterdayTasks
+          .map((task) => `${task.completed ? "✅" : "❌"} ${task.text}`)
           .join("\n")}\n\n`;
       }
 
       if (blockers.length > 0) {
-        text += `*💡 Reflection (yesterday):*\n${blockers
+        text += `*Reflection (yesterday):*\n${blockers
           .map((blocker) => `- ${blocker.text}`)
           .join("\n")}\n\n`;
       }
 
       if (todayTasks.length > 0) {
-        text += `*📝 To do (today):*\n${todayTasks
+        text += `*To do (today):*\n${todayTasks
           .map((task) => `- ${task.text}`)
           .join("\n")}`;
       }
     } else if (selectedProgress === "Weekly Reflection") {
       text += `*${formattedStart} - ${formattedEnd}:*\n\n`;
-      text += `*⭐ Week Rating*: ${weeklyReflection?.rateWeek}/10\n`;
-      text += `*😀 Happiness Rating*: ${weeklyReflection?.rateHappiness}/10\n`;
-      text += `*⏰ Practice Hours*: ${weeklyReflection?.practiceHours}\n`;
-      text += `*😆 Biggest improvement*: \n${weeklyReflection?.biggestImprovement}\n`;
-      text += `*🫠 Biggest obstacle*: \n${weeklyReflection?.biggestObstacle}\n`;
-      text += `*🧑‍🎓 Lesson Learned*: \n${weeklyReflection?.lessonLearned}\n\n`;
+      text += `*Week Rating*: ${weeklyReflection?.rateWeek}/10\n`;
+      text += `*Happiness Rating*: ${weeklyReflection?.rateHappiness}/10\n`;
+      text += `*Practice Hours*: ${weeklyReflection?.practiceHours}\n`;
+      text += `*Biggest improvement*: \n${weeklyReflection?.biggestImprovement}\n`;
+      text += `*Biggest obstacle*: \n${weeklyReflection?.biggestObstacle}\n`;
+      text += `*Lesson Learned*: \n${weeklyReflection?.lessonLearned}\n\n`;
     }
 
     try {
@@ -275,18 +276,17 @@ const ShareProgressModal: React.FC<ShareProgressModalProps> = ({
             <>
               <Text mb={4}>{formattedDate}:</Text>
               <Box mb={4}>
-                <Text mb={2}>✔️ Done (yesterday): </Text>
-                <UnorderedList pl={4}>
+                <Text mb={2}>Tracker (yesterday): </Text>
+                <List pl={4}>
                   {yesterdayTasks.map((task) => (
                     <ListItem key={task.id}>
-                      {task.text} (
-                      {task.completed ? "✅ Completed" : "❌ Incomplete"})
+                      {task.completed ? "✅" : "❌"} {task.text}
                     </ListItem>
                   ))}
-                </UnorderedList>
+                </List>
               </Box>
               <Box mb={4}>
-                <Text mb={2}>💡 Reflection (yesterday): </Text>
+                <Text mb={2}>Reflection (yesterday): </Text>
                 <UnorderedList pl={4}>
                   {blockers.map((blocker) => (
                     <ListItem key={blocker.id}>{blocker.text}</ListItem>
@@ -294,7 +294,7 @@ const ShareProgressModal: React.FC<ShareProgressModalProps> = ({
                 </UnorderedList>
               </Box>
               <Box mb={4}>
-                <Text mb={2}>📝 To do (today): </Text>
+                <Text mb={2}>To do (today): </Text>
                 <UnorderedList pl={4}>
                   {todayTasks.map((task) => (
                     <ListItem key={task.id}>{task.text}</ListItem>
@@ -316,27 +316,27 @@ const ShareProgressModal: React.FC<ShareProgressModalProps> = ({
               </Text>
               <Box mb={4}>
                 <Box display="flex" alignItems="center" mt={4} gap={2}>
-                  <Text fontWeight="semibold">⭐ Week Rating:</Text>
+                  <Text fontWeight="semibold">Week Rating:</Text>
                   <Text> {weeklyReflection?.rateWeek}/10</Text>
                 </Box>
                 <Box display="flex" alignItems="center" mt={4} gap={2}>
-                  <Text fontWeight="semibold">😀 Happiness Rating:</Text>
+                  <Text fontWeight="semibold">Happiness Rating:</Text>
                   <Text> {weeklyReflection?.rateHappiness}/10</Text>
                 </Box>
                 <Box display="flex" alignItems="center" mt={4} gap={2}>
-                  <Text fontWeight="semibold">⏰ Practice Hours:</Text>
+                  <Text fontWeight="semibold">Practice Hours:</Text>
                   <Text> {weeklyReflection?.practiceHours}</Text>
                 </Box>
                 <Box display="flex" flexDirection="column" gap={1} mt={4}>
-                  <Text fontWeight="semibold">😆 Biggest improvement:</Text>
+                  <Text fontWeight="semibold">Biggest improvement:</Text>
                   <Text> {weeklyReflection?.biggestImprovement}</Text>
                 </Box>
                 <Box display="flex" flexDirection="column" gap={1} mt={4}>
-                  <Text fontWeight="semibold">🫠 Biggest obstacle:</Text>
+                  <Text fontWeight="semibold">Biggest obstacle:</Text>
                   <Text> {weeklyReflection?.biggestObstacle}</Text>
                 </Box>
                 <Box display="flex" flexDirection="column" gap={1} mt={4}>
-                  <Text fontWeight="semibold">🧑‍🎓 Lesson Learned:</Text>
+                  <Text fontWeight="semibold">Lesson Learned:</Text>
                   <Text> {weeklyReflection?.lessonLearned}</Text>
                 </Box>
               </Box>

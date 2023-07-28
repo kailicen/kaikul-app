@@ -173,27 +173,27 @@ function Reflect({}: Props) {
               {formattedStartOfWeek} - {formattedEndOfWeek}
             </Heading>
             <Box display="flex" alignItems="center" mt={4} gap={2}>
-              <Text fontWeight="semibold">⭐ Week Rating:</Text>
+              <Text fontWeight="semibold">Week Rating:</Text>
               <Text> {teamTab.rateWeek}/10</Text>
             </Box>
             <Box display="flex" alignItems="center" mt={4} gap={2}>
-              <Text fontWeight="semibold">😀 Happiness Rating:</Text>
+              <Text fontWeight="semibold">Happiness Rating:</Text>
               <Text> {teamTab.rateHappiness}/10</Text>
             </Box>
             <Box display="flex" alignItems="center" mt={4} gap={2}>
-              <Text fontWeight="semibold">⏰ Practice Hours:</Text>
+              <Text fontWeight="semibold">Practice Hours:</Text>
               <Text> {teamTab.practiceHours}</Text>
             </Box>
             <Box display="flex" flexDirection="column" gap={1} mt={4}>
-              <Text fontWeight="semibold">😆 Biggest improvement:</Text>
+              <Text fontWeight="semibold">Biggest improvement:</Text>
               <Text> {teamTab.biggestImprovement}</Text>
             </Box>
             <Box display="flex" flexDirection="column" gap={1} mt={4}>
-              <Text fontWeight="semibold">🫠 Biggest obstacle:</Text>
+              <Text fontWeight="semibold">Biggest obstacle:</Text>
               <Text> {teamTab.biggestObstacle}</Text>
             </Box>
             <Box display="flex" flexDirection="column" gap={1} mt={4}>
-              <Text fontWeight="semibold">🧑‍🎓 Lesson Learned:</Text>
+              <Text fontWeight="semibold">Lesson Learned:</Text>
               <Text> {teamTab.lessonLearned}</Text>
             </Box>
           </Box>
@@ -224,7 +224,7 @@ function Reflect({}: Props) {
                   <Form>
                     <VStack spacing={4}>
                       <FormControl id="rateWeek">
-                        <FormLabel>⭐ Rate Your Week (10/10)</FormLabel>
+                        <FormLabel>Rate Your Week (10/10)</FormLabel>
                         <Field
                           name="rateWeek"
                           type="number"
@@ -234,7 +234,7 @@ function Reflect({}: Props) {
                         />
                       </FormControl>
                       <FormControl id="rateHappiness">
-                        <FormLabel>😀 Rate Your Happiness (10/10)</FormLabel>
+                        <FormLabel>Rate Your Happiness (10/10)</FormLabel>
                         <Field
                           name="rateHappiness"
                           type="number"
@@ -244,9 +244,7 @@ function Reflect({}: Props) {
                         />
                       </FormControl>
                       <FormControl id="practiceHours">
-                        <FormLabel>
-                          ⏰ Deliberate practice hours count
-                        </FormLabel>
+                        <FormLabel>Deliberate practice hours count</FormLabel>
                         <Field
                           name="practiceHours"
                           type="number"
@@ -256,7 +254,7 @@ function Reflect({}: Props) {
                         />
                       </FormControl>
                       <FormControl id="biggestImprovement">
-                        <FormLabel>😆 Biggest improvement</FormLabel>
+                        <FormLabel>Biggest improvement</FormLabel>
                         <Field
                           name="biggestImprovement"
                           placeholder="Describe your biggest improvement of the week"
@@ -264,7 +262,7 @@ function Reflect({}: Props) {
                         />
                       </FormControl>
                       <FormControl id="biggestObstacle">
-                        <FormLabel>🫠 Biggest obstacle</FormLabel>
+                        <FormLabel>Biggest obstacle</FormLabel>
                         <Field
                           name="biggestObstacle"
                           placeholder="Describe your biggest obstacle of the week"
@@ -272,7 +270,7 @@ function Reflect({}: Props) {
                         />
                       </FormControl>
                       <FormControl id="lessonLearned">
-                        <FormLabel>🧑‍🎓 Lesson Learned</FormLabel>
+                        <FormLabel>Lesson Learned</FormLabel>
                         <Field
                           name="lessonLearned"
                           placeholder="What's the greatest lesson you learned this week?"
