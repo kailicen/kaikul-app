@@ -95,16 +95,9 @@ function Connect({ user }: Props) {
             </AccordionButton>
           </h2>
           <AccordionPanel pb={4}>
-            Participate in our{" "}
-            <Link
-              color="purple.500"
-              fontWeight="bold"
-              href="https://kaikul.eventbrite.com"
-              isExternal
-            >
-              weekly sessions
-            </Link>{" "}
-            and engage with KaiKul buddies. Check the{" "}
+            Begin by enrolling in the #find-your-buddy channel on Slack. Feel
+            free to introduce yourself and interact with prospective buddies.
+            Plan for a weekly call with your buddy. Check the{" "}
             <Link
               color="purple.500"
               fontWeight="bold"
@@ -113,7 +106,7 @@ function Connect({ user }: Props) {
             >
               session agenda
             </Link>{" "}
-            for more information.
+            to understand what will be discussed.
           </AccordionPanel>
         </AccordionItem>
       </Accordion>

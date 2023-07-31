@@ -19,13 +19,13 @@ const questions = [
     id: 3,
     question: "How do I get started?",
     answer:
-      "1. Sign in to our KaiKul platform to set your goals. 2. Join our Slack community for daily progress sharing. 3. Participate in our weekly meetups (schedule through Eventbrite) to connect with accountability buddies. ",
+      "1. Sign in to our KaiKul platform to set your goals. 2. Join our Slack community for daily progress sharing. 3. Participate in our weekly meetups start with connecting with accountability buddies via Slack #find-your-buddy. ",
   },
   {
     id: 4,
-    question: "How do we match KaiKul buddies?",
+    question: "How do I find a KaiKul buddy?",
     answer:
-      "You choose your own buddy on our timetable based on your convenience! ",
+      "Take the initiative to join our Slack channel, #find-your-buddy. Don't hesitate to introduce yourself and engage with potential buddies.",
   },
   {
     id: 5,
