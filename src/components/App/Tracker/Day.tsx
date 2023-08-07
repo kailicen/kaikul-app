@@ -49,6 +49,7 @@ const Day: React.FC<{ date: string; user: User; recoilTasks: Task[] }> = ({
   );
   const [selectedBlockerText, setSelectedBlockerText] = useState("");
   // Parse the date prop to a Date object
+
   const dateObj = new Date(date);
   const startOfWeekDate = startOfWeek(dateObj, { weekStartsOn: 1 });
   const startOfWeekString = format(startOfWeekDate, "yyyy-MM-dd");
@@ -175,7 +176,7 @@ const Day: React.FC<{ date: string; user: User; recoilTasks: Task[] }> = ({
       border="1px"
       borderColor="gray.200"
       p={4}
-      bg={isCurrentDay ? "gray.100" : undefined} // set a distinct background color for the current day
+      bg={isCurrentDay ? "gray.200" : undefined} // set a distinct background color for the current day
       mb={4} // add bottom margin
     >
       <Text fontSize="lg" fontWeight="semibold">

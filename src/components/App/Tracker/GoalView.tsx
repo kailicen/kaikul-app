@@ -250,17 +250,17 @@ function GoalView({ user, startOfDay, startOfWeek }: GoalViewProps) {
                                     form.setFieldTouched("color", true);
                                   }}
                                   colors={[
-                                    "#FFFFFF", // WHITE
-                                    "#f8edeb", // Wheat
-                                    "#fae1dd", // MistyRose
-                                    "#fcd5ce", // LightGray
-                                    "#e8e8e4", // LightCyan
-                                    "#d8e2dc", // GhostWhite
+                                    "#f0f8e6", // WHITE
+                                    "#fbfbef", // Wheat
+                                    "#f3f3f3", // MistyRose
+                                    "#e0edf4", // LightGray
+                                    "#e9e5f3", // LightCyan
+                                    "#feeef5", // GhostWhite
                                     "#EA8C87", // Salmon
                                     "#FFB6C1", // LightPink
                                     "#FFA500", // Orange
                                     "#FFD700", // Gold
-                                    "#F4EEC2", // Champagne
+                                    "#f5f32e", // Champagne
                                     "#80ed99",
                                     "#D8BFD8", // Thistle
                                     "#B795EC", // MediumPurple
