@@ -26,11 +26,12 @@ function AuthButtons({}: Props) {
         </button>
       </div>
       <div className="md:hidden">
-        <Icon
-          as={IoMdLogIn}
-          fontSize={30}
+        <button
           onClick={() => setAuthModalState({ open: true, view: "login" })}
-        />
+          className="btn buttonMobileSecondary md:buttonSecondary"
+        >
+          Log In
+        </button>
       </div>
     </div>
   );

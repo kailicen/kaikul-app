@@ -20,9 +20,9 @@ export const Button: ComponentStyleConfig = {
   variants: {
     solid: {
       color: "white",
-      bg: "purple.400",
+      bg: "#4130AC",
       _hover: {
-        bg: "purple.500",
+        bg: "#5140BD",
       },
     },
     oauth: {
