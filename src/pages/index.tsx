@@ -1,9 +1,3 @@
-// import Features from "@/components/LandingPageSections/Features";
-// import Hero from "@/components/LandingPageSections/Hero";
-// import Team from "@/components/LandingPageSections/Team";
-// import Testimonial from "@/components/LandingPageSections/Testimonial";
-// import HowItWorks from "@/components/LandingPageSections/HowItWorks";
-// import Qna from "@/components/LandingPageSections/Qna";
 import { Testimonial } from "@/components/landing-page/testimonial";
 import { Features } from "@/components/landing-page/features";
 import { FAQ } from "@/components/landing-page/faq";
@@ -14,14 +8,10 @@ import { CTA } from "@/components/landing-page/cta";
 import { Icons } from "@/components/icons";
 import Head from "next/head";
 import { useEffect, useRef, useState } from "react";
-import { SocialIcon } from "react-social-icons";
-import { Story } from "@/components/LandingPageSections/Story";
-import PictureWall from "@/components/LandingPageSections/PictureWall";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { auth } from "../firebase/clientApp";
 import { useColorMode } from "@chakra-ui/react";
 import WeeklyPlanner from "@/components/App/Tracker/WeeklyPlanner";
-import UnauthenticatedHeader from "@/components/Header/UnauthenticatedHeader";
 import AuthenticatedHeader from "@/components/Header/AuthenticatedHeader";
 import LoadingScreen from "@/components/LoadingScreen";
 
