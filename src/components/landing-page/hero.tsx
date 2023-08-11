@@ -1,8 +1,12 @@
 import Link from "next/link";
 import { cn } from "@/lib/utils";
 import { buttonVariants } from "@/components/ui/button";
+import { useSetRecoilState } from "recoil";
+import { authModalState } from "@/atoms/authModalAtom";
+import { Button } from "@/chakra/button";
 
 export function Hero() {
+  const setAuthModalState = useSetRecoilState(authModalState);
   return (
     <section
       id="hero"
@@ -22,13 +26,12 @@ export function Hero() {
           fostering self-discipline, and enabling consistent growth.
         </p>
         <div className="mt-4">
-          <Link
-            href="/dashboard"
+          <button
             className={cn(buttonVariants({ size: "cta" }))}
-            id="createCollectionboxButton"
+            onClick={() => setAuthModalState({ open: true, view: "login" })}
           >
             Join For Free
-          </Link>
+          </button>
         </div>
       </div>
     </section>

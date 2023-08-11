@@ -210,10 +210,12 @@ export default function Home() {
   return (
     <div className="flex min-h-screen flex-col">
       <Head>
-        <title>KaiKul | Make Weekly Improvements With Your Peer</title>
+        <title>
+          KaiKul | Reflective Goal Tracking And Accountability, Simplified!
+        </title>
         <meta
           property="og:title"
-          content="KaiKul | Make Weekly Improvements With Your Peer"
+          content="KaiKul | Reflective Goal Tracking And Accountability, Simplified!"
         />
         <meta property="og:image" content="/img/kaikul-thumbnail.png" />
         <link rel="icon" href="/favicon.ico" />

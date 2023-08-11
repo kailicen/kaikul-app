@@ -1,8 +1,11 @@
 import Link from "next/link";
 import { cn } from "@/lib/utils";
 import { buttonVariants } from "@/components/ui/button";
+import { useSetRecoilState } from "recoil";
+import { authModalState } from "@/atoms/authModalAtom";
 
 export function CTA() {
+  const setAuthModalState = useSetRecoilState(authModalState);
   return (
     <section
       id="cta"
@@ -13,13 +16,12 @@ export function CTA() {
           Ready for <span className="gradient-text">Real</span> Growth?
         </h2>
         <div>
-          <Link
-            href="/dashboard"
+          <button
             className={cn(buttonVariants({ size: "cta" }))}
-            id="createCollectionboxButton"
+            onClick={() => setAuthModalState({ open: true, view: "login" })}
           >
             Join For Free
-          </Link>
+          </button>
         </div>
       </div>
     </section>
