@@ -24,7 +24,7 @@ export function WhatIsAP() {
           <li>🤗 Provide unwavering support</li>
         </ul>
 
-        <blockquote className="rounded border-l-4 border-[#4130AC] bg-white py-2 pl-4 text-base italic shadow-md md:text-lg text-gray-700">
+        <blockquote className="rounded border-l-4 border-[#4130AC] bg-white py-2 px-4 text-base italic shadow-md md:text-lg text-gray-700">
           <p>&quot;A habit contract can add a social cost to any behavior.</p>
           <p>
             It makes the costs of breaking your promises public and
