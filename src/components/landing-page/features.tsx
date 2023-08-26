@@ -1,20 +1,33 @@
+"use client";
+import { useState } from "react";
 import { Icons } from "../icons";
+import { Button } from "../ui/button";
 
 export function Features() {
+  const [showFeatures, setShowFeatures] = useState(false);
   return (
     <section
       id="features"
-      className="lg:py-18 container mb-4 space-y-6 rounded-lg py-8 dark:bg-transparent"
+      className="container mb-4 flex flex-col items-center space-y-6 rounded-lg py-8 dark:bg-transparent lg:py-8"
     >
-      <div className="mx-auto flex max-w-[58rem] flex-col items-center space-y-4 text-center">
-        <h2 className="font-heading font-bold text-3xl sm:text-3xl md:text-6xl">
-          Features
-        </h2>
-      </div>
-
+      {/* Button to toggle feature visibility */}
+      <Button
+        onClick={() => setShowFeatures(!showFeatures)}
+        className="px-8 py-6"
+        size="lg"
+      >
+        <span className="mr-2 text-base md:text-lg">Discover Our Features</span>
+        {showFeatures ? (
+          <Icons.ChevronUp className="h-6 w-6 transition-transform duration-300" />
+        ) : (
+          <Icons.ChevronDown className="h-6 w-6 transition-transform duration-300" />
+        )}
+      </Button>
       <div
         id="featuresGrid"
-        className="mx-auto grid justify-center gap-4 sm:grid-cols-2 md:max-w-[64rem] md:grid-cols-3"
+        className={`mx-auto grid justify-center gap-4 sm:grid-cols-2 md:max-w-[64rem] md:grid-cols-3 ${
+          showFeatures ? "expanded" : ""
+        }`}
       >
         <div className="relative overflow-hidden rounded-lg bg-[#cfccd3] p-2 text-[#0D0322]">
           <div className="flex min-h-[200px] flex-col justify-between gap-4 rounded-md p-6">

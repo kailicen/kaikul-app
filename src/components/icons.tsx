@@ -1,4 +1,6 @@
 import {
+  ChevronUp,
+  ChevronDown,
   AlertTriangle,
   ArrowRight,
   CalendarCheck,
@@ -45,6 +47,8 @@ import {
 } from "lucide-react";
 
 export const Icons = {
+  ChevronUp,
+  ChevronDown,
   SmilePlus: SmilePlus,
   CalendarDays,
   Users,

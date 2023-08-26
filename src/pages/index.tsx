@@ -14,6 +14,8 @@ import { useColorMode } from "@chakra-ui/react";
 import WeeklyPlanner from "@/components/App/Tracker/WeeklyPlanner";
 import AuthenticatedHeader from "@/components/Header/AuthenticatedHeader";
 import LoadingScreen from "@/components/LoadingScreen";
+import { Benefits } from "@/components/landing-page/benefits";
+import { WhatIsAP } from "@/components/landing-page/what-is-ap";
 
 const testimonials = [
   {
@@ -48,33 +50,33 @@ const testimonials = [
 const faqs = [
   {
     id: 1,
-    question: "Who is KaiKul for?",
+    question: "Who is KaiKul for and how do I get started?",
     answer:
-      "KaiKul is for anyone who wants to constantly improve themselves in practical and impactful ways. Whether you aim to meditate regularly, stay active, read more, improve productivity, prioritize effectively, or make healthier choices, KaiKul provides the community, resources, and accountability to help you achieve real, meaningful results.",
+      "KaiKul is designed for anyone looking to improve themselves in meaningful ways. Whether you're aiming to meditate, read more, or prioritize tasks, our community and resources are here for you. To start: 1. Sign in and set your goals. 2. Share your daily sprint with our community. 3. Find an accountability partner and join our weekly meetups using the KaiKul framework.",
   },
   {
     id: 2,
-    question: "What if I don't have clear goals?",
+    question: "Is using KaiKul time-consuming?",
     answer:
-      "This is what KaiKul is for. We have participants who have gone from not knowing their goals to having clear goals and directions in life. You will also learn to make better goals along the way. ",
+      "No, KaiKul simplifies the process of setting goals and tasks. Our intuitive platform is designed to streamline goal-setting, so you can focus on achieving them without spending excessive time on preparations.",
   },
   {
     id: 3,
-    question: "How do I get started?",
+    question: "How does KaiKul handle data privacy?",
     answer:
-      "1. Sign in to our KaiKul platform to set your goals. 2. Engage in our community to share your daily sprint. 3. Find your like-minded accountability partner and join the weekly meetup to share your weekly reflection using KaiKul framework. ",
+      "Your privacy is paramount. Your data remains private and is only accessible to you. We employ strict measures to safeguard your data and won't share it with third parties without your consent.",
   },
   {
     id: 4,
-    question: "How do you find your accountability buddy? ",
+    question: "How is KaiKul evolving and improving?",
     answer:
-      "Start by introducing yourself in our community. 1. Your name; 2. Your purpose; 3. Your preference: weekly virtual meet-ups or texting. Be respectful and kind! ",
+      "We're deeply committed to enhancing KaiKul based on user feedback. Expect continuous improvements, bug fixes, and the introduction of new features over time. For direct engagement and updates, we encourage our community to join the #feedback channel in our Slack community. It's a great place to share suggestions, stay informed, and connect with the KaiKul team.",
   },
   {
     id: 5,
-    question: "Is KaiKul free?",
+    question: "Is KaiKul free to use?",
     answer:
-      "Absolutely! KaiKul is currently free to use. In the near future, as we enhance our features, we plan to introduce a freemium model that will continue to offer valuable free access, along with premium options. ",
+      "Yes, KaiKul is currently free. As we roll out more features, we'll introduce a freemium model, ensuring valuable free access remains available alongside premium options.",
   },
 ];
 
@@ -102,6 +104,27 @@ const clients = [
     avatar:
       "https://ca.slack-edge.com/T05BWMWRMEW-U05HUP4H1QD-f41d294d8b79-512",
     link: "https://www.linkedin.com/in/pawe%C5%82-biegun-8b51b8187/",
+  },
+];
+
+const benefits = [
+  {
+    title: "Clear Goal Alignment",
+    content:
+      "Place your goals front and center. Seamlessly link daily tasks to larger objectives, propelling you closer to success.",
+    image: "goal-alignment",
+  },
+  {
+    title: "Enhance Motivation",
+    content:
+      "Turn daily thoughts into motivation and growth. Monitor and celebrate your progress.",
+    image: "enhance-motivation",
+  },
+  {
+    title: "Purposeful & Collaborative Strategy",
+    content:
+      "Shape your life's path and find deeper satisfaction at each milestone. With 'buddyup', plan your week, tackle challenges, and grab opportunities together.",
+    image: "collaborative-strategy",
   },
 ];
 
@@ -222,9 +245,13 @@ export default function Home() {
           <main className="container flex-1 mx-auto px-3">
             <Hero />
 
-            <Features />
+            <WhatIsAP />
 
             <HowItWorks />
+
+            <Benefits benefits={benefits} />
+
+            <Features />
 
             <Testimonial testimonials={testimonials} />
 

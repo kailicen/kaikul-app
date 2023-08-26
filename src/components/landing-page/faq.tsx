@@ -37,10 +37,10 @@ export function FAQ({ faqs }: FAQProps) {
               value={`item${item.id}`}
               className="mb-5 rounded bg-[#0D0322] px-5 text-white"
             >
-              <AccordionTrigger className="hover:text-[#ff5e0e]">
+              <AccordionTrigger className="hover:text-[#ff5e0e] text-lg">
                 {item.question}
               </AccordionTrigger>
-              <AccordionContent className="text-left">
+              <AccordionContent className="text-left text-base">
                 {item.answer}
               </AccordionContent>
             </AccordionItem>

@@ -226,3 +226,19 @@ TEAM
   ); /* Adjust the value to control the amount of movement */
   transition: transform 0.2s ease; /* Animation effect */
 }
+
+.active-tab {
+  background-color: #ff5e0e;
+  padding: 12px 16px;
+  border-radius: 4px;
+}
+
+#featuresGrid {
+  transition: max-height 0.5s ease-in-out;
+  overflow: hidden;
+  max-height: 0;
+}
+
+#featuresGrid.expanded {
+  max-height: 2000px;
+}

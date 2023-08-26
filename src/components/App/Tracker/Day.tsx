@@ -24,7 +24,6 @@ import { Formik, Form, Field, FieldInputProps, ErrorMessage } from "formik";
 import { MdAdd } from "react-icons/md";
 import { useEffect, useState } from "react";
 import { User } from "firebase/auth";
-import moment from "moment";
 import useTasks from "@/hooks/useTasks";
 import { useBlockers } from "@/hooks/useBlockers";
 import { format, isToday, startOfDay, startOfWeek } from "date-fns";
@@ -180,7 +179,7 @@ const Day: React.FC<{ date: string; user: User; recoilTasks: Task[] }> = ({
       mb={4} // add bottom margin
     >
       <Text fontSize="lg" fontWeight="semibold">
-        {moment(date).format("ddd DD")}
+        {format(dateObj, "eee dd")}
       </Text>
       {/* task list */}
 
