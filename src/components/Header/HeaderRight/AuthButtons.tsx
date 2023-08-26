@@ -1,8 +1,6 @@
 import React from "react";
 import { useSetRecoilState } from "recoil";
 import { authModalState } from "../../../atoms/authModalAtom";
-import { Icon } from "@chakra-ui/react";
-import { IoMdLogIn } from "react-icons/io";
 
 type Props = {};
 

@@ -18,7 +18,6 @@ import {
   Icon,
   ListIcon,
 } from "@chakra-ui/react";
-import "moment/locale/en-gb";
 import { PieChart, Pie, Cell, Tooltip, Legend, Label } from "recharts";
 import LoadingScreen from "@/components/LoadingScreen";
 import {

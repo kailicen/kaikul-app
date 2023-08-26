@@ -1,6 +1,6 @@
 import { atom, DefaultValue, selectorFamily } from "recoil";
 
-export type WeeklyGoal = {
+export type Goal = {
   id: string;
   text: string;
   completed: boolean;
@@ -12,7 +12,7 @@ export type WeeklyGoal = {
 };
 
 interface WeeklyGoalState {
-  [weekStart: string]: WeeklyGoal[];
+  [weekStart: string]: Goal[];
 }
 
 export const weeklyGoalState = atom<WeeklyGoalState>({
@@ -20,7 +20,7 @@ export const weeklyGoalState = atom<WeeklyGoalState>({
   default: {},
 });
 
-export const weeklyGoalListState = selectorFamily<WeeklyGoal[], string>({
+export const weeklyGoalListState = selectorFamily<Goal[], string>({
   key: "WeeklyGoalList",
   get:
     (weekStart) =>

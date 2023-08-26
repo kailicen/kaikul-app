@@ -4,57 +4,56 @@ import WeekView from "./WeekView";
 import { User } from "firebase/auth";
 import { Flex } from "@chakra-ui/react";
 import WeekNavigation from "./WeekNavigation";
-import moment from "moment";
-import "moment/locale/en-gb";
 import { useMediaQuery } from "@chakra-ui/react";
 import Day from "./Day";
 import DayNavigation from "./DayNavigation";
 import FloatingFeedbackButton from "../FloatingFeedbackButton";
 import { useRecoilState } from "recoil";
 import { weekTaskListState } from "@/atoms/tasksAtom";
-
-moment.updateLocale("en", {
-  week: {
-    dow: 1, // Monday is the first day of the week
-  },
-});
+import {
+  startOfWeek as startOfWeekFns,
+  format,
+  addDays,
+  addWeeks,
+  subWeeks,
+  startOfDay as startOfDayFns,
+  subDays,
+} from "date-fns";
 
 type Props = { user: User };
 
 function WeeklyPlanner({ user }: Props) {
-  // might have future feature regarding to me/team tab
   const [activeTab, setActiveTab] = useState<"me" | "team">("me");
-
   const [isLargerThan768] = useMediaQuery("(min-width: 768px)");
 
   const [startOfWeek, setStartOfWeek] = useState(
-    moment().startOf("week").format("YYYY-MM-DD")
-  );
-  const [startOfDay, setStartOfDay] = useState(
-    moment().startOf("day").format("YYYY-MM-DD")
+    format(startOfWeekFns(new Date()), "yyyy-MM-dd")
   );
 
-  const endOfWeek = moment(startOfWeek).add(6, "days").format("YYYY-MM-DD");
+  const [startOfDay, setStartOfDay] = useState(
+    format(startOfDayFns(new Date()), "yyyy-MM-dd")
+  );
+
+  const endOfWeek = format(addDays(new Date(startOfWeek), 6), "yyyy-MM-dd");
+
   const [weekTasks, setWeekTasks] = useRecoilState(
     weekTaskListState([startOfWeek, endOfWeek])
   );
 
   const handlePreviousWeek = () => {
-    setStartOfWeek(
-      moment(startOfWeek).subtract(1, "week").format("YYYY-MM-DD")
-    );
+    setStartOfWeek(format(subWeeks(new Date(startOfWeek), 1), "yyyy-MM-dd"));
   };
 
   const handleNextWeek = () => {
-    setStartOfWeek(moment(startOfWeek).add(1, "week").format("YYYY-MM-DD"));
+    setStartOfWeek(format(addWeeks(new Date(startOfWeek), 1), "yyyy-MM-dd"));
   };
 
   const handlePreviousDay = () => {
-    setStartOfDay(moment(startOfDay).subtract(1, "day").format("YYYY-MM-DD"));
+    setStartOfDay(format(subDays(new Date(startOfDay), 1), "yyyy-MM-dd"));
   };
 
   const handleNextDay = () => {
-    setStartOfDay(moment(startOfDay).add(1, "day").format("YYYY-MM-DD"));
+    setStartOfDay(format(addDays(new Date(startOfDay), 1), "yyyy-MM-dd"));
   };
 
   return (
@@ -64,7 +63,7 @@ function WeeklyPlanner({ user }: Props) {
           onPreviousWeek={handlePreviousWeek}
           onNextWeek={handleNextWeek}
           startOfWeek={startOfWeek}
-          setActiveTab={setActiveTab} // <- Pass down the setActiveTab function
+          setActiveTab={setActiveTab}
           activeTab={activeTab}
         />
       ) : (
@@ -72,7 +71,7 @@ function WeeklyPlanner({ user }: Props) {
           onPreviousDay={handlePreviousDay}
           onNextDay={handleNextDay}
           startOfDay={startOfDay}
-          setActiveTab={setActiveTab} // <- Pass down the setActiveTab function
+          setActiveTab={setActiveTab}
           activeTab={activeTab}
         />
       )}
@@ -82,7 +81,7 @@ function WeeklyPlanner({ user }: Props) {
       ) : (
         <Day user={user} date={startOfDay} recoilTasks={weekTasks} />
       )}
-      <FloatingFeedbackButton /> {/* Add the feedback button */}
+      <FloatingFeedbackButton />
     </Flex>
   );
 }

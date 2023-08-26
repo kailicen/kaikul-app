@@ -1,7 +1,7 @@
 import React from "react";
 import { Box, Icon, Text, Tabs, TabList, Tab, Flex } from "@chakra-ui/react";
 import { MdChevronLeft, MdChevronRight } from "react-icons/md";
-import moment from "moment";
+import { format, parseISO, startOfDay as startOfDayFns } from "date-fns";
 
 type DayNavigationProps = {
   onPreviousDay: () => void;
@@ -18,8 +18,9 @@ const DayNavigation: React.FC<DayNavigationProps> = ({
   setActiveTab, // <- Add this here
   activeTab, // New argument
 }) => {
-  const currentDate = moment(startOfDay);
-  const currentDay = currentDate.format("DD MMM YYYY");
+  const dateObj = parseISO(startOfDay);
+  const currentDate = startOfDayFns(dateObj);
+  const currentDay = format(currentDate, "dd MMM yyyy");
 
   const handleTabChange = (index: any) => {
     if (index === 0) {

@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { WeeklyGoal, weeklyGoalListState } from "../atoms/weeklyGoalsAtom";
+import { Goal, weeklyGoalListState } from "../atoms/weeklyGoalsAtom";
 import { User } from "firebase/auth";
 import {
   addDoc,
@@ -15,19 +15,21 @@ import {
 import { firestore } from "../firebase/clientApp";
 import { useRecoilState } from "recoil";
 import { useStatistics } from "./useStatistics";
-import moment from "moment";
 import { Task, weekTaskListState } from "@/atoms/tasksAtom";
+import { addDays, format, parseISO } from "date-fns";
 
 export const useGoals = (user: User, startOfWeek: string) => {
   const [recoilGoals, setRecoilGoals] = useRecoilState(
     weeklyGoalListState(startOfWeek)
   );
   // Fetch tasks for the current week
-  const endOfWeek = moment(startOfWeek).add(6, "days").format("YYYY-MM-DD");
+  const startOfWeekDate = parseISO(startOfWeek);
+  const endOfWeekDate = addDays(startOfWeekDate, 6);
+  const endOfWeek = format(endOfWeekDate, "yyyy-MM-dd");
   const [weekTasks, setWeekTasks] = useRecoilState(
     weekTaskListState([startOfWeek, endOfWeek])
   );
-  const [goals, setGoals] = useState<WeeklyGoal[]>([]);
+  const [goals, setGoals] = useState<Goal[]>([]);
   const { fetchTasks } = useStatistics();
 
   const handleAddGoal = async (
@@ -35,7 +37,7 @@ export const useGoals = (user: User, startOfWeek: string) => {
     description: string,
     color: string
   ) => {
-    const goalToAdd: WeeklyGoal = {
+    const goalToAdd: Goal = {
       id: "", // Placeholder value, will be updated after adding the document
       text: goal,
       completed: false,
@@ -182,9 +184,9 @@ export const useGoals = (user: User, startOfWeek: string) => {
         where("userId", "==", user.uid) // Filter goals by user ID
       );
       const querySnapshot = await getDocs(q);
-      const goalsForWeek: WeeklyGoal[] = [];
+      const goalsForWeek: Goal[] = [];
       querySnapshot.forEach((doc) => {
-        const goal = doc.data() as WeeklyGoal;
+        const goal = doc.data() as Goal;
         goal.id = doc.id;
         goalsForWeek.push(goal);
       });

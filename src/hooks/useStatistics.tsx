@@ -4,14 +4,14 @@ import { collection, query, where, getDocs, orderBy } from "firebase/firestore";
 import { auth, firestore } from "@/firebase/clientApp";
 import { Blocker } from "@/atoms/blockersAtom";
 import { Task } from "@/atoms/tasksAtom";
-import { WeeklyGoal } from "@/atoms/weeklyGoalsAtom";
+import { Goal } from "@/atoms/weeklyGoalsAtom";
 import { format } from "date-fns";
 
 export const useStatistics = () => {
   const [user] = useAuthState(auth);
   const [tasks, setTasks] = useState<Task[]>([]);
   const [blockers, setBlockers] = useState<Blocker[]>([]);
-  const [goals, setGoals] = useState<WeeklyGoal[]>([]);
+  const [goals, setGoals] = useState<Goal[]>([]);
 
   const fetchTasks = useCallback(
     async (start: Date, end: Date) => {
@@ -82,7 +82,7 @@ export const useStatistics = () => {
       const goalSnapshots = await getDocs(goalsQuery);
 
       // Update the Recoil state for the current week's goals
-      const goals = goalSnapshots.docs.map((doc) => doc.data() as WeeklyGoal);
+      const goals = goalSnapshots.docs.map((doc) => doc.data() as Goal);
       setGoals(goals);
 
       return goals; // Return the fetched tasks
@@ -92,7 +92,7 @@ export const useStatistics = () => {
 
   // Function to calculate completion rate and count of completed items
   const calculateCompletionRate = (
-    data: (Task | WeeklyGoal)[],
+    data: (Task | Goal)[],
     dataType: "tasks" | "goals"
   ) => {
     if (data.length === 0) return { completionRate: 0, completedCount: 0 };

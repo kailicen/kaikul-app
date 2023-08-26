@@ -10,7 +10,7 @@ import {
   Tab,
 } from "@chakra-ui/react";
 import { MdChevronLeft, MdChevronRight } from "react-icons/md";
-import moment from "moment";
+import { addDays, format } from "date-fns";
 
 type WeekNavigationProps = {
   onPreviousWeek: () => void;
@@ -27,12 +27,9 @@ const WeekNavigation: React.FC<WeekNavigationProps> = ({
   setActiveTab, // <- Add this here
   activeTab, // New argument
 }) => {
-  const currentDate = moment(startOfWeek);
-  const startOfWeekDate = currentDate.format("MMM Do");
-  const endOfWeekDate = currentDate
-    .clone()
-    .add(6, "days")
-    .format("MMM Do, YYYY");
+  const currentDate = new Date(startOfWeek);
+  const startOfWeekDate = format(currentDate, "MMM do");
+  const endOfWeekDate = format(addDays(currentDate, 6), "MMM do, yyyy");
 
   const handleTabChange = (index: any) => {
     if (index === 0) {

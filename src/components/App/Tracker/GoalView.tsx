@@ -32,10 +32,10 @@ import {
 import { User } from "firebase/auth";
 import { MdAdd } from "react-icons/md";
 import { useGoals } from "@/hooks/useGoals";
-import moment from "moment";
 import { Formik, Field, Form, FieldInputProps, ErrorMessage } from "formik";
 import { CirclePicker } from "react-color";
 import { ChevronDownIcon } from "@chakra-ui/icons";
+import { parseISO, startOfWeek as startOfWeekFns, format } from "date-fns";
 
 type GoalViewProps = { user: User; startOfDay: string; startOfWeek: string };
 
@@ -46,8 +46,9 @@ function GoalView({ user, startOfDay, startOfWeek }: GoalViewProps) {
 
   useEffect(() => {
     if (!isLargerThan768) {
-      const startOfWeekMoment = moment(startOfDay).startOf("week");
-      setMobileStartOfWeek(startOfWeekMoment.format("YYYY-MM-DD"));
+      const dateObj = parseISO(startOfDay); // Parse string to Date
+      const startOfWeekDate = startOfWeekFns(dateObj); // Get the start of the week
+      setMobileStartOfWeek(format(startOfWeekDate, "yyyy-MM-dd"));
     } else {
       setMobileStartOfWeek(startOfWeek);
     }
