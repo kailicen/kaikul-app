@@ -11,9 +11,11 @@ export function WhatIsAP() {
         </h2>
 
         <div className="text-base md:text-lg">
-          An Accountability Partner is like a dedicated teammate, ensuring you
-          stay true to your goals. You support each other, ensuring both achieve
-          success.
+          <p>
+            An Accountability Partner is like a dedicated teammate, ensuring you
+            stay true to your goals.
+          </p>
+          <p>You support each other, ensuring both achieve success.</p>
         </div>
 
         <ul className="text-base md:text-lg">
@@ -23,8 +25,11 @@ export function WhatIsAP() {
         </ul>
 
         <blockquote className="rounded border-l-4 border-[#4130AC] bg-white py-2 pl-4 text-base italic shadow-md md:text-lg text-gray-700">
-          &quot;A habit contract can add a social cost to any behavior. It makes
-          the costs of breaking your promises public and painful.&quot;
+          <p>&quot;A habit contract can add a social cost to any behavior.</p>
+          <p>
+            It makes the costs of breaking your promises public and
+            painful.&quot;
+          </p>
           <span className="mt-2 block font-bold">- Atomic Habits</span>
         </blockquote>
       </div>
