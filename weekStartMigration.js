@@ -1,27 +1,51 @@
+const admin = require("firebase-admin");
+const { addDays } = require("date-fns");
+
+// Initialize Firebase Admin SDK
+const serviceAccount = require("./kaikul-firebase-adminsdk.json");
+admin.initializeApp({
+  credential: admin.credential.cert(serviceAccount),
+});
+
+// Retrieve the default Firestore instance
+const firestore = admin.firestore();
+
 const migrateData = async () => {
-  // Fetch all goals with a weekStart
-  const q = query(
-    collection(firestore, "weeklyGoals"),
-    where("weekStart", "!=", null), // This fetches documents where weekStart exists
-    where("userId", "==", user.uid)
-  );
+  try {
+    // Fetch all goals with a weekStart
+    const weeklyGoalsCollection = firestore.collection("weeklyGoals");
+    const snapshot = await weeklyGoalsCollection
+      .where("weekStart", "!=", null)
+      .get();
 
-  const querySnapshot = await getDocs(q);
+    if (snapshot.empty) {
+      console.log("No matching documents found.");
+      return;
+    }
 
-  querySnapshot.forEach((doc) => {
-    const goal = doc.data();
+    const batch = firestore.batch(); // Initiate a batch
 
-    // Get the endDate using your method (like adding 6 days to startOfWeek)
-    const endDate = addDays(new Date(goal.weekStart), 6);
+    snapshot.forEach((doc) => {
+      const goal = doc.data();
+      const endDate = addDays(new Date(goal.weekStart), 6);
+      const endDateString = format(endDate, "yyyy-MM-dd");
 
-    // Update the document with new startDate, endDate and remove weekStart
-    updateDoc(docRef(firestore, "weeklyGoals", doc.id), {
-      startDate: goal.weekStart,
-      endDate: endDate,
-      weekStart: deleteField(), // This will delete the weekStart field
+      // Add this update operation to the batch
+      const goalRef = weeklyGoalsCollection.doc(doc.id);
+      batch.update(goalRef, {
+        startDate: goal.weekStart,
+        endDate: endDateString,
+        weekStart: admin.firestore.FieldValue.delete(),
+      });
     });
-  });
+
+    // Commit the batch
+    await batch.commit();
+    console.log("Migration completed successfully!");
+  } catch (error) {
+    console.error("Error migrating data: ", error);
+  }
 };
 
-// You can call this function once for each user to migrate their data
+// Call the function
 migrateData();
