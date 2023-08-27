@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { collection, query, where, getDocs } from "firebase/firestore";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { auth, firestore } from "@/firebase/clientApp";
-import { Blocker } from "@/atoms/blockersAtom";
+import { Reflection } from "@/atoms/reflectionsAtom";
 import { Task } from "@/atoms/tasksAtom";
 import { format, startOfWeek, subDays } from "date-fns";
 import { TeamTab } from "./useTeamTab";
@@ -13,7 +13,7 @@ const useProgress = (selectedProgress: ProgressOption, lastOpened: Date) => {
   const [user] = useAuthState(auth);
   const [yesterdayTasks, setYesterdayTasks] = useState<Task[]>([]);
   const [todayTasks, setTodayTasks] = useState<Task[]>([]);
-  const [blockers, setBlockers] = useState<Blocker[]>([]);
+  const [blockers, setBlockers] = useState<Reflection[]>([]);
   const [weeklyReflection, setWeeklyReflection] = useState<TeamTab>();
 
   useEffect(() => {
@@ -55,7 +55,7 @@ const useProgress = (selectedProgress: ProgressOption, lastOpened: Date) => {
         );
         const yesterdayBlockersSnapshot = await getDocs(yesterdayBlockersQuery);
         const fetchedYesterdayBlockers = yesterdayBlockersSnapshot.docs.map(
-          (doc) => doc.data() as Blocker
+          (doc) => doc.data() as Reflection
         );
 
         setBlockers(fetchedYesterdayBlockers);

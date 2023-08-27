@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Blocker } from "../atoms/blockersAtom";
+import { Reflection } from "../atoms/reflectionsAtom";
 import {
   addDoc,
   collection,
@@ -14,11 +14,11 @@ import { firestore } from "../firebase/clientApp";
 import { User } from "firebase/auth";
 
 export const useBlockers = (date: string, user: User) => {
-  const [blockers, setBlockers] = useState<Blocker[]>([]);
+  const [blockers, setBlockers] = useState<Reflection[]>([]);
 
   const handleAddBlocker = async (blocker: string) => {
     if (blockers.length < 3) {
-      const blockerToAdd: Blocker = {
+      const blockerToAdd: Reflection = {
         id: "", // Placeholder value, will be updated after adding the document
         text: blocker,
         date: date,
@@ -70,9 +70,9 @@ export const useBlockers = (date: string, user: User) => {
         where("userId", "==", user.uid)
       );
       const querySnapshot = await getDocs(q);
-      const blockersForDay: Blocker[] = [];
+      const blockersForDay: Reflection[] = [];
       querySnapshot.forEach((doc) => {
-        const blocker = doc.data() as Blocker;
+        const blocker = doc.data() as Reflection;
         blocker.id = doc.id;
         blockersForDay.push(blocker);
       });

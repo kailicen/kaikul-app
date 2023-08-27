@@ -1,6 +1,6 @@
 import { atom, DefaultValue, selectorFamily } from "recoil";
 
-export type Blocker = {
+export type Reflection = {
   id: string;
   text: string;
   date: string;
@@ -8,7 +8,7 @@ export type Blocker = {
 };
 
 interface BlockerState {
-  [date: string]: Blocker[];
+  [date: string]: Reflection[];
 }
 
 export const blockerState = atom<BlockerState>({
@@ -16,7 +16,7 @@ export const blockerState = atom<BlockerState>({
   default: {},
 });
 
-export const blockerListState = selectorFamily<Blocker[], string>({
+export const blockerListState = selectorFamily<Reflection[], string>({
   key: "BlockerList",
   get:
     (day) =>
