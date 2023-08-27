@@ -4,14 +4,14 @@ import { collection, query, where, getDocs, orderBy } from "firebase/firestore";
 import { auth, firestore } from "@/firebase/clientApp";
 import { Blocker } from "@/atoms/blockersAtom";
 import { Task } from "@/atoms/tasksAtom";
-import { WeeklyGoal } from "@/atoms/weeklyGoalsAtom";
+import { Goal } from "@/atoms/goalsAtom";
 import { format } from "date-fns";
 
 export const useStatistics = () => {
   const [user] = useAuthState(auth);
   const [tasks, setTasks] = useState<Task[]>([]);
   const [blockers, setBlockers] = useState<Blocker[]>([]);
-  const [goals, setGoals] = useState<WeeklyGoal[]>([]);
+  const [goals, setGoals] = useState<Goal[]>([]);
 
   const fetchTasks = useCallback(
     async (start: Date, end: Date) => {
@@ -71,28 +71,53 @@ export const useStatistics = () => {
       const startString = format(start, "yyyy-MM-dd");
       const endString = format(end, "yyyy-MM-dd");
 
-      const goalsQuery = query(
+      // Query based on startDate
+      const qStartDate = query(
         collection(firestore, "weeklyGoals"),
         where("userId", "==", user?.uid),
-        where("weekStart", ">=", startString),
-        where("weekStart", "<=", endString),
-        orderBy("weekStart")
+        where("startDate", "<=", endString)
       );
 
-      const goalSnapshots = await getDocs(goalsQuery);
+      // Query based on endDate
+      const qEndDate = query(
+        collection(firestore, "weeklyGoals"),
+        where("userId", "==", user?.uid),
+        where("endDate", ">=", startString)
+      );
+
+      const querySnapshotStartDate = await getDocs(qStartDate);
+      const querySnapshotEndDate = await getDocs(qEndDate);
+
+      const goalsFromStartDate: Goal[] = querySnapshotStartDate.docs.map(
+        (doc) => {
+          const goal = doc.data() as Goal;
+          goal.id = doc.id;
+          return goal;
+        }
+      );
+
+      const goalsFromEndDate: Goal[] = querySnapshotEndDate.docs.map((doc) => {
+        const goal = doc.data() as Goal;
+        goal.id = doc.id;
+        return goal;
+      });
+
+      // Find the intersection of the two goal arrays by id
+      const goalsForWeek: Goal[] = goalsFromStartDate.filter((goalStart) =>
+        goalsFromEndDate.some((goalEnd) => goalEnd.id === goalStart.id)
+      );
 
       // Update the Recoil state for the current week's goals
-      const goals = goalSnapshots.docs.map((doc) => doc.data() as WeeklyGoal);
-      setGoals(goals);
+      setGoals(goalsForWeek);
 
-      return goals; // Return the fetched tasks
+      return goalsForWeek; // Return the fetched goals
     },
     [user]
   );
 
   // Function to calculate completion rate and count of completed items
   const calculateCompletionRate = (
-    data: (Task | WeeklyGoal)[],
+    data: (Task | Goal)[],
     dataType: "tasks" | "goals"
   ) => {
     if (data.length === 0) return { completionRate: 0, completedCount: 0 };
