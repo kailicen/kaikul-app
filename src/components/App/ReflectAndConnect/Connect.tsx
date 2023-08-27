@@ -75,7 +75,7 @@ function Connect({ user }: Props) {
             <Link
               color="purple.500"
               fontWeight="bold"
-              href="https://join.slack.com/t/kaikul/shared_invite/zt-209pevvki-K3ZuCavvScpIg6mHXmsVmQ"
+              href={process.env.KAIKUL_SLACK_LINK}
               isExternal
             >
               Slack community
