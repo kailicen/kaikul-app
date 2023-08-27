@@ -107,6 +107,13 @@ const Day: React.FC<{ date: string; user: User; recoilTasks: Task[] }> = ({
         values.goalId,
         color as string // Pass the color as an argument
       );
+      toast({
+        title: "Task updated.",
+        description: "Your task has been updated successfully.",
+        status: "success",
+        duration: 5000,
+        isClosable: true,
+      });
     } else {
       handleAddTask(
         values.task,
@@ -114,6 +121,13 @@ const Day: React.FC<{ date: string; user: User; recoilTasks: Task[] }> = ({
         values.goalId,
         color as string
       ); // Pass the color as an argument
+      toast({
+        title: "Task added.",
+        description: "Your task has been added successfully.",
+        status: "success",
+        duration: 5000,
+        isClosable: true,
+      });
     }
     taskDrawerDisclosure.onClose();
     setSelectedTaskId(null);
@@ -123,8 +137,22 @@ const Day: React.FC<{ date: string; user: User; recoilTasks: Task[] }> = ({
   const handleBlockerFormSubmit = (values: { blocker: string }) => {
     if (selectedBlockerId) {
       handleEditBlocker(selectedBlockerId, values.blocker);
+      toast({
+        title: "Reflection updated.",
+        description: "Your reflection has been updated successfully.",
+        status: "success",
+        duration: 5000,
+        isClosable: true,
+      });
     } else {
       handleAddBlocker(values.blocker);
+      toast({
+        title: "Reflection added.",
+        description: "Your reflection has been added successfully.",
+        status: "success",
+        duration: 5000,
+        isClosable: true,
+      });
     }
     blockerDrawerDisclosure.onClose();
     setSelectedBlockerId(null);
@@ -132,27 +160,31 @@ const Day: React.FC<{ date: string; user: User; recoilTasks: Task[] }> = ({
   };
 
   const handleDelete = (id: string) => {
-    handleDeleteTask(id);
-    toast({
-      title: "Task deleted.",
-      description: "Your task has been deleted successfully.",
-      status: "success",
-      duration: 5000,
-      isClosable: true,
-    });
-    taskDrawerDisclosure.onClose();
+    if (window.confirm("Are you sure you want to delete this task?")) {
+      handleDeleteTask(id);
+      toast({
+        title: "Task deleted.",
+        description: "Your task has been deleted successfully.",
+        status: "success",
+        duration: 5000,
+        isClosable: true,
+      });
+      taskDrawerDisclosure.onClose();
+    }
   };
 
   const handleBlockerDelete = (id: string) => {
-    handleDeleteBlocker(id);
-    toast({
-      title: "Reflection deleted.",
-      description: "Your reflection has been deleted successfully.",
-      status: "success",
-      duration: 5000,
-      isClosable: true,
-    });
-    blockerDrawerDisclosure.onClose();
+    if (window.confirm("Are you sure you want to delete this reflection?")) {
+      handleDeleteBlocker(id);
+      toast({
+        title: "Reflection deleted.",
+        description: "Your reflection has been deleted successfully.",
+        status: "success",
+        duration: 5000,
+        isClosable: true,
+      });
+      blockerDrawerDisclosure.onClose();
+    }
   };
 
   useEffect(() => {

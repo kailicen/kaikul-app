@@ -71,21 +71,46 @@ export const useStatistics = () => {
       const startString = format(start, "yyyy-MM-dd");
       const endString = format(end, "yyyy-MM-dd");
 
-      const goalsQuery = query(
+      // Query based on startDate
+      const qStartDate = query(
         collection(firestore, "weeklyGoals"),
         where("userId", "==", user?.uid),
-        where("weekStart", ">=", startString),
-        where("weekStart", "<=", endString),
-        orderBy("weekStart")
+        where("startDate", "<=", endString)
       );
 
-      const goalSnapshots = await getDocs(goalsQuery);
+      // Query based on endDate
+      const qEndDate = query(
+        collection(firestore, "weeklyGoals"),
+        where("userId", "==", user?.uid),
+        where("endDate", ">=", startString)
+      );
+
+      const querySnapshotStartDate = await getDocs(qStartDate);
+      const querySnapshotEndDate = await getDocs(qEndDate);
+
+      const goalsFromStartDate: Goal[] = querySnapshotStartDate.docs.map(
+        (doc) => {
+          const goal = doc.data() as Goal;
+          goal.id = doc.id;
+          return goal;
+        }
+      );
+
+      const goalsFromEndDate: Goal[] = querySnapshotEndDate.docs.map((doc) => {
+        const goal = doc.data() as Goal;
+        goal.id = doc.id;
+        return goal;
+      });
+
+      // Find the intersection of the two goal arrays by id
+      const goalsForWeek: Goal[] = goalsFromStartDate.filter((goalStart) =>
+        goalsFromEndDate.some((goalEnd) => goalEnd.id === goalStart.id)
+      );
 
       // Update the Recoil state for the current week's goals
-      const goals = goalSnapshots.docs.map((doc) => doc.data() as Goal);
-      setGoals(goals);
+      setGoals(goalsForWeek);
 
-      return goals; // Return the fetched tasks
+      return goalsForWeek; // Return the fetched goals
     },
     [user]
   );

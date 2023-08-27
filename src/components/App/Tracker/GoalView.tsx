@@ -32,6 +32,15 @@ import {
   PopoverBody,
   PopoverContent,
   PopoverTrigger,
+  FormHelperText,
+  Tooltip,
+  Modal,
+  ModalBody,
+  ModalCloseButton,
+  ModalContent,
+  ModalFooter,
+  ModalHeader,
+  ModalOverlay,
 } from "@chakra-ui/react";
 import { User } from "firebase/auth";
 import { MdAdd } from "react-icons/md";
@@ -39,11 +48,12 @@ import { useGoals } from "@/hooks/useGoals";
 import moment from "moment";
 import { Formik, Field, Form, FieldInputProps, ErrorMessage } from "formik";
 import { CirclePicker } from "react-color";
-import { ChevronDownIcon } from "@chakra-ui/icons";
+import { ChevronDownIcon, InfoIcon } from "@chakra-ui/icons";
 import { DayPicker } from "react-day-picker";
 import "react-day-picker/dist/style.css";
 import { format, isBefore } from "date-fns";
 import { FaCalendarAlt } from "react-icons/fa";
+import GoalSettingModal from "@/components/Modal/Instructions/GoalSettingModal";
 
 type GoalViewProps = { user: User; startOfDay: string; startOfWeek: string };
 
@@ -82,6 +92,19 @@ function GoalView({ user, startOfDay, startOfWeek }: GoalViewProps) {
     new Date()
   );
   const [endDisplayedMonth, setEndDisplayedMonth] = useState<Date>(new Date());
+
+  const [isStartDatePopoverOpen, setStartDatePopoverOpen] = useState(false);
+  const [isEndDatePopoverOpen, setEndDatePopoverOpen] = useState(false);
+
+  const [isInstructionOpen, setIsInstructionOpen] = useState(false);
+
+  const handleInstructionOpen = () => {
+    setIsInstructionOpen(true);
+  };
+
+  const handleInstructionClose = () => {
+    setIsInstructionOpen(false);
+  };
 
   const openDrawer = (
     id?: string,
@@ -129,6 +152,13 @@ function GoalView({ user, startOfDay, startOfWeek }: GoalViewProps) {
         values.startDate,
         values.endDate
       );
+      toast({
+        title: "Goal updated.",
+        description: "Your goal has been updated successfully.",
+        status: "success",
+        duration: 5000,
+        isClosable: true,
+      });
     } else {
       handleAddGoal(
         values.goal,
@@ -137,6 +167,13 @@ function GoalView({ user, startOfDay, startOfWeek }: GoalViewProps) {
         values.startDate,
         values.endDate
       );
+      toast({
+        title: "Goal added.",
+        description: "Your goal has been added successfully.",
+        status: "success",
+        duration: 5000,
+        isClosable: true,
+      });
     }
     onClose();
     setSelectedGoalId(null);
@@ -144,23 +181,33 @@ function GoalView({ user, startOfDay, startOfWeek }: GoalViewProps) {
   };
 
   const handleDelete = (id: string) => {
-    handleDeleteGoal(id);
-    toast({
-      title: "Goal deleted.",
-      description: "Your goal has been deleted successfully.",
-      status: "success",
-      duration: 5000,
-      isClosable: true,
-    });
-    onClose();
+    if (window.confirm("Are you sure you want to delete this goal?")) {
+      handleDeleteGoal(id);
+      toast({
+        title: "Goal deleted.",
+        description: "Your goal has been deleted successfully.",
+        status: "success",
+        duration: 5000,
+        isClosable: true,
+      });
+      onClose();
+    }
   };
 
   return (
     <Center>
       <Box width="100%" p={4}>
         <Text mb={2} fontWeight="semibold">
-          Sprint Goals:{" "}
+          Goal Setting:{" "}
+          <Tooltip label="Click to learn how goals work" placement="top">
+            <InfoIcon onClick={handleInstructionOpen} color="#ff5e0e" mb={1} />
+          </Tooltip>
         </Text>
+        {/* Use the modal component here */}
+        <GoalSettingModal
+          isOpen={isInstructionOpen}
+          onClose={handleInstructionClose}
+        />
         <Grid templateColumns={{ base: "1fr", md: "1fr 1fr 1fr" }} gap={3}>
           {goals.map((goal) => (
             <Flex
@@ -242,7 +289,10 @@ function GoalView({ user, startOfDay, startOfWeek }: GoalViewProps) {
                       name="goal"
                       render={({ field }: { field: FieldInputProps<any> }) => (
                         <div>
-                          <Input {...field} placeholder="New goal..." />
+                          <Input
+                            {...field}
+                            placeholder="Enter your goal here (e.g., 'Lose 5 pounds')"
+                          />
                           <ErrorMessage
                             name="goal"
                             component="div"
@@ -261,42 +311,56 @@ function GoalView({ user, startOfDay, startOfWeek }: GoalViewProps) {
                         form: any;
                       }) => (
                         <Box mt={4}>
-                          <Popover>
-                            <PopoverTrigger>
-                              <Button
-                                variant="outline"
-                                leftIcon={<Icon as={FaCalendarAlt} />}
-                              >
-                                {field.value || "Select Start Date"}
-                              </Button>
-                            </PopoverTrigger>
-                            <PopoverContent>
-                              <PopoverBody>
-                                <DayPicker
-                                  mode="single"
-                                  weekStartsOn={1}
-                                  month={startDisplayedMonth}
-                                  onMonthChange={(month: Date) =>
-                                    setStartDisplayedMonth(month)
-                                  }
-                                  selected={new Date(field.value)}
-                                  onSelect={(selectedDay: Date | undefined) => {
-                                    if (selectedDay) {
-                                      const formattedDate = format(
-                                        selectedDay,
-                                        "yyyy-MM-dd"
-                                      );
-                                      setStartDate(formattedDate);
-                                      form.setFieldValue(
-                                        "startDate",
-                                        formattedDate
-                                      );
+                          <FormControl
+                            display="flex"
+                            alignItems="center"
+                            mt={4}
+                          >
+                            <FormLabel mb="0">Start Date:</FormLabel>
+                            <Popover
+                              isOpen={isStartDatePopoverOpen}
+                              onClose={() => setStartDatePopoverOpen(false)}
+                            >
+                              <PopoverTrigger>
+                                <Button
+                                  variant="outline"
+                                  leftIcon={<Icon as={FaCalendarAlt} />}
+                                  onClick={() => setStartDatePopoverOpen(true)}
+                                >
+                                  {field.value || "Select Start Date"}
+                                </Button>
+                              </PopoverTrigger>
+                              <PopoverContent>
+                                <PopoverBody>
+                                  <DayPicker
+                                    mode="single"
+                                    weekStartsOn={1}
+                                    month={startDisplayedMonth}
+                                    onMonthChange={(month: Date) =>
+                                      setStartDisplayedMonth(month)
                                     }
-                                  }}
-                                />
-                              </PopoverBody>
-                            </PopoverContent>
-                          </Popover>
+                                    selected={new Date(field.value)}
+                                    onSelect={(
+                                      selectedDay: Date | undefined
+                                    ) => {
+                                      if (selectedDay) {
+                                        const formattedDate = format(
+                                          selectedDay,
+                                          "yyyy-MM-dd"
+                                        );
+                                        setStartDate(formattedDate);
+                                        form.setFieldValue(
+                                          "startDate",
+                                          formattedDate
+                                        );
+                                        setStartDatePopoverOpen(false);
+                                      }
+                                    }}
+                                  />
+                                </PopoverBody>
+                              </PopoverContent>
+                            </Popover>
+                          </FormControl>
                         </Box>
                       )}
                     </Field>
@@ -310,52 +374,68 @@ function GoalView({ user, startOfDay, startOfWeek }: GoalViewProps) {
                         form: any;
                       }) => (
                         <Box mt={4}>
-                          <Popover>
-                            <PopoverTrigger>
-                              <Button
-                                variant="outline"
-                                leftIcon={<Icon as={FaCalendarAlt} />}
-                              >
-                                {field.value || "Select End Date"}
-                              </Button>
-                            </PopoverTrigger>
-                            <PopoverContent>
-                              <PopoverBody>
-                                <DayPicker
-                                  mode="single"
-                                  weekStartsOn={1}
-                                  month={endDisplayedMonth}
-                                  onMonthChange={(month: Date) =>
-                                    setEndDisplayedMonth(month)
-                                  }
-                                  disabled={(day: Date) =>
-                                    isBefore(day, new Date(startDate))
-                                  }
-                                  selected={
-                                    endDate ? new Date(field.value) : undefined
-                                  }
-                                  onSelect={(selectedDay: Date | undefined) => {
-                                    if (selectedDay) {
-                                      const formattedDate = format(
-                                        selectedDay,
-                                        "yyyy-MM-dd"
-                                      );
-                                      setEndDate(formattedDate);
-                                      form.setFieldValue(
-                                        "endDate",
-                                        formattedDate
-                                      );
+                          <FormControl
+                            display="flex"
+                            alignItems="center"
+                            mt={4}
+                          >
+                            <FormLabel mb="0">End Date:</FormLabel>
+                            <Popover
+                              isOpen={isEndDatePopoverOpen}
+                              onClose={() => setEndDatePopoverOpen(false)}
+                            >
+                              <PopoverTrigger>
+                                <Button
+                                  variant="outline"
+                                  leftIcon={<Icon as={FaCalendarAlt} />}
+                                  onClick={() => setEndDatePopoverOpen(true)}
+                                >
+                                  {field.value || "Select End Date"}
+                                </Button>
+                              </PopoverTrigger>
+                              <PopoverContent>
+                                <PopoverBody>
+                                  <DayPicker
+                                    mode="single"
+                                    weekStartsOn={1}
+                                    month={endDisplayedMonth}
+                                    onMonthChange={(month: Date) =>
+                                      setEndDisplayedMonth(month)
                                     }
-                                  }}
-                                />
-                              </PopoverBody>
-                            </PopoverContent>
-                          </Popover>
-                          <ErrorMessage
-                            name="endDate"
-                            component="div"
-                            style={{ color: "red" }}
-                          />
+                                    disabled={(day: Date) =>
+                                      isBefore(day, new Date(startDate))
+                                    }
+                                    selected={
+                                      endDate
+                                        ? new Date(field.value)
+                                        : undefined
+                                    }
+                                    onSelect={(
+                                      selectedDay: Date | undefined
+                                    ) => {
+                                      if (selectedDay) {
+                                        const formattedDate = format(
+                                          selectedDay,
+                                          "yyyy-MM-dd"
+                                        );
+                                        setEndDate(formattedDate);
+                                        form.setFieldValue(
+                                          "endDate",
+                                          formattedDate
+                                        );
+                                        setEndDatePopoverOpen(false);
+                                      }
+                                    }}
+                                  />
+                                </PopoverBody>
+                              </PopoverContent>
+                            </Popover>
+                            <ErrorMessage
+                              name="endDate"
+                              component="div"
+                              style={{ color: "red" }}
+                            />
+                          </FormControl>
                         </Box>
                       )}
                     </Field>
@@ -367,7 +447,7 @@ function GoalView({ user, startOfDay, startOfWeek }: GoalViewProps) {
                           {...field}
                           placeholder="Description..."
                           mt={4}
-                          rows={15}
+                          rows={10}
                         />
                       )}
                     />
@@ -381,53 +461,60 @@ function GoalView({ user, startOfDay, startOfWeek }: GoalViewProps) {
                         form: any;
                       }) => (
                         <Box mt={4}>
-                          <Menu>
-                            <MenuButton
-                              as={Button}
-                              rightIcon={<ChevronDownIcon />}
-                              variant="outline"
-                              borderColor="gray.300"
-                            >
-                              <Box
-                                w="20px"
-                                h="20px"
-                                borderRadius="4px"
-                                bg={form.values.color || "#FFFFFF"}
-                                mr="2"
-                              />
-                            </MenuButton>
-                            <MenuList>
-                              <MenuItem onSelect={() => {}}>
-                                <CirclePicker
-                                  color={form.values.color}
-                                  onChangeComplete={(color) => {
-                                    form.setFieldValue("color", color.hex);
-                                    form.setFieldTouched("color", true);
-                                  }}
-                                  colors={[
-                                    "#f0f8e6", // WHITE
-                                    "#fbfbef", // Wheat
-                                    "#f3f3f3", // MistyRose
-                                    "#e0edf4", // LightGray
-                                    "#e9e5f3", // LightCyan
-                                    "#feeef5", // GhostWhite
-                                    "#EA8C87", // Salmon
-                                    "#FFB6C1", // LightPink
-                                    "#FFA500", // Orange
-                                    "#FFD700", // Gold
-                                    "#f5f32e", // Champagne
-                                    "#80ed99",
-                                    "#D8BFD8", // Thistle
-                                    "#B795EC", // MediumPurple
-                                    "#6495ED", // CornflowerBlue
-                                    "#87CEFA", // LightSkyBlue
-                                    "#3CB371", // MediumSeaGreen
-                                    "#2ec4b6", // Gold
-                                  ]}
+                          <FormControl
+                            display="flex"
+                            alignItems="center"
+                            mt={4}
+                          >
+                            <FormLabel mb="0">Choose a color:</FormLabel>
+                            <Menu>
+                              <MenuButton
+                                as={Button}
+                                rightIcon={<ChevronDownIcon />}
+                                variant="outline"
+                                borderColor="gray.300"
+                              >
+                                <Box
+                                  w="20px"
+                                  h="20px"
+                                  borderRadius="4px"
+                                  bg={form.values.color || "#FFFFFF"}
+                                  mr="2"
                                 />
-                              </MenuItem>
-                            </MenuList>
-                          </Menu>
+                              </MenuButton>
+                              <MenuList>
+                                <MenuItem onSelect={() => {}}>
+                                  <CirclePicker
+                                    color={form.values.color}
+                                    onChangeComplete={(color) => {
+                                      form.setFieldValue("color", color.hex);
+                                      form.setFieldTouched("color", true);
+                                    }}
+                                    colors={[
+                                      "#f0f8e6", // WHITE
+                                      "#fbfbef", // Wheat
+                                      "#f3f3f3", // MistyRose
+                                      "#e0edf4", // LightGray
+                                      "#e9e5f3", // LightCyan
+                                      "#feeef5", // GhostWhite
+                                      "#EA8C87", // Salmon
+                                      "#FFB6C1", // LightPink
+                                      "#FFA500", // Orange
+                                      "#FFD700", // Gold
+                                      "#f5f32e", // Champagne
+                                      "#80ed99",
+                                      "#D8BFD8", // Thistle
+                                      "#B795EC", // MediumPurple
+                                      "#6495ED", // CornflowerBlue
+                                      "#87CEFA", // LightSkyBlue
+                                      "#3CB371", // MediumSeaGreen
+                                      "#2ec4b6", // Gold
+                                    ]}
+                                  />
+                                </MenuItem>
+                              </MenuList>
+                            </Menu>
+                          </FormControl>
                         </Box>
                       )}
                     </Field>
