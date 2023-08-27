@@ -28,6 +28,13 @@ import {
   MenuItem,
   MenuList,
   DrawerFooter,
+  Popover,
+  PopoverBody,
+  PopoverContent,
+  PopoverTrigger,
+  PopoverArrow,
+  PopoverCloseButton,
+  PopoverHeader,
 } from "@chakra-ui/react";
 import { User } from "firebase/auth";
 import { MdAdd } from "react-icons/md";
@@ -36,6 +43,10 @@ import moment from "moment";
 import { Formik, Field, Form, FieldInputProps, ErrorMessage } from "formik";
 import { CirclePicker } from "react-color";
 import { ChevronDownIcon } from "@chakra-ui/icons";
+import { DayPicker } from "react-day-picker";
+import "react-day-picker/dist/style.css";
+import { format, isBefore } from "date-fns";
+import { FaCalendarAlt } from "react-icons/fa";
 
 type GoalViewProps = { user: User; startOfDay: string; startOfWeek: string };
 
@@ -67,13 +78,22 @@ function GoalView({ user, startOfDay, startOfWeek }: GoalViewProps) {
   const [selectedGoalCompleted, setSelectedGoalCompleted] = useState(false);
   const [selectedGoalDescription, setSelectedGoalDescription] = useState("");
   const [selectedGoalColor, setSelectedGoalColor] = useState("");
+  const [startDate, setStartDate] = useState(format(new Date(), "yyyy-MM-dd")); // Defaults to current date as a formatted string
+  const [endDate, setEndDate] = useState<string | undefined>(undefined);
+
+  const [startDisplayedMonth, setStartDisplayedMonth] = useState<Date>(
+    new Date()
+  );
+  const [endDisplayedMonth, setEndDisplayedMonth] = useState<Date>(new Date());
 
   const openDrawer = (
     id?: string,
     text?: string,
     completed?: boolean,
     description?: string,
-    color?: string
+    color?: string,
+    startDate?: string,
+    endDate?: string
   ) => {
     onOpen();
     setSelectedGoalId(id || null);
@@ -81,22 +101,45 @@ function GoalView({ user, startOfDay, startOfWeek }: GoalViewProps) {
     setSelectedGoalCompleted(completed || false);
     setSelectedGoalDescription(description || "");
     setSelectedGoalColor(color || "");
+    setStartDate(startDate || format(new Date(), "yyyy-MM-dd"));
+    setEndDate(endDate || "");
+
+    if (startDate) {
+      setStartDisplayedMonth(new Date(startDate));
+    } else {
+      setStartDisplayedMonth(new Date());
+    }
+    if (endDate) {
+      setEndDisplayedMonth(new Date(endDate));
+    } else {
+      setEndDisplayedMonth(new Date());
+    }
   };
 
   const handleFormSubmit = (values: {
     goal: string;
     description: string;
     color: string;
+    startDate: string;
+    endDate: string;
   }) => {
     if (selectedGoalId) {
       handleUpdateGoal(
         selectedGoalId,
         values.goal,
         values.description,
-        values.color
+        values.color,
+        values.startDate,
+        values.endDate
       );
     } else {
-      handleAddGoal(values.goal, values.description, values.color);
+      handleAddGoal(
+        values.goal,
+        values.description,
+        values.color,
+        values.startDate,
+        values.endDate
+      );
     }
     onClose();
     setSelectedGoalId(null);
@@ -139,7 +182,9 @@ function GoalView({ user, startOfDay, startOfWeek }: GoalViewProps) {
                   goal.text,
                   goal.completed,
                   goal.description,
-                  goal.color
+                  goal.color,
+                  goal.startDate,
+                  goal.endDate
                 )
               }
             >
@@ -177,12 +222,19 @@ function GoalView({ user, startOfDay, startOfWeek }: GoalViewProps) {
                   goal: selectedGoalText,
                   description: selectedGoalDescription,
                   color: selectedGoalColor,
+                  startDate: startDate,
+                  endDate: endDate || "", // or some default value
                 }}
                 onSubmit={handleFormSubmit}
                 validate={(values) => {
                   const errors: any = {};
                   if (!values.goal.trim()) {
                     errors.goal = "Goal is required";
+                  }
+                  if (!values.endDate) {
+                    errors.endDate = "End date is required";
+                  } else if (values.endDate <= values.startDate) {
+                    errors.endDate = "End date should be after start date";
                   }
                   return errors;
                 }}
@@ -202,6 +254,114 @@ function GoalView({ user, startOfDay, startOfWeek }: GoalViewProps) {
                         </div>
                       )}
                     />
+
+                    <Field name="startDate">
+                      {({
+                        field,
+                        form,
+                      }: {
+                        field: FieldInputProps<any>;
+                        form: any;
+                      }) => (
+                        <Box mt={4}>
+                          <Popover>
+                            <PopoverTrigger>
+                              <Button
+                                variant="outline"
+                                leftIcon={<Icon as={FaCalendarAlt} />}
+                              >
+                                {field.value || "Select Start Date"}
+                              </Button>
+                            </PopoverTrigger>
+                            <PopoverContent>
+                              <PopoverBody>
+                                <DayPicker
+                                  mode="single"
+                                  weekStartsOn={1}
+                                  month={startDisplayedMonth}
+                                  onMonthChange={(month: Date) =>
+                                    setStartDisplayedMonth(month)
+                                  }
+                                  selected={new Date(field.value)}
+                                  onSelect={(selectedDay: Date | undefined) => {
+                                    if (selectedDay) {
+                                      const formattedDate = format(
+                                        selectedDay,
+                                        "yyyy-MM-dd"
+                                      );
+                                      setStartDate(formattedDate);
+                                      form.setFieldValue(
+                                        "startDate",
+                                        formattedDate
+                                      );
+                                    }
+                                  }}
+                                />
+                              </PopoverBody>
+                            </PopoverContent>
+                          </Popover>
+                        </Box>
+                      )}
+                    </Field>
+
+                    <Field name="endDate">
+                      {({
+                        field,
+                        form,
+                      }: {
+                        field: FieldInputProps<any>;
+                        form: any;
+                      }) => (
+                        <Box mt={4}>
+                          <Popover>
+                            <PopoverTrigger>
+                              <Button
+                                variant="outline"
+                                leftIcon={<Icon as={FaCalendarAlt} />}
+                              >
+                                {field.value || "Select End Date"}
+                              </Button>
+                            </PopoverTrigger>
+                            <PopoverContent>
+                              <PopoverBody>
+                                <DayPicker
+                                  mode="single"
+                                  weekStartsOn={1}
+                                  month={endDisplayedMonth}
+                                  onMonthChange={(month: Date) =>
+                                    setEndDisplayedMonth(month)
+                                  }
+                                  disabled={(day: Date) =>
+                                    isBefore(day, new Date(startDate))
+                                  }
+                                  selected={
+                                    endDate ? new Date(field.value) : undefined
+                                  }
+                                  onSelect={(selectedDay: Date | undefined) => {
+                                    if (selectedDay) {
+                                      const formattedDate = format(
+                                        selectedDay,
+                                        "yyyy-MM-dd"
+                                      );
+                                      setEndDate(formattedDate);
+                                      form.setFieldValue(
+                                        "endDate",
+                                        formattedDate
+                                      );
+                                    }
+                                  }}
+                                />
+                              </PopoverBody>
+                            </PopoverContent>
+                          </Popover>
+                          <ErrorMessage
+                            name="endDate"
+                            component="div"
+                            style={{ color: "red" }}
+                          />
+                        </Box>
+                      )}
+                    </Field>
 
                     <Field
                       name="description"
@@ -228,8 +388,6 @@ function GoalView({ user, startOfDay, startOfWeek }: GoalViewProps) {
                             <MenuButton
                               as={Button}
                               rightIcon={<ChevronDownIcon />}
-                              size="sm"
-                              colorScheme="transparent"
                               variant="outline"
                               borderColor="gray.300"
                             >

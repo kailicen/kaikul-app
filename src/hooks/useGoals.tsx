@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { WeeklyGoal, weeklyGoalListState } from "../atoms/weeklyGoalsAtom";
+import { Goal, weeklyGoalListState } from "../atoms/goalsAtom";
 import { User } from "firebase/auth";
 import {
   addDoc,
@@ -27,19 +27,22 @@ export const useGoals = (user: User, startOfWeek: string) => {
   const [weekTasks, setWeekTasks] = useRecoilState(
     weekTaskListState([startOfWeek, endOfWeek])
   );
-  const [goals, setGoals] = useState<WeeklyGoal[]>([]);
+  const [goals, setGoals] = useState<Goal[]>([]);
   const { fetchTasks } = useStatistics();
 
   const handleAddGoal = async (
     goal: string,
     description: string,
-    color: string
+    color: string,
+    startDate: string,
+    endDate: string
   ) => {
-    const goalToAdd: WeeklyGoal = {
+    const goalToAdd: Goal = {
       id: "", // Placeholder value, will be updated after adding the document
       text: goal,
       completed: false,
-      weekStart: startOfWeek,
+      startDate,
+      endDate,
       userId: user.uid,
       description, // add the description
       color, // add the color
@@ -50,8 +53,13 @@ export const useGoals = (user: User, startOfWeek: string) => {
         goalToAdd
       );
       goalToAdd.id = docRef.id; // Update the id value
-      setGoals([...goals, goalToAdd]);
-      setRecoilGoals([...goals, goalToAdd]);
+      if (
+        moment(goalToAdd.startDate).isSameOrBefore(endOfWeek) &&
+        moment(goalToAdd.endDate).isSameOrAfter(startOfWeek)
+      ) {
+        setGoals([...goals, goalToAdd]);
+        setRecoilGoals([...goals, goalToAdd]);
+      }
     } catch (error) {
       console.error("Error adding document: ", error);
     }
@@ -77,7 +85,9 @@ export const useGoals = (user: User, startOfWeek: string) => {
     id: string,
     newText: string,
     newDescription: string,
-    newColor: string
+    newColor: string,
+    newStartDate: string,
+    newEndDate: string
   ) => {
     const updatedGoals = goals.map((goal) =>
       goal.id === id
@@ -86,6 +96,8 @@ export const useGoals = (user: User, startOfWeek: string) => {
             text: newText,
             description: newDescription,
             color: newColor,
+            startDate: newStartDate,
+            endDate: newEndDate,
           }
         : goal
     );
@@ -103,9 +115,9 @@ export const useGoals = (user: User, startOfWeek: string) => {
         text: updatedGoal.text,
         description: updatedGoal.description,
         color: updatedGoal.color,
+        startDate: updatedGoal.startDate,
+        endDate: updatedGoal.endDate,
       });
-      setGoals(updatedGoals);
-      setRecoilGoals(updatedGoals);
 
       const tasks = await fetchTasks(
         new Date(startOfWeek),
@@ -131,6 +143,19 @@ export const useGoals = (user: User, startOfWeek: string) => {
 
       // Commit the batch
       await batch.commit();
+
+      // Check if the updated goal is within the current week
+      if (
+        moment(updatedGoal.startDate).isSameOrBefore(endOfWeek) &&
+        moment(updatedGoal.endDate).isSameOrAfter(startOfWeek)
+      ) {
+        setGoals(updatedGoals);
+        setRecoilGoals(updatedGoals);
+      } else {
+        const filteredGoals = updatedGoals.filter((goal) => goal.id !== id);
+        setGoals(filteredGoals);
+        setRecoilGoals(filteredGoals);
+      }
 
       // Update Recoil state
       setWeekTasks(updatedTasks);
@@ -176,23 +201,49 @@ export const useGoals = (user: User, startOfWeek: string) => {
 
   useEffect(() => {
     const loadGoals = async () => {
-      const q = query(
+      // Query based on startDate
+      const qStartDate = query(
         collection(firestore, "weeklyGoals"),
-        where("weekStart", "==", startOfWeek),
-        where("userId", "==", user.uid) // Filter goals by user ID
+        where("startDate", "<=", endOfWeek),
+        where("userId", "==", user.uid)
       );
-      const querySnapshot = await getDocs(q);
-      const goalsForWeek: WeeklyGoal[] = [];
-      querySnapshot.forEach((doc) => {
-        const goal = doc.data() as WeeklyGoal;
+
+      // Query based on endDate
+      const qEndDate = query(
+        collection(firestore, "weeklyGoals"),
+        where("endDate", ">=", startOfWeek),
+        where("userId", "==", user.uid)
+      );
+
+      const querySnapshotStartDate = await getDocs(qStartDate);
+      const querySnapshotEndDate = await getDocs(qEndDate);
+
+      const goalsFromStartDate: Goal[] = [];
+      const goalsFromEndDate: Goal[] = [];
+
+      querySnapshotStartDate.forEach((doc) => {
+        const goal = doc.data() as Goal;
         goal.id = doc.id;
-        goalsForWeek.push(goal);
+        goalsFromStartDate.push(goal);
       });
+
+      querySnapshotEndDate.forEach((doc) => {
+        const goal = doc.data() as Goal;
+        goal.id = doc.id;
+        goalsFromEndDate.push(goal);
+      });
+
+      // Find the intersection of the two goal arrays by id
+      const goalsForWeek: Goal[] = goalsFromStartDate.filter((goalStart) =>
+        goalsFromEndDate.some((goalEnd) => goalEnd.id === goalStart.id)
+      );
+
       setGoals(goalsForWeek);
       setRecoilGoals(goalsForWeek);
     };
+
     loadGoals();
-  }, [user, startOfWeek]);
+  }, [user, startOfWeek, endOfWeek]);
 
   return {
     goals,
