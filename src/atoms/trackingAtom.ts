@@ -1,12 +1,12 @@
 import { atom } from "recoil";
-import { Blocker } from "./blockersAtom";
+import { Reflection } from "./reflectionsAtom";
 import { Goal } from "./goalsAtom";
 import { Task } from "./tasksAtom";
 
 type DataStateType = {
   [key: string]: {
     tasks: Task[];
-    blockers: Blocker[];
+    blockers: Reflection[];
     goals: Goal[];
   };
 };

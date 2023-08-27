@@ -2,7 +2,7 @@ import { useCallback, useState } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { collection, query, where, getDocs, orderBy } from "firebase/firestore";
 import { auth, firestore } from "@/firebase/clientApp";
-import { Blocker } from "@/atoms/blockersAtom";
+import { Reflection } from "@/atoms/reflectionsAtom";
 import { Task } from "@/atoms/tasksAtom";
 import { Goal } from "@/atoms/goalsAtom";
 import { format } from "date-fns";
@@ -10,7 +10,7 @@ import { format } from "date-fns";
 export const useStatistics = () => {
   const [user] = useAuthState(auth);
   const [tasks, setTasks] = useState<Task[]>([]);
-  const [blockers, setBlockers] = useState<Blocker[]>([]);
+  const [blockers, setBlockers] = useState<Reflection[]>([]);
   const [goals, setGoals] = useState<Goal[]>([]);
 
   const fetchTasks = useCallback(
@@ -57,7 +57,7 @@ export const useStatistics = () => {
 
       // Update the Recoil state for the current week's blockers
       const blockers = blockerSnapshots.docs.map(
-        (doc) => doc.data() as Blocker
+        (doc) => doc.data() as Reflection
       );
       setBlockers(blockers);
 

@@ -19,6 +19,12 @@ import {
   DrawerCloseButton,
   Select,
   DrawerFooter,
+  FormControl,
+  FormLabel,
+  Popover,
+  PopoverBody,
+  PopoverContent,
+  PopoverTrigger,
 } from "@chakra-ui/react";
 import { Formik, Form, Field, FieldInputProps, ErrorMessage } from "formik";
 import { MdAdd } from "react-icons/md";
@@ -29,12 +35,11 @@ import { useBlockers } from "@/hooks/useBlockers";
 import { format, isToday, startOfDay, startOfWeek } from "date-fns";
 import { useGoals } from "@/hooks/useGoals";
 import { Task } from "@/atoms/tasksAtom";
+import { DayPicker } from "react-day-picker";
+import "react-day-picker/dist/style.css";
+import { FaCalendarAlt } from "react-icons/fa";
 
-const Day: React.FC<{ date: string; user: User; recoilTasks: Task[] }> = ({
-  date,
-  user,
-  recoilTasks,
-}) => {
+const Day: React.FC<{ date: string; user: User }> = ({ date, user }) => {
   const taskDrawerDisclosure = useDisclosure();
   const blockerDrawerDisclosure = useDisclosure();
 
@@ -42,6 +47,7 @@ const Day: React.FC<{ date: string; user: User; recoilTasks: Task[] }> = ({
   const [selectedTaskText, setSelectedTaskText] = useState("");
   const [selectedTaskDescription, setSelectedTaskDescription] = useState("");
   const [selectedGoalId, setSelectedGoalId] = useState<string | null>(null);
+  const [taskDate, setTaskDate] = useState<string>("");
 
   const [selectedBlockerId, setSelectedBlockerId] = useState<string | null>(
     null
@@ -56,6 +62,17 @@ const Day: React.FC<{ date: string; user: User; recoilTasks: Task[] }> = ({
 
   // Check if the current date prop corresponds to today
   const isCurrentDay = isToday(dateObj);
+
+  const [isTaskDatePopoverOpen, setTaskDatePopoverOpen] = useState(false);
+  const [taskDisplayedMonth, setTaskDisplayedMonth] = useState(new Date());
+
+  const [ifDuplicate, setIfDuplicate] = useState<boolean>(false);
+  const [duplicateValues, setDuplicateValues] = useState<{
+    task: string;
+    description: string;
+    goalId: string;
+    date: string;
+  } | null>(null);
 
   const {
     tasks,
@@ -73,12 +90,14 @@ const Day: React.FC<{ date: string; user: User; recoilTasks: Task[] }> = ({
   const { recoilGoals } = useGoals(user, startOfWeekString);
 
   const openDrawer = (
+    date: string,
     id?: string,
     text?: string,
     description?: string,
     goalId?: string
   ) => {
     taskDrawerDisclosure.onOpen();
+    setTaskDate(date);
     setSelectedTaskId(id || null);
     setSelectedTaskText(text || "");
     setSelectedTaskDescription(description || "");
@@ -95,6 +114,7 @@ const Day: React.FC<{ date: string; user: User; recoilTasks: Task[] }> = ({
     task: string;
     description: string;
     goalId: string;
+    date: string;
   }) => {
     const selectedGoal = recoilGoals.find((goal) => goal.id === values.goalId);
     const color = selectedGoal ? selectedGoal.color : ""; // Get the color from the selected goal
@@ -105,6 +125,7 @@ const Day: React.FC<{ date: string; user: User; recoilTasks: Task[] }> = ({
         values.task,
         values.description,
         values.goalId,
+        values.date,
         color as string // Pass the color as an argument
       );
       toast({
@@ -119,6 +140,7 @@ const Day: React.FC<{ date: string; user: User; recoilTasks: Task[] }> = ({
         values.task,
         values.description,
         values.goalId,
+        values.date,
         color as string
       ); // Pass the color as an argument
       toast({
@@ -132,6 +154,27 @@ const Day: React.FC<{ date: string; user: User; recoilTasks: Task[] }> = ({
     taskDrawerDisclosure.onClose();
     setSelectedTaskId(null);
     setSelectedTaskText("");
+  };
+
+  const handleDuplicate = () => {
+    setSelectedTaskId(null);
+    setIfDuplicate(true);
+
+    taskDrawerDisclosure.onClose();
+    const valuesToDuplicate = {
+      task: selectedTaskText,
+      description: selectedTaskDescription,
+      goalId: selectedGoalId as string,
+      date: taskDate,
+    };
+
+    // Set the values to be duplicated
+    setDuplicateValues(valuesToDuplicate);
+
+    // Wait a moment for the drawer to fully close, then reopen it
+    setTimeout(() => {
+      taskDrawerDisclosure.onOpen();
+    }, 200); // 200ms should be enough, but you can adjust as needed
   };
 
   const handleBlockerFormSubmit = (values: { blocker: string }) => {
@@ -188,8 +231,8 @@ const Day: React.FC<{ date: string; user: User; recoilTasks: Task[] }> = ({
   };
 
   useEffect(() => {
-    if (recoilTasks) {
-      const currentDateTasks = recoilTasks.filter((task) => {
+    if (tasks) {
+      const currentDateTasks = tasks.filter((task) => {
         const taskDate = startOfDay(new Date(task.date));
         const currentDate = startOfDay(new Date(date));
         return (
@@ -198,7 +241,13 @@ const Day: React.FC<{ date: string; user: User; recoilTasks: Task[] }> = ({
       });
       setTasks(currentDateTasks);
     }
-  }, [recoilTasks, date]);
+  }, [tasks, date]);
+
+  useEffect(() => {
+    if (!taskDrawerDisclosure.isOpen) {
+      setDuplicateValues(null);
+    }
+  }, [taskDrawerDisclosure.isOpen]);
 
   return (
     <VStack
@@ -227,7 +276,13 @@ const Day: React.FC<{ date: string; user: User; recoilTasks: Task[] }> = ({
           role="group"
           cursor="pointer"
           onClick={() =>
-            openDrawer(task.id, task.text, task.description, task.goalId)
+            openDrawer(
+              task.date,
+              task.id,
+              task.text,
+              task.description,
+              task.goalId
+            )
           }
         >
           <HStack spacing={2}>
@@ -263,7 +318,7 @@ const Day: React.FC<{ date: string; user: User; recoilTasks: Task[] }> = ({
             color="gray.400"
             fontSize={20}
             cursor="pointer"
-            onClick={() => openDrawer()}
+            onClick={() => openDrawer(date)}
           />
         )}{" "}
         {tasks.length === 0 && (
@@ -271,7 +326,7 @@ const Day: React.FC<{ date: string; user: User; recoilTasks: Task[] }> = ({
             color="gray.400"
             fontSize="xs"
             cursor="pointer"
-            onClick={() => openDrawer()}
+            onClick={() => openDrawer(date)}
           >
             Add a new task
           </Text>
@@ -287,14 +342,25 @@ const Day: React.FC<{ date: string; user: User; recoilTasks: Task[] }> = ({
           <DrawerContent>
             <DrawerCloseButton />
             <DrawerHeader>
-              {selectedTaskId ? "Edit Task" : "Add Task"}
+              {selectedTaskId
+                ? "Edit Task"
+                : ifDuplicate
+                ? "Duplicate Task"
+                : "Add Task"}
             </DrawerHeader>
             <DrawerBody>
               <Formik
                 initialValues={{
-                  task: selectedTaskText,
-                  description: selectedTaskDescription,
-                  goalId: selectedGoalId as string,
+                  task: duplicateValues
+                    ? duplicateValues.task
+                    : selectedTaskText,
+                  description: duplicateValues
+                    ? duplicateValues.description
+                    : selectedTaskDescription,
+                  goalId: duplicateValues
+                    ? duplicateValues.goalId
+                    : (selectedGoalId as string),
+                  date: duplicateValues ? duplicateValues.date : taskDate,
                 }}
                 onSubmit={handleFormSubmit}
                 validate={(values) => {
@@ -320,6 +386,69 @@ const Day: React.FC<{ date: string; user: User; recoilTasks: Task[] }> = ({
                         </div>
                       )}
                     />
+
+                    <Field name="date">
+                      {({
+                        field,
+                        form,
+                      }: {
+                        field: FieldInputProps<any>;
+                        form: any;
+                      }) => (
+                        <Box mt={4}>
+                          <FormControl
+                            display="flex"
+                            alignItems="center"
+                            mt={4}
+                          >
+                            <FormLabel mb="0">Task Date:</FormLabel>
+                            <Popover
+                              isOpen={isTaskDatePopoverOpen}
+                              onClose={() => setTaskDatePopoverOpen(false)}
+                            >
+                              <PopoverTrigger>
+                                <Button
+                                  variant="outline"
+                                  leftIcon={<Icon as={FaCalendarAlt} />}
+                                  onClick={() => setTaskDatePopoverOpen(true)}
+                                >
+                                  {field.value || "Select Task Date"}
+                                </Button>
+                              </PopoverTrigger>
+                              <PopoverContent>
+                                <PopoverBody>
+                                  <DayPicker
+                                    mode="single"
+                                    weekStartsOn={1}
+                                    month={taskDisplayedMonth}
+                                    onMonthChange={(month: Date) =>
+                                      setTaskDisplayedMonth(month)
+                                    }
+                                    selected={new Date(field.value)}
+                                    onSelect={(
+                                      selectedDay: Date | undefined
+                                    ) => {
+                                      if (selectedDay) {
+                                        const formattedDate = format(
+                                          selectedDay,
+                                          "yyyy-MM-dd"
+                                        );
+                                        form.setFieldValue(
+                                          "date",
+                                          formattedDate
+                                        );
+                                        setTaskDatePopoverOpen(false);
+                                      }
+                                    }}
+                                  />
+                                </PopoverBody>
+                              </PopoverContent>
+                            </Popover>
+                          </FormControl>
+                        </Box>
+                      )}
+                    </Field>
+
                     <Field
                       name="description"
                       render={({ field }: { field: FieldInputProps<any> }) => (
@@ -358,9 +487,14 @@ const Day: React.FC<{ date: string; user: User; recoilTasks: Task[] }> = ({
                       )}
                     </Field>
                     <DrawerFooter>
+                      {selectedTaskId && (
+                        <Button mt={4} onClick={handleDuplicate}>
+                          Duplicate
+                        </Button>
+                      )}
                       <Button
+                        ml={2}
                         mt={4}
-                        colorScheme="blue"
                         isLoading={isSubmitting}
                         type="submit"
                       >
