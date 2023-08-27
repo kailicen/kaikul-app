@@ -117,6 +117,8 @@ export const useTasks = (date: string, user: User) => {
   };
 
   useEffect(() => {
+    console.log("Fetching tasks for date:", date, "and user:", user.uid);
+
     const taskCollection = collection(firestore, "tasks");
     const q = query(
       taskCollection,
@@ -124,15 +126,21 @@ export const useTasks = (date: string, user: User) => {
       where("userId", "==", user.uid)
     );
 
-    const unsubscribe = onSnapshot(q, (snapshot) => {
-      const tasksForDay: Task[] = [];
-      snapshot.forEach((doc) => {
-        const task = doc.data() as Task;
-        task.id = doc.id;
-        tasksForDay.push(task);
-      });
-      setTasks(tasksForDay);
-    });
+    const unsubscribe = onSnapshot(
+      q,
+      (snapshot) => {
+        const tasksForDay: Task[] = [];
+        snapshot.forEach((doc) => {
+          const task = doc.data() as Task;
+          task.id = doc.id;
+          tasksForDay.push(task);
+        });
+        setTasks(tasksForDay);
+      },
+      (error) => {
+        console.error("Error fetching tasks:", error);
+      }
+    );
 
     // Cleanup listener on component unmount
     return () => unsubscribe();
