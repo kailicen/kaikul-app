@@ -199,9 +199,15 @@ function GoalView({ user, startOfDay, startOfWeek }: GoalViewProps) {
       <Box width="100%" p={4}>
         <Text mb={2} fontWeight="semibold">
           Goal Setting:{" "}
-          <Tooltip label="Click to learn how goals work" placement="top">
-            <InfoIcon onClick={handleInstructionOpen} color="#ff5e0e" mb={1} />
-          </Tooltip>
+          <Button
+            leftIcon={<InfoIcon />}
+            colorScheme="purple"
+            variant="ghost"
+            onClick={handleInstructionOpen}
+            mb={1}
+          >
+            Get a Goal Guide
+          </Button>
         </Text>
         {/* Use the modal component here */}
         <GoalSettingModal
