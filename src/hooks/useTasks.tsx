@@ -136,7 +136,7 @@ export const useTasks = (date: string, user: User) => {
           tasksForDay.push(task);
         });
         setTasks(tasksForDay);
-        console.log(tasks);
+        console.log(tasksForDay);
       },
 
       (error) => {
