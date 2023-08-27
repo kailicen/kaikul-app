@@ -136,7 +136,9 @@ export const useTasks = (date: string, user: User) => {
           tasksForDay.push(task);
         });
         setTasks(tasksForDay);
+        console.log(tasks);
       },
+
       (error) => {
         console.error("Error fetching tasks:", error);
       }
