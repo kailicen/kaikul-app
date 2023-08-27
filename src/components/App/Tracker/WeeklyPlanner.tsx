@@ -80,7 +80,7 @@ function WeeklyPlanner({ user }: Props) {
       {isLargerThan768 ? (
         <WeekView user={user} startOfWeek={startOfWeek} />
       ) : (
-        <Day user={user} date={startOfDay} recoilTasks={weekTasks} />
+        <Day user={user} date={startOfDay} />
       )}
       <FloatingFeedbackButton /> {/* Add the feedback button */}
     </Flex>
