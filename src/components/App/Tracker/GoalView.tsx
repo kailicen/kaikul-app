@@ -32,9 +32,6 @@ import {
   PopoverBody,
   PopoverContent,
   PopoverTrigger,
-  PopoverArrow,
-  PopoverCloseButton,
-  PopoverHeader,
 } from "@chakra-ui/react";
 import { User } from "firebase/auth";
 import { MdAdd } from "react-icons/md";

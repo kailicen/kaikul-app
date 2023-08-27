@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Goal, weeklyGoalListState } from "../atoms/goalsAtom";
+import { Goal, weeklyGoalListState, weeklyGoalState } from "../atoms/goalsAtom";
 import { User } from "firebase/auth";
 import {
   addDoc,
@@ -13,15 +13,14 @@ import {
   writeBatch,
 } from "firebase/firestore";
 import { firestore } from "../firebase/clientApp";
-import { useRecoilState } from "recoil";
+import { useRecoilState, useRecoilValue } from "recoil";
 import { useStatistics } from "./useStatistics";
 import moment from "moment";
 import { Task, weekTaskListState } from "@/atoms/tasksAtom";
 
 export const useGoals = (user: User, startOfWeek: string) => {
-  const [recoilGoals, setRecoilGoals] = useRecoilState(
-    weeklyGoalListState(startOfWeek)
-  );
+  const [recoilGoals, setRecoilGoals] = useRecoilState(weeklyGoalListState);
+
   // Fetch tasks for the current week
   const endOfWeek = moment(startOfWeek).add(6, "days").format("YYYY-MM-DD");
   const [weekTasks, setWeekTasks] = useRecoilState(
