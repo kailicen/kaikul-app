@@ -41,7 +41,7 @@ export const useTasks = (date: string, user: User) => {
       try {
         const docRef = await addDoc(collection(firestore, "tasks"), taskToAdd);
         taskToAdd.id = docRef.id;
-        setTasks([...tasks, taskToAdd]);
+        // setTasks([...tasks, taskToAdd]);
       } catch (error) {
         console.error("Error adding document: ", error);
       }
@@ -100,7 +100,7 @@ export const useTasks = (date: string, user: User) => {
         date: updatedTask.date,
         color: updatedTask.color,
       });
-      setTasks(updatedTasks);
+      // setTasks(updatedTasks);
     } catch (error) {
       console.error("Error updating document: ", error);
     }
