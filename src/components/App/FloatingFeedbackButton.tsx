@@ -66,15 +66,6 @@ function FloatingFeedbackButton() {
               <Button
                 onClick={() =>
                   handleFeedbackClick(
-                    "https://calendly.com/pawelbiegun/kaikul-talk-with-co-founder?month=2023-07"
-                  )
-                }
-              >
-                Schedule a call with Pawel
-              </Button>
-              <Button
-                onClick={() =>
-                  handleFeedbackClick(
                     "https://calendar.app.google/LzUsyJbkbGQ87JqYA"
                   )
                 }
