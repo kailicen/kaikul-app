@@ -75,7 +75,7 @@ function Connect({ user }: Props) {
             <Link
               color="purple.500"
               fontWeight="bold"
-              href={process.env.KAIKUL_SLACK_LINK}
+              href={process.env.NEXT_PUBLIC_KAIKUL_SLACK_LINK}
               isExternal
             >
               Slack community

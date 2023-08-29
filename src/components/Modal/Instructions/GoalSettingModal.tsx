@@ -42,7 +42,7 @@ const GoalSettingModal: React.FC<Props> = ({ isOpen, onClose }) => (
         <Text mb={4}>
           Boost success by buddying up in our{" "}
           <Link
-            href={process.env.KAIKUL_SLACK_LINK}
+            href={process.env.NEXT_PUBLIC_KAIKUL_SLACK_LINK}
             isExternal
             color="purple.500"
             fontWeight="bold"
