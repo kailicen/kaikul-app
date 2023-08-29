@@ -42,7 +42,7 @@ const GoalSettingModal: React.FC<Props> = ({ isOpen, onClose }) => (
         <Text mb={4}>
           Boost success by buddying up in our{" "}
           <Link
-            href={process.env.NEXT_PUBLIC_KAIKUL_SLACK_LINK}
+            href="https://join.slack.com/t/kaikul/shared_invite/zt-209pevvki-K3ZuCavvScpIg6mHXmsVmQ"
             isExternal
             color="purple.500"
             fontWeight="bold"
