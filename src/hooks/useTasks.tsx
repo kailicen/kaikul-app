@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Task } from "../atoms/tasksAtom";
+import { Task, weekTaskState } from "../atoms/tasksAtom";
 import {
   addDoc,
   collection,
@@ -9,6 +9,7 @@ import {
   updateDoc,
   doc,
   deleteDoc,
+  onSnapshot,
 } from "firebase/firestore";
 import { firestore } from "../firebase/clientApp";
 import { User } from "firebase/auth";
@@ -16,11 +17,14 @@ import { useRecoilState } from "recoil";
 
 export const useTasks = (date: string, user: User) => {
   const [tasks, setTasks] = useState<Task[]>([]);
+  const [currentWeekTasksState, setWeekTasksState] =
+    useRecoilState(weekTaskState);
 
   const handleAddTask = async (
     task: string,
     description: string,
     goalId: string,
+    date: string,
     color: string
   ) => {
     if (tasks.length < 5) {
@@ -28,7 +32,7 @@ export const useTasks = (date: string, user: User) => {
         id: "",
         text: task,
         completed: false,
-        date: date,
+        date,
         userId: user.uid,
         description,
         goalId,
@@ -37,7 +41,7 @@ export const useTasks = (date: string, user: User) => {
       try {
         const docRef = await addDoc(collection(firestore, "tasks"), taskToAdd);
         taskToAdd.id = docRef.id;
-        setTasks([...tasks, taskToAdd]);
+        // setTasks([...tasks, taskToAdd]);
       } catch (error) {
         console.error("Error adding document: ", error);
       }
@@ -64,6 +68,7 @@ export const useTasks = (date: string, user: User) => {
     newTask: string,
     newDescription: string,
     newGoalId: string,
+    newTaskDate: string,
     newColor: string
   ) => {
     const updatedTasks = tasks.map((task) =>
@@ -73,6 +78,7 @@ export const useTasks = (date: string, user: User) => {
             text: newTask,
             description: newDescription,
             goalId: newGoalId,
+            date: newTaskDate,
             color: newColor,
           }
         : task
@@ -91,9 +97,10 @@ export const useTasks = (date: string, user: User) => {
         text: updatedTask.text,
         description: updatedTask.description,
         goalId: updatedTask.goalId,
+        date: updatedTask.date,
         color: updatedTask.color,
       });
-      setTasks(updatedTasks);
+      // setTasks(updatedTasks);
     } catch (error) {
       console.error("Error updating document: ", error);
     }
@@ -110,22 +117,35 @@ export const useTasks = (date: string, user: User) => {
   };
 
   useEffect(() => {
-    const loadTasks = async () => {
-      const q = query(
-        collection(firestore, "tasks"),
-        where("date", "==", date),
-        where("userId", "==", user.uid) // Filter goals by user ID
-      );
-      const querySnapshot = await getDocs(q);
-      const tasksForDay: Task[] = [];
-      querySnapshot.forEach((doc) => {
-        const task = doc.data() as Task;
-        task.id = doc.id;
-        tasksForDay.push(task);
-      });
-      setTasks(tasksForDay);
-    };
-    loadTasks();
+    console.log("Fetching tasks for date:", date, "and user:", user.uid);
+
+    const taskCollection = collection(firestore, "tasks");
+    const q = query(
+      taskCollection,
+      where("date", "==", date),
+      where("userId", "==", user.uid)
+    );
+
+    const unsubscribe = onSnapshot(
+      q,
+      (snapshot) => {
+        const tasksForDay: Task[] = [];
+        snapshot.forEach((doc) => {
+          const task = doc.data() as Task;
+          task.id = doc.id;
+          tasksForDay.push(task);
+        });
+        setTasks(tasksForDay);
+        console.log(tasks);
+      },
+
+      (error) => {
+        console.error("Error fetching tasks:", error);
+      }
+    );
+
+    // Cleanup listener on component unmount
+    return () => unsubscribe();
   }, [user, date]);
 
   return {
