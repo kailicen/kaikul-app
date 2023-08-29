@@ -9,11 +9,10 @@ import {
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { VscGraph } from "react-icons/vsc";
-import { AiOutlineShareAlt } from "react-icons/ai";
+import { LuSmilePlus } from "react-icons/lu";
 import { BsCalendarWeek } from "react-icons/bs";
 import { MdOutlineForum } from "react-icons/md";
 import { User } from "firebase/auth";
-import ShareProgressModal from "@/components/Modal/ShareProgress/ShareProgressModal";
 import { collection, query, where, getDocs } from "firebase/firestore";
 import { firestore } from "@/firebase/clientApp";
 import { BuddyRequest, buddyRequestState } from "@/atoms/buddyRequestsAtom";
@@ -71,16 +70,7 @@ const ReflectConnectButton: React.FC<ReflectConnectProps> = ({
 const UserProgressMenu: React.FC<UserProgressMenuProps> = ({ user }) => {
   const router = useRouter();
   const [buddyRequests, setBuddyRequests] = useRecoilState(buddyRequestState);
-  const [isShareModalOpen, setIsShareModalOpen] = useState(false);
   const [pendingRequests, setPendingRequests] = useState(0);
-
-  const openShareModal = () => {
-    setIsShareModalOpen(true);
-  };
-
-  const closeShareModal = () => {
-    setIsShareModalOpen(false);
-  };
 
   const showStats = () => {
     router.push("/stats");
@@ -133,9 +123,31 @@ const UserProgressMenu: React.FC<UserProgressMenuProps> = ({ user }) => {
       <Flex gap={1.5}>
         {isMobile ? (
           <IconButton
+            aria-label="Share"
+            icon={<LuSmilePlus />}
+            onClick={() => {
+              router.push("/me");
+            }}
+            borderRadius="full"
+            size="md"
+            color="white"
+          />
+        ) : (
+          <Button
+            leftIcon={<LuSmilePlus />}
+            onClick={() => {
+              router.push("/me");
+            }}
+          >
+            Me
+          </Button>
+        )}
+
+        {isMobile ? (
+          <IconButton
             aria-label="My Week"
             icon={<BsCalendarWeek />}
-            onClick={() => router.push("/")}
+            onClick={() => router.push("/tracker")}
             borderRadius="full"
             size="md"
             color="white"
@@ -143,24 +155,9 @@ const UserProgressMenu: React.FC<UserProgressMenuProps> = ({ user }) => {
         ) : (
           <Button
             leftIcon={<BsCalendarWeek />}
-            onClick={() => router.push("/")}
+            onClick={() => router.push("/tracker")}
           >
             Tracker
-          </Button>
-        )}
-
-        {isMobile ? (
-          <IconButton
-            aria-label="Share"
-            icon={<AiOutlineShareAlt />}
-            onClick={openShareModal}
-            borderRadius="full"
-            size="md"
-            color="white"
-          />
-        ) : (
-          <Button leftIcon={<AiOutlineShareAlt />} onClick={openShareModal}>
-            Share
           </Button>
         )}
 
@@ -197,9 +194,6 @@ const UserProgressMenu: React.FC<UserProgressMenuProps> = ({ user }) => {
           </ReflectConnectButton>
         )}
       </Flex>
-
-      {/* Share Progress Modal */}
-      <ShareProgressModal isOpen={isShareModalOpen} onClose={closeShareModal} />
     </>
   );
 };

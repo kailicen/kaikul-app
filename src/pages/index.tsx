@@ -7,15 +7,14 @@ import { Hero } from "@/components/landing-page/hero";
 import { CTA } from "@/components/landing-page/cta";
 import { Icons } from "@/components/icons";
 import Head from "next/head";
-import { useEffect, useRef, useState } from "react";
+import { useEffect } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { auth } from "../firebase/clientApp";
-import { useColorMode } from "@chakra-ui/react";
-import WeeklyPlanner from "@/components/App/Tracker/WeeklyPlanner";
 import AuthenticatedHeader from "@/components/Header/AuthenticatedHeader";
 import LoadingScreen from "@/components/LoadingScreen";
 import { Benefits } from "@/components/landing-page/benefits";
 import { WhatIsAP } from "@/components/landing-page/what-is-ap";
+import { useRouter } from "next/router";
 
 const testimonials = [
   {
@@ -132,93 +131,99 @@ type SectionRef = HTMLDivElement | null;
 
 export default function Home() {
   const [user, loading, error] = useAuthState(auth);
-
-  const howItWorksRef = useRef<SectionRef>(null);
-  const featuresRef = useRef<SectionRef>(null);
-  const testimonialRef = useRef<SectionRef>(null);
-  const qnaRef = useRef<SectionRef>(null);
-  const teamRef = useRef<SectionRef>(null);
-
-  const [headerBgColor, setHeaderBgColor] = useState("");
-
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
-
-  const toggleMenu = () => {
-    setIsMenuOpen(!isMenuOpen);
-  };
-
-  const scrollToTop = () => {
-    window.scrollTo({ top: 0, behavior: "smooth" });
-  };
-  const scrollToHowItWorks = () => {
-    if (howItWorksRef.current) {
-      howItWorksRef.current.scrollIntoView({ behavior: "smooth" });
-    }
-  };
-  const scrollToFeatures = () => {
-    if (featuresRef.current) {
-      featuresRef.current.scrollIntoView({ behavior: "smooth" });
-    }
-  };
-  const scrollToTestimonial = () => {
-    if (testimonialRef.current) {
-      testimonialRef.current.scrollIntoView({ behavior: "smooth" });
-    }
-  };
-  const scrollToQna = () => {
-    if (qnaRef.current) {
-      qnaRef.current.scrollIntoView({ behavior: "smooth" });
-    }
-  };
-  const scrollToTeam = () => {
-    if (teamRef.current) {
-      teamRef.current.scrollIntoView({ behavior: "smooth" });
-    }
-  };
-
-  const { colorMode, toggleColorMode } = useColorMode();
-  const bgColor = { light: "white", dark: "gray-900" };
-  const textColor = { light: "black", dark: "white" };
-
-  const headerProps = {
-    user,
-    scrollToTop,
-    scrollToHowItWorks,
-    scrollToFeatures,
-    scrollToTestimonial,
-    scrollToQna,
-    scrollToTeam,
-    textColor,
-    colorMode,
-    isMenuOpen,
-    toggleMenu,
-    headerBgColor,
-  };
+  const router = useRouter();
 
   useEffect(() => {
-    const handleScroll = () => {
-      const scrollTop =
-        window.pageYOffset || document.documentElement.scrollTop;
-      const threshold = 20; // Adjust this value as needed
-
-      if (scrollTop > threshold) {
-        setHeaderBgColor(`bg-${bgColor[colorMode]}`);
-      } else {
-        setHeaderBgColor("bg-transparent");
-      }
-    };
-
-    window.addEventListener("scroll", handleScroll);
-
-    return () => {
-      window.removeEventListener("scroll", handleScroll);
-    };
-  }, [colorMode]);
+    if (user && !loading) {
+      router.push("/me");
+    }
+  }, [user, loading]);
 
   if (loading) {
-    // Here, you can return a loader if the authentication state is still being determined.
     return <LoadingScreen />;
   }
+
+  // const howItWorksRef = useRef<SectionRef>(null);
+  // const featuresRef = useRef<SectionRef>(null);
+  // const testimonialRef = useRef<SectionRef>(null);
+  // const qnaRef = useRef<SectionRef>(null);
+  // const teamRef = useRef<SectionRef>(null);
+
+  // const [headerBgColor, setHeaderBgColor] = useState("");
+
+  // const [isMenuOpen, setIsMenuOpen] = useState(false);
+
+  // const toggleMenu = () => {
+  //   setIsMenuOpen(!isMenuOpen);
+  // };
+
+  // const scrollToTop = () => {
+  //   window.scrollTo({ top: 0, behavior: "smooth" });
+  // };
+  // const scrollToHowItWorks = () => {
+  //   if (howItWorksRef.current) {
+  //     howItWorksRef.current.scrollIntoView({ behavior: "smooth" });
+  //   }
+  // };
+  // const scrollToFeatures = () => {
+  //   if (featuresRef.current) {
+  //     featuresRef.current.scrollIntoView({ behavior: "smooth" });
+  //   }
+  // };
+  // const scrollToTestimonial = () => {
+  //   if (testimonialRef.current) {
+  //     testimonialRef.current.scrollIntoView({ behavior: "smooth" });
+  //   }
+  // };
+  // const scrollToQna = () => {
+  //   if (qnaRef.current) {
+  //     qnaRef.current.scrollIntoView({ behavior: "smooth" });
+  //   }
+  // };
+  // const scrollToTeam = () => {
+  //   if (teamRef.current) {
+  //     teamRef.current.scrollIntoView({ behavior: "smooth" });
+  //   }
+  // };
+
+  // const { colorMode, toggleColorMode } = useColorMode();
+  // const bgColor = { light: "white", dark: "gray-900" };
+  // const textColor = { light: "black", dark: "white" };
+
+  // const headerProps = {
+  //   user,
+  //   scrollToTop,
+  //   scrollToHowItWorks,
+  //   scrollToFeatures,
+  //   scrollToTestimonial,
+  //   scrollToQna,
+  //   scrollToTeam,
+  //   textColor,
+  //   colorMode,
+  //   isMenuOpen,
+  //   toggleMenu,
+  //   headerBgColor,
+  // };
+
+  // useEffect(() => {
+  //   const handleScroll = () => {
+  //     const scrollTop =
+  //       window.pageYOffset || document.documentElement.scrollTop;
+  //     const threshold = 20; // Adjust this value as needed
+
+  //     if (scrollTop > threshold) {
+  //       setHeaderBgColor(`bg-${bgColor[colorMode]}`);
+  //     } else {
+  //       setHeaderBgColor("bg-transparent");
+  //     }
+  //   };
+
+  //   window.addEventListener("scroll", handleScroll);
+
+  //   return () => {
+  //     window.removeEventListener("scroll", handleScroll);
+  //   };
+  // }, [colorMode]);
 
   return (
     <div className="flex min-h-screen flex-col">
@@ -236,32 +241,26 @@ export default function Home() {
 
       <AuthenticatedHeader user={user} />
 
-      {user ? (
-        <div className="pt-[80px] px-2 md:px-10 3xl:px-32">
-          <WeeklyPlanner user={user} />
-        </div>
-      ) : (
-        <>
-          <main className="container flex-1 mx-auto px-3">
-            <Hero />
+      <main className="container flex-1 mx-auto px-3">
+        <Hero />
 
-            <WhatIsAP />
+        <WhatIsAP />
 
-            <HowItWorks />
+        <HowItWorks />
 
-            <Benefits benefits={benefits} />
+        <Benefits benefits={benefits} />
 
-            <Features />
+        <Features />
 
-            <Testimonial testimonials={testimonials} />
+        <Testimonial testimonials={testimonials} />
 
-            <FAQ faqs={faqs} />
+        <FAQ faqs={faqs} />
 
-            <CTA />
+        <CTA />
 
-            <Team clients={clients} />
-          </main>
-          {/* <div className="flex flex-col space-y-15 mx-auto">
+        <Team clients={clients} />
+      </main>
+      {/* <div className="flex flex-col space-y-15 mx-auto">
             <section id="hero" className="min-h-[100vh]">
               <Hero />
             </section>
@@ -287,49 +286,47 @@ export default function Home() {
               <Team />
             </section>
           </div> */}
-          <footer className="flex flex-col items-center justify-center bg-[#0D0322] py-8">
-            <div className="container mx-auto px-4">
-              <p className="text-center text-sm text-primary-foreground">
-                © {new Date().getFullYear()} KaiKul. All rights reserved.
-              </p>
-            </div>
-            <div className="my-2 flex flex-row space-x-4">
-              <a
-                href="https://www.linkedin.com/company/kaikul"
-                target="_blank"
-                rel="noreferrer"
-                className="mt-2 text-primary-foreground transition duration-300 ease-in-out hover:text-[#ff5e0e]"
-              >
-                <Icons.linkedin />
-              </a>
-              <a
-                href="https://twitter.com/KaiKulapp/"
-                target="_blank"
-                rel="noreferrer"
-                className="mt-2 text-primary-foreground transition duration-300 ease-in-out hover:text-[#ff5e0e]"
-              >
-                <Icons.twitter />
-              </a>
-              <a
-                href="https://www.instagram.com/kaikulapp/"
-                target="_blank"
-                rel="noreferrer"
-                className="mt-2 text-primary-foreground transition duration-300 ease-in-out hover:text-[#ff5e0e]"
-              >
-                <Icons.instagram />
-              </a>
-              <a
-                href="https://www.facebook.com/kaikulapp/"
-                target="_blank"
-                rel="noreferrer"
-                className="mt-2 text-primary-foreground transition duration-300 ease-in-out hover:text-[#ff5e0e]"
-              >
-                <Icons.facebook />
-              </a>
-            </div>
-          </footer>
-        </>
-      )}
+      <footer className="flex flex-col items-center justify-center bg-[#0D0322] py-8">
+        <div className="container mx-auto px-4">
+          <p className="text-center text-sm text-primary-foreground">
+            © {new Date().getFullYear()} KaiKul. All rights reserved.
+          </p>
+        </div>
+        <div className="my-2 flex flex-row space-x-4">
+          <a
+            href="https://www.linkedin.com/company/kaikul"
+            target="_blank"
+            rel="noreferrer"
+            className="mt-2 text-primary-foreground transition duration-300 ease-in-out hover:text-[#ff5e0e]"
+          >
+            <Icons.linkedin />
+          </a>
+          <a
+            href="https://twitter.com/KaiKulapp/"
+            target="_blank"
+            rel="noreferrer"
+            className="mt-2 text-primary-foreground transition duration-300 ease-in-out hover:text-[#ff5e0e]"
+          >
+            <Icons.twitter />
+          </a>
+          <a
+            href="https://www.instagram.com/kaikulapp/"
+            target="_blank"
+            rel="noreferrer"
+            className="mt-2 text-primary-foreground transition duration-300 ease-in-out hover:text-[#ff5e0e]"
+          >
+            <Icons.instagram />
+          </a>
+          <a
+            href="https://www.facebook.com/kaikulapp/"
+            target="_blank"
+            rel="noreferrer"
+            className="mt-2 text-primary-foreground transition duration-300 ease-in-out hover:text-[#ff5e0e]"
+          >
+            <Icons.facebook />
+          </a>
+        </div>
+      </footer>
     </div>
   );
 }

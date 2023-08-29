@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   Box,
   Icon,
@@ -8,9 +8,13 @@ import {
   Tabs,
   TabList,
   Tab,
+  Button,
+  IconButton,
 } from "@chakra-ui/react";
 import { MdChevronLeft, MdChevronRight } from "react-icons/md";
 import moment from "moment";
+import { AiOutlineShareAlt } from "react-icons/ai";
+import ShareProgressModal from "@/components/Modal/ShareProgress/ShareProgressModal";
 
 type WeekNavigationProps = {
   onPreviousWeek: () => void;
@@ -33,14 +37,23 @@ const WeekNavigation: React.FC<WeekNavigationProps> = ({
     .clone()
     .add(6, "days")
     .format("MMM Do, YYYY");
+  const [isShareModalOpen, setIsShareModalOpen] = useState(false);
 
-  const handleTabChange = (index: any) => {
-    if (index === 0) {
-      setActiveTab("me");
-    } else if (index === 1) {
-      setActiveTab("team");
-    }
+  const openShareModal = () => {
+    setIsShareModalOpen(true);
   };
+
+  const closeShareModal = () => {
+    setIsShareModalOpen(false);
+  };
+
+  // const handleTabChange = (index: any) => {
+  //   if (index === 0) {
+  //     setActiveTab("me");
+  //   } else if (index === 1) {
+  //     setActiveTab("team");
+  //   }
+  // };
 
   return (
     <Flex align="center" justify="space-between" h={12}>
@@ -79,6 +92,15 @@ const WeekNavigation: React.FC<WeekNavigationProps> = ({
           </>
         )}
       </Flex>
+      <Flex>
+        <Button rightIcon={<AiOutlineShareAlt />} onClick={openShareModal}>
+          Share
+        </Button>
+      </Flex>
+
+      {/* Share Progress Modal */}
+      <ShareProgressModal isOpen={isShareModalOpen} onClose={closeShareModal} />
+
       {/* <Flex align="center">
         <Tabs
           variant="soft-rounded"
