@@ -126,7 +126,7 @@ const UserProgressMenu: React.FC<UserProgressMenuProps> = ({ user }) => {
             aria-label="Share"
             icon={<LuSmilePlus />}
             onClick={() => {
-              router.push("/me");
+              router.push("/");
             }}
             borderRadius="full"
             size="md"
@@ -136,7 +136,7 @@ const UserProgressMenu: React.FC<UserProgressMenuProps> = ({ user }) => {
           <Button
             leftIcon={<LuSmilePlus />}
             onClick={() => {
-              router.push("/me");
+              router.push("/");
             }}
           >
             Me
