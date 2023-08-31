@@ -92,18 +92,18 @@ const clients = [
   {
     name: "Kaili Cen",
     introduction:
-      "A self-taught web developer with an MS in Computer Science, Kaili passionately channels her commitment to personal growth into our mission, using technology to drive change.",
+      "A self-taught web developer with 2 years experience, Kaili passionately channels her commitment to personal growth into our mission, using technology to drive change.",
     avatar:
       "https://ca.slack-edge.com/T05BWMWRMEW-U05C9B7RM97-dfbda019031a-512",
     link: "https://www.linkedin.com/in/kaili-cen/",
   },
   {
-    name: "Paweł Biegun",
+    name: "Arnold Mutasa",
     introduction:
-      "Passionate about coding solutions, Paweł's hands-on experience with Python and self-learned skills in JavaScript and Data Science make him an essential problem-solver for our team.",
+      "A software engineer with over 5 years experience, Arnold is a lifelong learner with experience working with startup companies in different parts of the world.",
     avatar:
-      "https://ca.slack-edge.com/T05BWMWRMEW-U05HUP4H1QD-f41d294d8b79-512",
-    link: "https://www.linkedin.com/in/pawe%C5%82-biegun-8b51b8187/",
+      "https://media.licdn.com/dms/image/D4D03AQHNx_wQaXD0lQ/profile-displayphoto-shrink_800_800/0/1693022114899?e=1698883200&v=beta&t=JBqkH5RKClMcJoz1ZAYgqaJU4oYb3ryBAZFqT3u44H8",
+    link: "https://www.linkedin.com/in/arniemutasa/",
   },
 ];
 
