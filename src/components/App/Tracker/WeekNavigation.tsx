@@ -93,7 +93,11 @@ const WeekNavigation: React.FC<WeekNavigationProps> = ({
         )}
       </Flex>
       <Flex>
-        <Button rightIcon={<AiOutlineShareAlt />} onClick={openShareModal}>
+        <Button
+          variant="outline"
+          rightIcon={<AiOutlineShareAlt />}
+          onClick={openShareModal}
+        >
           Share
         </Button>
       </Flex>

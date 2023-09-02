@@ -12,9 +12,18 @@ import {
   FormErrorMessage,
 } from "@chakra-ui/react";
 import { useFormik } from "formik";
-import { useState } from "react";
 import { OnboardingStepProps } from "./OnboardingStep1";
 import { useUserProfile } from "@/hooks/useUserProfile";
+
+export function validateURL(value: string) {
+  const pattern =
+    /^(https?:\/\/)?[\w.-]+(\.[\w.-]+)+[\w\-._~:/?#[\]@!$&'()*+,;=]+$/;
+  let error;
+  if (!pattern.test(value)) {
+    error = "Please enter a valid link.";
+  }
+  return error;
+}
 
 function OnboardingStep2({
   onNext,
@@ -23,18 +32,14 @@ function OnboardingStep2({
   user,
   stepNumber,
 }: OnboardingStepProps) {
-  const {
-    profile,
-    handleInputChange,
-    saveProfileToFirebase,
-    saveOnboardingStateToFirebase,
-  } = useUserProfile(user);
+  const { profile, handleInputChange, saveProfileToFirebase } =
+    useUserProfile(user);
 
   const formik = useFormik({
     initialValues: profile,
     onSubmit: async (values) => {
       try {
-        const docId = await saveProfileToFirebase();
+        const docId = await saveProfileToFirebase(values);
         console.log(`Profile2 saved with ID: ${docId}`);
         onNext();
       } catch (error) {
@@ -58,16 +63,6 @@ function OnboardingStep2({
       return errors;
     },
   });
-
-  function validateURL(value: string) {
-    const pattern =
-      /^(https?:\/\/)?[\w.-]+(\.[\w.-]+)+[\w\-._~:/?#[\]@!$&'()*+,;=]+$/;
-    let error;
-    if (!pattern.test(value)) {
-      error = "Please enter a valid link.";
-    }
-    return error;
-  }
 
   const handleBuddyOrSoloChange = (value: string) => {
     formik.setFieldValue("buddyOrSolo", value);

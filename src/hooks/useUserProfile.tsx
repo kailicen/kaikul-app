@@ -1,5 +1,5 @@
 import { useState, useCallback, useEffect } from "react";
-import { collection, addDoc, getDoc, doc, setDoc } from "firebase/firestore";
+import { getDoc, doc, setDoc } from "firebase/firestore";
 import { firestore } from "../firebase/clientApp";
 import { User } from "firebase/auth";
 import { useRecoilState } from "recoil";
@@ -11,6 +11,23 @@ export const useUserProfile = (user: User) => {
   const [onboarding, setOnboarding] = useRecoilState(onboardingState);
   const [loading, setLoading] = useState(true);
 
+  const loadData = useCallback(async () => {
+    if (user) {
+      setLoading(true);
+      try {
+        await Promise.all([
+          fetchUserProfileFromFirebase(),
+          fetchOnboardingStateFromFirebase(),
+        ]);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+        // Optionally set some state here to show an error message to the user
+      } finally {
+        setLoading(false);
+      }
+    }
+  }, [user]);
+
   const handleInputChange = useCallback(
     (field: keyof UserProfile, value: any) => {
       setProfile((prev) => ({
@@ -21,18 +38,7 @@ export const useUserProfile = (user: User) => {
     []
   );
 
-  const loadData = useCallback(async () => {
-    if (user) {
-      setLoading(true);
-      await Promise.all([
-        fetchUserProfileFromFirebase(),
-        fetchOnboardingStateFromFirebase(),
-      ]);
-      setLoading(false);
-    }
-  }, [user]);
-
-  const saveProfileToFirebase = async () => {
+  const saveProfileToFirebase = async (values: UserProfile) => {
     if (!user) {
       throw new Error("User not authenticated");
     }
@@ -45,7 +51,7 @@ export const useUserProfile = (user: User) => {
       await setDoc(
         profileRef,
         {
-          ...profile,
+          ...values,
           userId: user.uid,
         },
         { merge: true }
@@ -70,6 +76,14 @@ export const useUserProfile = (user: User) => {
     } catch (error) {
       console.error("Error fetching user profile:", error);
     }
+  };
+
+  const updateProfile = async (updatedProfile: UserProfile) => {
+    // Update the profile in the state
+    setProfile(updatedProfile);
+
+    // Save the changes to Firebase
+    await saveProfileToFirebase(updatedProfile);
   };
 
   const saveOnboardingStateToFirebase = async (state: OnboardingState) => {
@@ -110,6 +124,7 @@ export const useUserProfile = (user: User) => {
     loading,
     handleInputChange,
     saveProfileToFirebase,
+    updateProfile,
     saveOnboardingStateToFirebase,
   };
 };

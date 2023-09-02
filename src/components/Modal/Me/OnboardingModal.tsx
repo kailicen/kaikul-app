@@ -15,7 +15,6 @@ import { useRecoilState } from "recoil";
 import { OnboardingState, onboardingState } from "@/atoms/onboardingAtom";
 import { User } from "firebase/auth";
 import { useUserProfile } from "@/hooks/useUserProfile";
-import { useEffect } from "react";
 
 function OnboardingModal({
   isOpen,

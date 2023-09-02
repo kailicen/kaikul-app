@@ -1,10 +1,8 @@
-import { userProfileState } from "@/atoms/userProfileAtom";
 import { useUserProfile } from "@/hooks/useUserProfile";
 import {
   Button,
   FormControl,
   FormLabel,
-  Input,
   Textarea,
   Tag,
   TagLabel,
@@ -14,10 +12,8 @@ import {
 } from "@chakra-ui/react";
 import { User } from "firebase/auth";
 import { useFormik } from "formik";
-import { useState } from "react";
-import { useRecoilState } from "recoil";
 
-const domains = [
+export const domains = [
   "Professional & Financial Development",
   "Health & Well-being",
   "Relationships & Community",
@@ -41,20 +37,16 @@ function OnboardingStep1({
   user,
   stepNumber,
 }: OnboardingStepProps) {
-  const {
-    profile,
-    handleInputChange,
-    saveProfileToFirebase,
-    saveOnboardingStateToFirebase,
-  } = useUserProfile(user);
+  const { profile, handleInputChange, saveProfileToFirebase } =
+    useUserProfile(user);
 
   const formik = useFormik({
     initialValues: profile,
     onSubmit: async (values) => {
       // Save to Firestore:
       try {
-        const docId = await saveProfileToFirebase();
-        console.log(`Profile1 saved with ID: ${docId}`);
+        const docId = await saveProfileToFirebase(values);
+        console.log(docId);
         onNext(); // Move to the next step after saving
       } catch (error) {
         console.error("Error saving profile to Firebase:", error);
@@ -121,8 +113,7 @@ function OnboardingStep1({
           <FormLabel mt={4}>
             What&apos;s the biggest goal you&apos;re aiming for?
           </FormLabel>
-          <Input
-            type="text"
+          <Textarea
             placeholder="E.g., Build leadership skills"
             name="biggestGoal"
             onChange={(e) => {

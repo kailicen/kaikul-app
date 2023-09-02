@@ -150,7 +150,7 @@ export default function Home() {
       <AuthenticatedHeader user={user} />
 
       {user ? (
-        <div className="pt-[80px] px-2 md:px-10 3xl:px-32">
+        <div className="pt-[80px] container mx-auto">
           <MePage user={user} />
         </div>
       ) : (

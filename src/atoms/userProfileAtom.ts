@@ -8,6 +8,9 @@ export type UserProfile = {
   linkedinURL: string;
   selfIntroduction: string;
   calendarLink: string;
+  domainsDepth: string;
+  biggestGoalDepth: string;
+  challengesDepth: string;
 };
 
 export const userProfileState = atom<UserProfile>({
@@ -20,5 +23,8 @@ export const userProfileState = atom<UserProfile>({
     linkedinURL: "",
     selfIntroduction: "",
     calendarLink: "",
+    domainsDepth: "",
+    biggestGoalDepth: "",
+    challengesDepth: "",
   },
 });
