@@ -1,5 +1,5 @@
 // CompleteMePage.tsx
-import { Text, Button, useToast, Flex } from "@chakra-ui/react";
+import { Text, Button, useToast, Flex, Link } from "@chakra-ui/react";
 import { OnboardingStepProps } from "./OnboardingStep1";
 import { useUserProfile } from "@/hooks/useUserProfile";
 
@@ -11,60 +11,81 @@ function CompleteMePage({
   stepNumber,
 }: OnboardingStepProps) {
   const toast = useToast();
-  const { saveOnboardingStateToFirebase } = useUserProfile(user);
-
-  // const handleFinish = async () => {
-  //   try {
-  //     await saveOnboardingStateToFirebase({
-  //       step: "STEP2_COMPLETED",
-  //       completed: true,
-  //     });
-  //     console.log(`Step3 saved`);
-  //     onNext();
-  //   } catch (error) {
-  //     console.error("Error saving onboarding state to Firebase:", error);
-  //     toast({
-  //       title: "Error.",
-  //       description:
-  //         "There was a problem saving your onboarding state. Please try again later.",
-  //       status: "error",
-  //       duration: 5000,
-  //       isClosable: true,
-  //     });
-  //   }
-  // };
+  const { profile } = useUserProfile(user);
 
   const shareProfileOnSlack = async () => {
-    // You might want to collect user's information or profile details that you want to share.
-    const userInfo = {
-      name: "John Doe", // for example
-      domainOfInterest: "Career",
-      goal: "Build leadership skills",
-      challenges: "Time management",
-    };
+    let text = `*Profile of ${
+      user.displayName ? user.displayName : user.email
+    }*\n\n`;
 
-    const response = await fetch("/your-server-endpoint", {
-      method: "POST",
-      body: JSON.stringify(userInfo),
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
+    if (profile.selfIntroduction) {
+      text += `*Introduction*: ${profile.selfIntroduction}\n`;
+    }
 
-    if (response.ok) {
+    if (profile.domains && profile.domains.length) {
+      text += `*Domains that Drive Me*: ${(profile.domains as string[]).join(
+        ", "
+      )}\n`;
+    }
+
+    if (profile.biggestGoal) {
+      text += `*Biggest Goal*: ${profile.biggestGoal}\n`;
+    }
+
+    if (profile.challenges) {
+      text += `*Challenges*: ${profile.challenges}\n`;
+    }
+
+    if (profile.buddyOrSolo) {
+      text += `*Journey Preference*: ${
+        profile.buddyOrSolo.charAt(0).toUpperCase() +
+        profile.buddyOrSolo.slice(1)
+      }\n`;
+    }
+
+    if (profile.linkedinURL) {
+      text += `*Professional Profile (LinkedIn)*: ${profile.linkedinURL}\n`;
+    }
+
+    if (profile.calendarLink) {
+      text += `*Calendar Link*: ${profile.calendarLink}\n`;
+    }
+
+    try {
+      const res = await fetch("/api/shareProgress", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          channel: "#daily-reflection-rev", // replace with your desired channel id
+          text: text,
+        }),
+      });
+
+      const data = await res.json();
+
+      if (!data.ok) {
+        throw new Error(data.error);
+      }
+
+      // Display a success toast
       toast({
-        title: "Profile shared!",
+        title: "Share Successful",
         description:
-          "Your profile has been shared in the #find-your-buddy Slack channel.",
+          "The user's profile has been successfully shared on Slack.",
         status: "success",
         duration: 5000,
         isClosable: true,
       });
-    } else {
+    } catch (error) {
+      console.error(error);
+      const errMsg = (error as Error).message || "An unknown error occurred";
+
+      // Display the error message to the user with a toast
       toast({
-        title: "Error.",
-        description:
-          "There was a problem sharing your profile. Please try again later.",
+        title: "Error",
+        description: errMsg,
         status: "error",
         duration: 5000,
         isClosable: true,
@@ -83,7 +104,17 @@ function CompleteMePage({
       <Button mt={4} colorScheme="purple" onClick={shareProfileOnSlack}>
         Share My Profile on Slack
       </Button>
-      <Button mt={4} ml={2} colorScheme="purple">
+      <Button
+        as={Link}
+        href="https://join.slack.com/t/kaikul/shared_invite/zt-22ty7x0ps-89ruM2VXwB1v49yY35cYdw"
+        mt={4}
+        ml={2}
+        isExternal
+        _hover={{
+          textDecoration: "none",
+          bg: "#5140BD",
+        }}
+      >
         Join KaiKul Slack
       </Button>
       <Flex my={7} justify="flex-end">
@@ -97,8 +128,8 @@ function CompleteMePage({
         )}
         <Button
           colorScheme="blue"
-          type={stepNumber === 3 ? "button" : "submit"} // If it's the last step, it doesn't need to submit the form
-          onClick={stepNumber === 3 ? onNext : undefined} // If it's the last step, handle with onNext
+          type={stepNumber === 3 ? "button" : "submit"}
+          onClick={stepNumber === 3 ? onNext : undefined}
           mr={2}
         >
           {stepNumber === 3 ? "Done" : "Next Step"}
