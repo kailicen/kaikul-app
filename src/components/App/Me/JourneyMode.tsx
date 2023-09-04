@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   Box,
   Text,
@@ -15,6 +15,7 @@ import {
 import { UserProfile } from "@/atoms/userProfileAtom";
 import EditProfileDrawer from "./EditProfileDrawer";
 import { User } from "firebase/auth";
+import ProfilePreviewModal from "@/components/Modal/Me/ProfilePreviewModal";
 
 type Props = {
   profile: UserProfile;
@@ -31,32 +32,44 @@ const JourneyMode: React.FC<Props> = ({ profile, onEdit, user }) => {
     onClose: closeShareInfo,
   } = useDisclosure();
 
+  // State to control the modal's visibility
+  const [isPreviewModalOpen, setIsPreviewModalOpen] = useState(false);
+
+  const previewAndShareProfile = () => {
+    setIsPreviewModalOpen(true);
+  };
+
+  const handleConfirmShare = async () => {
+    setIsPreviewModalOpen(false); // Close the modal
+    await shareProfileOnSlack(); // Continue with sharing process
+  };
+
   const shareProfileOnSlack = async () => {
     let displayName = user.displayName ? user.displayName : user.email;
 
-    let sections = [`🌟 *Meet ${displayName}!* 🌟`];
+    let sections = [`🌟 *Meet ${displayName}!* 🌟\n`]; // Added \n
 
     if (profile.selfIntroduction) {
-      sections.push(`📝 *Introduction*: ${profile.selfIntroduction}`);
+      sections.push(`📝 *Introduction*:\n${profile.selfIntroduction}\n`); // Added \n
     }
 
     if (profile.domains && profile.domains.length) {
       sections.push(
-        `🚀 *Domains that Inspire Me*: ${(profile.domains as string[]).join(
+        `🚀 *Domains that Inspire Me*:\n${(profile.domains as string[]).join(
           ", "
-        )}`
+        )}\n` // Added \n
       );
     }
 
     if (profile.biggestGoal) {
-      sections.push(`🎯 *Ultimate Goal*: ${profile.biggestGoal}`);
+      sections.push(`🎯 *Ultimate Goal*:\n${profile.biggestGoal}\n`); // Added \n
     }
 
     if (profile.challenges) {
-      sections.push(`🚧 *Challenges I'm Overcoming*: ${profile.challenges}`);
+      sections.push(`🚧 *Challenges I'm Overcoming*:\n${profile.challenges}\n`); // Added \n
     }
 
-    const text = sections.join("\n\n");
+    const text = sections.join("\n");
 
     try {
       const res = await fetch("/api/shareProgress", {
@@ -65,7 +78,7 @@ const JourneyMode: React.FC<Props> = ({ profile, onEdit, user }) => {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          channel: "#daily-sprint", // replace with your desired channel id
+          channel: "#daily-reflection-rev", // replace with your desired channel id
           text: text,
         }),
       });
@@ -109,16 +122,12 @@ const JourneyMode: React.FC<Props> = ({ profile, onEdit, user }) => {
 
       {/* Only show Connect/Share Card if buddyOrSolo is "buddy" */}
       {profile.buddyOrSolo === "buddy" && (
-        <VStack spacing={4} mb={4}>
-          <HStack w="100%">
-            <Text fontWeight="semibold">
-              Introduction:{" "}
-              <Text as="span" fontWeight="normal" display="block">
-                {profile.selfIntroduction}
-              </Text>
-            </Text>
-          </HStack>
-        </VStack>
+        <Flex direction="column" alignItems="center" gap={2}>
+          <Text fontWeight="semibold">Introduction: </Text>
+          <Text fontWeight="normal" align="center">
+            {profile.selfIntroduction}
+          </Text>
+        </Flex>
       )}
       <VStack mt={3} gap={3}>
         <Button onClick={openShareInfo}>Edit</Button>
@@ -126,7 +135,7 @@ const JourneyMode: React.FC<Props> = ({ profile, onEdit, user }) => {
           label="Your profile including your goal and challenges will be shared in the #general channel on Slack."
           aria-label="A tooltip"
         >
-          <Button onClick={shareProfileOnSlack}>
+          <Button onClick={previewAndShareProfile}>
             Share My Profile on Slack
           </Button>
         </Tooltip>
@@ -142,6 +151,14 @@ const JourneyMode: React.FC<Props> = ({ profile, onEdit, user }) => {
           Join KaiKul Slack
         </Button>
       </VStack>
+
+      <ProfilePreviewModal
+        user={user}
+        profile={profile}
+        isOpen={isPreviewModalOpen}
+        onClose={() => setIsPreviewModalOpen(false)}
+        onConfirm={handleConfirmShare}
+      />
 
       {/* Drawers for editing */}
 

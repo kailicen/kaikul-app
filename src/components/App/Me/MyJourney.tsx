@@ -45,7 +45,7 @@ const MyJourney: React.FC<Props> = ({ profile, onEdit }) => {
         </Tooltip>
       </Flex>
       <Flex direction="column" alignItems="center">
-        <Text fontWeight="semibold">My Focus Domains: </Text>
+        <Text>My Focus Domains: </Text>
         <Text
           fontSize="xl"
           color="#4130AC"
@@ -57,7 +57,7 @@ const MyJourney: React.FC<Props> = ({ profile, onEdit }) => {
         </Text>
       </Flex>
       <Flex direction="column" alignItems="center">
-        <Text fontWeight="semibold">My Ultimate Goal:</Text>
+        <Text>My Ultimate Goal:</Text>
         <Text
           fontSize="xl"
           color="#4130AC"
@@ -69,7 +69,7 @@ const MyJourney: React.FC<Props> = ({ profile, onEdit }) => {
         </Text>
       </Flex>
       <Flex direction="column" alignItems="center">
-        <Text fontWeight="semibold">My Challenges:</Text>
+        <Text>My Challenges:</Text>
         <Text
           fontSize="xl"
           color="#4130AC"
