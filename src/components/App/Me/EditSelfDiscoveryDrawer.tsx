@@ -46,6 +46,23 @@ function EditSelfDiscoveryDrawer({
   const [currentValue, setCurrentValue] = useState<string>("");
   const [currentStrength, setCurrentStrength] = useState<string>("");
 
+  const getHeaderTitle = (inputType: string) => {
+    switch (inputType) {
+      case "values":
+        return "Discovering Your Core Values";
+      case "strengths":
+        return "Discovering Your Strengths";
+      case "accountabilityMethods":
+        return "Understanding Accountability";
+      case "roleModels":
+        return "Recognizing Role Models";
+      case "personalGrowthInvestments":
+        return "Investing in Personal Growth";
+      default:
+        return "Exercise"; // This can be your default value if required
+    }
+  };
+
   const handleAddValue = () => {
     if (currentValue.trim()) {
       formik.setFieldValue("values", [
@@ -78,14 +95,13 @@ function EditSelfDiscoveryDrawer({
       <DrawerOverlay>
         <DrawerContent>
           <DrawerCloseButton />
-          <DrawerHeader>Exercise</DrawerHeader>
+          <DrawerHeader>{getHeaderTitle(inputType)}</DrawerHeader>
 
           <DrawerBody>
             <form onSubmit={formik.handleSubmit}>
               {inputType === "values" && (
                 <>
                   <Box mb={4}>
-                    <Heading size="md">Discovering Your Core Values</Heading>
                     <Text mt={2}>
                       Core values shape our actions and define what&apos;s
                       meaningful to us. Dive deeper and reflect on what truly
@@ -193,7 +209,6 @@ function EditSelfDiscoveryDrawer({
                 <>
                   {/* Explanation and Guidance for Strengths */}
                   <Box mb={4}>
-                    <Heading size="md">Discovering Your Strengths</Heading>
                     <Text mt={2}>
                       Identifying your strengths is essential to harnessing your
                       full potential. Recognizing what you&apos;re innately good
@@ -300,7 +315,6 @@ function EditSelfDiscoveryDrawer({
               {inputType === "accountabilityMethods" && (
                 <FormControl>
                   <Box mb={4}>
-                    <Heading size="md">Understanding Accountability</Heading>
                     <Text mt={2}>
                       Accountability is taking ownership of your actions and
                       responsibilities. It&apos;s an integral part of goal
@@ -359,7 +373,6 @@ function EditSelfDiscoveryDrawer({
               {inputType === "roleModels" && (
                 <FormControl>
                   <Box mb={4}>
-                    <Heading size="md">Recognizing Role Models</Heading>
                     <Text mt={2}>
                       Role models inspire us, guiding our decisions and
                       influencing our behaviors. They embody qualities we admire
@@ -398,6 +411,7 @@ function EditSelfDiscoveryDrawer({
                     onChange={(e) =>
                       formik.setFieldValue("roleModels", e.target.value)
                     }
+                    rows={7}
                   />
                 </FormControl>
               )}
@@ -405,7 +419,6 @@ function EditSelfDiscoveryDrawer({
               {inputType === "personalGrowthInvestments" && (
                 <FormControl>
                   <Box mb={4}>
-                    <Heading size="md">Investing in Personal Growth</Heading>
                     <Text mt={2}>
                       Personal growth investments are resources, time, or
                       strategies you commit towards your own development and

@@ -123,7 +123,7 @@ const JourneyMode: React.FC<Props> = ({ profile, onEdit, user }) => {
       <VStack mt={3} gap={3}>
         <Button onClick={openShareInfo}>Edit</Button>
         <Tooltip
-          label="Your profile will be shared in the #general channel on Slack."
+          label="Your profile including your goal and challenges will be shared in the #general channel on Slack."
           aria-label="A tooltip"
         >
           <Button onClick={shareProfileOnSlack}>
