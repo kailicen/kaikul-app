@@ -74,15 +74,8 @@ const EditProfileDrawer: React.FC<Props> = ({
         errors.challenges = "This field is required.";
       }
       if (values.buddyOrSolo === "buddy") {
-        if (!values.linkedinURL) {
-          errors.linkedinURL = "Professional profile is required.";
-        }
         if (!values.selfIntroduction) {
           errors.selfIntroduction = "Self Introduction is required.";
-        }
-        const calendarLinkError = validateURL(values.calendarLink);
-        if (calendarLinkError) {
-          errors.calendarLink = calendarLinkError;
         }
       }
 
@@ -197,7 +190,7 @@ const EditProfileDrawer: React.FC<Props> = ({
                     >
                       <Stack direction="row">
                         <Radio value="buddy" colorScheme="purple">
-                          Buddy Up
+                          Join the League
                         </Radio>
                         <Radio value="solo" colorScheme="purple">
                           Solo
@@ -212,52 +205,24 @@ const EditProfileDrawer: React.FC<Props> = ({
                       <FormControl
                         isInvalid={
                           !!(
-                            formik.touched.linkedinURL &&
-                            formik.errors.linkedinURL
-                          )
-                        }
-                      >
-                        <FormLabel mt={4}>
-                          LinkedIn Profile (Alternatively, share what you do)
-                        </FormLabel>
-                        <Input {...formik.getFieldProps("linkedinURL")} />
-                        <FormErrorMessage>
-                          {formik.errors.linkedinURL}
-                        </FormErrorMessage>
-                      </FormControl>
-
-                      <FormControl
-                        isInvalid={
-                          !!(
                             formik.touched.selfIntroduction &&
                             formik.errors.selfIntroduction
                           )
                         }
                       >
-                        <FormLabel mt={4}>
-                          Introduce yourself to potential partners
-                        </FormLabel>
+                        <FormLabel mt={4}>Introduce yourself</FormLabel>
                         <Textarea
-                          {...formik.getFieldProps("selfIntroduction")}
+                          name="selfIntroduction"
+                          placeholder="Hi there! Share a bit about yourself, a passion, or a fun fact. Let's connect! 😊"
+                          onChange={(e) => {
+                            formik.handleChange(e);
+                          }}
+                          onBlur={formik.handleBlur}
+                          value={formik.values.selfIntroduction}
+                          rows={5}
                         />
                         <FormErrorMessage>
                           {formik.errors.selfIntroduction}
-                        </FormErrorMessage>
-                      </FormControl>
-
-                      {/* Calendar Link */}
-                      <FormControl
-                        isInvalid={
-                          !!(
-                            formik.touched.calendarLink &&
-                            formik.errors.calendarLink
-                          )
-                        }
-                      >
-                        <FormLabel mt={4}>Your schedule link</FormLabel>
-                        <Input {...formik.getFieldProps("calendarLink")} />
-                        <FormErrorMessage>
-                          {formik.errors.calendarLink}
                         </FormErrorMessage>
                       </FormControl>
                     </>

@@ -36,21 +36,6 @@ function CompleteMePage({
       text += `*Challenges*: ${profile.challenges}\n`;
     }
 
-    if (profile.buddyOrSolo) {
-      text += `*Journey Preference*: ${
-        profile.buddyOrSolo.charAt(0).toUpperCase() +
-        profile.buddyOrSolo.slice(1)
-      }\n`;
-    }
-
-    if (profile.linkedinURL) {
-      text += `*Professional Profile (LinkedIn)*: ${profile.linkedinURL}\n`;
-    }
-
-    if (profile.calendarLink) {
-      text += `*Calendar Link*: ${profile.calendarLink}\n`;
-    }
-
     try {
       const res = await fetch("/api/shareProgress", {
         method: "POST",
@@ -97,9 +82,8 @@ function CompleteMePage({
     <div>
       <Text mb={4}>Ready to connect with like-minded individuals? 🚀</Text>
       <Text>
-        Join our community on Slack to exchange ideas, find support, and build
-        connections. Share your profile in the #find-your-buddy channel to
-        kickstart your journey!
+        While we&apos;re developing our in-app community, we&apos;re using Slack
+        for now. Join us there!
       </Text>
       <Button mt={4} colorScheme="purple" onClick={shareProfileOnSlack}>
         Share My Profile on Slack

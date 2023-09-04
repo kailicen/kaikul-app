@@ -5,9 +5,7 @@ export type UserProfile = {
   biggestGoal: string;
   challenges: string;
   buddyOrSolo: "buddy" | "solo";
-  linkedinURL: string;
   selfIntroduction: string;
-  calendarLink: string;
   domainsDepth: string;
   biggestGoalDepth: string;
   challengesDepth: string;
@@ -20,9 +18,7 @@ export const userProfileState = atom<UserProfile>({
     biggestGoal: "",
     challenges: "",
     buddyOrSolo: "buddy",
-    linkedinURL: "",
     selfIntroduction: "",
-    calendarLink: "",
     domainsDepth: "",
     biggestGoalDepth: "",
     challengesDepth: "",

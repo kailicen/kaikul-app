@@ -1,13 +1,24 @@
 import React from "react";
-import { Grid } from "@chakra-ui/react";
+import {
+  Box,
+  Flex,
+  Grid,
+  Stack,
+  Tab,
+  TabList,
+  TabPanel,
+  TabPanels,
+  Tabs,
+} from "@chakra-ui/react";
 import { useRecoilState } from "recoil";
 import { onboardingState } from "@/atoms/onboardingAtom";
 import OnboardingModal from "@/components/Modal/Me/OnboardingModal";
 import { User } from "firebase/auth";
 import { useUserProfile } from "@/hooks/useUserProfile";
 import { useUserProfileAddition } from "@/hooks/useUserProfileAddition";
-import UserProfileCard from "./UserProfileCard";
+import JourneyMode from "./JourneyMode";
 import SelfDiscovery from "./SelfDiscovery";
+import MyJourney from "./MyJourney";
 
 type Props = { user: User };
 
@@ -20,14 +31,38 @@ function MePage({ user }: Props) {
   return (
     <>
       {!loading && profile && (
-        <Grid templateColumns={["1fr", "1fr", "2fr 1fr"]} gap={6} w="100%">
-          <UserProfileCard profile={profile} onEdit={updateProfile} />
+        <Flex direction="column" alignItems="center" justifyContent="center">
+          <Box width={["100%", "80%", "60%"]}>
+            <Tabs colorScheme="purple" variant="enclosed">
+              <TabList mb="1em" display="flex" justifyContent="center">
+                <Tab>My Journey</Tab>
+                <Tab>Journey Mode</Tab>
+                <Tab>Self Discovery</Tab>
+              </TabList>
 
-          <SelfDiscovery
-            profileAddition={profileAddition}
-            onEdit={updateProfileAddition}
-          />
-        </Grid>
+              <TabPanels>
+                <TabPanel>
+                  <MyJourney profile={profile} onEdit={updateProfile} />
+                </TabPanel>
+
+                <TabPanel>
+                  <JourneyMode
+                    profile={profile}
+                    onEdit={updateProfile}
+                    user={user}
+                  />
+                </TabPanel>
+
+                <TabPanel>
+                  <SelfDiscovery
+                    profileAddition={profileAddition}
+                    onEdit={updateProfileAddition}
+                  />
+                </TabPanel>
+              </TabPanels>
+            </Tabs>
+          </Box>
+        </Flex>
       )}
 
       {/* Check if onboarding is not complete, then show the modal */}

@@ -7,6 +7,8 @@ import {
   useDisclosure,
   Collapse,
   Flex,
+  Tooltip,
+  Icon,
 } from "@chakra-ui/react";
 import React, { useState } from "react";
 import EditSelfDiscoveryDrawer from "./EditSelfDiscoveryDrawer";
@@ -27,19 +29,17 @@ function SelfDiscovery({ profileAddition, onEdit }: Props) {
   };
 
   return (
-    <Box
-      boxShadow="lg"
-      borderWidth="1px"
-      p="6"
-      rounded="md"
-      w="100%"
-      bg="white"
-    >
-      <Text fontWeight="bold" fontSize="xl" mb={4}>
-        Catalyst Tools for My Journey
-      </Text>
+    <VStack spacing={3}>
+      <Flex alignItems="center">
+        <Text fontWeight="bold" fontSize="lg">
+          Catalyst Tools for My Journey
+        </Text>
+        <Tooltip label="Here are the resources and exercises that aid in self-discovery">
+          <Icon name="info-outline" color="orange.500" ml={2} />
+        </Tooltip>
+      </Flex>
 
-      <VStack spacing={4} mt={4} alignItems="flex-start">
+      <VStack spacing={3} mt={4}>
         <Button onClick={() => handleButtonClick("values")}>
           Discovering Your Core Values
         </Button>
@@ -64,7 +64,7 @@ function SelfDiscovery({ profileAddition, onEdit }: Props) {
         onSubmit={onEdit}
         inputType={inputType}
       />
-    </Box>
+    </VStack>
   );
 }
 

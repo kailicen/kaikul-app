@@ -10,6 +10,10 @@ import {
   Stack,
   Flex,
   FormErrorMessage,
+  Tooltip,
+  Icon,
+  Select,
+  Text,
 } from "@chakra-ui/react";
 import { useFormik } from "formik";
 import { OnboardingStepProps } from "./OnboardingStep1";
@@ -49,15 +53,8 @@ function OnboardingStep2({
     validate: (values) => {
       let errors: { [key: string]: string } = {};
       if (values.buddyOrSolo === "buddy") {
-        if (!values.linkedinURL) {
-          errors.linkedinURL = "Professional profile is required.";
-        }
         if (!values.selfIntroduction) {
           errors.selfIntroduction = "Self Introduction is required.";
-        }
-        const calendarLinkError = validateURL(values.calendarLink);
-        if (calendarLinkError) {
-          errors.calendarLink = calendarLinkError;
         }
       }
       return errors;
@@ -73,14 +70,21 @@ function OnboardingStep2({
     <div>
       <form onSubmit={formik.handleSubmit}>
         <FormControl>
-          <FormLabel>How would you like to proceed on this journey?</FormLabel>
+          <Flex alignItems="center">
+            <FormLabel>
+              How would you like to proceed on this journey?
+            </FormLabel>
+            <Tooltip label="Choosing 'Join the Club' will send a Slack invitation to your email. Remember, you can always change your choice later.">
+              <Icon name="info-outline" color="orange.500" mb={2} />
+            </Tooltip>
+          </Flex>
           <RadioGroup
             value={formik.values.buddyOrSolo}
             onChange={handleBuddyOrSoloChange}
           >
             <Stack direction="row">
               <Radio value="buddy" colorScheme="purple">
-                Buddy Up
+                Join the Club
               </Radio>
               <Radio value="solo" colorScheme="purple">
                 Solo
@@ -93,70 +97,27 @@ function OnboardingStep2({
           <>
             <FormControl
               isInvalid={
-                !!(formik.touched.linkedinURL && formik.errors.linkedinURL)
-              }
-            >
-              <FormLabel mt={4}>
-                LinkedIn Profile (Alternatively, share what you do)
-              </FormLabel>
-              <Input
-                type="text"
-                name="linkedinURL"
-                placeholder="LinkedIn link or brief about you"
-                onChange={(e) => {
-                  handleInputChange("linkedinURL", e.target.value);
-                  formik.handleChange(e);
-                }}
-                onBlur={formik.handleBlur}
-                value={formik.values.linkedinURL}
-              />
-              <FormErrorMessage>{formik.errors.linkedinURL}</FormErrorMessage>
-            </FormControl>
-
-            <FormControl
-              isInvalid={
                 !!(
                   formik.touched.selfIntroduction &&
                   formik.errors.selfIntroduction
                 )
               }
             >
-              <FormLabel mt={4}>
-                Introduce yourself to potential partners
-              </FormLabel>
+              <FormLabel mt={4}>Introduce yourself</FormLabel>
               <Textarea
                 name="selfIntroduction"
-                placeholder="E.g., Hi, I'm Jane. I've been in the marketing field for 5 years..."
+                placeholder="Hi there! Share a bit about yourself, a passion, or a fun fact. Let's connect! 😊"
                 onChange={(e) => {
                   handleInputChange("selfIntroduction", e.target.value);
                   formik.handleChange(e);
                 }}
                 onBlur={formik.handleBlur}
                 value={formik.values.selfIntroduction}
+                rows={5}
               />
               <FormErrorMessage>
                 {formik.errors.selfIntroduction}
               </FormErrorMessage>
-            </FormControl>
-
-            <FormControl
-              isInvalid={
-                !!(formik.touched.calendarLink && formik.errors.calendarLink)
-              }
-            >
-              <FormLabel mt={4}>Your schedule link</FormLabel>
-              <Input
-                type="text"
-                name="calendarLink"
-                placeholder="Google Calendar link or similar"
-                onChange={(e) => {
-                  handleInputChange("calendarLink", e.target.value);
-                  formik.handleChange(e);
-                }}
-                onBlur={formik.handleBlur}
-                value={formik.values.calendarLink}
-              />
-              <FormErrorMessage>{formik.errors.calendarLink}</FormErrorMessage>
             </FormControl>
           </>
         )}
@@ -172,8 +133,8 @@ function OnboardingStep2({
           )}
           <Button
             colorScheme="blue"
-            type={stepNumber === 3 ? "button" : "submit"} // If it's the last step, it doesn't need to submit the form
-            onClick={stepNumber === 3 ? onNext : undefined} // If it's the last step, handle with onNext
+            type={stepNumber === 3 ? "button" : "submit"}
+            onClick={stepNumber === 3 ? onNext : undefined}
             mr={2}
           >
             {stepNumber === 3 ? "Done" : "Next Step"}
