@@ -1,5 +1,6 @@
 import * as functions from "firebase-functions";
 import * as admin from "firebase-admin";
+import {format, addYears} from "date-fns";
 
 admin.initializeApp();
 const db = admin.firestore();
@@ -37,5 +38,36 @@ exports.updateBuddyLists = functions.firestore
           buddies: admin.firestore.FieldValue.arrayUnion(fromUserId),
         }),
       ]);
+    }
+  });
+
+exports.createGoalOnProfileAddition = functions.firestore
+  .document("userProfiles/{profileId}")
+  .onCreate(async (snap, _context) => {
+    // Get the data from the newly created profile
+    const userProfile = snap.data();
+
+    if (userProfile && userProfile.biggestGoal) {
+      const currentDate = new Date();
+      const startDate = format(currentDate, "yyyy-MM-dd");
+      const endDate = format(addYears(currentDate, 1), "yyyy-MM-dd");
+
+      const goal = {
+        text: userProfile.biggestGoal,
+        startDate: startDate,
+        endDate: endDate,
+        completed: false,
+        description: "",
+        userId: userProfile.userId,
+        color: "#B795EC",
+        // If you want to include tasks, you can do so here
+      };
+
+      // Now, add this to the weeklyGoals collection
+      try {
+        await admin.firestore().collection("weeklyGoals").add(goal);
+      } catch (error) {
+        console.error("Error adding weekly goal: ", error);
+      }
     }
   });

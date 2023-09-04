@@ -68,7 +68,7 @@ const UserMenu: React.FC<UserMenuProps> = ({ user }) => {
         <MenuItem
           fontSize="10pt"
           fontWeight={700}
-          _hover={{ bg: "purple.600", color: "white" }}
+          _hover={{ bg: "#4130AC", color: "white" }}
           onClick={() => router.push("/profile")}
         >
           <Flex align="center">
@@ -80,7 +80,7 @@ const UserMenu: React.FC<UserMenuProps> = ({ user }) => {
         <MenuItem
           fontSize="10pt"
           fontWeight={700}
-          _hover={{ bg: "purple.600", color: "white" }}
+          _hover={{ bg: "#4130AC", color: "white" }}
           onClick={logout}
         >
           <Flex align="center">

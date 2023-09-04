@@ -25,6 +25,13 @@ export const Button: ComponentStyleConfig = {
         bg: "#5140BD",
       },
     },
+
+    ghost: {
+      color: "#4130AC",
+      _hover: {
+        bg: "#ded9ff",
+      },
+    },
     oauth: {
       height: "34px",
       border: "1px solid",
