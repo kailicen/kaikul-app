@@ -78,7 +78,7 @@ const JourneyMode: React.FC<Props> = ({ profile, onEdit, user }) => {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          channel: "#daily-reflection-rev", // replace with your desired channel id
+          channel: "#daily-sprint", // replace with your desired channel id
           text: text,
         }),
       });
