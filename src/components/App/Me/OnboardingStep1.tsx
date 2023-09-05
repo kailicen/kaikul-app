@@ -28,6 +28,7 @@ export type OnboardingStepProps = {
   onClose: () => void;
   user: User;
   stepNumber: number;
+  loading: boolean;
 };
 
 function OnboardingStep1({
@@ -36,6 +37,7 @@ function OnboardingStep1({
   onClose,
   user,
   stepNumber,
+  loading,
 }: OnboardingStepProps) {
   const { profile, handleInputChange, saveProfileToFirebase } =
     useUserProfile(user);
@@ -153,7 +155,7 @@ function OnboardingStep1({
             </Button>
           )}
           <Button
-            colorScheme="blue"
+            isLoading={loading}
             type={stepNumber === 3 ? "button" : "submit"} // If it's the last step, it doesn't need to submit the form
             onClick={stepNumber === 3 ? onNext : undefined} // If it's the last step, handle with onNext
             mr={2}

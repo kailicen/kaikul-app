@@ -15,6 +15,7 @@ import { useRecoilState } from "recoil";
 import { OnboardingState, onboardingState } from "@/atoms/onboardingAtom";
 import { User } from "firebase/auth";
 import { useUserProfile } from "@/hooks/useUserProfile";
+import { useState } from "react";
 
 function OnboardingModal({
   isOpen,
@@ -27,6 +28,8 @@ function OnboardingModal({
 }) {
   const [isSmallerThan768] = useMediaQuery("(max-width: 767px)");
   const [onboarding, setOnboarding] = useRecoilState(onboardingState);
+  const [loading, setLoading] = useState(false);
+
   const { saveOnboardingStateToFirebase } = useUserProfile(user);
 
   const updateAndSaveOnboardingState = async (newState: OnboardingState) => {
@@ -34,7 +37,8 @@ function OnboardingModal({
     setOnboarding(newState);
   };
 
-  const goToNextStep = () => {
+  const goToNextStep = async () => {
+    setLoading(true);
     let newState: OnboardingState;
 
     switch (onboarding.step) {
@@ -51,7 +55,8 @@ function OnboardingModal({
       default:
         return;
     }
-    updateAndSaveOnboardingState(newState);
+    await updateAndSaveOnboardingState(newState);
+    setLoading(false);
   };
 
   const goToPreviousStep = () => {
@@ -82,6 +87,7 @@ function OnboardingModal({
           onClose={onClose}
           user={user}
           stepNumber={stepNumber}
+          loading={loading}
         />
       );
       break;
@@ -94,6 +100,7 @@ function OnboardingModal({
           onClose={onClose}
           user={user}
           stepNumber={stepNumber}
+          loading={loading}
         />
       );
       break;
@@ -106,6 +113,7 @@ function OnboardingModal({
           onClose={onClose}
           user={user}
           stepNumber={stepNumber}
+          loading={loading}
         />
       );
       break;

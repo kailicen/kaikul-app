@@ -3,7 +3,6 @@ import {
   Button,
   FormControl,
   FormLabel,
-  Input,
   Textarea,
   RadioGroup,
   Radio,
@@ -12,8 +11,6 @@ import {
   FormErrorMessage,
   Tooltip,
   Icon,
-  Select,
-  Text,
 } from "@chakra-ui/react";
 import { useFormik } from "formik";
 import { OnboardingStepProps } from "./OnboardingStep1";
@@ -35,6 +32,7 @@ function OnboardingStep2({
   onClose,
   user,
   stepNumber,
+  loading,
 }: OnboardingStepProps) {
   const { profile, handleInputChange, saveProfileToFirebase } =
     useUserProfile(user);
@@ -132,7 +130,7 @@ function OnboardingStep2({
             </Button>
           )}
           <Button
-            colorScheme="blue"
+            isLoading={loading}
             type={stepNumber === 3 ? "button" : "submit"}
             onClick={stepNumber === 3 ? onNext : undefined}
             mr={2}

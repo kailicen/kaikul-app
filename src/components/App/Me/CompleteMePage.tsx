@@ -9,6 +9,7 @@ function CompleteMePage({
   onClose,
   user,
   stepNumber,
+  loading,
 }: OnboardingStepProps) {
   const toast = useToast();
   const { profile } = useUserProfile(user);
@@ -115,7 +116,7 @@ function CompleteMePage({
           </Button>
         )}
         <Button
-          colorScheme="blue"
+          isLoading={loading}
           type={stepNumber === 3 ? "button" : "submit"}
           onClick={stepNumber === 3 ? onNext : undefined}
           mr={2}
