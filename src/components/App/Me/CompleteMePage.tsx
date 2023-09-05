@@ -14,27 +14,31 @@ function CompleteMePage({
   const { profile } = useUserProfile(user);
 
   const shareProfileOnSlack = async () => {
-    let text = `*Profile of ${
-      user.displayName ? user.displayName : user.email
-    }*\n\n`;
+    let displayName = user.displayName ? user.displayName : user.email;
+
+    let sections = [`🌟 *Meet ${displayName}!* 🌟\n`]; // Added \n
 
     if (profile.selfIntroduction) {
-      text += `*Introduction*: ${profile.selfIntroduction}\n`;
+      sections.push(`📝 *Introduction*:\n${profile.selfIntroduction}\n`); // Added \n
     }
 
     if (profile.domains && profile.domains.length) {
-      text += `*Domains that Drive Me*: ${(profile.domains as string[]).join(
-        ", "
-      )}\n`;
+      sections.push(
+        `🚀 *Domains that Inspire Me*:\n${(profile.domains as string[]).join(
+          ", "
+        )}\n` // Added \n
+      );
     }
 
     if (profile.biggestGoal) {
-      text += `*Biggest Goal*: ${profile.biggestGoal}\n`;
+      sections.push(`🎯 *Ultimate Goal*:\n${profile.biggestGoal}\n`); // Added \n
     }
 
     if (profile.challenges) {
-      text += `*Challenges*: ${profile.challenges}\n`;
+      sections.push(`🚧 *Challenges I'm Overcoming*:\n${profile.challenges}\n`); // Added \n
     }
+
+    const text = sections.join("\n");
 
     try {
       const res = await fetch("/api/shareProgress", {
@@ -43,7 +47,7 @@ function CompleteMePage({
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          channel: "#daily-reflection-rev", // replace with your desired channel id
+          channel: "#daily-sprint", // replace with your desired channel id
           text: text,
         }),
       });
