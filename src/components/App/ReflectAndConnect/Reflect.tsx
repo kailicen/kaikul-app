@@ -1,6 +1,6 @@
 import LoadingScreen from "@/components/LoadingScreen";
 import { auth } from "@/firebase/clientApp";
-import { useTeamTab } from "@/hooks/useTeamTab";
+import { useTeamTab } from "@/hooks/useWeeklyReflections";
 import {
   Box,
   Text,

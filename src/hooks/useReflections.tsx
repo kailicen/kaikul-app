@@ -9,12 +9,16 @@ import {
   updateDoc,
   doc,
   deleteDoc,
+  setDoc,
 } from "firebase/firestore";
 import { firestore } from "../firebase/clientApp";
 import { User } from "firebase/auth";
+import { useRecoilState } from "recoil";
+import { userPointsState } from "@/atoms/userPointsAtom";
 
 export const useBlockers = (date: string, user: User) => {
   const [blockers, setBlockers] = useState<Reflection[]>([]);
+  const [userPoints, setUserPoints] = useRecoilState(userPointsState);
 
   const handleAddBlocker = async (blocker: string) => {
     if (blockers.length < 3) {
@@ -31,6 +35,11 @@ export const useBlockers = (date: string, user: User) => {
         );
         blockerToAdd.id = docRef.id; // Update the id value
         setBlockers([...blockers, blockerToAdd]);
+
+        // Update points
+        const newPoints = userPoints + 7;
+        setUserPoints(newPoints);
+        syncPointsToFirebase(user.uid, newPoints);
       } catch (error) {
         console.error("Error adding document: ", error);
       }
@@ -55,10 +64,24 @@ export const useBlockers = (date: string, user: User) => {
   const handleDeleteBlocker = async (id: string) => {
     setBlockers(blockers.filter((blocker) => blocker.id !== id));
 
+    // Update points
+    const newPoints = userPoints - 7;
+    setUserPoints(newPoints);
+    syncPointsToFirebase(user.uid, newPoints);
+
     try {
       await deleteDoc(doc(firestore, "blockers", id));
     } catch (error) {
       console.error("Error deleting document: ", error);
+    }
+  };
+
+  const syncPointsToFirebase = async (userId: string, points: number) => {
+    const userPointsDocRef = doc(firestore, "userPoints", userId);
+    try {
+      await setDoc(userPointsDocRef, { userId, points }, { merge: true });
+    } catch (error) {
+      console.error("Error syncing points to Firebase:", error);
     }
   };
 

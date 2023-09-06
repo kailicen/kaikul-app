@@ -1,24 +1,50 @@
 import { useState, useEffect } from "react";
-import { Task, weekTaskState } from "../atoms/tasksAtom";
+import { Task } from "../atoms/tasksAtom";
 import {
   addDoc,
   collection,
   query,
-  getDocs,
   where,
   updateDoc,
   doc,
   deleteDoc,
   onSnapshot,
+  setDoc,
+  getDoc,
 } from "firebase/firestore";
 import { firestore } from "../firebase/clientApp";
 import { User } from "firebase/auth";
 import { useRecoilState } from "recoil";
+import { userPointsState } from "@/atoms/userPointsAtom";
+
+function computePointsForTask(
+  originalTask: Task,
+  updatedTask: Task,
+  currentPoints: number
+): number {
+  let newPoints = currentPoints;
+
+  // If the original task was NOT completed, but the updated task IS completed
+  if (!originalTask.completed && updatedTask.completed) {
+    newPoints += 5;
+    if (updatedTask.goalId) {
+      newPoints += 2;
+    }
+  }
+  // If the original task WAS completed, but the updated task is NOT completed
+  else if (originalTask.completed && !updatedTask.completed) {
+    newPoints -= 5;
+    if (originalTask.goalId) {
+      newPoints -= 2;
+    }
+  }
+
+  return newPoints;
+}
 
 export const useTasks = (date: string, user: User) => {
   const [tasks, setTasks] = useState<Task[]>([]);
-  const [currentWeekTasksState, setWeekTasksState] =
-    useRecoilState(weekTaskState);
+  const [userPoints, setUserPoints] = useRecoilState(userPointsState);
 
   const handleAddTask = async (
     task: string,
@@ -49,14 +75,35 @@ export const useTasks = (date: string, user: User) => {
   };
 
   const handleCompleteTask = async (id: string) => {
+    const taskToUpdate = tasks.find((task) => task.id === id);
+
+    if (!taskToUpdate) {
+      console.error(`Task with id ${id} not found.`);
+      return;
+    }
+
+    // Clone the task and toggle its completed status
+    const updatedTask = { ...taskToUpdate, completed: !taskToUpdate.completed };
+
     const updatedTasks = tasks.map((task) =>
-      task.id === id ? { ...task, completed: !task.completed } : task
+      task.id === id ? updatedTask : task
     );
+
     setTasks(updatedTasks);
+
+    // Calculate points using the computePointsForTask function
+    const newPoints = computePointsForTask(
+      taskToUpdate,
+      updatedTask,
+      userPoints
+    );
+
+    setUserPoints(newPoints); // Update the user's points in local state
+    syncPointsToFirebase(user.uid, newPoints); // Sync the new points with Firebase
 
     try {
       await updateDoc(doc(firestore, "tasks", id), {
-        completed: updatedTasks.find((task) => task.id === id)?.completed,
+        completed: updatedTask.completed,
       });
     } catch (error) {
       console.error("Error updating document: ", error);
@@ -71,25 +118,38 @@ export const useTasks = (date: string, user: User) => {
     newTaskDate: string,
     newColor: string
   ) => {
-    const updatedTasks = tasks.map((task) =>
-      task.id === id
-        ? {
-            ...task,
-            text: newTask,
-            description: newDescription,
-            goalId: newGoalId,
-            date: newTaskDate,
-            color: newColor,
-          }
-        : task
-    );
+    const originalTask = tasks.find((task) => task.id === id);
 
-    const updatedTask = updatedTasks.find((task) => task.id === id);
-
-    if (!updatedTask) {
+    if (!originalTask) {
       console.error(`Task with id ${id} not found.`);
       return;
     }
+
+    // Determine if a goalId has been added or removed
+    let pointsChange = 0;
+    if (!originalTask.goalId && newGoalId) {
+      pointsChange += 2; // A goalId was added
+    } else if (originalTask.goalId && !newGoalId) {
+      pointsChange -= 2; // A goalId was removed
+    }
+
+    // Adjust user points based on the changes
+    const newPoints = userPoints + pointsChange;
+    setUserPoints(newPoints);
+    syncPointsToFirebase(user.uid, newPoints);
+
+    const updatedTask = {
+      ...originalTask,
+      text: newTask,
+      description: newDescription,
+      goalId: newGoalId,
+      date: newTaskDate,
+      color: newColor,
+    };
+
+    const updatedTasks = tasks.map((task) =>
+      task.id === id ? updatedTask : task
+    );
 
     try {
       const taskDocRef = doc(firestore, "tasks", id);
@@ -100,15 +160,41 @@ export const useTasks = (date: string, user: User) => {
         date: updatedTask.date,
         color: updatedTask.color,
       });
-      // setTasks(updatedTasks);
+      setTasks(updatedTasks);
     } catch (error) {
       console.error("Error updating document: ", error);
     }
   };
 
   const handleDeleteTask = async (id: string) => {
+    const taskToDelete = tasks.find((task) => task.id === id);
+
+    if (!taskToDelete) {
+      console.error(`Task with id ${id} not found.`);
+      return;
+    }
+
+    let pointsToDeduct = 0;
+
+    // If the task was completed, deduct points
+    if (taskToDelete.completed) {
+      pointsToDeduct += 5;
+
+      // If the task is linked to a goal, deduct additional points
+      if (taskToDelete.goalId) {
+        pointsToDeduct += 2;
+      }
+    }
+
+    // Update user points after deducting
+    const newPoints = userPoints - pointsToDeduct;
+    setUserPoints(newPoints);
+    syncPointsToFirebase(user.uid, newPoints);
+
+    // Filter out the task from the local state
     setTasks(tasks.filter((task) => task.id !== id));
 
+    // Delete the task from Firebase
     try {
       await deleteDoc(doc(firestore, "tasks", id));
     } catch (error) {
@@ -116,9 +202,33 @@ export const useTasks = (date: string, user: User) => {
     }
   };
 
-  useEffect(() => {
-    console.log("Fetching tasks for date:", date, "and user:", user.uid);
+  const syncPointsToFirebase = async (userId: string, points: number) => {
+    const userPointsDocRef = doc(firestore, "userPoints", userId);
+    try {
+      await setDoc(userPointsDocRef, { userId, points }, { merge: true });
+    } catch (error) {
+      console.error("Error syncing points to Firebase:", error);
+    }
+  };
 
+  useEffect(() => {
+    const fetchUserPointsFromFirebase = async () => {
+      const userPointsDocRef = doc(firestore, "userPoints", user.uid);
+      try {
+        const docSnapshot = await getDoc(userPointsDocRef);
+        if (docSnapshot.exists()) {
+          const data = docSnapshot.data();
+          setUserPoints(data?.points || 0); // Set the user's points if found, else default to 0
+        }
+      } catch (error) {
+        console.error("Error fetching user points from Firebase:", error);
+      }
+    };
+
+    fetchUserPointsFromFirebase();
+  }, [user]);
+
+  useEffect(() => {
     const taskCollection = collection(firestore, "tasks");
     const q = query(
       taskCollection,
@@ -136,7 +246,6 @@ export const useTasks = (date: string, user: User) => {
           tasksForDay.push(task);
         });
         setTasks(tasksForDay);
-        console.log(tasks);
       },
 
       (error) => {

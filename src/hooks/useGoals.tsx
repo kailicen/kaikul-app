@@ -11,15 +11,70 @@ import {
   query,
   doc,
   writeBatch,
+  getDoc,
+  setDoc,
 } from "firebase/firestore";
 import { firestore } from "../firebase/clientApp";
 import { useRecoilState, useRecoilValue } from "recoil";
 import { useStatistics } from "./useStatistics";
 import moment from "moment";
 import { Task, weekTaskListState } from "@/atoms/tasksAtom";
+import { userPointsState } from "@/atoms/userPointsAtom";
+import {
+  differenceInDays,
+  differenceInMonths,
+  differenceInYears,
+  parseISO,
+} from "date-fns";
+
+// Function to compute points based on the goal's duration
+function computeGoalPoints(startDate: string, endDate: string): number {
+  const start = parseISO(startDate);
+  const end = parseISO(endDate);
+  const durationInDays = differenceInDays(end, start);
+  const durationInMonths = differenceInMonths(end, start);
+  const durationInYears = differenceInYears(end, start);
+
+  if (durationInDays <= 30) {
+    return 20;
+  } else if (durationInMonths <= 3) {
+    return 50;
+  } else if (durationInYears < 1) {
+    return 100;
+  } else {
+    return 200; // Over a year
+  }
+}
+
+// Function to compute points for completing/uncompleting a goal
+function computePointsForGoal(
+  originalGoal: Goal,
+  updatedGoal: Goal,
+  currentPoints: number
+): number {
+  let newPoints = currentPoints;
+
+  // Get the point value for the goal duration
+  const pointsForCompletion = computeGoalPoints(
+    updatedGoal.startDate,
+    updatedGoal.endDate
+  );
+
+  // If the original goal was NOT completed, but the updated goal IS completed
+  if (!originalGoal.completed && updatedGoal.completed) {
+    newPoints += pointsForCompletion;
+  }
+  // If the original goal WAS completed, but the updated goal is NOT completed
+  else if (originalGoal.completed && !updatedGoal.completed) {
+    newPoints -= pointsForCompletion;
+  }
+
+  return newPoints;
+}
 
 export const useGoals = (user: User, startOfWeek: string) => {
   const [recoilGoals, setRecoilGoals] = useRecoilState(weeklyGoalListState);
+  const [userPoints, setUserPoints] = useRecoilState(userPointsState);
 
   // Fetch tasks for the current week
   const endOfWeek = moment(startOfWeek).add(6, "days").format("YYYY-MM-DD");
@@ -65,16 +120,37 @@ export const useGoals = (user: User, startOfWeek: string) => {
   };
 
   const handleCompleteGoal = async (id: string) => {
+    const goalToUpdate = goals.find((goal) => goal.id === id);
+
+    if (!goalToUpdate) {
+      console.error(`Goal with id ${id} not found.`);
+      return;
+    }
+
+    // Clone the goal and toggle its completed status
+    const updatedGoal = { ...goalToUpdate, completed: !goalToUpdate.completed };
+
     const updatedGoals = goals.map((goal) =>
-      goal.id === id ? { ...goal, completed: !goal.completed } : goal
+      goal.id === id ? updatedGoal : goal
     );
 
+    setGoals(updatedGoals);
+
+    // Calculate points using the computePointsForGoal function
+    const newPoints = computePointsForGoal(
+      goalToUpdate,
+      updatedGoal,
+      userPoints
+    );
+
+    setUserPoints(newPoints); // Update the user's points in local state
+    syncPointsToFirebase(user.uid, newPoints); // Sync the new points with Firebase
+
+    // Update the goal in Firebase (you might need to adjust this according to your Firebase structure)
     try {
-      await updateDoc(doc(firestore, "weeklyGoals", id), {
-        completed: updatedGoals.find((goal) => goal.id === id)?.completed,
+      await updateDoc(doc(firestore, "goals", id), {
+        completed: updatedGoal.completed,
       });
-      setGoals(updatedGoals);
-      setRecoilGoals(updatedGoals);
     } catch (error) {
       console.error("Error updating document: ", error);
     }
@@ -164,6 +240,25 @@ export const useGoals = (user: User, startOfWeek: string) => {
   };
 
   const handleDeleteGoal = async (id: string) => {
+    const goalToDelete = goals.find((goal) => goal.id === id);
+
+    if (!goalToDelete) {
+      console.error(`Goal with id ${id} not found.`);
+      return;
+    }
+
+    // Check if the goal to be deleted is completed
+    if (goalToDelete.completed) {
+      const pointsToDeduct = computeGoalPoints(
+        goalToDelete.startDate,
+        goalToDelete.endDate
+      );
+      const newPoints = userPoints - pointsToDeduct;
+
+      setUserPoints(newPoints); // Update the user's points in local state
+      syncPointsToFirebase(user.uid, newPoints); // Sync the new points with Firebase
+    }
+
     setGoals(goals.filter((goal) => goal.id !== id));
     setRecoilGoals(goals.filter((goal) => goal.id !== id));
 
@@ -195,6 +290,15 @@ export const useGoals = (user: User, startOfWeek: string) => {
       await deleteDoc(doc(firestore, "weeklyGoals", id));
     } catch (error) {
       console.error("Error deleting document: ", error);
+    }
+  };
+
+  const syncPointsToFirebase = async (userId: string, points: number) => {
+    const userPointsDocRef = doc(firestore, "userPoints", userId);
+    try {
+      await setDoc(userPointsDocRef, { userId, points }, { merge: true });
+    } catch (error) {
+      console.error("Error syncing points to Firebase:", error);
     }
   };
 

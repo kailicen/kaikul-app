@@ -17,7 +17,7 @@ import {
   Icon,
 } from "@chakra-ui/react";
 import { useRouter } from "next/router";
-import { useSingleTeamTab } from "@/hooks/useSingleTeamTab";
+import { useSingleTeamTab } from "@/hooks/useSingleWeeklyReflection";
 import { endOfWeek, format, startOfWeek } from "date-fns";
 import LoadingScreen from "@/components/LoadingScreen";
 import { collection, getDocs, query, where } from "firebase/firestore";

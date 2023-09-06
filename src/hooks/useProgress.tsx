@@ -5,7 +5,7 @@ import { auth, firestore } from "@/firebase/clientApp";
 import { Reflection } from "@/atoms/reflectionsAtom";
 import { Task } from "@/atoms/tasksAtom";
 import { format, startOfWeek, subDays } from "date-fns";
-import { TeamTab } from "./useTeamTab";
+import { WeeklyReflection } from "./useWeeklyReflections";
 
 export type ProgressOption = "Daily Sprint" | "Weekly Reflection";
 
@@ -14,7 +14,7 @@ const useProgress = (selectedProgress: ProgressOption, lastOpened: Date) => {
   const [yesterdayTasks, setYesterdayTasks] = useState<Task[]>([]);
   const [todayTasks, setTodayTasks] = useState<Task[]>([]);
   const [blockers, setBlockers] = useState<Reflection[]>([]);
-  const [weeklyReflection, setWeeklyReflection] = useState<TeamTab>();
+  const [weeklyReflection, setWeeklyReflection] = useState<WeeklyReflection>();
 
   useEffect(() => {
     const fetchDailyProgress = async () => {
@@ -77,7 +77,7 @@ const useProgress = (selectedProgress: ProgressOption, lastOpened: Date) => {
         );
         const weeklyReflectionSnapshot = await getDocs(weeklyReflectionQuery);
         const fetchedweeklyReflection = weeklyReflectionSnapshot.docs.map(
-          (doc) => doc.data() as TeamTab
+          (doc) => doc.data() as WeeklyReflection
         );
 
         setWeeklyReflection(fetchedweeklyReflection[0]);

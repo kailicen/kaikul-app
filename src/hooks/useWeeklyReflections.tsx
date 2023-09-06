@@ -8,11 +8,14 @@ import {
   getDocs,
   where,
   orderBy,
+  setDoc,
 } from "firebase/firestore";
 import { firestore } from "../firebase/clientApp";
 import { useEffect, useState } from "react";
+import { useRecoilState } from "recoil";
+import { userPointsState } from "@/atoms/userPointsAtom";
 
-export type TeamTab = {
+export type WeeklyReflection = {
   id: string;
   startOfWeek: string;
   rateWeek: number;
@@ -26,9 +29,18 @@ export type TeamTab = {
 };
 
 export const useTeamTab = (user: User, startOfWeek: string) => {
-  const [teamTabs, setTeamTabs] = useState<TeamTab[]>([]);
+  const [teamTabs, setTeamTabs] = useState<WeeklyReflection[]>([]);
   const [isCurrentWeekDataExist, setIsCurrentWeekDataExist] =
     useState<boolean>(false);
+  const [userPoints, setUserPoints] = useRecoilState(userPointsState);
+
+  const updatePoints = async (pointsToAdd: number) => {
+    const newPoints = userPoints + pointsToAdd;
+    setUserPoints(newPoints);
+
+    // Sync the new points to Firebase
+    await syncPointsToFirebase(user.uid, newPoints);
+  };
 
   const handleAddTeamTab = async (
     startOfWeek: string,
@@ -39,7 +51,7 @@ export const useTeamTab = (user: User, startOfWeek: string) => {
     biggestObstacle: string,
     lessonLearned: string
   ) => {
-    const teamTabToAdd: TeamTab = {
+    const teamTabToAdd: WeeklyReflection = {
       id: "",
       startOfWeek,
       rateWeek,
@@ -57,6 +69,12 @@ export const useTeamTab = (user: User, startOfWeek: string) => {
       );
       teamTabToAdd.id = docRef.id; // Update the id value
       setTeamTabs([teamTabToAdd, ...teamTabs]); // Change this line
+
+      // Compute the points
+      const pointsToAdd = 20 + rateWeek + rateHappiness + practiceHours;
+
+      // Update the points
+      await updatePoints(pointsToAdd);
     } catch (error) {
       console.error("Error adding document: ", error);
     }
@@ -84,6 +102,18 @@ export const useTeamTab = (user: User, startOfWeek: string) => {
           }
         : teamtab
     );
+    // add points
+    const originalTab = teamTabs.find((tab) => tab.id === id);
+    if (originalTab) {
+      const diff =
+        rateWeek +
+        rateHappiness +
+        practiceHours -
+        (originalTab.rateWeek +
+          originalTab.rateHappiness +
+          originalTab.practiceHours);
+      updatePoints(diff);
+    }
 
     try {
       await updateDoc(doc(firestore, "teamTabs", id), {
@@ -106,6 +136,15 @@ export const useTeamTab = (user: User, startOfWeek: string) => {
     }
   };
 
+  const syncPointsToFirebase = async (userId: string, points: number) => {
+    const userPointsDocRef = doc(firestore, "userPoints", userId);
+    try {
+      await setDoc(userPointsDocRef, { userId, points }, { merge: true });
+    } catch (error) {
+      console.error("Error syncing points to Firebase:", error);
+    }
+  };
+
   useEffect(() => {
     const loadTeamTabs = async () => {
       if (user && user.uid) {
@@ -116,9 +155,9 @@ export const useTeamTab = (user: User, startOfWeek: string) => {
           orderBy("startOfWeek", "desc")
         );
         const querySnapshot = await getDocs(q);
-        const teamTabs: TeamTab[] = [];
+        const teamTabs: WeeklyReflection[] = [];
         querySnapshot.forEach((doc) => {
-          const teamTab = doc.data() as TeamTab;
+          const teamTab = doc.data() as WeeklyReflection;
           teamTab.id = doc.id;
           teamTabs.push(teamTab);
           if (teamTab.startOfWeek === startOfWeek) {
