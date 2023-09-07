@@ -255,8 +255,8 @@ const Day: React.FC<{ date: string; user: User }> = ({ date, user }) => {
       minHeight="400px"
       border="1px"
       borderColor="gray.200"
-      p={4}
-      bg={isCurrentDay ? "gray.100" : undefined} // set a distinct background color for the current day
+      p={3}
+      bg={isCurrentDay ? "#cfccd3" : undefined} // set a distinct background color for the current day
       mb={4} // add bottom margin
     >
       <Text fontSize="lg" fontWeight="semibold">
@@ -315,7 +315,7 @@ const Day: React.FC<{ date: string; user: User }> = ({ date, user }) => {
         {tasks.length < 5 && (
           <Icon
             as={MdAdd}
-            color="gray.400"
+            color={isCurrentDay ? "#342552" : "gray.400"}
             fontSize={20}
             cursor="pointer"
             onClick={() => openDrawer(date)}
@@ -323,7 +323,7 @@ const Day: React.FC<{ date: string; user: User }> = ({ date, user }) => {
         )}{" "}
         {tasks.length === 0 && (
           <Text
-            color="gray.400"
+            color={isCurrentDay ? "#342552" : "gray.400"} // set a distinct background color for the current day
             fontSize="xs"
             cursor="pointer"
             onClick={() => openDrawer(date)}
@@ -527,7 +527,7 @@ const Day: React.FC<{ date: string; user: User }> = ({ date, user }) => {
         <Box
           key={blocker.id}
           p={2}
-          bg={"gray.200"}
+          bg={"#ffc6aa"}
           borderRadius="md"
           _hover={{ boxShadow: "0 0 0 2px purple.400" }}
           position="relative"
@@ -547,13 +547,13 @@ const Day: React.FC<{ date: string; user: User }> = ({ date, user }) => {
         <Flex align="center" gap={1}>
           <Icon
             as={MdAdd}
-            color="gray.400"
+            color={isCurrentDay ? "#342552" : "gray.400"}
             fontSize={20}
             cursor="pointer"
             onClick={() => openBlockerDrawer()}
           />
           <Text
-            color="gray.400"
+            color={isCurrentDay ? "#342552" : "gray.400"}
             fontSize="xs"
             cursor="pointer"
             onClick={() => openBlockerDrawer()}
@@ -596,7 +596,7 @@ const Day: React.FC<{ date: string; user: User }> = ({ date, user }) => {
                         <div>
                           <Textarea
                             {...field}
-                            placeholder="Reflect on my day..."
+                            placeholder="What went well, what didn't go well, and how can you improve?"
                             rows={10}
                           />
                           <ErrorMessage

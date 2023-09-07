@@ -130,7 +130,7 @@ const UserProgressMenu: React.FC<UserProgressMenuProps> = ({ user }) => {
             }}
             borderRadius="full"
             size="md"
-            color="white"
+            bg={router.pathname === "/" ? "#ff5e0e" : undefined}
           />
         ) : (
           <Button
@@ -138,6 +138,7 @@ const UserProgressMenu: React.FC<UserProgressMenuProps> = ({ user }) => {
             onClick={() => {
               router.push("/");
             }}
+            bg={router.pathname === "/" ? "#ff5e0e" : undefined}
           >
             Me
           </Button>
@@ -150,12 +151,13 @@ const UserProgressMenu: React.FC<UserProgressMenuProps> = ({ user }) => {
             onClick={() => router.push("/tracker")}
             borderRadius="full"
             size="md"
-            color="white"
+            bg={router.pathname === "/tracker" ? "#ff5e0e" : undefined}
           />
         ) : (
           <Button
             leftIcon={<BsCalendarWeek />}
             onClick={() => router.push("/tracker")}
+            bg={router.pathname === "/tracker" ? "#ff5e0e" : undefined}
           >
             Tracker
           </Button>
@@ -168,9 +170,14 @@ const UserProgressMenu: React.FC<UserProgressMenuProps> = ({ user }) => {
             onClick={showStats}
             borderRadius="full"
             size="md"
+            bg={router.pathname === "/stats" ? "#ff5e0e" : undefined}
           />
         ) : (
-          <Button leftIcon={<VscGraph />} onClick={showStats}>
+          <Button
+            leftIcon={<VscGraph />}
+            onClick={showStats}
+            bg={router.pathname === "/stats" ? "#ff5e0e" : undefined}
+          >
             Stats
           </Button>
         )}
@@ -183,12 +190,14 @@ const UserProgressMenu: React.FC<UserProgressMenuProps> = ({ user }) => {
             onClick={showWeeklyReview}
             borderRadius="full"
             size="md"
+            bg={router.pathname === "/review" ? "#ff5e0e" : undefined}
           />
         ) : (
           <ReflectConnectButton
             leftIcon={<MdOutlineForum />}
             pendingRequests={pendingRequests}
             onClick={showWeeklyReview}
+            bg={router.pathname === "/review" ? "#ff5e0e" : undefined}
           >
             Reflect & Connect
           </ReflectConnectButton>
