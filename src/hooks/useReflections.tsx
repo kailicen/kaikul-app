@@ -15,10 +15,12 @@ import { firestore } from "../firebase/clientApp";
 import { User } from "firebase/auth";
 import { useRecoilState } from "recoil";
 import { userPointsState } from "@/atoms/userPointsAtom";
+import { useToast } from "@chakra-ui/react";
 
 export const useBlockers = (date: string, user: User) => {
   const [blockers, setBlockers] = useState<Reflection[]>([]);
   const [userPoints, setUserPoints] = useRecoilState(userPointsState);
+  const toast = useToast();
 
   const handleAddBlocker = async (blocker: string) => {
     if (blockers.length < 3) {
@@ -40,6 +42,14 @@ export const useBlockers = (date: string, user: User) => {
         const newPoints = userPoints + 7;
         setUserPoints(newPoints);
         syncPointsToFirebase(user.uid, newPoints);
+
+        toast({
+          title: "Points Earned!",
+          description: `You earned 7 points.`,
+          status: "success",
+          duration: 5000,
+          isClosable: true,
+        });
       } catch (error) {
         console.error("Error adding document: ", error);
       }
@@ -68,6 +78,14 @@ export const useBlockers = (date: string, user: User) => {
     const newPoints = userPoints - 7;
     setUserPoints(newPoints);
     syncPointsToFirebase(user.uid, newPoints);
+
+    toast({
+      title: "Points Deducted",
+      description: `You lost 7 points.`,
+      status: "warning",
+      duration: 5000,
+      isClosable: true,
+    });
 
     try {
       await deleteDoc(doc(firestore, "blockers", id));

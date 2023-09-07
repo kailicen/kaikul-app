@@ -16,6 +16,7 @@ import { firestore } from "../firebase/clientApp";
 import { User } from "firebase/auth";
 import { useRecoilState } from "recoil";
 import { userPointsState } from "@/atoms/userPointsAtom";
+import { useToast } from "@chakra-ui/react";
 
 function computePointsForTask(
   originalTask: Task,
@@ -45,6 +46,8 @@ function computePointsForTask(
 export const useTasks = (date: string, user: User) => {
   const [tasks, setTasks] = useState<Task[]>([]);
   const [userPoints, setUserPoints] = useRecoilState(userPointsState);
+
+  const toast = useToast();
 
   const handleAddTask = async (
     task: string,
@@ -101,6 +104,18 @@ export const useTasks = (date: string, user: User) => {
     setUserPoints(newPoints); // Update the user's points in local state
     syncPointsToFirebase(user.uid, newPoints); // Sync the new points with Firebase
 
+    // Inside handleCompleteTask function, after updating the points
+    const pointDifference = newPoints - userPoints; // Calculate the difference in points
+    toast({
+      title: pointDifference > 0 ? "Points Earned!" : "Points Deducted",
+      description: `You ${pointDifference > 0 ? "earned" : "lost"} ${Math.abs(
+        pointDifference
+      )} points.`,
+      status: pointDifference > 0 ? "success" : "warning",
+      duration: 5000,
+      isClosable: true,
+    });
+
     try {
       await updateDoc(doc(firestore, "tasks", id), {
         completed: updatedTask.completed,
@@ -147,10 +162,6 @@ export const useTasks = (date: string, user: User) => {
       color: newColor,
     };
 
-    const updatedTasks = tasks.map((task) =>
-      task.id === id ? updatedTask : task
-    );
-
     try {
       const taskDocRef = doc(firestore, "tasks", id);
       await updateDoc(taskDocRef, {
@@ -160,7 +171,6 @@ export const useTasks = (date: string, user: User) => {
         date: updatedTask.date,
         color: updatedTask.color,
       });
-      setTasks(updatedTasks);
     } catch (error) {
       console.error("Error updating document: ", error);
     }
@@ -190,6 +200,14 @@ export const useTasks = (date: string, user: User) => {
     const newPoints = userPoints - pointsToDeduct;
     setUserPoints(newPoints);
     syncPointsToFirebase(user.uid, newPoints);
+
+    toast({
+      title: "Points Deducted",
+      description: `You lost ${pointsToDeduct} points.`,
+      status: "warning",
+      duration: 5000,
+      isClosable: true,
+    });
 
     // Filter out the task from the local state
     setTasks(tasks.filter((task) => task.id !== id));

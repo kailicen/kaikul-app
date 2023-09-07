@@ -26,6 +26,7 @@ import {
   differenceInYears,
   parseISO,
 } from "date-fns";
+import { useToast } from "@chakra-ui/react";
 
 // Function to compute points based on the goal's duration
 function computeGoalPoints(startDate: string, endDate: string): number {
@@ -36,13 +37,13 @@ function computeGoalPoints(startDate: string, endDate: string): number {
   const durationInYears = differenceInYears(end, start);
 
   if (durationInDays <= 30) {
-    return 20;
+    return 10;
   } else if (durationInMonths <= 3) {
-    return 50;
+    return 30;
   } else if (durationInYears < 1) {
-    return 100;
+    return 50;
   } else {
-    return 200; // Over a year
+    return 100; // Over a year
   }
 }
 
@@ -83,6 +84,7 @@ export const useGoals = (user: User, startOfWeek: string) => {
   );
   const [goals, setGoals] = useState<Goal[]>([]);
   const { fetchTasks } = useStatistics();
+  const toast = useToast();
 
   const handleAddGoal = async (
     goal: string,
@@ -146,11 +148,24 @@ export const useGoals = (user: User, startOfWeek: string) => {
     setUserPoints(newPoints); // Update the user's points in local state
     syncPointsToFirebase(user.uid, newPoints); // Sync the new points with Firebase
 
+    const pointDifference = newPoints - userPoints; // Calculate the difference in points
+    toast({
+      title: pointDifference > 0 ? "Points Earned!" : "Points Deducted",
+      description: `You ${pointDifference > 0 ? "earned" : "lost"} ${Math.abs(
+        pointDifference
+      )} points.`,
+      status: pointDifference > 0 ? "success" : "warning",
+      duration: 5000,
+      isClosable: true,
+    });
+
     // Update the goal in Firebase (you might need to adjust this according to your Firebase structure)
     try {
-      await updateDoc(doc(firestore, "goals", id), {
-        completed: updatedGoal.completed,
+      await updateDoc(doc(firestore, "weeklyGoals", id), {
+        completed: updatedGoals.find((goal) => goal.id === id)?.completed,
       });
+      setGoals(updatedGoals);
+      setRecoilGoals(updatedGoals);
     } catch (error) {
       console.error("Error updating document: ", error);
     }
@@ -257,6 +272,14 @@ export const useGoals = (user: User, startOfWeek: string) => {
 
       setUserPoints(newPoints); // Update the user's points in local state
       syncPointsToFirebase(user.uid, newPoints); // Sync the new points with Firebase
+
+      toast({
+        title: "Points Deducted",
+        description: `You lost ${pointsToDeduct} points.`,
+        status: "warning",
+        duration: 5000,
+        isClosable: true,
+      });
     }
 
     setGoals(goals.filter((goal) => goal.id !== id));

@@ -14,6 +14,7 @@ import { firestore } from "../firebase/clientApp";
 import { useEffect, useState } from "react";
 import { useRecoilState } from "recoil";
 import { userPointsState } from "@/atoms/userPointsAtom";
+import { useToast } from "@chakra-ui/react";
 
 export type WeeklyReflection = {
   id: string;
@@ -33,10 +34,18 @@ export const useTeamTab = (user: User, startOfWeek: string) => {
   const [isCurrentWeekDataExist, setIsCurrentWeekDataExist] =
     useState<boolean>(false);
   const [userPoints, setUserPoints] = useRecoilState(userPointsState);
+  const toast = useToast();
 
   const updatePoints = async (pointsToAdd: number) => {
     const newPoints = userPoints + pointsToAdd;
     setUserPoints(newPoints);
+    toast({
+      title: "Points Earned!",
+      description: `You earned ${pointsToAdd} points.`,
+      status: "success",
+      duration: 5000,
+      isClosable: true,
+    });
 
     // Sync the new points to Firebase
     await syncPointsToFirebase(user.uid, newPoints);
