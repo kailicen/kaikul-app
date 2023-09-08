@@ -1,11 +1,21 @@
 import { useEffect, useState } from "react";
-import { collection, query, where, getDocs } from "firebase/firestore";
+import {
+  collection,
+  query,
+  where,
+  getDocs,
+  doc,
+  setDoc,
+} from "firebase/firestore";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { auth, firestore } from "@/firebase/clientApp";
 import { Reflection } from "@/atoms/reflectionsAtom";
 import { Task } from "@/atoms/tasksAtom";
 import { format, startOfWeek, subDays } from "date-fns";
 import { WeeklyReflection } from "./useWeeklyReflections";
+import { useRecoilState } from "recoil";
+import { userPointsState } from "@/atoms/userPointsAtom";
+import { useToast } from "@chakra-ui/react";
 
 export type ProgressOption = "Daily Sprint" | "Weekly Reflection";
 
@@ -15,6 +25,9 @@ const useProgress = (selectedProgress: ProgressOption, lastOpened: Date) => {
   const [todayTasks, setTodayTasks] = useState<Task[]>([]);
   const [blockers, setBlockers] = useState<Reflection[]>([]);
   const [weeklyReflection, setWeeklyReflection] = useState<WeeklyReflection>();
+
+  const [userPoints, setUserPoints] = useRecoilState(userPointsState);
+  const toast = useToast();
 
   useEffect(() => {
     const fetchDailyProgress = async () => {
@@ -95,12 +108,45 @@ const useProgress = (selectedProgress: ProgressOption, lastOpened: Date) => {
     }
   }, [user, selectedProgress, , lastOpened]);
 
+  const addUserPoints = async (pointsToAdd: number) => {
+    if (!user) {
+      console.error("No user is logged in.");
+      return;
+    }
+
+    const currentPoints = userPoints ?? 0;
+    const newTotalPoints = currentPoints + pointsToAdd;
+    setUserPoints(newTotalPoints);
+    // Sync the new total points to Firebase
+    toast({
+      title: "Points Earned!",
+      description: `You earned ${pointsToAdd} points.`,
+      status: "success",
+      duration: 5000,
+      isClosable: true,
+    });
+    syncPointsToFirebase(user.uid, newTotalPoints).catch((error) => {
+      console.error("Error adding user points:", error);
+      setUserPoints(currentPoints);
+    });
+  };
+
+  const syncPointsToFirebase = async (userId: string, points: number) => {
+    const userPointsDocRef = doc(firestore, "userPoints", userId);
+    try {
+      await setDoc(userPointsDocRef, { userId, points }, { merge: true });
+    } catch (error) {
+      console.error("Error syncing points to Firebase:", error);
+    }
+  };
+
   return {
     user,
     yesterdayTasks,
     todayTasks,
     blockers,
     weeklyReflection,
+    addUserPoints,
   };
 };
 

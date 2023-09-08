@@ -71,8 +71,14 @@ const ShareProgressModal: React.FC<ShareProgressModalProps> = ({
   const formattedStart = format(start, "MMM do");
   const formattedEnd = format(end, "MMM do, yyyy");
 
-  const { user, yesterdayTasks, todayTasks, blockers, weeklyReflection } =
-    useProgress(selectedProgress, lastOpened);
+  const {
+    user,
+    yesterdayTasks,
+    todayTasks,
+    blockers,
+    weeklyReflection,
+    addUserPoints,
+  } = useProgress(selectedProgress, lastOpened);
 
   const toast = useToast();
 
@@ -138,6 +144,8 @@ const ShareProgressModal: React.FC<ShareProgressModalProps> = ({
       text += `*Biggest obstacle*: \n${weeklyReflection?.biggestObstacle}\n`;
       text += `*Lesson Learned*: \n${weeklyReflection?.lessonLearned}\n\n`;
     }
+
+    addUserPoints(3);
 
     try {
       const res = await fetch("/api/shareProgress", {

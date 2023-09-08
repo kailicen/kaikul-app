@@ -23,36 +23,34 @@ export const useBlockers = (date: string, user: User) => {
   const toast = useToast();
 
   const handleAddBlocker = async (blocker: string) => {
-    if (blockers.length < 3) {
-      const blockerToAdd: Reflection = {
-        id: "", // Placeholder value, will be updated after adding the document
-        text: blocker,
-        date: date,
-        userId: user.uid,
-      };
-      try {
-        const docRef = await addDoc(
-          collection(firestore, "blockers"),
-          blockerToAdd
-        );
-        blockerToAdd.id = docRef.id; // Update the id value
-        setBlockers([...blockers, blockerToAdd]);
+    // Update points
+    const pointsToAdd = 7;
+    const newPoints = userPoints + pointsToAdd;
+    setUserPoints(newPoints);
+    syncPointsToFirebase(user.uid, newPoints);
 
-        // Update points
-        const newPoints = userPoints + 7;
-        setUserPoints(newPoints);
-        syncPointsToFirebase(user.uid, newPoints);
-
-        toast({
-          title: "Points Earned!",
-          description: `You earned 7 points.`,
-          status: "success",
-          duration: 5000,
-          isClosable: true,
-        });
-      } catch (error) {
-        console.error("Error adding document: ", error);
-      }
+    toast({
+      title: "Points Earned!",
+      description: `You earned ${pointsToAdd} points.`,
+      status: "success",
+      duration: 5000,
+      isClosable: true,
+    });
+    const blockerToAdd: Reflection = {
+      id: "", // Placeholder value, will be updated after adding the document
+      text: blocker,
+      date: date,
+      userId: user.uid,
+    };
+    try {
+      const docRef = await addDoc(
+        collection(firestore, "blockers"),
+        blockerToAdd
+      );
+      blockerToAdd.id = docRef.id; // Update the id value
+      setBlockers([...blockers, blockerToAdd]);
+    } catch (error) {
+      console.error("Error adding document: ", error);
     }
   };
 
