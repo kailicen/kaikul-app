@@ -8,13 +8,11 @@ import {
   getDocs,
   where,
   orderBy,
-  setDoc,
 } from "firebase/firestore";
 import { firestore } from "../firebase/clientApp";
 import { useEffect, useState } from "react";
-import { useRecoilState } from "recoil";
-import { userPointsState } from "@/atoms/userPointsAtom";
 import { useToast } from "@chakra-ui/react";
+import useUserPoints from "./useUserPoints";
 
 export type WeeklyReflection = {
   id: string;
@@ -33,7 +31,8 @@ export const useTeamTab = (user: User, startOfWeek: string) => {
   const [teamTabs, setTeamTabs] = useState<WeeklyReflection[]>([]);
   const [isCurrentWeekDataExist, setIsCurrentWeekDataExist] =
     useState<boolean>(false);
-  const [userPoints, setUserPoints] = useRecoilState(userPointsState);
+  const { userPoints, setUserPoints, syncPointsToFirebase } =
+    useUserPoints(user);
   const toast = useToast();
 
   const updatePoints = async (pointsToAdd: number) => {
@@ -142,15 +141,6 @@ export const useTeamTab = (user: User, startOfWeek: string) => {
       setTeamTabs(updatedTeamTabs);
     } catch (error) {
       console.error("Error updating document: ", error);
-    }
-  };
-
-  const syncPointsToFirebase = async (userId: string, points: number) => {
-    const userPointsDocRef = doc(firestore, "userPoints", userId);
-    try {
-      await setDoc(userPointsDocRef, { userId, points }, { merge: true });
-    } catch (error) {
-      console.error("Error syncing points to Firebase:", error);
     }
   };
 

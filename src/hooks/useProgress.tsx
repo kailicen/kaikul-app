@@ -1,21 +1,14 @@
 import { useEffect, useState } from "react";
-import {
-  collection,
-  query,
-  where,
-  getDocs,
-  doc,
-  setDoc,
-} from "firebase/firestore";
+import { collection, query, where, getDocs } from "firebase/firestore";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { auth, firestore } from "@/firebase/clientApp";
 import { Reflection } from "@/atoms/reflectionsAtom";
 import { Task } from "@/atoms/tasksAtom";
 import { format, startOfWeek, subDays } from "date-fns";
 import { WeeklyReflection } from "./useWeeklyReflections";
-import { useRecoilState } from "recoil";
-import { userPointsState } from "@/atoms/userPointsAtom";
 import { useToast } from "@chakra-ui/react";
+import useUserPoints from "./useUserPoints";
+import { User } from "firebase/auth";
 
 export type ProgressOption = "Daily Sprint" | "Weekly Reflection";
 
@@ -26,7 +19,9 @@ const useProgress = (selectedProgress: ProgressOption, lastOpened: Date) => {
   const [blockers, setBlockers] = useState<Reflection[]>([]);
   const [weeklyReflection, setWeeklyReflection] = useState<WeeklyReflection>();
 
-  const [userPoints, setUserPoints] = useRecoilState(userPointsState);
+  const { userPoints, setUserPoints, syncPointsToFirebase } = useUserPoints(
+    user as User
+  );
   const toast = useToast();
 
   useEffect(() => {
@@ -129,15 +124,6 @@ const useProgress = (selectedProgress: ProgressOption, lastOpened: Date) => {
       console.error("Error adding user points:", error);
       setUserPoints(currentPoints);
     });
-  };
-
-  const syncPointsToFirebase = async (userId: string, points: number) => {
-    const userPointsDocRef = doc(firestore, "userPoints", userId);
-    try {
-      await setDoc(userPointsDocRef, { userId, points }, { merge: true });
-    } catch (error) {
-      console.error("Error syncing points to Firebase:", error);
-    }
   };
 
   return {

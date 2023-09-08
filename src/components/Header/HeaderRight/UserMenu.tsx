@@ -21,6 +21,7 @@ import { buddyRequestState } from "@/atoms/buddyRequestsAtom";
 import { IoSparkles } from "react-icons/io5";
 import useTasks from "@/hooks/useTasks";
 import { format, startOfWeek } from "date-fns";
+import useUserPoints from "@/hooks/useUserPoints";
 
 type UserMenuProps = { user?: User | null };
 
@@ -35,7 +36,7 @@ const UserMenu: React.FC<UserMenuProps> = ({ user }) => {
     format(startOfWeek(new Date(), { weekStartsOn: 1 }), "yyyy-MM-dd")
   );
 
-  const { userPoints } = useTasks(startOfWeekDate, user as User);
+  const { userPoints } = useUserPoints(user as User);
 
   useEffect(() => {
     if (user) {

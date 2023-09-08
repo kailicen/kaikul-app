@@ -9,43 +9,20 @@ import {
   doc,
   deleteDoc,
   onSnapshot,
-  setDoc,
-  getDoc,
 } from "firebase/firestore";
 import { firestore } from "../firebase/clientApp";
 import { User } from "firebase/auth";
-import { useRecoilState } from "recoil";
-import { userPointsState } from "@/atoms/userPointsAtom";
 import { useToast } from "@chakra-ui/react";
+import useUserPoints from "./useUserPoints";
 
-function computePointsForTask(
-  originalTask: Task,
-  updatedTask: Task,
-  currentPoints: number
-): number {
-  let newPoints = currentPoints;
-
-  // If the original task was NOT completed, but the updated task IS completed
-  if (!originalTask.completed && updatedTask.completed) {
-    newPoints += 5;
-    if (updatedTask.goalId) {
-      newPoints += 2;
-    }
-  }
-  // If the original task WAS completed, but the updated task is NOT completed
-  else if (originalTask.completed && !updatedTask.completed) {
-    newPoints -= 5;
-    if (originalTask.goalId) {
-      newPoints -= 2;
-    }
-  }
-
-  return newPoints;
-}
-
-export const useTasks = (date: string, user: User) => {
+const useTasks = (date: string, user: User) => {
   const [tasks, setTasks] = useState<Task[]>([]);
-  const [userPoints, setUserPoints] = useRecoilState(userPointsState);
+  const {
+    userPoints,
+    setUserPoints,
+    computePointsForTask,
+    syncPointsToFirebase,
+  } = useUserPoints(user);
 
   const toast = useToast();
 
@@ -219,32 +196,6 @@ export const useTasks = (date: string, user: User) => {
       console.error("Error deleting document: ", error);
     }
   };
-
-  const syncPointsToFirebase = async (userId: string, points: number) => {
-    const userPointsDocRef = doc(firestore, "userPoints", userId);
-    try {
-      await setDoc(userPointsDocRef, { userId, points }, { merge: true });
-    } catch (error) {
-      console.error("Error syncing points to Firebase:", error);
-    }
-  };
-
-  useEffect(() => {
-    const fetchUserPointsFromFirebase = async () => {
-      const userPointsDocRef = doc(firestore, "userPoints", user.uid);
-      try {
-        const docSnapshot = await getDoc(userPointsDocRef);
-        if (docSnapshot.exists()) {
-          const data = docSnapshot.data();
-          setUserPoints(data?.points || 0); // Set the user's points if found, else default to 0
-        }
-      } catch (error) {
-        console.error("Error fetching user points from Firebase:", error);
-      }
-    };
-
-    fetchUserPointsFromFirebase();
-  }, [user]);
 
   useEffect(() => {
     const taskCollection = collection(firestore, "tasks");
