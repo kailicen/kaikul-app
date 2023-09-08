@@ -11,11 +11,10 @@ type Props = {
 
 const MyJourney: React.FC<Props> = ({ profile, onEdit }) => {
   return (
-    <VStack w="full" alignItems="center" px={4}>
+    <VStack alignItems="center">
       <Grid
         templateColumns={{ base: "1fr", md: "1fr 1fr" }}
         gap={4}
-        w="full"
         maxW="1200px"
       >
         <MyJourneyCard profile={profile} onEdit={onEdit} />

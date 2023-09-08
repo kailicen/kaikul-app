@@ -4,18 +4,15 @@ import { useStatistics } from "@/hooks/useStatistics";
 import {
   VStack,
   ButtonGroup,
-  StatGroup,
-  Stat,
-  StatLabel,
-  StatNumber,
   Button,
-  Select,
   Table,
   Tbody,
   Td,
   Th,
   Thead,
   Tr,
+  useMediaQuery,
+  Text,
 } from "@chakra-ui/react";
 import {
   eachDayOfInterval,
@@ -25,8 +22,6 @@ import {
   endOfYear,
   format,
   getISOWeek,
-  getMonth,
-  getYear,
   startOfDay,
   startOfMonth,
   startOfWeek,
@@ -129,12 +124,14 @@ const formatDateLabel = (date: Date, timeRange: TimeRange): string => {
 
 const MyStatsCard: React.FC = () => {
   const { fetchTasks, fetchGoals, calculateCompletionRate } = useStatistics();
-  const [timeRange, setTimeRange] = useState<TimeRange>("day");
+  const [timeRange, setTimeRange] = useState<TimeRange>("week");
   const [taskData, setTaskData] = useState<Record<string, Task[]>>({});
   const [goalData, setGoalData] = useState<Goal[]>([]);
 
   const [filter, setFilter] = useState("all"); // filter state to toggle between all and completed
   const [chartData, setChartData] = useState<ChartData[]>([]); // State to hold your chart data
+
+  const [isLargerThanMD] = useMediaQuery("(min-width: 48em)");
 
   useEffect(() => {
     let start: Date;
@@ -252,8 +249,15 @@ const MyStatsCard: React.FC = () => {
       </ButtonGroup>
 
       {/* Bar Chart to display the total and completed tasks */}
-      <ResponsiveContainer width="100%" height={300}>
-        <BarChart width={500} height={300} data={chartData}>
+      <ResponsiveContainer
+        width={isLargerThanMD ? "100%" : "99%"}
+        height={isLargerThanMD ? 300 : 250}
+      >
+        <BarChart
+          width={isLargerThanMD ? 500 : 300}
+          height={300}
+          data={chartData}
+        >
           <CartesianGrid strokeDasharray="3 3" />
           <XAxis dataKey="name" />
           <YAxis />
@@ -267,26 +271,46 @@ const MyStatsCard: React.FC = () => {
       <Table variant="simple" size={{ base: "sm", md: "md" }}>
         <Thead>
           <Tr>
-            <Th textAlign="center">Metrics</Th>
-            <Th textAlign="center">Total</Th>
-            <Th textAlign="center">Completed</Th>
-            <Th textAlign="center">Completion Rate</Th>
+            <Th textAlign="center" p={{ base: "1", md: "2" }}>
+              Metrics
+            </Th>
+            <Th textAlign="center" p={{ base: "1", md: "2" }}>
+              Total
+            </Th>
+            <Th textAlign="center" p={{ base: "1", md: "2" }}>
+              Completed
+            </Th>
+            <Th textAlign="center" p={{ base: "1", md: "2" }}>
+              Completion Rate
+            </Th>
           </Tr>
         </Thead>
         <Tbody>
           <Tr>
-            <Td textAlign="center">Tasks</Td>
-            <Td textAlign="center">{totalTasks}</Td>
-            <Td textAlign="center">{completedTasks}</Td>
-            <Td textAlign="center">
+            <Td textAlign="center" p={{ base: "1", md: "2" }}>
+              Tasks
+            </Td>
+            <Td textAlign="center" p={{ base: "1", md: "2" }}>
+              {totalTasks}
+            </Td>
+            <Td textAlign="center" p={{ base: "1", md: "2" }}>
+              {completedTasks}
+            </Td>
+            <Td textAlign="center" p={{ base: "1", md: "2" }}>
               {(taskStats.completionRate * 100).toFixed(2)}%
             </Td>
           </Tr>
           <Tr>
-            <Td textAlign="center">Goals</Td>
-            <Td textAlign="center">{totalGoals}</Td>
-            <Td textAlign="center">{completedGoals}</Td>
-            <Td textAlign="center">
+            <Td textAlign="center" p={{ base: "1", md: "2" }}>
+              Goals
+            </Td>
+            <Td textAlign="center" p={{ base: "1", md: "2" }}>
+              {totalGoals}
+            </Td>
+            <Td textAlign="center" p={{ base: "1", md: "2" }}>
+              {completedGoals}
+            </Td>
+            <Td textAlign="center" p={{ base: "1", md: "2" }}>
               {(goalStats.completionRate * 100).toFixed(2)}%
             </Td>
           </Tr>

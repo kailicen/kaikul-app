@@ -37,7 +37,7 @@ const MyJourneyCard: React.FC<Props> = ({ profile, onEdit }) => {
     <VStack gap={4} boxShadow="lg" p={6} rounded="md" align="start">
       {/* Life's Journey Card */}
       <Flex alignItems="center">
-        <Text fontWeight="bold" fontSize="xl" mb="2">
+        <Text fontWeight="semibold" fontSize="xl" mb="2">
           My Life&apos;s Journey
         </Text>
         <Tooltip label="Your life's journey is unique and filled with purpose. Review this section daily to stay aligned with your goals and confront your challenges head-on.">
@@ -49,7 +49,7 @@ const MyJourneyCard: React.FC<Props> = ({ profile, onEdit }) => {
         <Text
           fontSize={{ base: "lg", md: "xl" }}
           color="#4130AC"
-          fontWeight="bold"
+          fontWeight="semibold"
           display="block"
         >
           {profile.domains.join(", ")}
@@ -60,7 +60,7 @@ const MyJourneyCard: React.FC<Props> = ({ profile, onEdit }) => {
         <Text
           fontSize={{ base: "lg", md: "xl" }}
           color="#4130AC"
-          fontWeight="bold"
+          fontWeight="semibold"
           display="block"
         >
           {profile.biggestGoal}
@@ -71,7 +71,7 @@ const MyJourneyCard: React.FC<Props> = ({ profile, onEdit }) => {
         <Text
           fontSize={{ base: "lg", md: "xl" }}
           color="#4130AC"
-          fontWeight="bold"
+          fontWeight="semibold"
           display="block"
         >
           {profile.challenges}
