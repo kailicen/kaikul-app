@@ -11,8 +11,8 @@ import {
   Icon,
 } from "@chakra-ui/react";
 import React, { useState } from "react";
-import EditSelfDiscoveryDrawer from "./EditSelfDiscoveryDrawer";
 import { UserProfileAddition } from "@/atoms/userProfileAdditionAtom";
+import EditSelfDiscoveryDrawer from "./Drawers/EditSelfDiscoveryDrawer";
 
 type Props = {
   profileAddition: UserProfileAddition;

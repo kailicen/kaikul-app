@@ -13,7 +13,7 @@ import {
   Tooltip,
 } from "@chakra-ui/react";
 import { UserProfile } from "@/atoms/userProfileAtom";
-import EditProfileDrawer from "./EditProfileDrawer";
+import EditProfileDrawer from "./Drawers/EditProfileDrawer";
 import { User } from "firebase/auth";
 import ProfilePreviewModal from "@/components/Modal/Me/ProfilePreviewModal";
 

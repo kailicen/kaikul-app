@@ -8,6 +8,7 @@ import {
   Flex,
   MenuDivider,
   Avatar,
+  Text,
 } from "@chakra-ui/react";
 import { User, signOut } from "firebase/auth";
 import { CgProfile } from "react-icons/cg";
@@ -17,6 +18,9 @@ import { useRouter } from "next/router";
 import { doc, getDoc } from "firebase/firestore";
 import { useResetRecoilState } from "recoil";
 import { buddyRequestState } from "@/atoms/buddyRequestsAtom";
+import { IoSparkles } from "react-icons/io5";
+import useTasks from "@/hooks/useTasks";
+import { format, startOfWeek } from "date-fns";
 
 type UserMenuProps = { user?: User | null };
 
@@ -26,6 +30,12 @@ const UserMenu: React.FC<UserMenuProps> = ({ user }) => {
 
   const [imagePreview, setImagePreview] = useState<string>("");
   const [username, setUsername] = useState<string>("");
+
+  const [startOfWeekDate, setStartOfWeekDate] = useState(
+    format(startOfWeek(new Date(), { weekStartsOn: 1 }), "yyyy-MM-dd")
+  );
+
+  const { userPoints } = useTasks(startOfWeekDate, user as User);
 
   useEffect(() => {
     if (user) {
@@ -56,12 +66,27 @@ const UserMenu: React.FC<UserMenuProps> = ({ user }) => {
   return (
     <Menu>
       <MenuButton cursor="pointer" padding="0px 6px" borderRadius={4}>
-        <Flex align="center">
+        <Flex align="center" gap={2}>
           {imagePreview != "" ? (
             <Avatar size="sm" name={username} src={imagePreview} />
           ) : (
             <Avatar size="sm" bg="gray.500" />
           )}
+          <Flex
+            direction="column"
+            display={{ base: "none", lg: "flex" }}
+            fontSize="9pt"
+            align="flex-start"
+            mr={8}
+          >
+            <Text fontWeight={700}>
+              {user?.displayName || user?.email?.split("@")[0]}
+            </Text>
+            <Flex>
+              <Icon as={IoSparkles} color="#ff5e0e" mr={1} />
+              <Text color="gray.500">{userPoints} K-Points</Text>
+            </Flex>
+          </Flex>
         </Flex>
       </MenuButton>
       <MenuList>

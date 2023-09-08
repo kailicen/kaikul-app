@@ -72,9 +72,9 @@ const UserProgressMenu: React.FC<UserProgressMenuProps> = ({ user }) => {
   const [buddyRequests, setBuddyRequests] = useRecoilState(buddyRequestState);
   const [pendingRequests, setPendingRequests] = useState(0);
 
-  const showStats = () => {
-    router.push("/stats");
-  };
+  // const showStats = () => {
+  //   router.push("/stats");
+  // };
 
   const showWeeklyReview = () => {
     router.push("/review");
@@ -161,7 +161,7 @@ const UserProgressMenu: React.FC<UserProgressMenuProps> = ({ user }) => {
           </Button>
         )}
 
-        {isMobile ? (
+        {/* {isMobile ? (
           <IconButton
             aria-label="Weekly Statistics"
             icon={<VscGraph />}
@@ -173,7 +173,7 @@ const UserProgressMenu: React.FC<UserProgressMenuProps> = ({ user }) => {
           <Button leftIcon={<VscGraph />} onClick={showStats}>
             Stats
           </Button>
-        )}
+        )} */}
 
         {isMobile ? (
           <ReflectConnectIconButton

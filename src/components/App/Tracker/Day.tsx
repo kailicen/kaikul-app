@@ -230,19 +230,6 @@ const Day: React.FC<{ date: string; user: User }> = ({ date, user }) => {
     }
   };
 
-  // useEffect(() => {
-  //   if (tasks) {
-  //     const currentDateTasks = tasks.filter((task) => {
-  //       const taskDate = startOfDay(new Date(task.date));
-  //       const currentDate = startOfDay(new Date(date));
-  //       return (
-  //         format(taskDate, "yyyy-MM-dd") === format(currentDate, "yyyy-MM-dd")
-  //       );
-  //     });
-  //     setTasks(currentDateTasks);
-  //   }
-  // }, [tasks, date]);
-
   useEffect(() => {
     if (!taskDrawerDisclosure.isOpen) {
       setDuplicateValues(null);

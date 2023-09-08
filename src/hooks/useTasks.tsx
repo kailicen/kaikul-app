@@ -282,6 +282,7 @@ export const useTasks = (date: string, user: User) => {
     handleCompleteTask,
     handleEditTask,
     handleDeleteTask,
+    userPoints,
   };
 };
 export default useTasks;

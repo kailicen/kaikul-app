@@ -31,37 +31,40 @@ function MePage({ user }: Props) {
   return (
     <>
       {!loading && profile && (
-        <Flex direction="column" alignItems="center" justifyContent="center">
-          <Box width={["100%", "80%", "60%"]}>
-            <Tabs colorScheme="purple" variant="enclosed">
-              <TabList mb="1em" display="flex" justifyContent="center">
-                <Tab>My Journey</Tab>
-                <Tab>Journey Mode</Tab>
-                <Tab>Self Discovery</Tab>
-              </TabList>
+        <Flex
+          direction="column"
+          alignItems="center"
+          justifyContent="center"
+          w="full"
+        >
+          <Tabs colorScheme="purple" variant="enclosed">
+            <TabList mb="1em" display="flex" justifyContent="center">
+              <Tab>My Journey</Tab>
+              <Tab>Journey Mode</Tab>
+              <Tab>Self Discovery</Tab>
+            </TabList>
 
-              <TabPanels>
-                <TabPanel>
-                  <MyJourney profile={profile} onEdit={updateProfile} />
-                </TabPanel>
+            <TabPanels>
+              <TabPanel>
+                <MyJourney profile={profile} onEdit={updateProfile} />
+              </TabPanel>
 
-                <TabPanel>
-                  <JourneyMode
-                    profile={profile}
-                    onEdit={updateProfile}
-                    user={user}
-                  />
-                </TabPanel>
+              <TabPanel>
+                <JourneyMode
+                  profile={profile}
+                  onEdit={updateProfile}
+                  user={user}
+                />
+              </TabPanel>
 
-                <TabPanel>
-                  <SelfDiscovery
-                    profileAddition={profileAddition}
-                    onEdit={updateProfileAddition}
-                  />
-                </TabPanel>
-              </TabPanels>
-            </Tabs>
-          </Box>
+              <TabPanel>
+                <SelfDiscovery
+                  profileAddition={profileAddition}
+                  onEdit={updateProfileAddition}
+                />
+              </TabPanel>
+            </TabPanels>
+          </Tabs>
         </Flex>
       )}
 

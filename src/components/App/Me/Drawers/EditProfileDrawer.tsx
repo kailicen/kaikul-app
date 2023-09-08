@@ -23,8 +23,8 @@ import {
 } from "@chakra-ui/react";
 import { UserProfile } from "@/atoms/userProfileAtom";
 import { useFormik } from "formik";
-import { domains } from "./OnboardingStep1";
-import { validateURL } from "./OnboardingStep2";
+import { domains } from "../ModalComponents/OnboardingStep1";
+import { validateURL } from "../ModalComponents/OnboardingStep2";
 
 type Props = {
   isOpen: boolean;
