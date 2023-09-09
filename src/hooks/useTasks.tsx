@@ -17,12 +17,8 @@ import useUserPoints from "./useUserPoints";
 
 const useTasks = (date: string, user: User) => {
   const [tasks, setTasks] = useState<Task[]>([]);
-  const {
-    userPoints,
-    setUserPoints,
-    computePointsForTask,
-    syncPointsToFirebase,
-  } = useUserPoints(user);
+  const { userPoints, computePointsForTask, updatePoints } =
+    useUserPoints(user);
 
   const toast = useToast();
 
@@ -78,20 +74,8 @@ const useTasks = (date: string, user: User) => {
       userPoints
     );
 
-    setUserPoints(newPoints); // Update the user's points in local state
-    syncPointsToFirebase(user.uid, newPoints); // Sync the new points with Firebase
-
-    // Inside handleCompleteTask function, after updating the points
-    const pointDifference = newPoints - userPoints; // Calculate the difference in points
-    toast({
-      title: pointDifference > 0 ? "Points Earned!" : "Points Deducted",
-      description: `You ${pointDifference > 0 ? "earned" : "lost"} ${Math.abs(
-        pointDifference
-      )} points.`,
-      status: pointDifference > 0 ? "success" : "warning",
-      duration: 5000,
-      isClosable: true,
-    });
+    const pointDifference = newPoints - userPoints;
+    await updatePoints(pointDifference);
 
     try {
       await updateDoc(doc(firestore, "tasks", id), {
@@ -125,10 +109,7 @@ const useTasks = (date: string, user: User) => {
       pointsChange -= 2; // A goalId was removed
     }
 
-    // Adjust user points based on the changes
-    const newPoints = userPoints + pointsChange;
-    setUserPoints(newPoints);
-    syncPointsToFirebase(user.uid, newPoints);
+    await updatePoints(pointsChange);
 
     const updatedTask = {
       ...originalTask,
@@ -173,18 +154,7 @@ const useTasks = (date: string, user: User) => {
       }
     }
 
-    // Update user points after deducting
-    const newPoints = userPoints - pointsToDeduct;
-    setUserPoints(newPoints);
-    syncPointsToFirebase(user.uid, newPoints);
-
-    toast({
-      title: "Points Deducted",
-      description: `You lost ${pointsToDeduct} points.`,
-      status: "warning",
-      duration: 5000,
-      isClosable: true,
-    });
+    await updatePoints(-pointsToDeduct);
 
     // Filter out the task from the local state
     setTasks(tasks.filter((task) => task.id !== id));

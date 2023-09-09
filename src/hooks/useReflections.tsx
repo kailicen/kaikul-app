@@ -12,29 +12,16 @@ import {
 } from "firebase/firestore";
 import { firestore } from "../firebase/clientApp";
 import { User } from "firebase/auth";
-import { useToast } from "@chakra-ui/react";
 import useUserPoints from "./useUserPoints";
 
 export const useBlockers = (date: string, user: User) => {
   const [blockers, setBlockers] = useState<Reflection[]>([]);
-  const { userPoints, setUserPoints, syncPointsToFirebase } =
-    useUserPoints(user);
-  const toast = useToast();
+  const { updatePoints } = useUserPoints(user);
 
   const handleAddBlocker = async (blocker: string) => {
     // Update points
     const pointsToAdd = 7;
-    const newPoints = userPoints + pointsToAdd;
-    setUserPoints(newPoints);
-    syncPointsToFirebase(user.uid, newPoints);
-
-    toast({
-      title: "Points Earned!",
-      description: `You earned ${pointsToAdd} points.`,
-      status: "success",
-      duration: 5000,
-      isClosable: true,
-    });
+    await updatePoints(pointsToAdd);
     const blockerToAdd: Reflection = {
       id: "", // Placeholder value, will be updated after adding the document
       text: blocker,
@@ -72,17 +59,8 @@ export const useBlockers = (date: string, user: User) => {
     setBlockers(blockers.filter((blocker) => blocker.id !== id));
 
     // Update points
-    const newPoints = userPoints - 7;
-    setUserPoints(newPoints);
-    syncPointsToFirebase(user.uid, newPoints);
-
-    toast({
-      title: "Points Deducted",
-      description: `You lost 7 points.`,
-      status: "warning",
-      duration: 5000,
-      isClosable: true,
-    });
+    const pointsToAdd = -7;
+    await updatePoints(pointsToAdd);
 
     try {
       await deleteDoc(doc(firestore, "blockers", id));

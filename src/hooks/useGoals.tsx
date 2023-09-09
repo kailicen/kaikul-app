@@ -17,18 +17,12 @@ import { useRecoilState } from "recoil";
 import { useStatistics } from "./useStatistics";
 import moment from "moment";
 import { Task, weekTaskListState } from "@/atoms/tasksAtom";
-import { useToast } from "@chakra-ui/react";
 import useUserPoints from "./useUserPoints";
 
 export const useGoals = (user: User, startOfWeek: string) => {
   const [recoilGoals, setRecoilGoals] = useRecoilState(weeklyGoalListState);
-  const {
-    userPoints,
-    setUserPoints,
-    computePointsForGoal,
-    computeGoalPoints,
-    syncPointsToFirebase,
-  } = useUserPoints(user);
+  const { userPoints, computePointsForGoal, computeGoalPoints, updatePoints } =
+    useUserPoints(user);
 
   // Fetch tasks for the current week
   const endOfWeek = moment(startOfWeek).add(6, "days").format("YYYY-MM-DD");
@@ -37,7 +31,6 @@ export const useGoals = (user: User, startOfWeek: string) => {
   );
   const [goals, setGoals] = useState<Goal[]>([]);
   const { fetchTasks } = useStatistics();
-  const toast = useToast();
 
   const handleAddGoal = async (
     goal: string,
@@ -98,19 +91,8 @@ export const useGoals = (user: User, startOfWeek: string) => {
       userPoints
     );
 
-    setUserPoints(newPoints); // Update the user's points in local state
-    syncPointsToFirebase(user.uid, newPoints); // Sync the new points with Firebase
-
     const pointDifference = newPoints - userPoints; // Calculate the difference in points
-    toast({
-      title: pointDifference > 0 ? "Points Earned!" : "Points Deducted",
-      description: `You ${pointDifference > 0 ? "earned" : "lost"} ${Math.abs(
-        pointDifference
-      )} points.`,
-      status: pointDifference > 0 ? "success" : "warning",
-      duration: 5000,
-      isClosable: true,
-    });
+    await updatePoints(pointDifference);
 
     // Update the goal in Firebase (you might need to adjust this according to your Firebase structure)
     try {
@@ -221,18 +203,7 @@ export const useGoals = (user: User, startOfWeek: string) => {
         goalToDelete.startDate,
         goalToDelete.endDate
       );
-      const newPoints = userPoints - pointsToDeduct;
-
-      setUserPoints(newPoints); // Update the user's points in local state
-      syncPointsToFirebase(user.uid, newPoints); // Sync the new points with Firebase
-
-      toast({
-        title: "Points Deducted",
-        description: `You lost ${pointsToDeduct} points.`,
-        status: "warning",
-        duration: 5000,
-        isClosable: true,
-      });
+      await updatePoints(-pointsToDeduct);
     }
 
     setGoals(goals.filter((goal) => goal.id !== id));
