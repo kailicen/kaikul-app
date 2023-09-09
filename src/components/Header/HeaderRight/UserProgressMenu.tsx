@@ -8,7 +8,6 @@ import {
 } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
-import { VscGraph } from "react-icons/vsc";
 import { LuSmilePlus } from "react-icons/lu";
 import { BsCalendarWeek } from "react-icons/bs";
 import { MdOutlineForum } from "react-icons/md";

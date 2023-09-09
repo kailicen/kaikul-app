@@ -60,7 +60,7 @@ const MyMilestoneCard = () => {
         {imagePreview != "" ? (
           <Avatar size="xl" name={username} src={imagePreview} />
         ) : (
-          <Avatar size="xl" bg="gray.500" />
+          <Avatar size="xl" />
         )}
         <Text fontWeight={700}>
           {user?.displayName || user?.email?.split("@")[0]}

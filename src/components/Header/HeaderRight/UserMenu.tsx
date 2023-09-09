@@ -32,11 +32,20 @@ const UserMenu: React.FC<UserMenuProps> = ({ user }) => {
   const { username, imagePreview } = useUserData(user as User);
 
   const logout = async () => {
+    if (!user) {
+      console.error("No user to log out");
+      return;
+    }
+
     // Reset the recoil state
     resetBuddyRequests();
 
-    await signOut(auth);
-    router.push("/");
+    try {
+      await signOut(auth);
+      router.push("/");
+    } catch (error) {
+      console.error("Error logging out:", error);
+    }
   };
 
   return (
@@ -46,7 +55,7 @@ const UserMenu: React.FC<UserMenuProps> = ({ user }) => {
           {imagePreview != "" ? (
             <Avatar size="sm" name={username} src={imagePreview} />
           ) : (
-            <Avatar size="sm" bg="gray.500" />
+            <Avatar size="sm" />
           )}
           <Flex
             direction="column"

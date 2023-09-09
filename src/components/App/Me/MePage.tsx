@@ -32,7 +32,8 @@ function MePage({ user }: Props) {
           <Tabs
             colorScheme="purple"
             variant="enclosed"
-            width={{ base: "auto", lg: "full" }}
+            width={{ base: "auto", lg: "100%" }}
+            mx="auto"
           >
             <TabList mb="1em" display="flex" justifyContent="center">
               <Tab>My Journey</Tab>
