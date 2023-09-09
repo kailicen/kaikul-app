@@ -104,9 +104,9 @@ const useTasks = (date: string, user: User) => {
     // Determine if a goalId has been added or removed
     let pointsChange = 0;
     if (!originalTask.goalId && newGoalId) {
-      pointsChange += 2; // A goalId was added
+      pointsChange += 1; // A goalId was added
     } else if (originalTask.goalId && !newGoalId) {
-      pointsChange -= 2; // A goalId was removed
+      pointsChange -= 1; // A goalId was removed
     }
 
     await updatePoints(pointsChange);
@@ -146,11 +146,11 @@ const useTasks = (date: string, user: User) => {
 
     // If the task was completed, deduct points
     if (taskToDelete.completed) {
-      pointsToDeduct += 5;
+      pointsToDeduct += 2;
 
       // If the task is linked to a goal, deduct additional points
       if (taskToDelete.goalId) {
-        pointsToDeduct += 2;
+        pointsToDeduct += 1;
       }
     }
 

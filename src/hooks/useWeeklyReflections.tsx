@@ -60,8 +60,9 @@ export const useTeamTab = (user: User, startOfWeek: string) => {
       teamTabToAdd.id = docRef.id; // Update the id value
       setTeamTabs([teamTabToAdd, ...teamTabs]); // Change this line
 
-      // Compute the points
-      const pointsToAdd = 20 + rateWeek + rateHappiness + practiceHours;
+      const pointsToAdd = Math.round(
+        (7 + rateWeek + rateHappiness + practiceHours) / 5
+      );
 
       // Update the points
       await updatePoints(pointsToAdd);
@@ -95,13 +96,13 @@ export const useTeamTab = (user: User, startOfWeek: string) => {
     // add points
     const originalTab = teamTabs.find((tab) => tab.id === id);
     if (originalTab) {
-      const diff =
-        rateWeek +
-        rateHappiness +
-        practiceHours -
-        (originalTab.rateWeek +
-          originalTab.rateHappiness +
-          originalTab.practiceHours);
+      const newTotal = rateWeek + rateHappiness + practiceHours;
+      const originalTotal =
+        originalTab.rateWeek +
+        originalTab.rateHappiness +
+        originalTab.practiceHours;
+
+      const diff = Math.round((newTotal - originalTotal) / 5);
       updatePoints(diff);
     }
 

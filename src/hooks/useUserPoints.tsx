@@ -57,16 +57,16 @@ const useUserPoints = (user: User) => {
 
     // If the original task was NOT completed, but the updated task IS completed
     if (!originalTask.completed && updatedTask.completed) {
-      newPoints += 5;
+      newPoints += 2;
       if (updatedTask.goalId) {
-        newPoints += 2;
+        newPoints += 1;
       }
     }
     // If the original task WAS completed, but the updated task is NOT completed
     else if (originalTask.completed && !updatedTask.completed) {
-      newPoints -= 5;
+      newPoints -= 2;
       if (originalTask.goalId) {
-        newPoints -= 2;
+        newPoints -= 1;
       }
     }
 
@@ -82,13 +82,13 @@ const useUserPoints = (user: User) => {
     const durationInYears = differenceInYears(end, start);
 
     if (durationInDays <= 30) {
-      return 10;
+      return 5;
     } else if (durationInMonths <= 3) {
-      return 30;
+      return 10;
     } else if (durationInYears < 1) {
-      return 50;
+      return 20;
     } else {
-      return 100; // Over a year
+      return 50; // Over a year
     }
   }
 

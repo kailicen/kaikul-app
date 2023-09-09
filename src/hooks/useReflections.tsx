@@ -20,7 +20,7 @@ export const useBlockers = (date: string, user: User) => {
 
   const handleAddBlocker = async (blocker: string) => {
     // Update points
-    const pointsToAdd = 7;
+    const pointsToAdd = 2;
     await updatePoints(pointsToAdd);
     const blockerToAdd: Reflection = {
       id: "", // Placeholder value, will be updated after adding the document
@@ -59,7 +59,7 @@ export const useBlockers = (date: string, user: User) => {
     setBlockers(blockers.filter((blocker) => blocker.id !== id));
 
     // Update points
-    const pointsToAdd = -7;
+    const pointsToAdd = -2;
     await updatePoints(pointsToAdd);
 
     try {

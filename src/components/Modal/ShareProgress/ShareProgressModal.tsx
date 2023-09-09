@@ -142,7 +142,7 @@ const ShareProgressModal: React.FC<ShareProgressModalProps> = ({
       text += `*Lesson Learned*: \n${weeklyReflection?.lessonLearned}\n\n`;
     }
 
-    const pointsToAdd = 3;
+    const pointsToAdd = 1;
     await updatePoints(pointsToAdd);
 
     try {
