@@ -47,11 +47,7 @@ function MePage({ user }: Props) {
               </TabPanel>
 
               <TabPanel>
-                <Leaderboard
-                  profile={profile}
-                  onEdit={updateProfile}
-                  user={user}
-                />
+                <Leaderboard onEdit={updateProfile} user={user} />
               </TabPanel>
 
               <TabPanel>

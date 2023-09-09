@@ -9,7 +9,6 @@ import {
   DrawerCloseButton,
   Button,
   VStack,
-  Input,
   FormLabel,
   Box,
   FormControl,
@@ -20,11 +19,11 @@ import {
   Tag,
   TagLabel,
   Textarea,
+  Switch,
 } from "@chakra-ui/react";
 import { UserProfile } from "@/atoms/userProfileAtom";
 import { useFormik } from "formik";
 import { domains } from "../ModalComponents/OnboardingStep1";
-import { validateURL } from "../ModalComponents/OnboardingStep2";
 
 type Props = {
   isOpen: boolean;
@@ -58,6 +57,7 @@ const EditProfileDrawer: React.FC<Props> = ({
   const formik = useFormik({
     initialValues: profile,
     onSubmit: (values) => {
+      console.log("Form values on submit:", values);
       onSubmit(values);
       onClose();
     },
@@ -227,6 +227,25 @@ const EditProfileDrawer: React.FC<Props> = ({
                       </FormControl>
                     </>
                   )}
+
+                  {/* Leaderboard Participation Toggle */}
+                  <FormControl display="flex" alignItems="center" mt={4}>
+                    <FormLabel htmlFor="leaderboard-participation" mb="0">
+                      Participate in our leaderboard?
+                    </FormLabel>
+                    <Switch
+                      id="leaderboard-participation"
+                      {...formik.getFieldProps("leaderboardParticipation")}
+                      defaultChecked
+                      colorScheme="purple"
+                      onChange={(e) => {
+                        formik.setFieldValue(
+                          "leaderboardParticipation",
+                          e.target.checked
+                        );
+                      }}
+                    />
+                  </FormControl>
                 </>
               )}
 

@@ -4,14 +4,16 @@ import { UserProfile } from "@/atoms/userProfileAtom";
 import { User } from "firebase/auth";
 import JourneyModeCard from "./JourneyModeCard";
 import LeaderboardCard from "./LeaderboardCard";
+import { useUserProfile } from "@/hooks/useUserProfile";
 
 type Props = {
-  profile: UserProfile;
   onEdit: (updatedProfile: UserProfile) => void;
   user: User;
 };
 
-const MyJourney: React.FC<Props> = ({ profile, onEdit, user }) => {
+const MyJourney: React.FC<Props> = ({ onEdit, user }) => {
+  const { profile } = useUserProfile(user);
+
   return (
     <VStack width="100%">
       {/* Journey Preference */}

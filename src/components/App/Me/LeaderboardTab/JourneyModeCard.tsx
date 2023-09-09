@@ -1,15 +1,12 @@
 import React, { useState } from "react";
 import {
-  Box,
   Text,
   VStack,
-  HStack,
   Button,
   useDisclosure,
   Link,
   useToast,
   Flex,
-  Grid,
   Tooltip,
 } from "@chakra-ui/react";
 import { UserProfile } from "@/atoms/userProfileAtom";
@@ -124,6 +121,10 @@ const JourneyModeCard: React.FC<Props> = ({ profile, onEdit, user }) => {
       align="start"
       w="full"
     >
+      <Text fontWeight="bold" mb="2">
+        Journey Mode:{" "}
+        {profile.buddyOrSolo === "buddy" ? "Accountability League" : "Solo"}
+      </Text>
       {/* Only show Connect/Share Card if buddyOrSolo is "buddy" */}
       {profile.buddyOrSolo === "buddy" && (
         <Flex direction="column" gap={2}>

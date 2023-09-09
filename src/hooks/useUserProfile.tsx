@@ -56,6 +56,10 @@ export const useUserProfile = (user: User) => {
         },
         { merge: true }
       ); // merge ensures that if the doc already exists, it will be updated; otherwise, a new one will be created
+      setProfile((prev) => ({
+        ...prev,
+        values,
+      }));
 
       return user.uid; // Return the user's UID as the document ID
     } catch (error) {
