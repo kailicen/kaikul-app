@@ -18,7 +18,7 @@ export function Hero() {
           id="mainHeader"
         >
           Reflective Goal Tracking And{" "}
-          <span className="gradient-text">Accountability</span> , Simplified!
+          <span className="gradient-text">Accountability</span>, Simplified!
         </h1>
 
         <p className="max-w-[42rem] leading-normal text-muted-foreground sm:text-xl sm:leading-8">
