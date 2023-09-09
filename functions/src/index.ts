@@ -1,9 +1,14 @@
+
 import * as functions from "firebase-functions";
 import * as admin from "firebase-admin";
 import {format, addYears} from "date-fns";
+import nodemailer from "nodemailer";
 
 admin.initializeApp();
 const db = admin.firestore();
+
+
+
 
 export const createUserDocument = functions.auth
   .user()
@@ -71,3 +76,33 @@ exports.createGoalOnProfileAddition = functions.firestore
       }
     }
   });
+
+
+exports.sendWelcomeEmail = functions.auth.user().onCreate(async (user) =>{
+  const email = user.email;
+
+  const mailTransport = nodemailer.createTransport({
+    host: "sandbox.smtp.mailtrap.io",
+    port: 2525,
+    auth: {
+      user: "705798b37178be",
+      pass: "09f34148192697",
+    },
+  });
+
+  const mailOptions = {
+    from: `Kaikul : no-reply@kaikul.com`,
+    to: email,
+    subject: "Welcome to Kaikul",
+    text: `Dear ${user.displayName}, Welcome to Kaikul`
+  };
+
+  try {
+    mailTransport.sendMail(mailOptions);
+    console.log("Welcome Mail Sent");
+  } catch (error) {
+    console.error("There was an error while sending the email:", error);
+  }
+
+  return null
+})
