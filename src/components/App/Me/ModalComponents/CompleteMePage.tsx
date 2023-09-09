@@ -23,7 +23,11 @@ function CompleteMePage({
         for now. Join us there!
       </Text>
       <Flex mt={4} ml={2} gap={2}>
-        <SlackShareButton profile={profile} user={user} channel="#testing" />
+        <SlackShareButton
+          profile={profile}
+          user={user}
+          channel="#daily-sprint"
+        />
         <Button
           as={Link}
           href="https://join.slack.com/t/kaikul/shared_invite/zt-22ty7x0ps-89ruM2VXwB1v49yY35cYdw"

@@ -82,7 +82,11 @@ const JourneyModeCard: React.FC<Props> = ({ profile, onEdit, user }) => {
 
       <Flex mt={3} gap={{ base: 1, md: 2 }}>
         <Button onClick={openShareInfo}>Edit</Button>
-        <SlackShareButton profile={profile} user={user} channel="#testing" />
+        <SlackShareButton
+          profile={profile}
+          user={user}
+          channel="#daily-sprint"
+        />
         <Button
           as={Link}
           href="https://join.slack.com/t/kaikul/shared_invite/zt-22ty7x0ps-89ruM2VXwB1v49yY35cYdw"
