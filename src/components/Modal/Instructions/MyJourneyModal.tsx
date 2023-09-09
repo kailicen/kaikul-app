@@ -21,52 +21,35 @@ const MyJourneyModal: React.FC<Props> = ({ isOpen, onClose }) => (
   <Modal isOpen={isOpen} onClose={onClose}>
     <ModalOverlay />
     <ModalContent>
-      <ModalHeader>Unlock Your Goals!</ModalHeader>
+      <ModalHeader>Your Life&apos;s Journey Awaits!</ModalHeader>
       <ModalCloseButton />
       <ModalBody>
         <Text fontWeight="bold" mb={2}>
-          1. Define Clearly:
+          1. K-Points and Badges:
         </Text>
         <Text mb={4}>
-          Craft a goal that resonates deeply with your aspirations.
+          Earn K-Points and badges by completing tasks and sharing experiences.
+          They mark your progress and achievements.
         </Text>
 
         <Text fontWeight="bold" mb={2}>
-          2. Strategize:
-        </Text>
-        <Text mb={4}>Dissect your goal into bite-sized, actionable tasks.</Text>
-
-        <Text fontWeight="bold" mb={2}>
-          3. Be Accountable:
+          2. Ultimate Goal and Challenges:
         </Text>
         <Text mb={4}>
-          Boost success by buddying up in our{" "}
-          <Link
-            href="https://join.slack.com/t/kaikul/shared_invite/zt-22ty7x0ps-89ruM2VXwB1v49yY35cYdw"
-            isExternal
-            color="purple.500"
-            fontWeight="bold"
-          >
-            Slack community
-          </Link>
-          . Share, motivate, and progress together!
+          Set a clear ultimate goal and identify your challenges. Revisit to
+          maintain focus and clarity in your life journey.
         </Text>
 
-        <Text mt={3}>
-          Dive deeper with our{" "}
-          <Link
-            href="https://www.canva.com/design/DAFjgBVff1o/usvZl_W9dYaPGMsRV90-xg/view"
-            isExternal
-            color="purple.500"
-            fontWeight="bold"
-          >
-            Goal-Setting Guide
-          </Link>
-          .
+        <Text fontWeight="bold" mb={2}>
+          3. My Stats:
+        </Text>
+        <Text mb={4}>
+          Track your daily to yearly progress to understand your growth
+          trajectory and stay motivated.
         </Text>
       </ModalBody>
       <ModalFooter justifyContent="center">
-        <Button onClick={onClose}>Ready to Go!</Button>
+        <Button onClick={onClose}>Start My Journey</Button>
       </ModalFooter>
     </ModalContent>
   </Modal>

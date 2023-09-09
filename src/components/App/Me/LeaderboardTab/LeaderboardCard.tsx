@@ -105,7 +105,7 @@ const LeaderboardCard = () => {
   return (
     <VStack
       gap={4}
-      p={{ base: 2, md: 4 }}
+      p={4}
       border="1px"
       borderColor="gray.200"
       borderRadius="md"
@@ -182,13 +182,7 @@ const LeaderboardCard = () => {
                 src={user.photoURL || undefined}
                 mr={2}
               />
-              <Flex
-                direction="column"
-                display={{ base: "none", lg: "flex" }}
-                fontSize="9pt"
-                align="flex-start"
-                mr={8}
-              >
+              <Flex direction="column" fontSize="9pt" align="flex-start" mr={8}>
                 <Text fontWeight={700}>{user.displayName}</Text>
                 <Flex>
                   <Text color="gray.500">{user.bio}</Text>
