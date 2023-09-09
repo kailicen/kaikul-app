@@ -1,9 +1,11 @@
-import React from "react";
+import React, { useState } from "react";
 import { Flex, Grid, Icon, Tooltip, VStack, Text, Box } from "@chakra-ui/react";
 import { UserProfile } from "@/atoms/userProfileAtom";
 import MyJourneyCard from "./MyJourneyCard";
 import MyStatsCard from "./MyStatsCard";
 import MyMilestoneCard from "./MyMilestoneCard";
+import { InfoIcon } from "@chakra-ui/icons";
+import MyJourneyModal from "@/components/Modal/Instructions/MyJourneyModal";
 
 type Props = {
   profile: UserProfile;
@@ -11,16 +13,31 @@ type Props = {
 };
 
 const MyJourney: React.FC<Props> = ({ profile, onEdit }) => {
+  const [isInstructionOpen, setIsInstructionOpen] = useState(false);
+
+  const handleInstructionOpen = () => {
+    setIsInstructionOpen(true);
+  };
+
+  const handleInstructionClose = () => {
+    setIsInstructionOpen(false);
+  };
   return (
     <VStack width="100%">
-      <Flex alignItems="center">
-        <Text fontWeight="bold" fontSize="lg" mb="2">
-          My Life&apos;s Journey
-        </Text>
-        <Tooltip label="Your life's journey is unique and filled with purpose. Review this section daily to stay aligned with your goals and confront your challenges head-on.">
-          <Icon name="info-outline" color="orange.500" mb={2} ml={2} />
-        </Tooltip>
-      </Flex>
+      <Text fontWeight="bold" fontSize="lg" mb="2">
+        My Life&apos;s Journey{" "}
+        <InfoIcon
+          color="purple.500"
+          onClick={handleInstructionOpen}
+          mb={1}
+          cursor="pointer"
+        />
+      </Text>
+      {/* Use the modal component here */}
+      <MyJourneyModal
+        isOpen={isInstructionOpen}
+        onClose={handleInstructionClose}
+      />
       <Grid
         templateColumns={{ base: "1fr", lg: "1fr 1fr" }}
         gap={4}

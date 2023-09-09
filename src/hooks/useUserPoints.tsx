@@ -188,15 +188,6 @@ const useUserPoints = (user: User) => {
         duration: 5000,
         isClosable: true,
       });
-    } else {
-      // Handle the case where no points were added or deducted, if necessary
-      toast({
-        title: "No Change in Points",
-        description: "No points were added or deducted.",
-        status: "info",
-        duration: 5000,
-        isClosable: true,
-      });
     }
 
     // Sync the new points to Firebase

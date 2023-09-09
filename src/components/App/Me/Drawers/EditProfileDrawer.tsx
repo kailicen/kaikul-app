@@ -56,8 +56,8 @@ const EditProfileDrawer: React.FC<Props> = ({
 
   const formik = useFormik({
     initialValues: profile,
+    enableReinitialize: true,
     onSubmit: (values) => {
-      console.log("Form values on submit:", values);
       onSubmit(values);
       onClose();
     },
@@ -230,13 +230,13 @@ const EditProfileDrawer: React.FC<Props> = ({
 
                   {/* Leaderboard Participation Toggle */}
                   <FormControl display="flex" alignItems="center" mt={4}>
-                    <FormLabel htmlFor="leaderboard-participation" mb="0">
+                    <FormLabel mb="0">
                       Participate in our leaderboard?
                     </FormLabel>
                     <Switch
                       id="leaderboard-participation"
                       {...formik.getFieldProps("leaderboardParticipation")}
-                      defaultChecked
+                      isChecked={formik.values.leaderboardParticipation}
                       colorScheme="purple"
                       onChange={(e) => {
                         formik.setFieldValue(

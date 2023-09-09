@@ -13,6 +13,8 @@ import {
 import React, { useState } from "react";
 import { UserProfileAddition } from "@/atoms/userProfileAdditionAtom";
 import EditSelfDiscoveryDrawer from "./Drawers/EditSelfDiscoveryDrawer";
+import { InfoIcon } from "@chakra-ui/icons";
+import SelfDiscoveryModal from "@/components/Modal/Instructions/SelfDiscoveryModal";
 
 type Props = {
   profileAddition: UserProfileAddition;
@@ -23,6 +25,16 @@ function SelfDiscovery({ profileAddition, onEdit }: Props) {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [inputType, setInputType] = useState<string>("");
 
+  const [isInstructionOpen, setIsInstructionOpen] = useState(false);
+
+  const handleInstructionOpen = () => {
+    setIsInstructionOpen(true);
+  };
+
+  const handleInstructionClose = () => {
+    setIsInstructionOpen(false);
+  };
+
   const handleButtonClick = (type: string) => {
     setInputType(type);
     onOpen();
@@ -30,14 +42,20 @@ function SelfDiscovery({ profileAddition, onEdit }: Props) {
 
   return (
     <VStack spacing={3}>
-      <Flex alignItems="center">
-        <Text fontWeight="bold" fontSize="lg">
-          Catalyst Tools for My Journey
-        </Text>
-        <Tooltip label="Here are the resources and exercises that aid in self-discovery">
-          <Icon name="info-outline" color="orange.500" ml={2} />
-        </Tooltip>
-      </Flex>
+      <Text fontWeight="bold" fontSize="lg" mb="2">
+        Catalyst Tools for My Journey
+        <InfoIcon
+          color="purple.500"
+          onClick={handleInstructionOpen}
+          mb={1}
+          cursor="pointer"
+        />
+      </Text>
+      {/* Use the modal component here */}
+      <SelfDiscoveryModal
+        isOpen={isInstructionOpen}
+        onClose={handleInstructionClose}
+      />
 
       <VStack spacing={3} mt={4}>
         <Button onClick={() => handleButtonClick("values")}>

@@ -27,6 +27,7 @@ const LeaderboardCard = () => {
   useEffect(() => {
     const fetchLeaderboardData = async () => {
       try {
+        // Step 1: Fetch top 10 user points data
         const q = query(
           collection(firestore, "userPoints"),
           orderBy("points", "desc"),
@@ -38,20 +39,47 @@ const LeaderboardCard = () => {
           ...doc.data(),
         })) as UserData[];
 
+        // Step 2: Fetch user details and user profiles for each user in the list
         const userDetailsPromises = data.map((user) =>
           getDoc(doc(firestore, "users", user.userId))
         );
+        const userProfilesPromises = data.map((user) =>
+          getDoc(doc(firestore, "userProfiles", user.userId))
+        );
 
-        const userDetails = await Promise.all(userDetailsPromises);
+        const [userDetails, userProfiles] = await Promise.all([
+          Promise.all(userDetailsPromises),
+          Promise.all(userProfilesPromises),
+        ]);
 
-        const leaderboardDataWithUserDetails = data.map((user, index) => ({
-          ...user,
-          displayName:
-            userDetails[index].data()?.displayName ||
-            userDetails[index].data()?.email?.split("@")[0],
-          photoURL: userDetails[index].data()?.photoURL,
-        }));
+        // Step 3: Create leaderboard data with user details and filter based on participation
+        const leaderboardDataWithUserDetails = data.map((user, index) => {
+          const userDetailData = userDetails[index].data();
+          const userProfileData = userProfiles[index].data();
 
+          let displayName = "Anonymous";
+          let photoURL = "path/to/your/anonymous/icon.png"; // Set a default anonymous icon path
+
+          if (userProfileData?.leaderboardParticipation) {
+            // Include actual user details only if they opted in for leaderboard participation
+            if (userDetailData) {
+              displayName =
+                userDetailData.displayName ||
+                userDetailData.email?.split("@")[0] ||
+                "Anonymous";
+              photoURL =
+                userDetailData.photoURL || "path/to/your/default/icon.png"; // Set a default icon path
+            }
+          }
+
+          return {
+            ...user,
+            displayName,
+            photoURL,
+          };
+        });
+
+        // Step 4: Update the state with the final list of users to display on the leaderboard
         setLeaderboardData(leaderboardDataWithUserDetails);
       } catch (error) {
         console.error("Error fetching leaderboard data: ", error);
