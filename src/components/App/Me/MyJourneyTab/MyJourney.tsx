@@ -12,7 +12,7 @@ type Props = {
 
 const MyJourney: React.FC<Props> = ({ profile, onEdit }) => {
   return (
-    <VStack alignItems="center">
+    <VStack width="100%">
       <Flex alignItems="center">
         <Text fontWeight="bold" fontSize="lg" mb="2">
           My Life&apos;s Journey
@@ -22,9 +22,9 @@ const MyJourney: React.FC<Props> = ({ profile, onEdit }) => {
         </Tooltip>
       </Flex>
       <Grid
-        templateColumns={{ base: "1fr", md: "1fr 1fr" }}
+        templateColumns={{ base: "1fr", lg: "1fr 1fr" }}
         gap={4}
-        maxW="1200px"
+        width="100%"
       >
         <VStack gap={2}>
           <MyMilestoneCard />

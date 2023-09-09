@@ -13,9 +13,9 @@ import OnboardingModal from "@/components/Modal/Me/OnboardingModal";
 import { User } from "firebase/auth";
 import { useUserProfile } from "@/hooks/useUserProfile";
 import { useUserProfileAddition } from "@/hooks/useUserProfileAddition";
-import JourneyMode from "./JourneyMode";
 import SelfDiscovery from "./SelfDiscovery";
-import MyJourney from "./MyJourney/MyJourney";
+import MyJourney from "./MyJourneyTab/MyJourney";
+import Leaderboard from "./LeaderboardTab/Leaderboard";
 
 type Props = { user: User };
 
@@ -28,16 +28,15 @@ function MePage({ user }: Props) {
   return (
     <>
       {!loading && profile && (
-        <Flex
-          direction="column"
-          alignItems="center"
-          justifyContent="center"
-          w="full"
-        >
-          <Tabs colorScheme="purple" variant="enclosed">
+        <Flex direction="column" alignItems="center" justifyContent="center">
+          <Tabs
+            colorScheme="purple"
+            variant="enclosed"
+            width={{ base: "auto", lg: "full" }}
+          >
             <TabList mb="1em" display="flex" justifyContent="center">
               <Tab>My Journey</Tab>
-              <Tab>Journey Mode</Tab>
+              <Tab>Leaderboard</Tab>
               <Tab>Self Discovery</Tab>
             </TabList>
 
@@ -47,7 +46,7 @@ function MePage({ user }: Props) {
               </TabPanel>
 
               <TabPanel>
-                <JourneyMode
+                <Leaderboard
                   profile={profile}
                   onEdit={updateProfile}
                   user={user}

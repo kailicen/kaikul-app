@@ -13,7 +13,7 @@ import {
   Tooltip,
 } from "@chakra-ui/react";
 import { UserProfile } from "@/atoms/userProfileAtom";
-import EditProfileDrawer from "./Drawers/EditProfileDrawer";
+import EditProfileDrawer from "../Drawers/EditProfileDrawer";
 import { User } from "firebase/auth";
 import ProfilePreviewModal from "@/components/Modal/Me/ProfilePreviewModal";
 
@@ -23,7 +23,7 @@ type Props = {
   user: User;
 };
 
-const JourneyMode: React.FC<Props> = ({ profile, onEdit, user }) => {
+const JourneyModeCard: React.FC<Props> = ({ profile, onEdit, user }) => {
   const toast = useToast();
 
   const {
@@ -114,22 +114,24 @@ const JourneyMode: React.FC<Props> = ({ profile, onEdit, user }) => {
   };
 
   return (
-    <VStack spacing={3}>
-      {/* Journey Preference */}
-      <Text fontWeight="bold" fontSize="lg" mb={4}>
-        {profile.buddyOrSolo === "buddy" ? "Accountability League" : "Solo"}
-      </Text>
-
+    <VStack
+      spacing={3}
+      p={4}
+      border="1px"
+      borderColor="gray.200"
+      borderRadius="md"
+      boxShadow="lg"
+      align="start"
+      w="full"
+    >
       {/* Only show Connect/Share Card if buddyOrSolo is "buddy" */}
       {profile.buddyOrSolo === "buddy" && (
-        <Flex direction="column" alignItems="center" gap={2}>
+        <Flex direction="column" gap={2}>
           <Text fontWeight="semibold">Introduction: </Text>
-          <Text fontWeight="normal" align="center">
-            {profile.selfIntroduction}
-          </Text>
+          <Text fontWeight="normal">{profile.selfIntroduction}</Text>
         </Flex>
       )}
-      <VStack mt={3} gap={3}>
+      <Flex mt={3} gap={{ base: 1, md: 2 }}>
         <Button onClick={openShareInfo}>Edit</Button>
         <Tooltip
           label="Your profile including your goal and challenges will be shared in the #daily-sprint channel on Slack."
@@ -150,7 +152,7 @@ const JourneyMode: React.FC<Props> = ({ profile, onEdit, user }) => {
         >
           Join KaiKul Slack
         </Button>
-      </VStack>
+      </Flex>
 
       <ProfilePreviewModal
         user={user}
@@ -173,4 +175,4 @@ const JourneyMode: React.FC<Props> = ({ profile, onEdit, user }) => {
   );
 };
 
-export default JourneyMode;
+export default JourneyModeCard;

@@ -28,5 +28,7 @@ export const useUserData = (user: User) => {
   return {
     username,
     imagePreview,
+    setUsername,
+    setImagePreview,
   };
 };

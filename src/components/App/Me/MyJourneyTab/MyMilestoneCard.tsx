@@ -5,7 +5,6 @@ import {
   Progress,
   Badge,
   Flex,
-  Tooltip,
   Icon,
   Avatar,
 } from "@chakra-ui/react";
