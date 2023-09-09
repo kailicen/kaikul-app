@@ -8,7 +8,6 @@ import {
 } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
-import { VscGraph } from "react-icons/vsc";
 import { LuSmilePlus } from "react-icons/lu";
 import { BsCalendarWeek } from "react-icons/bs";
 import { MdOutlineForum } from "react-icons/md";
@@ -72,9 +71,9 @@ const UserProgressMenu: React.FC<UserProgressMenuProps> = ({ user }) => {
   const [buddyRequests, setBuddyRequests] = useRecoilState(buddyRequestState);
   const [pendingRequests, setPendingRequests] = useState(0);
 
-  const showStats = () => {
-    router.push("/stats");
-  };
+  // const showStats = () => {
+  //   router.push("/stats");
+  // };
 
   const showWeeklyReview = () => {
     router.push("/review");
@@ -163,7 +162,7 @@ const UserProgressMenu: React.FC<UserProgressMenuProps> = ({ user }) => {
           </Button>
         )}
 
-        {isMobile ? (
+        {/* {isMobile ? (
           <IconButton
             aria-label="Weekly Statistics"
             icon={<VscGraph />}
@@ -180,7 +179,7 @@ const UserProgressMenu: React.FC<UserProgressMenuProps> = ({ user }) => {
           >
             Stats
           </Button>
-        )}
+        )} */}
 
         {isMobile ? (
           <ReflectConnectIconButton

@@ -42,7 +42,6 @@ function OnboardingStep2({
     onSubmit: async (values) => {
       try {
         const docId = await saveProfileToFirebase(values);
-        console.log(`Profile2 saved with ID: ${docId}`);
         onNext();
       } catch (error) {
         console.error("Error saving profile to Firebase:", error);

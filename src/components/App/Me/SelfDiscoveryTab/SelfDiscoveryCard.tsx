@@ -1,17 +1,6 @@
-import {
-  Box,
-  Button,
-  Heading,
-  Text,
-  VStack,
-  useDisclosure,
-  Collapse,
-  Flex,
-  Tooltip,
-  Icon,
-} from "@chakra-ui/react";
 import React, { useState } from "react";
-import EditSelfDiscoveryDrawer from "./EditSelfDiscoveryDrawer";
+import { Button, useDisclosure, VStack, Text } from "@chakra-ui/react";
+import EditSelfDiscoveryDrawer from "../Drawers/EditSelfDiscoveryDrawer";
 import { UserProfileAddition } from "@/atoms/userProfileAdditionAtom";
 
 type Props = {
@@ -19,7 +8,7 @@ type Props = {
   onEdit: (updatedProfileAddition: UserProfileAddition) => void;
 };
 
-function SelfDiscovery({ profileAddition, onEdit }: Props) {
+const SelfDiscoveryCard: React.FC<Props> = ({ profileAddition, onEdit }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [inputType, setInputType] = useState<string>("");
 
@@ -29,17 +18,17 @@ function SelfDiscovery({ profileAddition, onEdit }: Props) {
   };
 
   return (
-    <VStack spacing={3}>
-      <Flex alignItems="center">
-        <Text fontWeight="bold" fontSize="lg">
-          Catalyst Tools for My Journey
-        </Text>
-        <Tooltip label="Here are the resources and exercises that aid in self-discovery">
-          <Icon name="info-outline" color="orange.500" ml={2} />
-        </Tooltip>
-      </Flex>
-
-      <VStack spacing={3} mt={4}>
+    <VStack
+      gap={4}
+      boxShadow="lg"
+      p={6}
+      rounded="md"
+      align="start"
+      border="1px"
+      borderColor="gray.200"
+      w="full"
+    >
+      <VStack spacing={3} w="100%">
         <Button onClick={() => handleButtonClick("values")}>
           Discovering Your Core Values
         </Button>
@@ -57,6 +46,7 @@ function SelfDiscovery({ profileAddition, onEdit }: Props) {
         </Button>
       </VStack>
 
+      {/* Drawers for editing */}
       <EditSelfDiscoveryDrawer
         isOpen={isOpen}
         onClose={onClose}
@@ -66,6 +56,6 @@ function SelfDiscovery({ profileAddition, onEdit }: Props) {
       />
     </VStack>
   );
-}
+};
 
-export default SelfDiscovery;
+export default SelfDiscoveryCard;

@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Goal, weeklyGoalListState, weeklyGoalState } from "../atoms/goalsAtom";
+import { Goal, weeklyGoalListState } from "../atoms/goalsAtom";
 import { User } from "firebase/auth";
 import {
   addDoc,
@@ -13,13 +13,16 @@ import {
   writeBatch,
 } from "firebase/firestore";
 import { firestore } from "../firebase/clientApp";
-import { useRecoilState, useRecoilValue } from "recoil";
+import { useRecoilState } from "recoil";
 import { useStatistics } from "./useStatistics";
 import moment from "moment";
 import { Task, weekTaskListState } from "@/atoms/tasksAtom";
+import useUserPoints from "./useUserPoints";
 
 export const useGoals = (user: User, startOfWeek: string) => {
   const [recoilGoals, setRecoilGoals] = useRecoilState(weeklyGoalListState);
+  const { userPoints, computePointsForGoal, computeGoalPoints, updatePoints } =
+    useUserPoints(user);
 
   // Fetch tasks for the current week
   const endOfWeek = moment(startOfWeek).add(6, "days").format("YYYY-MM-DD");
@@ -65,10 +68,33 @@ export const useGoals = (user: User, startOfWeek: string) => {
   };
 
   const handleCompleteGoal = async (id: string) => {
+    const goalToUpdate = goals.find((goal) => goal.id === id);
+
+    if (!goalToUpdate) {
+      console.error(`Goal with id ${id} not found.`);
+      return;
+    }
+
+    // Clone the goal and toggle its completed status
+    const updatedGoal = { ...goalToUpdate, completed: !goalToUpdate.completed };
+
     const updatedGoals = goals.map((goal) =>
-      goal.id === id ? { ...goal, completed: !goal.completed } : goal
+      goal.id === id ? updatedGoal : goal
     );
 
+    setGoals(updatedGoals);
+
+    // Calculate points using the computePointsForGoal function
+    const newPoints = computePointsForGoal(
+      goalToUpdate,
+      updatedGoal,
+      userPoints
+    );
+
+    const pointDifference = newPoints - userPoints; // Calculate the difference in points
+    await updatePoints(pointDifference);
+
+    // Update the goal in Firebase (you might need to adjust this according to your Firebase structure)
     try {
       await updateDoc(doc(firestore, "weeklyGoals", id), {
         completed: updatedGoals.find((goal) => goal.id === id)?.completed,
@@ -164,6 +190,22 @@ export const useGoals = (user: User, startOfWeek: string) => {
   };
 
   const handleDeleteGoal = async (id: string) => {
+    const goalToDelete = goals.find((goal) => goal.id === id);
+
+    if (!goalToDelete) {
+      console.error(`Goal with id ${id} not found.`);
+      return;
+    }
+
+    // Check if the goal to be deleted is completed
+    if (goalToDelete.completed) {
+      const pointsToDeduct = computeGoalPoints(
+        goalToDelete.startDate,
+        goalToDelete.endDate
+      );
+      await updatePoints(-pointsToDeduct);
+    }
+
     setGoals(goals.filter((goal) => goal.id !== id));
     setRecoilGoals(goals.filter((goal) => goal.id !== id));
 

@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { firestore, storage, auth } from "../firebase/clientApp";
-import { updateProfile } from "firebase/auth";
+import { User, updateProfile } from "firebase/auth";
 import { getDownloadURL, ref, uploadString } from "firebase/storage";
 import {
   Avatar,
@@ -20,6 +20,7 @@ import {
 import { doc, getDoc, setDoc, updateDoc } from "firebase/firestore";
 import { EditIcon } from "@chakra-ui/icons";
 import AuthenticatedHeader from "@/components/Header/AuthenticatedHeader";
+import { useUserData } from "@/hooks/useUserData";
 
 interface ProfileFormValues {
   username: string;
@@ -29,28 +30,11 @@ interface ProfileFormValues {
 function ProfilePage() {
   const [user] = useAuthState(auth);
   const [profilePicture, setProfilePicture] = useState<File | null>(null);
-  const [imagePreview, setImagePreview] = useState<string>("");
-  const [username, setUsername] = useState<string>("");
   const [isSubmitting, setIsSubmitting] = useState(false);
   const toast = useToast();
-
-  useEffect(() => {
-    if (user) {
-      const fetchUserData = async () => {
-        const userDocRef = doc(firestore, "users", user.uid);
-        const userDoc = await getDoc(userDocRef);
-        if (userDoc.exists()) {
-          const userData = userDoc.data();
-          setUsername(userData?.displayName || "");
-          setImagePreview(userData?.photoURL || "");
-        } else {
-          setUsername(user.displayName || "");
-          setImagePreview(user.photoURL || "");
-        }
-      };
-      fetchUserData();
-    }
-  }, [user]);
+  const { username, imagePreview, setUsername, setImagePreview } = useUserData(
+    user as User
+  );
 
   // Handle profile picture selection
   const handleProfilePictureChange = (

@@ -1,9 +1,6 @@
 import React from "react";
 import {
-  Box,
   Flex,
-  Grid,
-  Stack,
   Tab,
   TabList,
   TabPanel,
@@ -16,9 +13,9 @@ import OnboardingModal from "@/components/Modal/Me/OnboardingModal";
 import { User } from "firebase/auth";
 import { useUserProfile } from "@/hooks/useUserProfile";
 import { useUserProfileAddition } from "@/hooks/useUserProfileAddition";
-import JourneyMode from "./JourneyMode";
-import SelfDiscovery from "./SelfDiscovery";
-import MyJourney from "./MyJourney";
+import SelfDiscovery from "./SelfDiscoveryTab/SelfDiscovery";
+import MyJourney from "./MyJourneyTab/MyJourney";
+import Leaderboard from "./LeaderboardTab/Leaderboard";
 
 type Props = { user: User };
 
@@ -32,36 +29,35 @@ function MePage({ user }: Props) {
     <>
       {!loading && profile && (
         <Flex direction="column" alignItems="center" justifyContent="center">
-          <Box width={["100%", "80%", "60%"]}>
-            <Tabs colorScheme="purple" variant="enclosed">
-              <TabList mb="1em" display="flex" justifyContent="center">
-                <Tab>My Journey</Tab>
-                <Tab>Journey Mode</Tab>
-                <Tab>Self Discovery</Tab>
-              </TabList>
+          <Tabs
+            colorScheme="purple"
+            variant="enclosed"
+            width={{ base: "auto", lg: "100%" }}
+            mx="auto"
+          >
+            <TabList mb="1em" display="flex" justifyContent="center">
+              <Tab>My Journey</Tab>
+              <Tab>Leaderboard</Tab>
+              <Tab>Self Discovery</Tab>
+            </TabList>
 
-              <TabPanels>
-                <TabPanel>
-                  <MyJourney profile={profile} onEdit={updateProfile} />
-                </TabPanel>
+            <TabPanels>
+              <TabPanel>
+                <MyJourney profile={profile} onEdit={updateProfile} />
+              </TabPanel>
 
-                <TabPanel>
-                  <JourneyMode
-                    profile={profile}
-                    onEdit={updateProfile}
-                    user={user}
-                  />
-                </TabPanel>
+              <TabPanel>
+                <Leaderboard onEdit={updateProfile} user={user} />
+              </TabPanel>
 
-                <TabPanel>
-                  <SelfDiscovery
-                    profileAddition={profileAddition}
-                    onEdit={updateProfileAddition}
-                  />
-                </TabPanel>
-              </TabPanels>
-            </Tabs>
-          </Box>
+              <TabPanel>
+                <SelfDiscovery
+                  profileAddition={profileAddition}
+                  onEdit={updateProfileAddition}
+                />
+              </TabPanel>
+            </TabPanels>
+          </Tabs>
         </Flex>
       )}
 

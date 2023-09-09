@@ -25,6 +25,11 @@ export const Button: ComponentStyleConfig = {
         bg: "#5140BD",
       },
     },
+    outline: {
+      _hover: {
+        bg: "#8884d8",
+      },
+    },
 
     ghost: {
       color: "#4130AC",

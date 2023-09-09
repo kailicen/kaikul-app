@@ -12,28 +12,31 @@ import {
 } from "firebase/firestore";
 import { firestore } from "../firebase/clientApp";
 import { User } from "firebase/auth";
+import useUserPoints from "./useUserPoints";
 
 export const useBlockers = (date: string, user: User) => {
   const [blockers, setBlockers] = useState<Reflection[]>([]);
+  const { updatePoints } = useUserPoints(user);
 
   const handleAddBlocker = async (blocker: string) => {
-    if (blockers.length < 3) {
-      const blockerToAdd: Reflection = {
-        id: "", // Placeholder value, will be updated after adding the document
-        text: blocker,
-        date: date,
-        userId: user.uid,
-      };
-      try {
-        const docRef = await addDoc(
-          collection(firestore, "blockers"),
-          blockerToAdd
-        );
-        blockerToAdd.id = docRef.id; // Update the id value
-        setBlockers([...blockers, blockerToAdd]);
-      } catch (error) {
-        console.error("Error adding document: ", error);
-      }
+    // Update points
+    const pointsToAdd = 2;
+    await updatePoints(pointsToAdd);
+    const blockerToAdd: Reflection = {
+      id: "", // Placeholder value, will be updated after adding the document
+      text: blocker,
+      date: date,
+      userId: user.uid,
+    };
+    try {
+      const docRef = await addDoc(
+        collection(firestore, "blockers"),
+        blockerToAdd
+      );
+      blockerToAdd.id = docRef.id; // Update the id value
+      setBlockers([...blockers, blockerToAdd]);
+    } catch (error) {
+      console.error("Error adding document: ", error);
     }
   };
 
@@ -54,6 +57,10 @@ export const useBlockers = (date: string, user: User) => {
 
   const handleDeleteBlocker = async (id: string) => {
     setBlockers(blockers.filter((blocker) => blocker.id !== id));
+
+    // Update points
+    const pointsToAdd = -2;
+    await updatePoints(pointsToAdd);
 
     try {
       await deleteDoc(doc(firestore, "blockers", id));

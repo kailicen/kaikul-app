@@ -126,5 +126,6 @@ export const useUserProfile = (user: User) => {
     saveProfileToFirebase,
     updateProfile,
     saveOnboardingStateToFirebase,
+    fetchUserProfileFromFirebase,
   };
 };

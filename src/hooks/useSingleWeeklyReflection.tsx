@@ -7,11 +7,11 @@ import {
   doc,
 } from "firebase/firestore";
 import { useState, useEffect } from "react";
-import { TeamTab } from "./useTeamTab";
+import { WeeklyReflection } from "./useWeeklyReflections";
 import { firestore } from "@/firebase/clientApp";
 
 export const useSingleTeamTab = (userId: string, startOfWeek: string) => {
-  const [teamTab, setTeamTab] = useState<TeamTab[]>([]);
+  const [teamTab, setTeamTab] = useState<WeeklyReflection[]>([]);
 
   const handleAddDiscussion = async (id: string, discussion: string) => {
     try {
@@ -36,9 +36,9 @@ export const useSingleTeamTab = (userId: string, startOfWeek: string) => {
           where("startOfWeek", "==", startOfWeek) // get data for the current week only
         );
         const querySnapshot = await getDocs(q);
-        const teamTabs: TeamTab[] = [];
+        const teamTabs: WeeklyReflection[] = [];
         querySnapshot.forEach((doc) => {
-          const teamTab = doc.data() as TeamTab;
+          const teamTab = doc.data() as WeeklyReflection;
           teamTab.id = doc.id;
           teamTabs.push(teamTab);
         });

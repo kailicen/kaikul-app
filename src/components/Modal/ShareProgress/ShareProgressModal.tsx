@@ -26,6 +26,8 @@ import { toPng } from "html-to-image";
 import * as clipboard from "clipboard-polyfill";
 import { doc, getDoc } from "firebase/firestore";
 import { firestore } from "../../../firebase/clientApp";
+import useUserPoints from "@/hooks/useUserPoints";
+import { User } from "firebase/auth";
 
 type ShareProgressModalProps = {
   isOpen: boolean;
@@ -73,6 +75,7 @@ const ShareProgressModal: React.FC<ShareProgressModalProps> = ({
 
   const { user, yesterdayTasks, todayTasks, blockers, weeklyReflection } =
     useProgress(selectedProgress, lastOpened);
+  const { updatePoints } = useUserPoints(user as User);
 
   const toast = useToast();
 
@@ -138,6 +141,9 @@ const ShareProgressModal: React.FC<ShareProgressModalProps> = ({
       text += `*Biggest obstacle*: \n${weeklyReflection?.biggestObstacle}\n`;
       text += `*Lesson Learned*: \n${weeklyReflection?.lessonLearned}\n\n`;
     }
+
+    const pointsToAdd = 1;
+    await updatePoints(pointsToAdd);
 
     try {
       const res = await fetch("/api/shareProgress", {

@@ -31,7 +31,7 @@ import { MdAdd } from "react-icons/md";
 import { useEffect, useState } from "react";
 import { User } from "firebase/auth";
 import useTasks from "@/hooks/useTasks";
-import { useBlockers } from "@/hooks/useBlockers";
+import { useBlockers } from "@/hooks/useReflections";
 import { format, isToday, startOfDay, startOfWeek } from "date-fns";
 import { useGoals } from "@/hooks/useGoals";
 import { Task } from "@/atoms/tasksAtom";
@@ -229,19 +229,6 @@ const Day: React.FC<{ date: string; user: User }> = ({ date, user }) => {
       blockerDrawerDisclosure.onClose();
     }
   };
-
-  // useEffect(() => {
-  //   if (tasks) {
-  //     const currentDateTasks = tasks.filter((task) => {
-  //       const taskDate = startOfDay(new Date(task.date));
-  //       const currentDate = startOfDay(new Date(date));
-  //       return (
-  //         format(taskDate, "yyyy-MM-dd") === format(currentDate, "yyyy-MM-dd")
-  //       );
-  //     });
-  //     setTasks(currentDateTasks);
-  //   }
-  // }, [tasks, date]);
 
   useEffect(() => {
     if (!taskDrawerDisclosure.isOpen) {

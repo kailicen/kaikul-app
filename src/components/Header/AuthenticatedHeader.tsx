@@ -1,10 +1,6 @@
 import Authentication from "@/components/Header/HeaderRight/Authentication";
-import { User, getAuth, onAuthStateChanged } from "firebase/auth";
+import { User } from "firebase/auth";
 import { useRouter } from "next/router";
-import { collection, query, where, getDocs } from "firebase/firestore";
-import { differenceInDays, parseISO } from "date-fns";
-import { firestore } from "@/firebase/clientApp";
-import { useEffect } from "react";
 
 export type HeaderProps = {
   user?: User | null;

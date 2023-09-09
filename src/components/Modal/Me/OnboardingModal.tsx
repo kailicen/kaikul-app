@@ -1,7 +1,5 @@
 // OnboardingModal.tsx
-import CompleteMePage from "@/components/App/Me/CompleteMePage";
-import OnboardingStep1 from "@/components/App/Me/OnboardingStep1";
-import OnboardingStep2 from "@/components/App/Me/OnboardingStep2";
+import OnboardingStep1 from "@/components/App/Me/ModalComponents/OnboardingStep1";
 import {
   Modal,
   ModalOverlay,
@@ -16,6 +14,8 @@ import { OnboardingState, onboardingState } from "@/atoms/onboardingAtom";
 import { User } from "firebase/auth";
 import { useUserProfile } from "@/hooks/useUserProfile";
 import { useState } from "react";
+import OnboardingStep2 from "@/components/App/Me/ModalComponents/OnboardingStep2";
+import CompleteMePage from "@/components/App/Me/ModalComponents/CompleteMePage";
 
 function OnboardingModal({
   isOpen,
