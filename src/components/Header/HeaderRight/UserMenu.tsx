@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import {
   Menu,
   MenuButton,
@@ -13,15 +13,13 @@ import {
 import { User, signOut } from "firebase/auth";
 import { CgProfile } from "react-icons/cg";
 import { MdOutlineLogin } from "react-icons/md";
-import { auth, firestore } from "../../../firebase/clientApp";
+import { auth } from "../../../firebase/clientApp";
 import { useRouter } from "next/router";
-import { doc, getDoc } from "firebase/firestore";
 import { useResetRecoilState } from "recoil";
 import { buddyRequestState } from "@/atoms/buddyRequestsAtom";
 import { IoSparkles } from "react-icons/io5";
-import useTasks from "@/hooks/useTasks";
-import { format, startOfWeek } from "date-fns";
 import useUserPoints from "@/hooks/useUserPoints";
+import { useUserData } from "@/hooks/useUserData";
 
 type UserMenuProps = { user?: User | null };
 
@@ -29,32 +27,9 @@ const UserMenu: React.FC<UserMenuProps> = ({ user }) => {
   const router = useRouter();
   const resetBuddyRequests = useResetRecoilState(buddyRequestState);
 
-  const [imagePreview, setImagePreview] = useState<string>("");
-  const [username, setUsername] = useState<string>("");
-
-  const [startOfWeekDate, setStartOfWeekDate] = useState(
-    format(startOfWeek(new Date(), { weekStartsOn: 1 }), "yyyy-MM-dd")
-  );
-
   const { userPoints } = useUserPoints(user as User);
 
-  useEffect(() => {
-    if (user) {
-      const fetchUserData = async () => {
-        const userDocRef = doc(firestore, "users", user.uid);
-        const userDoc = await getDoc(userDocRef);
-        if (userDoc.exists()) {
-          const userData = userDoc.data();
-          setUsername(userData?.displayName || "");
-          setImagePreview(userData?.photoURL || "");
-        } else {
-          setUsername(user.displayName || "");
-          setImagePreview(user.photoURL || "");
-        }
-      };
-      fetchUserData();
-    }
-  }, [user]);
+  const { username, imagePreview } = useUserData(user as User);
 
   const logout = async () => {
     // Reset the recoil state

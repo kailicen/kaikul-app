@@ -1,9 +1,6 @@
 import React from "react";
 import {
-  Box,
   Flex,
-  Grid,
-  Stack,
   Tab,
   TabList,
   TabPanel,
@@ -18,7 +15,7 @@ import { useUserProfile } from "@/hooks/useUserProfile";
 import { useUserProfileAddition } from "@/hooks/useUserProfileAddition";
 import JourneyMode from "./JourneyMode";
 import SelfDiscovery from "./SelfDiscovery";
-import MyJourney from "./MyJourney";
+import MyJourney from "./MyJourney/MyJourney";
 
 type Props = { user: User };
 

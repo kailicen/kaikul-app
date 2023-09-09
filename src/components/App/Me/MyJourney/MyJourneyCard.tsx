@@ -4,14 +4,12 @@ import {
   Button,
   useDisclosure,
   Flex,
-  Tooltip,
-  Icon,
   Box,
   VStack,
 } from "@chakra-ui/react";
 import { UserProfile } from "@/atoms/userProfileAtom";
 import { useRouter } from "next/router";
-import EditProfileDrawer from "./Drawers/EditProfileDrawer";
+import EditProfileDrawer from "../Drawers/EditProfileDrawer";
 
 type Props = {
   profile: UserProfile;
@@ -34,16 +32,15 @@ const MyJourneyCard: React.FC<Props> = ({ profile, onEdit }) => {
   } = useDisclosure();
 
   return (
-    <VStack gap={4} boxShadow="lg" p={6} rounded="md" align="start">
-      {/* Life's Journey Card */}
-      <Flex alignItems="center">
-        <Text fontWeight="semibold" fontSize="xl" mb="2">
-          My Life&apos;s Journey
-        </Text>
-        <Tooltip label="Your life's journey is unique and filled with purpose. Review this section daily to stay aligned with your goals and confront your challenges head-on.">
-          <Icon name="info-outline" color="orange.500" mb={2} ml={2} />
-        </Tooltip>
-      </Flex>
+    <VStack
+      gap={4}
+      boxShadow="lg"
+      p={6}
+      rounded="md"
+      align="start"
+      border="1px"
+      borderColor="gray.200"
+    >
       <Box>
         <Text>My Focus Domains: </Text>
         <Text

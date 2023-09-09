@@ -11,8 +11,8 @@ import {
   Th,
   Thead,
   Tr,
-  useMediaQuery,
   Text,
+  useMediaQuery,
 } from "@chakra-ui/react";
 import {
   eachDayOfInterval,
@@ -209,7 +209,17 @@ const MyStatsCard: React.FC = () => {
   }, [taskData, filter, timeRange]);
 
   return (
-    <VStack gap={4} p={{ base: 2, md: 4 }} rounded="md" boxShadow="lg">
+    <VStack
+      gap={4}
+      p={{ base: 2, md: 4 }}
+      border="1px"
+      borderColor="gray.200"
+      borderRadius="md"
+      boxShadow="lg"
+    >
+      <Text fontSize="lg" fontWeight="semibold">
+        My Stats
+      </Text>
       <ButtonGroup isAttached variant="outline">
         <Button
           onClick={() => setTimeRange("day")}

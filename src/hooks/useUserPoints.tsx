@@ -2,7 +2,7 @@ import { Goal } from "@/atoms/goalsAtom";
 import { Task } from "@/atoms/tasksAtom";
 import { userMilestoneState, userPointsState } from "@/atoms/userPointsAtom";
 import { firestore } from "@/firebase/clientApp";
-import { Flex, Icon, Text, useToast } from "@chakra-ui/react";
+import { CloseButton, Flex, Icon, Text, useToast } from "@chakra-ui/react";
 import { FiAward } from "react-icons/fi";
 import {
   differenceInDays,
@@ -15,23 +15,31 @@ import { doc, getDoc, setDoc } from "firebase/firestore";
 import { useEffect } from "react";
 import { useRecoilState } from "recoil";
 
-const milestones = [
+export const milestones = [
   {
     points: 100,
     badge: "Bronze",
+    color: "orange.400",
     notification: "Congratulations! You've reached the bronze level.",
   },
   {
     points: 200,
     badge: "Silver",
+    color: "gray.400",
     notification: "Amazing! You've unlocked the silver badge.",
   },
   {
     points: 500,
     badge: "Gold",
+    color: "yellow.400",
     notification: "Fantastic! You've achieved the gold status.",
   },
-  // Add more milestones as needed
+  {
+    points: 1000,
+    badge: "Rhodium",
+    color: "blue.400",
+    notification: "Incredible! You've reached the rhodium level.",
+  },
 ];
 
 const useUserPoints = (user: User) => {
@@ -128,7 +136,7 @@ const useUserPoints = (user: User) => {
           duration: 7000,
           isClosable: true,
           position: "top-right",
-          render: () => (
+          render: ({ onClose }) => (
             <Flex
               direction="column"
               justify="center"
@@ -145,7 +153,10 @@ const useUserPoints = (user: User) => {
               <Text fontSize="lg" fontWeight="bold" mb={2}>
                 Milestone Reached!
               </Text>
-              <Text textAlign="center">{milestone.notification}</Text>
+              <Text textAlign="center" mb={2}>
+                {milestone.notification}
+              </Text>
+              <CloseButton onClick={onClose} />
             </Flex>
           ),
         });
