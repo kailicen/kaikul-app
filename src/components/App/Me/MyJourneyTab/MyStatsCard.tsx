@@ -73,7 +73,7 @@ const groupData = (
         if (!acc[date]) acc[date] = [];
         acc[date].push(task);
         return acc;
-      }, {});
+      }, groupedData); // Note that we are passing groupedData here instead of {}
       break;
     case "6months":
       groupedData = data.reduce<Record<string, Task[]>>((acc, task) => {
