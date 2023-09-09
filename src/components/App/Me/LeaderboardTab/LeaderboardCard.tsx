@@ -1,5 +1,14 @@
 import { useState, useEffect } from "react";
-import { VStack, Text, Box, Avatar, Badge, Flex } from "@chakra-ui/react";
+import {
+  VStack,
+  Text,
+  Box,
+  Avatar,
+  Badge,
+  Flex,
+  IconButton,
+  Button,
+} from "@chakra-ui/react";
 import {
   collection,
   doc,
@@ -10,8 +19,8 @@ import {
   query,
 } from "firebase/firestore";
 import { firestore } from "@/firebase/clientApp";
-import { TbSquareRoundedNumber1Filled } from "react-icons/tb";
 import { FaTrophy } from "react-icons/fa";
+import { RiRefreshLine } from "react-icons/ri";
 
 interface UserData {
   id: string;
@@ -19,74 +28,78 @@ interface UserData {
   points: number;
   displayName?: string; // Adding the displayName property
   photoURL?: string; // Adding the photoURL property
+  bio?: string;
 }
 
 const LeaderboardCard = () => {
   const [leaderboardData, setLeaderboardData] = useState<UserData[]>([]);
 
-  useEffect(() => {
-    const fetchLeaderboardData = async () => {
-      try {
-        // Step 1: Fetch top 10 user points data
-        const q = query(
-          collection(firestore, "userPoints"),
-          orderBy("points", "desc"),
-          limit(10)
-        );
-        const querySnapshot = await getDocs(q);
-        const data: UserData[] = querySnapshot.docs.map((doc) => ({
-          id: doc.id,
-          ...doc.data(),
-        })) as UserData[];
+  const fetchLeaderboardData = async () => {
+    try {
+      // Step 1: Fetch top 10 user points data
+      const q = query(
+        collection(firestore, "userPoints"),
+        orderBy("points", "desc"),
+        limit(10)
+      );
+      const querySnapshot = await getDocs(q);
+      const data: UserData[] = querySnapshot.docs.map((doc) => ({
+        id: doc.id,
+        ...doc.data(),
+      })) as UserData[];
 
-        // Step 2: Fetch user details and user profiles for each user in the list
-        const userDetailsPromises = data.map((user) =>
-          getDoc(doc(firestore, "users", user.userId))
-        );
-        const userProfilesPromises = data.map((user) =>
-          getDoc(doc(firestore, "userProfiles", user.userId))
-        );
+      // Step 2: Fetch user details and user profiles for each user in the list
+      const userDetailsPromises = data.map((user) =>
+        getDoc(doc(firestore, "users", user.userId))
+      );
+      const userProfilesPromises = data.map((user) =>
+        getDoc(doc(firestore, "userProfiles", user.userId))
+      );
 
-        const [userDetails, userProfiles] = await Promise.all([
-          Promise.all(userDetailsPromises),
-          Promise.all(userProfilesPromises),
-        ]);
+      const [userDetails, userProfiles] = await Promise.all([
+        Promise.all(userDetailsPromises),
+        Promise.all(userProfilesPromises),
+      ]);
 
-        // Step 3: Create leaderboard data with user details and filter based on participation
-        const leaderboardDataWithUserDetails = data.map((user, index) => {
-          const userDetailData = userDetails[index].data();
-          const userProfileData = userProfiles[index].data();
+      // Step 3: Create leaderboard data with user details and filter based on participation
+      const leaderboardDataWithUserDetails = data.map((user, index) => {
+        const userDetailData = userDetails[index].data();
+        const userProfileData = userProfiles[index].data();
 
-          let displayName = "Anonymous";
-          let photoURL = "path/to/your/anonymous/icon.png"; // Set a default anonymous icon path
+        let displayName = "Anonymous";
+        let photoURL = "path/to/your/anonymous/icon.png"; // Set a default anonymous icon path
+        let bio = "";
 
-          if (userProfileData?.leaderboardParticipation) {
-            // Include actual user details only if they opted in for leaderboard participation
-            if (userDetailData) {
-              displayName =
-                userDetailData.displayName ||
-                userDetailData.email?.split("@")[0] ||
-                "Anonymous";
-              photoURL =
-                userDetailData.photoURL || "path/to/your/default/icon.png"; // Set a default icon path
-            }
+        if (userProfileData?.leaderboardParticipation) {
+          // Include actual user details only if they opted in for leaderboard participation
+          if (userDetailData) {
+            displayName =
+              userDetailData.displayName ||
+              userDetailData.email?.split("@")[0] ||
+              "Anonymous";
+            photoURL =
+              userDetailData.photoURL || "path/to/your/default/icon.png"; // Set a default icon path
+            bio = userProfileData.bio || "Newbie Explorer";
           }
+        }
 
-          return {
-            ...user,
-            displayName,
-            photoURL,
-          };
-        });
+        return {
+          ...user,
+          displayName,
+          photoURL,
+          bio,
+        };
+      });
 
-        // Step 4: Update the state with the final list of users to display on the leaderboard
-        setLeaderboardData(leaderboardDataWithUserDetails);
-      } catch (error) {
-        console.error("Error fetching leaderboard data: ", error);
-      }
-    };
+      // Step 4: Update the state with the final list of users to display on the leaderboard
+      setLeaderboardData(leaderboardDataWithUserDetails);
+    } catch (error) {
+      console.error("Error fetching leaderboard data: ", error);
+    }
+  };
 
-    fetchLeaderboardData();
+  useEffect(() => {
+    fetchLeaderboardData(); // Calling the function on component mount
   }, []);
 
   return (
@@ -99,9 +112,26 @@ const LeaderboardCard = () => {
       boxShadow="lg"
       w="100%"
     >
-      <Text fontSize="lg" fontWeight="semibold">
-        Leaderboard
-      </Text>
+      <Flex
+        justifyContent="center"
+        w="100%"
+        alignItems="center"
+        position="relative"
+      >
+        <Text fontSize="lg" fontWeight="semibold">
+          Leaderboard
+        </Text>
+        <Button
+          rightIcon={<RiRefreshLine />}
+          onClick={fetchLeaderboardData}
+          size="sm"
+          variant="outline"
+          position="absolute"
+          right={0}
+        >
+          Refresh
+        </Button>
+      </Flex>
       {leaderboardData.length > 0 ? (
         leaderboardData.map((user, index) => (
           <Box
@@ -152,7 +182,18 @@ const LeaderboardCard = () => {
                 src={user.photoURL || undefined}
                 mr={2}
               />
-              <Text>{user.displayName}</Text>
+              <Flex
+                direction="column"
+                display={{ base: "none", lg: "flex" }}
+                fontSize="9pt"
+                align="flex-start"
+                mr={8}
+              >
+                <Text fontWeight={700}>{user.displayName}</Text>
+                <Flex>
+                  <Text color="gray.500">{user.bio}</Text>
+                </Flex>
+              </Flex>
             </Flex>
             <Badge colorScheme="purple">{user.points} K-Points</Badge>
           </Box>

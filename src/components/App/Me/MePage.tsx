@@ -13,7 +13,7 @@ import OnboardingModal from "@/components/Modal/Me/OnboardingModal";
 import { User } from "firebase/auth";
 import { useUserProfile } from "@/hooks/useUserProfile";
 import { useUserProfileAddition } from "@/hooks/useUserProfileAddition";
-import SelfDiscovery from "./SelfDiscovery";
+import SelfDiscovery from "./SelfDiscoveryTab/SelfDiscovery";
 import MyJourney from "./MyJourneyTab/MyJourney";
 import Leaderboard from "./LeaderboardTab/Leaderboard";
 

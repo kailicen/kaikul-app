@@ -37,13 +37,14 @@ const ProfilePreviewModal: React.FC<Props> = ({
         <ModalCloseButton />
         <ModalBody>
           <Text fontWeight="bold" mb={1}>
-            🌟 Meet {user.displayName ? user.displayName : user.email} 🌟
+            🌟 Meet{" "}
+            {user.displayName ? user.displayName : user.email?.split("@")[0]} 🌟
           </Text>
 
           {profile.selfIntroduction && (
             <>
               <Text fontWeight="bold" mt={2}>
-                📝 Introduction:
+                Introduction:
               </Text>
               <Text>{profile.selfIntroduction}</Text>
             </>
@@ -52,7 +53,7 @@ const ProfilePreviewModal: React.FC<Props> = ({
           {profile.domains && profile.domains.length && (
             <>
               <Text fontWeight="bold" mt={2}>
-                🚀 Domains that Inspire Me:
+                Domains that Inspire Me:
               </Text>
               <Text>{(profile.domains as string[]).join(", ")}</Text>
             </>
@@ -61,7 +62,7 @@ const ProfilePreviewModal: React.FC<Props> = ({
           {profile.biggestGoal && (
             <>
               <Text fontWeight="bold" mt={2}>
-                🎯 My Ultimate Goal:
+                My Ultimate Goal:
               </Text>
               <Text>{profile.biggestGoal}</Text>
             </>
@@ -70,7 +71,7 @@ const ProfilePreviewModal: React.FC<Props> = ({
           {profile.challenges && (
             <>
               <Text fontWeight="bold" mt={2}>
-                🚧 Challenges I&apos;m Overcoming:
+                Challenges I&apos;m Overcoming:
               </Text>
               <Text>{profile.challenges}</Text>
             </>

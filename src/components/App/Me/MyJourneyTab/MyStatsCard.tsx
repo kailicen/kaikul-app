@@ -25,6 +25,7 @@ import {
   startOfDay,
   startOfMonth,
   startOfWeek,
+  subDays,
   subMonths,
 } from "date-fns";
 import React, { useEffect, useState } from "react";
@@ -135,39 +136,33 @@ const MyStatsCard: React.FC = () => {
 
   useEffect(() => {
     let start: Date;
-    let end: Date;
 
     const now = new Date();
+    let end: Date = new Date(now); // Setting end to the current date and time
 
     switch (timeRange) {
       case "day":
         start = startOfDay(now);
-        end = endOfDay(now);
         break;
 
       case "week":
-        start = startOfWeek(now, { weekStartsOn: 1 });
-        end = endOfWeek(now, { weekStartsOn: 1 });
+        start = subDays(now, 6); // Go back 7 days from now
         break;
 
       case "month":
-        start = startOfMonth(now);
-        end = endOfMonth(now);
+        start = subMonths(now, 1); // Go back 1 month from now
         break;
 
       case "6months":
-        start = startOfMonth(subMonths(now, 6));
-        end = endOfMonth(now);
+        start = subMonths(now, 6); // Go back 6 months from now
         break;
 
       case "year":
-        start = startOfMonth(subMonths(now, 12));
-        end = endOfYear(now);
+        start = subMonths(now, 12); // Go back 12 months from now
         break;
 
       default:
         start = new Date();
-        end = new Date();
     }
 
     const fetchStatistics = async () => {

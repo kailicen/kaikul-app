@@ -20,6 +20,8 @@ import {
   TagLabel,
   Textarea,
   Switch,
+  FormHelperText,
+  Input,
 } from "@chakra-ui/react";
 import { UserProfile } from "@/atoms/userProfileAtom";
 import { useFormik } from "formik";
@@ -76,6 +78,12 @@ const EditProfileDrawer: React.FC<Props> = ({
       if (values.buddyOrSolo === "buddy") {
         if (!values.selfIntroduction) {
           errors.selfIntroduction = "Self Introduction is required.";
+        }
+      }
+      if (values.bio) {
+        const wordCount = values.bio.trim().split(/\s+/).length;
+        if (wordCount > 2) {
+          errors.bio = "This must be less than 2 words.";
         }
       }
 
@@ -245,6 +253,23 @@ const EditProfileDrawer: React.FC<Props> = ({
                         );
                       }}
                     />
+                    <FormHelperText ml={4}>
+                      If not, you will appear anonymous on the leaderboard.
+                    </FormHelperText>
+                  </FormControl>
+
+                  {/* bio here */}
+                  <FormControl
+                    isInvalid={!!(formik.touched.bio && formik.errors.bio)}
+                    mt={4}
+                  >
+                    <FormLabel>Describe yourself in 2 words</FormLabel>
+                    <Input
+                      placeholder="E.g., Adventurous Innovator, Gentle Soul, Nature Lover"
+                      {...formik.getFieldProps("bio")}
+                      value={formik.values.bio}
+                    />
+                    <FormErrorMessage>{formik.errors.bio}</FormErrorMessage>
                   </FormControl>
                 </>
               )}

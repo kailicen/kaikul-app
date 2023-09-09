@@ -6,6 +6,8 @@ import {
   Flex,
   Box,
   VStack,
+  Tag,
+  TagLabel,
 } from "@chakra-ui/react";
 import { UserProfile } from "@/atoms/userProfileAtom";
 import { useRouter } from "next/router";
@@ -43,37 +45,40 @@ const MyJourneyCard: React.FC<Props> = ({ profile, onEdit }) => {
       w="full"
     >
       <Box>
-        <Text>My Focus Domains: </Text>
-        <Text
-          fontSize={{ base: "lg", md: "xl" }}
-          color="#4130AC"
-          fontWeight="semibold"
-          display="block"
-        >
-          {profile.domains.join(", ")}
-        </Text>
+        <Text fontWeight="semibold">My Focus Domains: </Text>
+        <Flex wrap="wrap">
+          {profile.domains.map((domain, index) => (
+            <Tag key={index} borderRadius="full" colorScheme="purple" m={1}>
+              <TagLabel>{domain}</TagLabel>
+            </Tag>
+          ))}
+        </Flex>
       </Box>
       <Box>
-        <Text>My Ultimate Goal:</Text>
-        <Text
-          fontSize={{ base: "lg", md: "xl" }}
+        <Text fontWeight="semibold">My Ultimate Goal:</Text>
+        <Box
+          borderLeft="2px solid #4130AC"
+          pl={4}
+          mt={2}
+          fontStyle="italic"
           color="#4130AC"
-          fontWeight="semibold"
-          display="block"
+          fontSize={{ base: "md", md: "lg" }}
         >
-          {profile.biggestGoal}
-        </Text>
+          “{profile.biggestGoal}”
+        </Box>
       </Box>
       <Box>
-        <Text>My Challenges:</Text>
-        <Text
-          fontSize={{ base: "lg", md: "xl" }}
-          color="#4130AC"
-          fontWeight="semibold"
-          display="block"
+        <Text fontWeight="semibold">My Challenges:</Text>
+        <Box
+          borderLeft="2px solid #ff5e0e"
+          pl={4}
+          mt={2}
+          fontStyle="italic"
+          color="#ff5e0e"
+          fontSize={{ base: "md", md: "lg" }}
         >
-          {profile.challenges}
-        </Text>
+          “{profile.challenges}”
+        </Box>
       </Box>
 
       <Flex mt={3} gap={{ base: 1, md: 2 }}>

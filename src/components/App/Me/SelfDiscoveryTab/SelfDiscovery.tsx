@@ -1,18 +1,29 @@
+import {
+  Box,
+  Button,
+  Heading,
+  Text,
+  VStack,
+  useDisclosure,
+  Collapse,
+  Flex,
+  Tooltip,
+  Icon,
+  Grid,
+} from "@chakra-ui/react";
 import React, { useState } from "react";
-import { Grid, VStack, Text } from "@chakra-ui/react";
-import { UserProfile } from "@/atoms/userProfileAtom";
-import MyJourneyCard from "./MyJourneyCard";
-import MyStatsCard from "./MyStatsCard";
-import MyMilestoneCard from "./MyMilestoneCard";
+import { UserProfileAddition } from "@/atoms/userProfileAdditionAtom";
+import EditSelfDiscoveryDrawer from "../Drawers/EditSelfDiscoveryDrawer";
 import { InfoIcon } from "@chakra-ui/icons";
-import MyJourneyModal from "@/components/Modal/Instructions/MyJourneyModal";
+import SelfDiscoveryModal from "@/components/Modal/Instructions/SelfDiscoveryModal";
+import SelfDiscoveryCard from "./SelfDiscoveryCard";
 
 type Props = {
-  profile: UserProfile;
-  onEdit: (updatedProfile: UserProfile) => void;
+  profileAddition: UserProfileAddition;
+  onEdit: (updatedProfileAddition: UserProfileAddition) => void;
 };
 
-const MyJourney: React.FC<Props> = ({ profile, onEdit }) => {
+function SelfDiscovery({ profileAddition, onEdit }: Props) {
   const [isInstructionOpen, setIsInstructionOpen] = useState(false);
 
   const handleInstructionOpen = () => {
@@ -26,7 +37,7 @@ const MyJourney: React.FC<Props> = ({ profile, onEdit }) => {
   return (
     <VStack width="100%">
       <Text fontWeight="bold" fontSize="lg" mb="2">
-        My Life&apos;s Journey{" "}
+        Catalyst Tools for My Journey{" "}
         <InfoIcon
           color="purple.500"
           onClick={handleInstructionOpen}
@@ -34,25 +45,28 @@ const MyJourney: React.FC<Props> = ({ profile, onEdit }) => {
           cursor="pointer"
         />
       </Text>
+      <Text fontWeight="semibold">More to come...</Text>
+
       {/* Use the modal component here */}
-      <MyJourneyModal
+      <SelfDiscoveryModal
         isOpen={isInstructionOpen}
         onClose={handleInstructionClose}
       />
+
       <Grid
         templateColumns={{ base: "1fr", lg: "1fr 1fr" }}
         gap={4}
         width="100%"
       >
         <VStack gap={2}>
-          <MyMilestoneCard />
-          <MyJourneyCard profile={profile} onEdit={onEdit} />
+          <SelfDiscoveryCard
+            profileAddition={profileAddition}
+            onEdit={onEdit}
+          />
         </VStack>
-
-        <MyStatsCard />
       </Grid>
     </VStack>
   );
-};
+}
 
-export default MyJourney;
+export default SelfDiscovery;
