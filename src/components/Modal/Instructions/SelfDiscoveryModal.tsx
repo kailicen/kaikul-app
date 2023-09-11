@@ -25,14 +25,22 @@ const SelfDiscoveryModal: React.FC<Props> = ({ isOpen, onClose }) => (
       <ModalCloseButton />
       <ModalBody>
         <Text fontWeight="bold" mb={2}>
-          Self-Discovery Modules:
+          1. Weekly Theme:
         </Text>
         <Text mb={4}>
-          Explore modules on core values, strengths, role models, and more, all
-          designed to foster personal growth.
+          Share and learn from others in our weekly themed exercises, a space to
+          put theories into action.
         </Text>
 
-        <Text mt={3}>Stay tuned for more enriching content.</Text>
+        <Text fontWeight="bold" mb={2}>
+          2. Modules:
+        </Text>
+        <Text mb={4}>
+          Explore core values, strengths, and more through curated modules for
+          personal growth.
+        </Text>
+
+        <Text mt={3}>Stay tuned for enriching content.</Text>
       </ModalBody>
       <ModalFooter justifyContent="center">
         <Button onClick={onClose}>Start Discovering</Button>

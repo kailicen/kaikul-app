@@ -14,6 +14,8 @@ import LoadingScreen from "@/components/LoadingScreen";
 import { Benefits } from "@/components/landing-page/benefits";
 import { WhatIsAP } from "@/components/landing-page/what-is-ap";
 import MePage from "@/components/App/Me/MePage";
+import { createClient } from "contentful";
+import { Theme } from "@/components/App/Me/SelfDiscoveryTab/ThemeOfTheWeekCard";
 
 const testimonials = [
   {
@@ -126,7 +128,11 @@ const benefits = [
   },
 ];
 
-export default function Home() {
+type Props = {
+  post: Theme;
+};
+
+export default function Home({ post }: Props) {
   const [user, loading, error] = useAuthState(auth);
 
   if (loading) {
@@ -151,7 +157,7 @@ export default function Home() {
 
       {user ? (
         <div className="pt-[80px] container mx-auto">
-          <MePage user={user} />
+          <MePage user={user} post={post} />
         </div>
       ) : (
         <>
@@ -220,4 +226,24 @@ export default function Home() {
       )}
     </div>
   );
+}
+
+export async function getStaticProps() {
+  const client = createClient({
+    space: process.env.CONTENTFUL_SPACE_ID!,
+    accessToken: process.env.CONTENTFUL_ACCESS_KEY!,
+  });
+
+  const res = await client.getEntries({
+    content_type: "theme",
+    order: ["-fields.date"], // This orders the results in descending order based on the date field
+    limit: 1, // This limits the results to 1, so you only get the most recent post
+  });
+
+  return {
+    props: {
+      post: res.items[0], // The most recent post
+    },
+    revalidate: 1,
+  };
 }

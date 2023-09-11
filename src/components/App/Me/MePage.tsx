@@ -16,10 +16,11 @@ import { useUserProfileAddition } from "@/hooks/useUserProfileAddition";
 import SelfDiscovery from "./SelfDiscoveryTab/SelfDiscovery";
 import MyJourney from "./MyJourneyTab/MyJourney";
 import Leaderboard from "./LeaderboardTab/Leaderboard";
+import { Theme } from "./SelfDiscoveryTab/ThemeOfTheWeekCard";
 
-type Props = { user: User };
+type Props = { user: User; post: Theme };
 
-function MePage({ user }: Props) {
+function MePage({ user, post }: Props) {
   const [onboarding, setOnboarding] = useRecoilState(onboardingState);
   const { loading, profile, updateProfile } = useUserProfile(user);
   const { profileAddition, updateProfileAddition } =
@@ -54,6 +55,7 @@ function MePage({ user }: Props) {
                 <SelfDiscovery
                   profileAddition={profileAddition}
                   onEdit={updateProfileAddition}
+                  post={post}
                 />
               </TabPanel>
             </TabPanels>
