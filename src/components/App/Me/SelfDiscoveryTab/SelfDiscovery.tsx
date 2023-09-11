@@ -1,29 +1,18 @@
-import {
-  Box,
-  Button,
-  Heading,
-  Text,
-  VStack,
-  useDisclosure,
-  Collapse,
-  Flex,
-  Tooltip,
-  Icon,
-  Grid,
-} from "@chakra-ui/react";
+import { Text, VStack, Grid } from "@chakra-ui/react";
 import React, { useState } from "react";
 import { UserProfileAddition } from "@/atoms/userProfileAdditionAtom";
-import EditSelfDiscoveryDrawer from "../Drawers/EditSelfDiscoveryDrawer";
 import { InfoIcon } from "@chakra-ui/icons";
 import SelfDiscoveryModal from "@/components/Modal/Instructions/SelfDiscoveryModal";
 import SelfDiscoveryCard from "./SelfDiscoveryCard";
+import ThemeOfTheWeekCard, { Theme } from "./ThemeOfTheWeekCard";
 
 type Props = {
   profileAddition: UserProfileAddition;
   onEdit: (updatedProfileAddition: UserProfileAddition) => void;
+  post: Theme;
 };
 
-function SelfDiscovery({ profileAddition, onEdit }: Props) {
+function SelfDiscovery({ profileAddition, onEdit, post }: Props) {
   const [isInstructionOpen, setIsInstructionOpen] = useState(false);
 
   const handleInstructionOpen = () => {
@@ -37,7 +26,7 @@ function SelfDiscovery({ profileAddition, onEdit }: Props) {
   return (
     <VStack width="100%">
       <Text fontWeight="bold" fontSize="lg" mb="2">
-        Catalyst Tools for My Journey{" "}
+        Weekly Theme Exercise{" "}
         <InfoIcon
           color="purple.500"
           onClick={handleInstructionOpen}
@@ -45,7 +34,6 @@ function SelfDiscovery({ profileAddition, onEdit }: Props) {
           cursor="pointer"
         />
       </Text>
-      <Text fontWeight="semibold">More to come...</Text>
 
       {/* Use the modal component here */}
       <SelfDiscoveryModal
@@ -54,10 +42,11 @@ function SelfDiscovery({ profileAddition, onEdit }: Props) {
       />
 
       <Grid
-        templateColumns={{ base: "1fr", lg: "1fr 1fr" }}
+        templateColumns={{ base: "1fr", lg: "2fr 1fr" }}
         gap={4}
         width="100%"
       >
+        <ThemeOfTheWeekCard post={post} />
         <VStack gap={2}>
           <SelfDiscoveryCard
             profileAddition={profileAddition}

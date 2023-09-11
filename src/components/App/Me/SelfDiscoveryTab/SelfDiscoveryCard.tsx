@@ -23,25 +23,33 @@ const SelfDiscoveryCard: React.FC<Props> = ({ profileAddition, onEdit }) => {
       boxShadow="lg"
       p={6}
       rounded="md"
-      align="start"
       border="1px"
       borderColor="gray.200"
       w="full"
     >
+      <Text fontSize="lg" fontWeight="semibold">
+        Modules
+      </Text>
       <VStack spacing={3} w="100%">
-        <Button onClick={() => handleButtonClick("values")}>
+        <Button w="100%" onClick={() => handleButtonClick("values")}>
           Discovering Your Core Values
         </Button>
-        <Button onClick={() => handleButtonClick("strengths")}>
+        <Button w="100%" onClick={() => handleButtonClick("strengths")}>
           Discovering Your Strengths
         </Button>
-        <Button onClick={() => handleButtonClick("accountabilityMethods")}>
+        <Button
+          w="100%"
+          onClick={() => handleButtonClick("accountabilityMethods")}
+        >
           Understanding Accountability
         </Button>
-        <Button onClick={() => handleButtonClick("roleModels")}>
+        <Button w="100%" onClick={() => handleButtonClick("roleModels")}>
           Recognizing Role Models
         </Button>
-        <Button onClick={() => handleButtonClick("personalGrowthInvestments")}>
+        <Button
+          w="100%"
+          onClick={() => handleButtonClick("personalGrowthInvestments")}
+        >
           Investing in Personal Growth
         </Button>
       </VStack>
