@@ -16,7 +16,7 @@ const AuthenticatedHeader: React.FC<HeaderProps> = ({ user }) => {
       } top-0 w-full border-b bg-background p-3 flex justify-between px-5 md:px-20 mx-auto z-20 items-center`}
     >
       <div
-        className="font-bold text-xl md:text-2xl 3xl:text-3xl hover:cursor-pointer flex flex-row gap-3"
+        className="font-bold text-xl md:text-2xl 3xl:text-3xl hover:cursor-pointer flex flex-row gap-3 dark:text-secondary-foreground"
         onClick={() => router.push("/")}
       >
         <img

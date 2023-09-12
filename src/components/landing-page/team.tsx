@@ -33,7 +33,7 @@ export function Team({ clients }: TeamProps) {
                 <AvatarImage src={client.avatar} alt={client.name} />
                 <AvatarFallback>{client.name[0]}</AvatarFallback>
               </Avatar>
-              <h3 className="highlight-underline z-10 text-lg font-bold">
+              <h3 className="highlight-underline z-10 text-lg font-bold dark:text-secondary-foreground">
                 <a href={client.link} target="_blank" rel="noopener noreferrer">
                   {client.name}
                 </a>
