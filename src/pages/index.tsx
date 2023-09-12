@@ -156,7 +156,7 @@ export default function Home({ post }: Props) {
       <AuthenticatedHeader user={user} />
 
       {user ? (
-        <div className="pt-[80px] container mx-auto border-red-500 border">
+        <div className="pt-[80px] container mx-auto">
           <MePage user={user} post={post} />
         </div>
       ) : (

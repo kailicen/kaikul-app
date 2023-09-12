@@ -110,9 +110,7 @@ const SlackShareButton: React.FC<SlackShareButtonProps> = ({
         label="Your profile including your goal and challenges will be shared in the #daily-sprint channel on Slack."
         aria-label="A tooltip"
       >
-        <Button onClick={previewAndShareProfile}>
-          Share My Profile on Slack
-        </Button>
+        <Button onClick={previewAndShareProfile}>Share on Slack</Button>
       </Tooltip>
 
       <ProfilePreviewModal
