@@ -25,10 +25,10 @@ export function Benefits({ benefits }: BenefitsProps) {
                 index % 2 === 1 ? "md:order-last" : ""
               }`}
             >
-              <h2 className="mb-1 text-base font-bold text-[#4130AC] md:mb-3 md:text-2xl">
+              <h2 className="mb-1 text-base font-bold text-[#4130AC] dark:text-[#FF5E0E] md:mb-3 md:text-2xl">
                 {benefit.title}
               </h2>
-              <p className="text-sm text-gray-600 md:text-base">
+              <p className="text-sm text-gray-600 dark:text-white md:text-base">
                 {benefit.content}
               </p>
             </div>
