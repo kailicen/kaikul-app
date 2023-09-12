@@ -39,7 +39,7 @@ export function Team({ clients }: TeamProps) {
                 </a>
               </h3>
 
-              <p className="text-muted-foreground">{client.introduction}</p>
+              <p className="text-muted-foreground text-center">{client.introduction}</p>
             </div>
           </div>
         ))}

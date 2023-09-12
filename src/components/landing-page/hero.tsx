@@ -14,10 +14,10 @@ export function Hero() {
     >
       <div className="container flex max-w-[64rem] flex-col items-center gap-4 text-center mx-auto">
         <h1
-          className="font-heading font-bold text-3xl sm:text-5xl md:text-6xl lg:text-7xl"
+          className="font-heading font-bold text-3xl sm:text-5xl md:text-6xl lg:text-7xl leading-loose"
           id="mainHeader"
         >
-          Reflective Goal Tracking And{" "}
+          Reflective Goal Tracking and{" "}
           <span className="gradient-text">Accountability</span>, Simplified!
         </h1>
 

@@ -59,7 +59,12 @@ const AnswersComponent = ({ user, theme, question }: Props) => {
       w="100%"
     >
       {!userAnswer && (
-        <Button onClick={() => setDrawerOpen(true)}>Add Your Answer</Button>
+        <Button 
+          className="mt-4 mb-2 py-4"
+          onClick={() => setDrawerOpen(true)}
+        >
+          Add Your Answer
+        </Button>
       )}
 
       {userAnswer && (
