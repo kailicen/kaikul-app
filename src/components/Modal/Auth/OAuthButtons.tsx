@@ -15,12 +15,13 @@ const OAuthButtons: React.FC = () => {
         variant="oauth"
         mb={2}
         isLoading={loading}
+        className="hover:text-muted-foreground"
         onClick={() => signInWithGoogle()}
       >
         <Image src="/img/googlelogo.png" height="20px" mr={4} />
         Continue with Google
       </Button>
-      {error && <Text>{error.message}</Text>}
+      {error && <Text className="text-destructive text-center">{error.message}</Text>}
     </Flex>
   );
 };

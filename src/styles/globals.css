@@ -21,7 +21,7 @@
   .contactInput {
     @apply outline-none bg-gray-100 rounded-sm border-b px-6 py-4 border-gray-300
     text-gray-900 placeholder-gray-500 transition-all focus:border-violet-400/40
-     hover:border-violet-400/40;
+    hover:border-violet-400/40;
   }
   .cardHover {
     @apply hover:bg-violet-300 hover:shadow-lg 
