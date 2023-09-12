@@ -114,10 +114,10 @@ const AnswersComponent = ({ user, theme, question }: Props) => {
             mr={4}
           />
           <Box>
-            <Text fontSize="sm" color="gray.500">
+            <Text fontSize="sm" color="gray.900">
               {answer.displayName || "Anonymous User"}
             </Text>
-            <Text>{answer.answer}</Text>
+            <Text color="gray.500">{answer.answer}</Text>
           </Box>
         </Box>
       ))}
