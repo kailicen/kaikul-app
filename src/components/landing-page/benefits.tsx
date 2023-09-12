@@ -41,6 +41,11 @@ export function Benefits({ benefits }: BenefitsProps) {
             </div>
           </div>
         ))}
+        <iframe
+          className="my-10 h-[300px] w-full px-1 md:h-[450px] md:w-[800px]"
+          src="https://www.loom.com/embed/2b68e27676724275a7b17970f3b10a83"
+          allowFullScreen
+        ></iframe>
       </div>
     </section>
   );

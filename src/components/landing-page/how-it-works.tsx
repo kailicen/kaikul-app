@@ -140,12 +140,6 @@ export function HowItWorks() {
           </div>
         )}
       </div>
-
-      {/* <iframe
-        className="my-10 h-[300px] w-full px-1 md:h-[450px] md:w-[800px]"
-        src="https://www.loom.com/embed/5d10f1c8e1fa48e3b6ebacf71e5b0390"
-        allowFullScreen
-      ></iframe> */}
     </section>
   );
 }
