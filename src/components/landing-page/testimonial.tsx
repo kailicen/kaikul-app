@@ -31,7 +31,7 @@ export function Testimonial({ testimonials }: TestimonialProps) {
               key={index}
               className="my-2 flex max-w-[600px] flex-col items-center rounded-lg bg-[#e4dff3] px-6 py-4 shadow-md md:w-[600px]"
             >
-              <div className="highlight-underline z-10 mb-4 text-lg font-semibold">
+              <div className="highlight-underline z-10 mb-4 text-lg font-semibold dark:text-secondary-foreground">
                 &ldquo;{testimonial.keyword}&rdquo;
               </div>
               <div className="mb-4 text-gray-600">
