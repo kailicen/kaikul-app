@@ -1,5 +1,12 @@
 import React, { useState } from "react";
-import { Box, VStack, Text, Button, Flex } from "@chakra-ui/react";
+import {
+  Box,
+  VStack,
+  Text,
+  Button,
+  Flex,
+  useColorMode,
+} from "@chakra-ui/react";
 import { BLOCKS, MARKS } from "@contentful/rich-text-types";
 import { Document } from "@contentful/rich-text-types";
 import ThemeContentModal from "@/components/Modal/Me/ThemeContentModal";
@@ -28,6 +35,7 @@ const ThemeOfTheWeekCard: React.FC<Props> = ({ post }) => {
   const [user, loading] = useAuthState(auth);
   const { title, date, content, question } = post.fields;
   const [isContentModalOpen, setContentModalOpen] = useState(false);
+  const { colorMode } = useColorMode();
 
   const options = {
     renderNode: {
@@ -49,8 +57,9 @@ const ThemeOfTheWeekCard: React.FC<Props> = ({ post }) => {
       px={{ base: 3, md: 6 }}
       rounded="md"
       border="1px"
-      borderColor="gray.200"
+      borderColor={colorMode === "light" ? "gray.200" : "gray.700"}
       w="full"
+      bg={colorMode === "light" ? "white" : "gray.800"}
     >
       <Flex
         justifyContent="center"
