@@ -29,13 +29,8 @@ function MePage({ user, post }: Props) {
   return (
     <>
       {!loading && profile && (
-        <Flex direction="column" alignItems="center" justifyContent="center">
-          <Tabs
-            colorScheme="purple"
-            variant="enclosed"
-            width={{ base: "auto", lg: "100%" }}
-            mx="auto"
-          >
+        <Flex direction="column" width="100%">
+          <Tabs colorScheme="purple" variant="enclosed" width="100%" mx="auto">
             <TabList mb="1em" display="flex" justifyContent="center">
               <Tab>My Journey</Tab>
               <Tab>Leaderboard</Tab>
