@@ -17,7 +17,7 @@ export function Hero() {
           className="font-heading font-bold text-3xl sm:text-5xl md:text-6xl lg:text-7xl leading-loose"
           id="mainHeader"
         >
-          Reflective Goal Tracking And{" "}
+          Reflective Goal Tracking and{" "}
           <span className="gradient-text">Accountability</span>, Simplified!
         </h1>
 
