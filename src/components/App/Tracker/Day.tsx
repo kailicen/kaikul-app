@@ -299,7 +299,7 @@ const Day: React.FC<{ date: string; user: User }> = ({ date, user }) => {
       ))}
       {/* add a task */}
       <Flex align="center" gap={1}>
-        {tasks.length < 5 && (
+        {tasks.length < 10 && (
           <Icon
             as={MdAdd}
             color={isCurrentDay ? "#342552" : "gray.400"}

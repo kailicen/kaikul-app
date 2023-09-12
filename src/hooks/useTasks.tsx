@@ -29,7 +29,7 @@ const useTasks = (date: string, user: User) => {
     date: string,
     color: string
   ) => {
-    if (tasks.length < 5) {
+    if (tasks.length < 10) {
       const taskToAdd: Task = {
         id: "",
         text: task,
