@@ -3,6 +3,7 @@ import { Button, Tooltip, useToast } from "@chakra-ui/react";
 import { UserProfile } from "@/atoms/userProfileAtom";
 import { User } from "firebase/auth";
 import ProfilePreviewModal from "@/components/Modal/Me/ProfilePreviewModal";
+import useUserPoints from "@/hooks/useUserPoints";
 
 type SlackShareButtonProps = {
   profile: UserProfile;
@@ -18,6 +19,7 @@ const SlackShareButton: React.FC<SlackShareButtonProps> = ({
   const toast = useToast();
 
   const [isPreviewModalOpen, setIsPreviewModalOpen] = useState(false);
+  const { updatePoints } = useUserPoints(user);
 
   const previewAndShareProfile = () => {
     setIsPreviewModalOpen(true);
@@ -74,6 +76,9 @@ const SlackShareButton: React.FC<SlackShareButtonProps> = ({
       if (!data.ok) {
         throw new Error(data.error);
       }
+
+      // Update user points after successful sharing
+      await updatePoints(2);
 
       // Display a success toast
       toast({

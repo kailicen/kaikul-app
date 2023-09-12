@@ -29,7 +29,12 @@ function MePage({ user, post }: Props) {
   return (
     <>
       {!loading && profile && (
-        <Flex direction="column" alignItems="center" justifyContent="center">
+        <Flex
+          direction="column"
+          alignItems="center"
+          justifyContent="center"
+          width="100%"
+        >
           <Tabs
             colorScheme="purple"
             variant="enclosed"
