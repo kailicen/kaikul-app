@@ -4,11 +4,14 @@ import {
   AccordionTrigger,
   AccordionContent,
 } from "@/components/ui/accordion";
+import { ExternalLinkIcon } from "@chakra-ui/icons";
+import { Link } from "@chakra-ui/react";
 
 interface FAQ {
   id: number;
   question: string;
   answer: string;
+  link?: string;
 }
 
 interface FAQProps {
@@ -41,7 +44,16 @@ export function FAQ({ faqs }: FAQProps) {
                 {item.question}
               </AccordionTrigger>
               <AccordionContent className="text-left text-base">
-                {item.answer}
+                {item.answer}{" "}
+                {item.link && ( // Check if "link" exists in the FAQ item
+                  <Link
+                    href={item.link}
+                    isExternal
+                    style={{ color: "#ff5e0e" }}
+                  >
+                    How-To Guide <ExternalLinkIcon mx="2px" />
+                  </Link>
+                )}
               </AccordionContent>
             </AccordionItem>
           ))}
