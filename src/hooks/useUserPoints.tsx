@@ -223,16 +223,18 @@ const useUserPoints = (user: User) => {
 
   useEffect(() => {
     const fetchUserPointsFromFirebase = async () => {
-      const userPointsDocRef = doc(firestore, "userPoints", user.uid);
-      try {
-        const docSnapshot = await getDoc(userPointsDocRef);
-        if (docSnapshot.exists()) {
-          const data = docSnapshot.data();
-          setUserPoints(data?.points || 0); // Set the user's points if found, else default to 0
-          setAchievedMilestones(data?.milestones || []); // Set the user's milestones if found, else default to empty array
+      if (user) {
+        const userPointsDocRef = doc(firestore, "userPoints", user.uid);
+        try {
+          const docSnapshot = await getDoc(userPointsDocRef);
+          if (docSnapshot.exists()) {
+            const data = docSnapshot.data();
+            setUserPoints(data?.points || 0); // Set the user's points if found, else default to 0
+            setAchievedMilestones(data?.milestones || []); // Set the user's milestones if found, else default to empty array
+          }
+        } catch (error) {
+          console.error("Error fetching user data from Firebase:", error);
         }
-      } catch (error) {
-        console.error("Error fetching user data from Firebase:", error);
       }
     };
 
