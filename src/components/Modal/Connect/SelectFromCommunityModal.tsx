@@ -26,6 +26,9 @@ import {
   getDoc,
   doc,
   orderBy,
+  limit,
+  startAfter,
+  where,
 } from "firebase/firestore";
 import { auth, firestore } from "../../../firebase/clientApp"; // Change this to your firebase config file
 import { useAuthState } from "react-firebase-hooks/auth";
@@ -58,8 +61,102 @@ const SelectFromCommunityModal: React.FC<SelectFromCommunityModalProps> = ({
   const [searchResults, setSearchResults] = useState<User[]>([]);
   const toast = useToast();
 
-  const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
+  const [lastUser, setLastUser] = useState<null | User>(null);
+  const [isFetching, setIsFetching] = useState<boolean>(false);
+
+  const fetchData = async () => {
+    try {
+      if (currentUser && !isFetching) {
+        setIsFetching(true);
+
+        let q = query(
+          collection(firestore, "users"),
+          orderBy("displayName"), // Make sure to create an index on this field in your Firestore database
+          limit(10) // you can change this limit
+        );
+
+        if (lastUser) {
+          q = query(
+            collection(firestore, "users"),
+            orderBy("displayName"), // Maintain this order in your query to work with startAfter
+            startAfter(lastUser.displayName), // Use a field that is being ordered by in your query
+            limit(10)
+          );
+        }
+
+        const querySnapshot = await getDocs(q);
+
+        const newUsers: User[] = querySnapshot.docs
+          .map((doc) => ({ ...doc.data(), uid: doc.id } as User))
+          .filter(
+            (user) =>
+              user.uid !== currentUser.uid &&
+              !currentUser.buddies?.includes(user.uid)
+          );
+
+        if (newUsers.length > 0) {
+          setLastUser(newUsers[newUsers.length - 1]);
+        }
+
+        setUsers((prevUsers) => [...prevUsers, ...newUsers]);
+        setSearchResults((prevResults) => [...prevResults, ...newUsers]);
+
+        setIsFetching(false);
+      }
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  };
+
+  useEffect(() => {
+    const scrollContainer = document.getElementById("scrollContainer");
+
+    const handleScroll = () => {
+      if (
+        scrollContainer &&
+        scrollContainer.scrollTop + scrollContainer.clientHeight >=
+          scrollContainer.scrollHeight - 200 &&
+        !isFetching // Add a check to ensure fetchData is not currently in progress
+      ) {
+        fetchData(); // Call fetchData directly when nearing the bottom
+      }
+    };
+
+    if (scrollContainer) {
+      scrollContainer.addEventListener("scroll", handleScroll);
+    }
+
+    return () => {
+      if (scrollContainer) {
+        scrollContainer.removeEventListener("scroll", handleScroll);
+      }
+    };
+  }, [isFetching]); // Add isFetching to the dependency array
+
+  useEffect(() => {
+    fetchData(); // Initial fetch
+  }, [currentUser]);
+
+  const handleChange = async (event: ChangeEvent<HTMLInputElement>) => {
     setSearchTerm(event.target.value);
+
+    if (event.target.value === "") {
+      setSearchResults(users);
+    } else {
+      const lowerCaseSearchTerm = event.target.value.toLowerCase();
+      let q = query(
+        collection(firestore, "users"),
+        where("displayName", ">=", lowerCaseSearchTerm),
+        where("displayName", "<=", lowerCaseSearchTerm + "\uf8ff")
+      );
+
+      const querySnapshot = await getDocs(q);
+      const newUsers: User[] = querySnapshot.docs.map(
+        (doc) => ({ ...doc.data(), uid: doc.id } as User)
+      );
+
+      setSearchResults(newUsers);
+    }
   };
 
   const handleSendRequest = async (user: User) => {
@@ -121,32 +218,32 @@ const SelectFromCommunityModal: React.FC<SelectFromCommunityModalProps> = ({
     }
   }, [user]);
 
-  useEffect(() => {
-    const fetchData = async () => {
-      console.log(currentUser);
-      if (currentUser) {
-        const q = query(collection(firestore, "users"));
-        const querySnapshot = await getDocs(q);
-        const users: User[] = querySnapshot.docs
-          .map(
-            (doc) =>
-              ({
-                ...doc.data(),
-                uid: doc.id,
-              } as User)
-          )
-          .filter(
-            (user) =>
-              user.uid !== currentUser.uid &&
-              !currentUser.buddies?.includes(user.uid)
-          ); // exclude the current user and his/her buddies from the users list
-        setUsers(users);
-        setSearchResults(users);
-      }
-    };
+  // useEffect(() => {
+  //   const fetchData = async () => {
+  //     console.log(currentUser);
+  //     if (currentUser) {
+  //       const q = query(collection(firestore, "users"));
+  //       const querySnapshot = await getDocs(q);
+  //       const users: User[] = querySnapshot.docs
+  //         .map(
+  //           (doc) =>
+  //             ({
+  //               ...doc.data(),
+  //               uid: doc.id,
+  //             } as User)
+  //         )
+  //         .filter(
+  //           (user) =>
+  //             user.uid !== currentUser.uid &&
+  //             !currentUser.buddies?.includes(user.uid)
+  //         ); // exclude the current user and his/her buddies from the users list
+  //       setUsers(users);
+  //       setSearchResults(users);
+  //     }
+  //   };
 
-    fetchData();
-  }, [currentUser]);
+  //   fetchData();
+  // }, [currentUser]);
 
   useEffect(() => {
     if (searchTerm === "") {
@@ -176,6 +273,7 @@ const SelectFromCommunityModal: React.FC<SelectFromCommunityModalProps> = ({
             onChange={handleChange}
           />
           <VStack
+            id="scrollContainer"
             mt={5}
             align="start"
             spacing={5}

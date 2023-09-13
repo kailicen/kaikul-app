@@ -5,18 +5,12 @@ import {
   AccordionIcon,
   AccordionItem,
   AccordionPanel,
-  Badge,
   Box,
-  Button,
   Heading,
   Link,
-  Stack,
   VStack,
   useDisclosure,
 } from "@chakra-ui/react";
-import AddBuddy from "./AddBuddy";
-import BuddyRequestsModal from "@/components/Modal/Connect/BuddyRequestsModal";
-import BuddyList from "./BuddyList";
 import { useRecoilValue } from "recoil";
 import { buddyRequestState } from "@/atoms/buddyRequestsAtom";
 import { User } from "firebase/auth";
@@ -112,7 +106,7 @@ function Connect({ user }: Props) {
       </Accordion>
       {/* The right part of the page */}
 
-      <Heading size="md" mt={3} mb={2}>
+      {/* <Heading size="md" mt={3} mb={2}>
         My Buddies
       </Heading>
       <Stack direction="row" justifyContent="space-between">
@@ -134,7 +128,7 @@ function Connect({ user }: Props) {
         </Button>
         <BuddyRequestsModal isOpen={isOpen} onClose={onClose} />
       </Stack>
-      <BuddyList buddyIds={buddyIds} user={user} />
+      <BuddyList buddyIds={buddyIds} user={user} /> */}
     </VStack>
   );
 }
