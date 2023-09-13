@@ -52,7 +52,8 @@ const faqs = [
     id: 1,
     question: "Who is KaiKul for and how do I get started?",
     answer:
-      "KaiKul is designed for anyone looking to improve themselves in meaningful ways. Whether you're aiming to meditate, read more, or prioritize tasks, our community and resources are here for you. To start: 1. Sign in and set your goals. 2. Share your daily sprint with our community. 3. Find an accountability partner and join our weekly meetups using the KaiKul framework.",
+      "KaiKul is designed for anyone looking to improve themselves in meaningful ways. To start: Go to our ",
+    link: "https://www.canva.com/design/DAFuQHGqA1Y/rIa9fyabkD0dnyBQh4ynKg/view",
   },
   {
     id: 2,
@@ -70,7 +71,7 @@ const faqs = [
     id: 4,
     question: "How is KaiKul evolving and improving?",
     answer:
-      "We're deeply committed to enhancing KaiKul based on user feedback. Expect continuous improvements, bug fixes, and the introduction of new features over time. For direct engagement and updates, we encourage our community to join the #feedback channel in our Slack community. It's a great place to share suggestions, stay informed, and connect with the KaiKul team.",
+      "We update weekly based on users' feedback, reach out and tell us what you need! ",
   },
   {
     id: 5,

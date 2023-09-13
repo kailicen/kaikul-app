@@ -17,13 +17,13 @@ export function Hero() {
           className="font-heading font-bold text-3xl sm:text-5xl md:text-6xl lg:text-7xl leading-loose"
           id="mainHeader"
         >
-          Reflective Goal Tracking and{" "}
-          <span className="gradient-text">Accountability</span>, Simplified!
+          KaiKul: Where <span className="text-[#4130AC]">Ownership</span> Meets{" "}
+          <span className="gradient-text">Purpose</span>
         </h1>
 
         <p className="max-w-[42rem] leading-normal text-muted-foreground sm:text-xl sm:leading-8">
-          KaiKul: Your digital platform for connecting accountability partners,
-          fostering self-discipline, and enabling consistent growth.
+          KaiKul is a personal development platform designed to foster conscious
+          living and nurture personal responsibility.
         </p>
         <div className="mt-4">
           <button
