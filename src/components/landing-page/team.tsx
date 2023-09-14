@@ -25,7 +25,7 @@ export function Team({ clients }: TeamProps) {
       <div className="mx-auto grid justify-center gap-4 sm:grid-cols-2 md:max-w-[64rem] md:grid-cols-3">
         {clients.map((client) => (
           <div
-            className="relative z-0 overflow-hidden rounded-lg bg-slate-50 p-2"
+            className="relative z-0 overflow-hidden rounded-lg bg-slate-50 dark:bg-gray-800 p-2"
             key={client.name}
           >
             <div className="flex min-h-[250px] flex-col items-center gap-4 rounded-md p-6">
@@ -33,13 +33,15 @@ export function Team({ clients }: TeamProps) {
                 <AvatarImage src={client.avatar} alt={client.name} />
                 <AvatarFallback>{client.name[0]}</AvatarFallback>
               </Avatar>
-              <h3 className="highlight-underline z-10 text-lg font-bold dark:text-secondary-foreground">
+              <h3 className="highlight-underline z-10 text-lg font-bold dark:text-gray-100">
                 <a href={client.link} target="_blank" rel="noopener noreferrer">
                   {client.name}
                 </a>
               </h3>
 
-              <p className="text-muted-foreground text-center">{client.introduction}</p>
+              <p className="text-muted-foreground text-center">
+                {client.introduction}
+              </p>
             </div>
           </div>
         ))}

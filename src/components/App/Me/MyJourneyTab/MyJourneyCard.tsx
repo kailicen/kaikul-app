@@ -8,6 +8,7 @@ import {
   VStack,
   Tag,
   TagLabel,
+  useColorMode,
 } from "@chakra-ui/react";
 import { UserProfile } from "@/atoms/userProfileAtom";
 import { useRouter } from "next/router";
@@ -20,6 +21,7 @@ type Props = {
 
 const MyJourneyCard: React.FC<Props> = ({ profile, onEdit }) => {
   const router = useRouter();
+  const { colorMode } = useColorMode();
 
   const {
     isOpen: isPersonalInfoOpen,
@@ -41,7 +43,8 @@ const MyJourneyCard: React.FC<Props> = ({ profile, onEdit }) => {
       rounded="md"
       align="start"
       border="1px"
-      borderColor="gray.200"
+      borderColor={colorMode === "light" ? "gray.200" : "gray.700"}
+      bg={colorMode === "light" ? "white" : "gray.800"}
       w="100%"
     >
       <Box>
@@ -61,7 +64,7 @@ const MyJourneyCard: React.FC<Props> = ({ profile, onEdit }) => {
           pl={4}
           mt={2}
           fontStyle="italic"
-          color="#4130AC"
+          color={colorMode === "light" ? "brand.500" : "brand.100"}
           fontSize={{ base: "md", md: "lg" }}
         >
           “{profile.biggestGoal}”

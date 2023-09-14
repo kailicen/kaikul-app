@@ -1,4 +1,5 @@
-import { ComponentStyleConfig } from "@chakra-ui/theme";
+import { ComponentStyleConfig } from "@chakra-ui/react";
+import { mode } from "@chakra-ui/theme-tools";
 
 export const Button: ComponentStyleConfig = {
   baseStyle: {
@@ -18,33 +19,32 @@ export const Button: ComponentStyleConfig = {
     },
   },
   variants: {
-    solid: {
-      color: "white",
-      bg: "#4130AC",
+    solid: (props) => ({
+      color: mode("white", "whiteAlpha.900")(props),
+      bg: mode("#4130AC", "#5140BD")(props),
       _hover: {
-        bg: "#5140BD",
+        bg: mode("#5140BD", "#4130AC")(props),
       },
-    },
-    outline: {
+    }),
+    outline: (props) => ({
       _hover: {
-        bg: "#8884d8",
+        bg: mode("#8884d8", "#7161a1")(props),
       },
-    },
-
-    ghost: {
-      color: "#4130AC",
+    }),
+    ghost: (props) => ({
+      color: mode("#4130AC", "whiteAlpha.900")(props),
       _hover: {
-        bg: "#ded9ff",
+        bg: mode("#ded9ff", "#7161a1")(props),
       },
-    },
-    oauth: {
+    }),
+    oauth: (props) => ({
       height: "34px",
       border: "1px solid",
-      borderColor: "gray.300",
+      borderColor: mode("gray.300", "gray.700")(props),
       _hover: {
-        bg: "gray.100",
+        bg: mode("gray.100", "gray.700")(props),
       },
-    },
+    }),
     icon: {
       height: "30px",
       width: "30px",

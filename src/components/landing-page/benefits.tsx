@@ -1,5 +1,5 @@
 import { ExternalLinkIcon } from "@chakra-ui/icons";
-import { Link } from "@chakra-ui/react";
+import { Link, useColorMode } from "@chakra-ui/react";
 
 interface Benefit {
   title: string;
@@ -12,6 +12,7 @@ interface BenefitsProps {
 }
 
 export function Benefits({ benefits }: BenefitsProps) {
+  const { colorMode } = useColorMode();
   return (
     <section
       id="benefits"
@@ -46,10 +47,10 @@ export function Benefits({ benefits }: BenefitsProps) {
         ))} */}
         <Link
           href="https://www.canva.com/design/DAFuQHGqA1Y/rIa9fyabkD0dnyBQh4ynKg/view"
-          fontSize="xl"
+          fontSize="2xl"
           fontWeight="bold"
           isExternal
-          style={{ color: "#4130AC" }}
+          color={colorMode === "light" ? "brand.500" : "brand.100"}
         >
           How-To Guide <ExternalLinkIcon mx="2px" />
         </Link>

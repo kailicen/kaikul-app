@@ -7,6 +7,7 @@ import {
   Flex,
   Icon,
   Avatar,
+  useColorMode,
 } from "@chakra-ui/react";
 import { useRecoilState } from "recoil";
 import { userPointsState } from "@/atoms/userPointsAtom";
@@ -24,6 +25,7 @@ const MyMilestoneCard = () => {
   const [user] = useAuthState(auth);
   const [userPoints] = useRecoilState(userPointsState);
   const { username, imagePreview } = useUserData(user as User);
+  const { colorMode } = useColorMode();
 
   const [isInstructionOpen, setIsInstructionOpen] = useState(false);
 
@@ -65,7 +67,8 @@ const MyMilestoneCard = () => {
       justifyContent="space-evenly"
       w="full"
       border="1px"
-      borderColor="gray.200"
+      borderColor={colorMode === "light" ? "gray.200" : "gray.700"}
+      bg={colorMode === "light" ? "white" : "gray.800"}
       borderRadius="md"
       boxShadow="lg"
     >
@@ -128,7 +131,7 @@ const MyMilestoneCard = () => {
         {nextMilestone && (
           <Box mt={6}>
             <Flex alignItems="center" justifyContent="space-between" mb={2}>
-              <Text color="gray.600">Next Milestone:</Text>
+              <Text color="gray.500">Next Milestone:</Text>
               <Badge colorScheme="purple">{nextMilestone.badge}</Badge>
             </Flex>
             <Progress
@@ -137,7 +140,7 @@ const MyMilestoneCard = () => {
               colorScheme="purple"
               borderRadius="md"
             />
-            <Text mt={2} textAlign="center" color="gray.600">
+            <Text mt={2} textAlign="center" color="gray.500">
               {userPoints} / {nextMilestone.points} points
             </Text>
           </Box>

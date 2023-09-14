@@ -8,6 +8,7 @@ import {
   Flex,
   Box,
   Tag,
+  useColorMode,
 } from "@chakra-ui/react";
 import { UserProfile } from "@/atoms/userProfileAtom";
 import EditProfileDrawer from "../Drawers/EditProfileDrawer";
@@ -26,6 +27,7 @@ const JourneyModeCard: React.FC<Props> = ({ profile, onEdit, user }) => {
     onOpen: openShareInfo,
     onClose: closeShareInfo,
   } = useDisclosure();
+  const { colorMode } = useColorMode();
 
   return (
     <VStack
@@ -35,7 +37,8 @@ const JourneyModeCard: React.FC<Props> = ({ profile, onEdit, user }) => {
       rounded="md"
       align="start"
       border="1px"
-      borderColor="gray.200"
+      borderColor={colorMode === "light" ? "gray.200" : "gray.700"}
+      bg={colorMode === "light" ? "white" : "gray.800"}
       w="full"
     >
       <Box>
@@ -56,7 +59,7 @@ const JourneyModeCard: React.FC<Props> = ({ profile, onEdit, user }) => {
             pl={4}
             mt={2}
             fontStyle="italic"
-            color="#4130AC"
+            color={colorMode === "light" ? "brand.500" : "brand.100"}
           >
             “{profile.selfIntroduction}”
           </Box>
