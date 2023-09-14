@@ -29,22 +29,24 @@ export function Testimonial({ testimonials }: TestimonialProps) {
           {testimonials.map((testimonial, index) => (
             <div
               key={index}
-              className="my-2 flex max-w-[600px] flex-col items-center rounded-lg bg-[#e4dff3] px-6 py-4 shadow-md md:w-[600px]"
+              className="my-2 flex max-w-[600px] flex-col items-center rounded-lg bg-[#e4dff3] dark:bg-gray-800 px-6 py-4 shadow-md md:w-[600px]"
             >
-              <div className="highlight-underline z-10 mb-4 text-lg font-semibold dark:text-secondary-foreground">
+              <div className="highlight-underline z-10 mb-4 text-lg font-semibold dark:text-gray-200">
                 &ldquo;{testimonial.keyword}&rdquo;
               </div>
-              <div className="mb-4 text-gray-600">
+              <div className="mb-4 text-muted-foreground">
                 &ldquo;{testimonial.testimonial}&rdquo;
               </div>
               <Avatar>
                 <AvatarImage src={testimonial.avatar} alt={testimonial.name} />
                 <AvatarFallback>{testimonial.name[0]}</AvatarFallback>
               </Avatar>
-              <div className="mt-2 text-sm font-semibold text-gray-700">
+              <div className="mt-2 text-sm font-semibold text-gray-700 dark:text-gray-200">
                 {testimonial.name}
               </div>
-              <div className="text-sm text-gray-600">{testimonial.role}</div>
+              <div className="text-sm text-muted-foreground">
+                {testimonial.role}
+              </div>
             </div>
           ))}
         </div>

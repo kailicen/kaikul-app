@@ -29,7 +29,7 @@ export function Features() {
           showFeatures ? "expanded" : ""
         }`}
       >
-        <div className="relative overflow-hidden rounded-lg bg-[#cfccd3] p-2 text-[#0D0322]">
+        <div className="relative overflow-hidden rounded-lg bg-[#cfccd3] dark:bg-gray-800 p-2 text-[#0D0322] dark:text-gray-300">
           <div className="flex min-h-[200px] flex-col justify-between gap-4 rounded-md p-6">
             <Icons.CalendarDays className="h-12 w-12" />
             <div className="space-y-2">
@@ -40,7 +40,7 @@ export function Features() {
             </div>
           </div>
         </div>
-        <div className="relative overflow-hidden rounded-lg bg-[#e4dff3] p-2 text-[#4130AC]">
+        <div className="relative overflow-hidden rounded-lg bg-[#e4dff3] dark:bg-gray-700 p-2 text-[#4130AC] dark:text-[#dbcdf7]">
           <div className="flex min-h-[200px] flex-col justify-between gap-4 rounded-md p-6">
             <Icons.Users className="h-12 w-12" />
             <div className="space-y-2">
@@ -51,7 +51,7 @@ export function Features() {
             </div>
           </div>
         </div>
-        <div className="relative overflow-hidden rounded-lg bg-[#cfccd3] p-2 text-[#0D0322]">
+        <div className="relative overflow-hidden rounded-lg bg-[#cfccd3] dark:bg-gray-800 p-2 text-[#0D0322] dark:text-gray-300">
           <div className="flex min-h-[200px] flex-col justify-between gap-4 rounded-md p-6">
             <Icons.BarChart className="h-12 w-12" />
             <div className="space-y-2">
@@ -63,7 +63,7 @@ export function Features() {
             </div>
           </div>
         </div>
-        <div className="relative overflow-hidden rounded-lg bg-[#e4dff3] p-2 text-[#4130AC]">
+        <div className="relative overflow-hidden rounded-lg bg-[#e4dff3] dark:bg-gray-700 p-2 text-[#4130AC] dark:text-[#dbcdf7]">
           <div className="flex min-h-[200px] flex-col justify-between gap-4 rounded-md p-6">
             <Icons.Pencil className="h-12 w-12" />
             <div className="space-y-2">
@@ -75,7 +75,7 @@ export function Features() {
             </div>
           </div>
         </div>
-        <div className="relative overflow-hidden rounded-lg bg-[#cfccd3] p-2 text-[#0D0322]">
+        <div className="relative overflow-hidden rounded-lg bg-[#cfccd3] dark:bg-gray-800 p-2 text-[#0D0322] dark:text-gray-300">
           <div className="flex min-h-[200px] flex-col justify-between gap-4 rounded-md p-6">
             <Icons.Bell className="h-12 w-12" />
             <div className="space-y-2">
@@ -87,7 +87,7 @@ export function Features() {
             </div>
           </div>
         </div>
-        <div className="relative overflow-hidden rounded-lg bg-[#e4dff3] p-2 text-[#4130AC]">
+        <div className="relative overflow-hidden rounded-lg bg-[#e4dff3] dark:bg-gray-700 p-2 text-[#4130AC] dark:text-[#dbcdf7]">
           <div className="flex min-h-[200px] flex-col justify-between gap-4 rounded-md p-6">
             <Icons.Lightbulb className="h-12 w-12" />
             <div className="space-y-2">

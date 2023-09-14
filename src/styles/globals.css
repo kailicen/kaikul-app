@@ -216,6 +216,12 @@ TEAM
   transition: height 0.3s ease; /* Animation effect */
 }
 
+@media (prefers-color-scheme: dark) {
+  .highlight-underline::before {
+    background-color: #ff5e0e; /* Dark mode background color */
+  }
+}
+
 .highlight-underline:hover::before {
   height: 60%; /* Thickness on hover */
 }
