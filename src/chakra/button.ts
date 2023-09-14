@@ -40,7 +40,7 @@ export const Button: ComponentStyleConfig = {
     oauth: (props) => ({
       height: "34px",
       border: "1px solid",
-      borderColor: mode("gray.300", "gray.700")(props),
+      borderColor: mode("gray.300", "gray.600")(props),
       _hover: {
         bg: mode("gray.100", "gray.700")(props),
       },

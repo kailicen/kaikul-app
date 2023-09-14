@@ -1,7 +1,7 @@
 import React from "react";
 import { useSetRecoilState } from "recoil";
 import { authModalState } from "../../../atoms/authModalAtom";
-import { Icon } from "@chakra-ui/react";
+import { Box, Icon, Button } from "@chakra-ui/react";
 import { IoMdLogIn } from "react-icons/io";
 
 type Props = {};
@@ -11,27 +11,26 @@ function AuthButtons({}: Props) {
 
   return (
     <div>
-      <div className="hidden md:flex flex-row gap-3">
-        <button
+      <Box className="hidden md:flex flex-row gap-3">
+        <Button
           onClick={() => setAuthModalState({ open: true, view: "login" })}
-          className="btn buttonMobileSecondary md:buttonSecondary"
+          variant="outline"
         >
           Log In
-        </button>
-        <button
+        </Button>
+        <Button
           onClick={() => setAuthModalState({ open: true, view: "signup" })}
-          className="btn buttonMobile md:button"
         >
           Sign Up
-        </button>
-      </div>
+        </Button>
+      </Box>
       <div className="md:hidden">
-        <button
+        <Button
           onClick={() => setAuthModalState({ open: true, view: "login" })}
-          className="btn buttonMobileSecondary md:buttonSecondary"
+          variant="outline"
         >
           Log In
-        </button>
+        </Button>
       </div>
     </div>
   );
