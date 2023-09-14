@@ -1,3 +1,4 @@
+import { useColorMode } from "@chakra-ui/react";
 import { TooltipProps } from "recharts";
 
 export const CustomTooltip: React.FC<TooltipProps<number, string>> = ({
@@ -5,13 +6,17 @@ export const CustomTooltip: React.FC<TooltipProps<number, string>> = ({
   payload,
   label,
 }) => {
+  const { colorMode } = useColorMode();
+  const backgroundColor = colorMode === "dark" ? "#333" : "#fff";
+  const textColor = colorMode === "dark" ? "#fff" : "#000";
   if (active && payload && payload.length) {
     return (
       <div
         style={{
-          backgroundColor: "#fff",
+          backgroundColor,
           border: "1px solid #ccc",
           padding: "10px",
+          color: textColor,
         }}
       >
         <p className="label">{`Date: ${label}`}</p>

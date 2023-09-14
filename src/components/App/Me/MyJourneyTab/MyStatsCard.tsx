@@ -13,6 +13,7 @@ import {
   Tr,
   Text,
   useMediaQuery,
+  useColorMode,
 } from "@chakra-ui/react";
 import {
   eachDayOfInterval,
@@ -129,6 +130,8 @@ const MyStatsCard: React.FC = () => {
   const [taskData, setTaskData] = useState<Record<string, Task[]>>({});
   const [goalData, setGoalData] = useState<Goal[]>([]);
 
+  const { colorMode } = useColorMode();
+
   const [filter, setFilter] = useState("all"); // filter state to toggle between all and completed
   const [chartData, setChartData] = useState<ChartData[]>([]); // State to hold your chart data
 
@@ -208,7 +211,8 @@ const MyStatsCard: React.FC = () => {
       gap={4}
       p={{ base: 2, md: 4 }}
       border="1px"
-      borderColor="gray.200"
+      borderColor={colorMode === "light" ? "gray.200" : "gray.700"}
+      bg={colorMode === "light" ? "white" : "gray.800"}
       borderRadius="md"
       boxShadow="lg"
     >
