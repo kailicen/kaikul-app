@@ -57,12 +57,28 @@ const Day: React.FC<{ date: string; user: User }> = ({ date, user }) => {
   // Parse the date prop to a Date object
 
   const dateObj = new Date(date);
+  const todayInUTC = new Date(
+    Date.UTC(
+      new Date().getUTCFullYear(),
+      new Date().getUTCMonth(),
+      new Date().getUTCDate()
+    )
+  );
+
+  // Adjust the dateObj to UTC
+  const dateObjInUTC = new Date(
+    Date.UTC(
+      dateObj.getUTCFullYear(),
+      dateObj.getUTCMonth(),
+      dateObj.getUTCDate()
+    )
+  );
+
+  const isCurrentDay = dateObjInUTC.getTime() === todayInUTC.getTime();
+
   const startOfWeekDate = startOfWeek(dateObj, { weekStartsOn: 1 });
   const startOfWeekString = format(startOfWeekDate, "yyyy-MM-dd");
   const toast = useToast();
-
-  // Check if the current date prop corresponds to today
-  const isCurrentDay = isToday(dateObj);
 
   const [isTaskDatePopoverOpen, setTaskDatePopoverOpen] = useState(false);
   const [taskDisplayedMonth, setTaskDisplayedMonth] = useState(new Date());
