@@ -11,7 +11,7 @@ function AuthButtons({}: Props) {
 
   return (
     <div>
-      <div className="hidden md:flex flex-row gap-2">
+      <div className="hidden md:flex flex-row gap-3">
         <button
           onClick={() => setAuthModalState({ open: true, view: "login" })}
           className="btn buttonMobileSecondary md:buttonSecondary"

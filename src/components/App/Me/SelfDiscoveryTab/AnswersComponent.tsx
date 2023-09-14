@@ -17,6 +17,7 @@ import { WeeklyAnswer } from "@/atoms/weeklyAnswersAtom";
 import { useWeeklyAnswers } from "@/hooks/useWeeklyAnswers";
 import { User } from "firebase/auth";
 import { useColorMode } from "@chakra-ui/react";
+import useUserPoints from "@/hooks/useUserPoints";
 
 type Props = {
   user: User | null | undefined;
@@ -28,10 +29,9 @@ const AnswersComponent = ({ user, theme, question }: Props) => {
   const { answers, addAnswerToFirebase } = useWeeklyAnswers(user, theme);
   const [isDrawerOpen, setDrawerOpen] = useState(false);
   const [newAnswer, setNewAnswer] = useState("");
-
   const [editingAnswer, setEditingAnswer] = useState<WeeklyAnswer | null>(null);
-
   const { colorMode } = useColorMode();
+  const { updatePoints } = useUserPoints(user as User);
 
   const handleEditAnswer = async () => {
     if (editingAnswer) {
@@ -46,6 +46,9 @@ const AnswersComponent = ({ user, theme, question }: Props) => {
     await addAnswerToFirebase(newAnswer);
     setNewAnswer("");
     setDrawerOpen(false);
+    if (user) {
+      await updatePoints(2); // Adds 2 points to the user's total points
+    }
   };
 
   const userAnswer = answers.find((answer) => user?.uid === answer.userId);
@@ -62,7 +65,9 @@ const AnswersComponent = ({ user, theme, question }: Props) => {
       bg={colorMode === "light" ? "white" : "gray.800"}
     >
       {!userAnswer && (
-        <Button onClick={() => setDrawerOpen(true)}>Add Your Answer</Button>
+        <Button className="mt-4 mb-2 py-4" onClick={() => setDrawerOpen(true)}>
+          Add Your Answer
+        </Button>
       )}
 
       {userAnswer && (

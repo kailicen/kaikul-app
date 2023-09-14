@@ -1,3 +1,6 @@
+import { ExternalLinkIcon } from "@chakra-ui/icons";
+import { Link } from "@chakra-ui/react";
+
 interface Benefit {
   title: string;
   content: string;
@@ -15,7 +18,7 @@ export function Benefits({ benefits }: BenefitsProps) {
       className="lg:py-18 container mb-4 space-y-8 rounded-lg py-12 dark:bg-transparent"
     >
       <div className="mx-auto flex max-w-[64rem] flex-col items-center space-y-8 text-left">
-        {benefits.map((benefit, index) => (
+        {/* {benefits.map((benefit, index) => (
           <div
             key={index}
             className="flex w-full flex-col space-y-6 md:flex-row md:space-x-6 md:space-y-0"
@@ -40,7 +43,21 @@ export function Benefits({ benefits }: BenefitsProps) {
               />
             </div>
           </div>
-        ))}
+        ))} */}
+        <Link
+          href="https://www.canva.com/design/DAFuQHGqA1Y/rIa9fyabkD0dnyBQh4ynKg/view"
+          fontSize="xl"
+          fontWeight="bold"
+          isExternal
+          style={{ color: "#4130AC" }}
+        >
+          How-To Guide <ExternalLinkIcon mx="2px" />
+        </Link>
+        <iframe
+          className="my-10 h-[300px] w-full px-1 md:h-[450px] md:w-[800px]"
+          src="https://www.loom.com/embed/2b68e27676724275a7b17970f3b10a83"
+          allowFullScreen
+        ></iframe>
       </div>
     </section>
   );

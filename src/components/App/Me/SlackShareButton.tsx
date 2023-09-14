@@ -3,6 +3,7 @@ import { Button, Tooltip, useToast } from "@chakra-ui/react";
 import { UserProfile } from "@/atoms/userProfileAtom";
 import { User } from "firebase/auth";
 import ProfilePreviewModal from "@/components/Modal/Me/ProfilePreviewModal";
+import useUserPoints from "@/hooks/useUserPoints";
 
 type SlackShareButtonProps = {
   profile: UserProfile;
@@ -18,6 +19,7 @@ const SlackShareButton: React.FC<SlackShareButtonProps> = ({
   const toast = useToast();
 
   const [isPreviewModalOpen, setIsPreviewModalOpen] = useState(false);
+  const { updatePoints } = useUserPoints(user);
 
   const previewAndShareProfile = () => {
     setIsPreviewModalOpen(true);
@@ -75,6 +77,9 @@ const SlackShareButton: React.FC<SlackShareButtonProps> = ({
         throw new Error(data.error);
       }
 
+      // Update user points after successful sharing
+      await updatePoints(2);
+
       // Display a success toast
       toast({
         title: "Share Successful",
@@ -105,9 +110,7 @@ const SlackShareButton: React.FC<SlackShareButtonProps> = ({
         label="Your profile including your goal and challenges will be shared in the #daily-sprint channel on Slack."
         aria-label="A tooltip"
       >
-        <Button onClick={previewAndShareProfile}>
-          Share My Profile on Slack
-        </Button>
+        <Button onClick={previewAndShareProfile}>Share on Slack</Button>
       </Tooltip>
 
       <ProfilePreviewModal

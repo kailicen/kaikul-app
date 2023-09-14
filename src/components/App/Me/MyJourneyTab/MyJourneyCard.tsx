@@ -42,7 +42,7 @@ const MyJourneyCard: React.FC<Props> = ({ profile, onEdit }) => {
       align="start"
       border="1px"
       borderColor="gray.200"
-      w="full"
+      w="100%"
     >
       <Box>
         <Text fontWeight="semibold">My Focus Domains: </Text>
