@@ -8,7 +8,6 @@ import {
   DrawerHeader,
   DrawerBody,
   Text,
-  Input,
   Box,
   Textarea,
   DrawerCloseButton,
@@ -17,6 +16,7 @@ import {
 import { WeeklyAnswer } from "@/atoms/weeklyAnswersAtom";
 import { useWeeklyAnswers } from "@/hooks/useWeeklyAnswers";
 import { User } from "firebase/auth";
+import { useColorMode } from "@chakra-ui/react";
 import useUserPoints from "@/hooks/useUserPoints";
 
 type Props = {
@@ -30,7 +30,7 @@ const AnswersComponent = ({ user, theme, question }: Props) => {
   const [isDrawerOpen, setDrawerOpen] = useState(false);
   const [newAnswer, setNewAnswer] = useState("");
   const [editingAnswer, setEditingAnswer] = useState<WeeklyAnswer | null>(null);
-
+  const { colorMode } = useColorMode();
   const { updatePoints } = useUserPoints(user as User);
 
   const handleEditAnswer = async () => {
@@ -58,10 +58,11 @@ const AnswersComponent = ({ user, theme, question }: Props) => {
     <VStack
       align="start"
       spacing={4}
-      maxH="500px" // Adjust as necessary to suit your design
+      maxH="500px"
       overflowY="auto"
-      width="100%" // Ensures it takes the full width available
+      width="100%"
       w="100%"
+      bg={colorMode === "light" ? "white" : "gray.800"}
     >
       {!userAnswer && (
         <Button className="mt-4 mb-2 py-4" onClick={() => setDrawerOpen(true)}>
@@ -76,7 +77,7 @@ const AnswersComponent = ({ user, theme, question }: Props) => {
           p={4}
           display="flex"
           alignItems="flex-start"
-          bg="#e4dff3"
+          bg={colorMode === "light" ? "#e4dff3" : "gray.700"}
         >
           <Avatar
             src={userAnswer.photoURL || undefined}
@@ -112,7 +113,7 @@ const AnswersComponent = ({ user, theme, question }: Props) => {
           p={4}
           display="flex"
           alignItems="flex-start"
-          bg="#e4dff3"
+          bg={colorMode === "light" ? "#e4dff3" : "gray.700"}
         >
           <Avatar
             src={answer.photoURL || undefined}
@@ -121,10 +122,10 @@ const AnswersComponent = ({ user, theme, question }: Props) => {
             mr={4}
           />
           <Box>
-            <Text fontSize="sm" color="gray.900">
+            <Text fontSize="sm" color="gray.500">
               {answer.displayName || "Anonymous User"}
             </Text>
-            <Text color="gray.500">{answer.answer}</Text>
+            <Text>{answer.answer}</Text>
           </Box>
         </Box>
       ))}

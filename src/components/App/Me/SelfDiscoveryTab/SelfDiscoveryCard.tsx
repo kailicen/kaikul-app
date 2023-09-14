@@ -1,5 +1,11 @@
 import React, { useState } from "react";
-import { Button, useDisclosure, VStack, Text } from "@chakra-ui/react";
+import {
+  Button,
+  useDisclosure,
+  VStack,
+  Text,
+  useColorMode,
+} from "@chakra-ui/react";
 import EditSelfDiscoveryDrawer from "../Drawers/EditSelfDiscoveryDrawer";
 import { UserProfileAddition } from "@/atoms/userProfileAdditionAtom";
 
@@ -11,6 +17,7 @@ type Props = {
 const SelfDiscoveryCard: React.FC<Props> = ({ profileAddition, onEdit }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [inputType, setInputType] = useState<string>("");
+  const { colorMode } = useColorMode();
 
   const handleButtonClick = (type: string) => {
     setInputType(type);
@@ -24,8 +31,9 @@ const SelfDiscoveryCard: React.FC<Props> = ({ profileAddition, onEdit }) => {
       p={6}
       rounded="md"
       border="1px"
-      borderColor="gray.200"
+      borderColor={colorMode === "light" ? "gray.200" : "gray.700"}
       w="full"
+      bg={colorMode === "light" ? "white" : "gray.800"}
     >
       <Text fontSize="lg" fontWeight="semibold">
         Modules
