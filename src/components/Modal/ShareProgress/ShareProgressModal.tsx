@@ -314,7 +314,10 @@ const ShareProgressModal: React.FC<ShareProgressModalProps> = ({
               </Box>
               <Text fontSize="sm">
                 This is the accountability partner platform powered by{" "}
-                <Text as="b" color="purple.700">
+                <Text
+                  as="b"
+                  color={colorMode === "light" ? "brand.500" : "brand.200"}
+                >
                   KaiKul.com
                 </Text>
               </Text>
