@@ -18,6 +18,7 @@ import {
   useToast,
   useBreakpointValue,
   List,
+  useColorMode,
 } from "@chakra-ui/react";
 import { useEffect, useRef, useState } from "react";
 import useProgress, { ProgressOption } from "@/hooks/useProgress";
@@ -78,6 +79,8 @@ const ShareProgressModal: React.FC<ShareProgressModalProps> = ({
   const { updatePoints } = useUserPoints(user as User);
 
   const toast = useToast();
+
+  const { colorMode } = useColorMode();
 
   const progressContainerRef = useRef(null);
 
@@ -256,7 +259,7 @@ const ShareProgressModal: React.FC<ShareProgressModalProps> = ({
           {isDesktopOrLaptop ? "Share" : screenshotInstructions}
         </ModalHeader>
         <ModalCloseButton />
-        <ModalBody ref={progressContainerRef} bg="white">
+        <ModalBody ref={progressContainerRef}>
           <FormControl as="fieldset" mb={4}>
             <RadioGroup
               value={selectedProgress}
@@ -349,7 +352,10 @@ const ShareProgressModal: React.FC<ShareProgressModalProps> = ({
 
               <Text fontSize="sm">
                 This is the accountability partner platform powered by{" "}
-                <Text as="b" color="purple.700">
+                <Text
+                  as="b"
+                  color={colorMode === "light" ? "brand.500" : "brand.200"}
+                >
                   KaiKul.com
                 </Text>
               </Text>
