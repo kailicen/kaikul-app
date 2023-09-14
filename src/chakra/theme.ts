@@ -14,11 +14,20 @@ const config = {
 export const theme = extendTheme({
   config,
   colors: {
-    // Customize the background and text colors here
-    // Use your desired color values
-    // For example, setting the background to white and text to black
     bg: "#ffffff",
     text: "#000000",
+    brand: {
+      50: "#f2ebf9", // Lightest shade
+      100: "#dbcdf7",
+      200: "#c5afee",
+      300: "#ae92e6",
+      400: "#9874dd",
+      500: "#4130AC", // Your brand color
+      600: "#392594",
+      700: "#301b7b",
+      800: "#271163",
+      900: "#1d084a", // Darkest shade
+    },
   },
   // ... other theme customizations
   components: {

@@ -7,7 +7,7 @@ export function HowItWorks() {
       id="how-it-works"
       className="lg:py-18 container mb-4 space-y-8 rounded-lg bg-[#0D0322] py-12 text-white dark:bg-transparent"
     >
-      <div className="mx-auto flex max-w-[64rem] flex-col items-center space-y-8 text-center bg-[#0D0322]">
+      <div className="mx-auto flex max-w-[64rem] flex-col items-center space-y-8 text-center">
         <h2 className="font-heading font-bold text-3xl sm:text-3xl md:text-6xl">
           How It Works
         </h2>

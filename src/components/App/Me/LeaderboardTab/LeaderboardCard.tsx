@@ -8,6 +8,7 @@ import {
   Flex,
   IconButton,
   Button,
+  useColorMode,
 } from "@chakra-ui/react";
 import {
   collection,
@@ -33,6 +34,7 @@ interface UserData {
 
 const LeaderboardCard = () => {
   const [leaderboardData, setLeaderboardData] = useState<UserData[]>([]);
+  const { colorMode } = useColorMode();
 
   const fetchLeaderboardData = async () => {
     try {
@@ -107,9 +109,10 @@ const LeaderboardCard = () => {
       gap={4}
       p={4}
       border="1px"
-      borderColor="gray.200"
       borderRadius="md"
       boxShadow="lg"
+      borderColor={colorMode === "light" ? "gray.200" : "gray.700"}
+      bg={colorMode === "light" ? "white" : "gray.800"}
       w="100%"
     >
       <Flex
