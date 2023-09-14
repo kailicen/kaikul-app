@@ -22,7 +22,7 @@ export function Team({ clients }: TeamProps) {
           Our Team
         </h2>
       </div>
-      <div className="mx-auto grid justify-center gap-4 sm:grid-cols-2 md:max-w-[64rem] md:grid-cols-3">
+      <div className="mx-auto grid justify-center gap-4 sm:grid-cols-2 md:max-w-[64rem] md:grid-cols-2">
         {clients.map((client) => (
           <div
             className="relative z-0 overflow-hidden rounded-lg bg-slate-50 dark:bg-gray-800 p-2"
