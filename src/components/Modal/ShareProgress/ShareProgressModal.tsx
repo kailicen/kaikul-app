@@ -79,12 +79,12 @@ const ShareProgressModal: React.FC<ShareProgressModalProps> = ({
   const { updatePoints } = useUserPoints(user as User);
 
   const toast = useToast();
-
   const { colorMode } = useColorMode();
 
   const progressContainerRef = useRef(null);
 
   const [username, setUsername] = useState<string>("");
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const screenshotInstructions = "Please screenshot to share on mobile";
 
@@ -112,6 +112,7 @@ const ShareProgressModal: React.FC<ShareProgressModalProps> = ({
   const handleShare = async () => {
     // Implement share function
     // Share the selectedProgress to Slack
+    setIsLoading(true);
 
     let text = `*Posted by ${username}*\n`;
 
@@ -166,6 +167,7 @@ const ShareProgressModal: React.FC<ShareProgressModalProps> = ({
         throw new Error(data.error);
       }
 
+      setIsLoading(false);
       // Display a success toast
       toast({
         title: "Share Successful",
@@ -174,11 +176,11 @@ const ShareProgressModal: React.FC<ShareProgressModalProps> = ({
         duration: 5000,
         isClosable: true,
       });
-
       onClose();
     } catch (error) {
       console.error(error);
       const errMsg = (error as Error).message || "An unknown error occurred";
+      setIsLoading(false);
 
       // Display the error message to the user with a toast
       toast({
@@ -369,7 +371,7 @@ const ShareProgressModal: React.FC<ShareProgressModalProps> = ({
             </Button>
           )}
 
-          <Button onClick={handleShare} mr={3}>
+          <Button onClick={handleShare} mr={3} isLoading={isLoading}>
             Share to KaiKul Slack
           </Button>
           <Button onClick={onClose}>Cancel</Button>
