@@ -5,7 +5,7 @@ import { extendTheme } from "@chakra-ui/react";
 import { Button } from "./button";
 
 const config = {
-  initialColorMode: "light",
+  initialColorMode: "system",
   useSystemColorMode: true,
 };
 
