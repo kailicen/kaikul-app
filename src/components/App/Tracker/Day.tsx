@@ -25,6 +25,7 @@ import {
   PopoverBody,
   PopoverContent,
   PopoverTrigger,
+  useColorMode,
 } from "@chakra-ui/react";
 import { Formik, Form, Field, FieldInputProps, ErrorMessage } from "formik";
 import { MdAdd } from "react-icons/md";
@@ -73,6 +74,8 @@ const Day: React.FC<{ date: string; user: User }> = ({ date, user }) => {
     goalId: string;
     date: string;
   } | null>(null);
+
+  const { colorMode } = useColorMode();
 
   const {
     tasks,
@@ -241,9 +244,17 @@ const Day: React.FC<{ date: string; user: User }> = ({ date, user }) => {
       align="stretch"
       minHeight="400px"
       border="1px"
-      borderColor="gray.200"
+      borderColor={colorMode === "light" ? "gray.200" : "gray.700"}
+      bg={
+        isCurrentDay
+          ? colorMode === "light"
+            ? "#cfccd3"
+            : "gray.700"
+          : colorMode === "light"
+          ? "white"
+          : "gray.800"
+      }
       p={3}
-      bg={isCurrentDay ? "#cfccd3" : undefined} // set a distinct background color for the current day
       mb={4} // add bottom margin
     >
       <Text fontSize="lg" fontWeight="semibold">
@@ -259,6 +270,7 @@ const Day: React.FC<{ date: string; user: User }> = ({ date, user }) => {
           boxShadow="md"
           _hover={{ boxShadow: "0 0 0 2px purple.400" }}
           bg={task.color ? task.color : "white"}
+          color="black"
           position="relative"
           role="group"
           cursor="pointer"
@@ -302,7 +314,15 @@ const Day: React.FC<{ date: string; user: User }> = ({ date, user }) => {
         {tasks.length < 10 && (
           <Icon
             as={MdAdd}
-            color={isCurrentDay ? "#342552" : "gray.400"}
+            color={
+              isCurrentDay
+                ? colorMode === "light"
+                  ? "#342552"
+                  : "gray.200"
+                : colorMode === "light"
+                ? "gray.400"
+                : "gray.400"
+            }
             fontSize={20}
             cursor="pointer"
             onClick={() => openDrawer(date)}
@@ -310,7 +330,15 @@ const Day: React.FC<{ date: string; user: User }> = ({ date, user }) => {
         )}{" "}
         {tasks.length === 0 && (
           <Text
-            color={isCurrentDay ? "#342552" : "gray.400"} // set a distinct background color for the current day
+            color={
+              isCurrentDay
+                ? colorMode === "light"
+                  ? "#342552"
+                  : "gray.200"
+                : colorMode === "light"
+                ? "gray.400"
+                : "gray.400"
+            } // set a distinct background color for the current day
             fontSize="xs"
             cursor="pointer"
             onClick={() => openDrawer(date)}
@@ -515,6 +543,7 @@ const Day: React.FC<{ date: string; user: User }> = ({ date, user }) => {
           key={blocker.id}
           p={2}
           bg={"#ffc6aa"}
+          color="black"
           borderRadius="md"
           _hover={{ boxShadow: "0 0 0 2px purple.400" }}
           position="relative"
@@ -534,13 +563,29 @@ const Day: React.FC<{ date: string; user: User }> = ({ date, user }) => {
         <Flex align="center" gap={1}>
           <Icon
             as={MdAdd}
-            color={isCurrentDay ? "#342552" : "gray.400"}
+            color={
+              isCurrentDay
+                ? colorMode === "light"
+                  ? "#342552"
+                  : "gray.200"
+                : colorMode === "light"
+                ? "gray.400"
+                : "gray.400"
+            }
             fontSize={20}
             cursor="pointer"
             onClick={() => openBlockerDrawer()}
           />
           <Text
-            color={isCurrentDay ? "#342552" : "gray.400"}
+            color={
+              isCurrentDay
+                ? colorMode === "light"
+                  ? "#342552"
+                  : "gray.200"
+                : colorMode === "light"
+                ? "gray.400"
+                : "gray.400"
+            }
             fontSize="xs"
             cursor="pointer"
             onClick={() => openBlockerDrawer()}

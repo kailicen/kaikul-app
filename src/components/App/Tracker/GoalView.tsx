@@ -226,6 +226,7 @@ function GoalView({ user, startOfDay, startOfWeek }: GoalViewProps) {
               _hover={{ boxShadow: "0 0 0 2px purple.400" }}
               cursor="pointer"
               bg={goal.color}
+              color="black"
               onClick={() =>
                 openDrawer(
                   goal.id,
