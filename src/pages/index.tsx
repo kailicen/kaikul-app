@@ -106,6 +106,14 @@ const clients = [
       "https://media.licdn.com/dms/image/D4D03AQHNx_wQaXD0lQ/profile-displayphoto-shrink_800_800/0/1693022114899?e=1698883200&v=beta&t=JBqkH5RKClMcJoz1ZAYgqaJU4oYb3ryBAZFqT3u44H8",
     link: "https://www.linkedin.com/in/arniemutasa/",
   },
+  {
+    name: "Hatem Soliman",
+    introduction:
+      "As a driven innovator with a strong background in frontend engineering, digital marketing, and the startup ecosystem, Hatem's dedication fuels innovation, exploring uncharted territories.",
+    avatar:
+      "https://media.licdn.com/dms/image/D4D03AQFGeRgEkyu02A/profile-displayphoto-shrink_400_400/0/1667156953614?e=1700092800&v=beta&t=A2iu9hyz3XLpgXMi3iQVaXwU41g29zGwS-o07TiS5-g",
+    link: "https://www.linkedin.com/in/h4temsoliman/",
+  },
 ];
 
 const benefits = [
