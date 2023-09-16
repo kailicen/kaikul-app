@@ -308,7 +308,18 @@ const Day: React.FC<{ date: string; user: User }> = ({ date, user }) => {
             >
               <Checkbox
                 isChecked={task.completed}
-                colorScheme="gray"
+                sx={{
+                  ".chakra-checkbox__control": {
+                    borderColor: "gray.700",
+                    _checked: {
+                      borderColor: "gray.600",
+                      bg: "gray.600",
+                    },
+                    _hover: {
+                      borderColor: "gray.600",
+                    },
+                  },
+                }}
                 onChange={(e) => {
                   handleCompleteTask(task.id);
                 }}
@@ -558,7 +569,7 @@ const Day: React.FC<{ date: string; user: User }> = ({ date, user }) => {
         <Box
           key={blocker.id}
           p={2}
-          bg={"#ffc6aa"}
+          bg={colorMode === "light" ? "brand.50" : "brand.50"}
           color="black"
           borderRadius="md"
           _hover={{ boxShadow: "0 0 0 2px purple.400" }}
