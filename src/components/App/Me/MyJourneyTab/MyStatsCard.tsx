@@ -271,10 +271,7 @@ const MyStatsCard: React.FC = () => {
           <CartesianGrid strokeDasharray="3 3" />
           <XAxis dataKey="name" />
           <YAxis />
-          <Tooltip
-            content={<CustomTooltip />}
-            cursor={{ width: 80, height: 40 }}
-          />
+          <Tooltip content={<CustomTooltip />} />
           <Legend />
           <Bar dataKey="Total" fill="#8884d8" />
           <Bar dataKey="Completed" fill="#ffa173" />
