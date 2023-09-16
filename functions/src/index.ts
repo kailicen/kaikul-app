@@ -87,8 +87,8 @@ exports.sendWelcomeEmail = functions.auth.user().onCreate(async (user) => {
     host: "sandbox.smtp.mailtrap.io",
     port: 2525,
     auth: {
-      user: functions.config().smtp.user,
-      pass: functions.config().smtp.pass,
+      user: process.env.SMTP_USER,
+      pass: process.env.SMTP_PASS,
     },
   });
 
