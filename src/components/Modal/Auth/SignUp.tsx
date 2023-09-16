@@ -5,9 +5,8 @@ import { authModalState } from "../../../atoms/authModalAtom";
 import { useCreateUserWithEmailAndPassword } from "react-firebase-hooks/auth";
 import { auth, firestore } from "../../../firebase/clientApp";
 import { FIREBASE_ERRORS } from "../../../firebase/errors";
-import { User } from "firebase/auth";
+import { User, sendEmailVerification } from "firebase/auth";
 import { doc, setDoc } from "firebase/firestore";
-
 const SignUp: React.FC = () => {
   const setAuthModalState = useSetRecoilState(authModalState);
   const [signUpForm, setSignUpForm] = useState({
@@ -35,6 +34,7 @@ const SignUp: React.FC = () => {
       //     createUserDocument(userCredential.user);
       //   }
       // })
+      
       .catch((err) => {
         // Handle errors here
         console.error(err);
