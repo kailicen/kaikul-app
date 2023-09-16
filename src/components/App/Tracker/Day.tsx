@@ -323,7 +323,8 @@ const Day: React.FC<{ date: string; user: User }> = ({ date, user }) => {
                       bg: "gray.500",
                     },
                     _hover: {
-                      borderColor: "gray.500",
+                      borderColor: "gray.600",
+                      bg: "gray.600",
                     },
                   },
                 }}

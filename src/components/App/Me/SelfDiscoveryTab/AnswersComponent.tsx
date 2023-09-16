@@ -78,6 +78,7 @@ const AnswersComponent = ({ user, theme, question }: Props) => {
           display="flex"
           alignItems="flex-start"
           bg={colorMode === "light" ? "#e4dff3" : "gray.700"}
+          w="100%"
         >
           <Avatar
             src={userAnswer.photoURL || undefined}
@@ -114,6 +115,7 @@ const AnswersComponent = ({ user, theme, question }: Props) => {
           display="flex"
           alignItems="flex-start"
           bg={colorMode === "light" ? "#e4dff3" : "gray.700"}
+          w="100%"
         >
           <Avatar
             src={answer.photoURL || undefined}

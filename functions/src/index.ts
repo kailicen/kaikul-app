@@ -75,6 +75,7 @@ exports.createGoalOnProfileAddition = functions.firestore
   });
 
 exports.sendWelcomeEmail = functions.auth.user().onCreate(async (user) => {
+  console.log("functions.config().smtp", functions.config().smtp);
   const email = user.email;
   const displayName = user.displayName || user.email?.split("@")[0];
 
@@ -87,8 +88,8 @@ exports.sendWelcomeEmail = functions.auth.user().onCreate(async (user) => {
     host: "sandbox.smtp.mailtrap.io",
     port: 2525,
     auth: {
-      user: process.env.SMTP_USER,
-      pass: process.env.SMTP_PASS,
+      user: functions.config().smtp.user,
+      pass: functions.config().smtp.pass,
     },
   });
 
