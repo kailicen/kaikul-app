@@ -32,7 +32,7 @@ export const Button: ComponentStyleConfig = {
       },
     }),
     ghost: (props) => ({
-      color: mode("#4130AC", "whiteAlpha.900")(props),
+      color: mode("#4130AC", "#dbcdf7")(props),
       _hover: {
         bg: mode("#ded9ff", "#7161a1")(props),
       },
