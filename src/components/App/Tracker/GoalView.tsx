@@ -539,12 +539,7 @@ function GoalView({ user, startOfDay, startOfWeek }: GoalViewProps) {
                       </FormControl>
                     )}
                     <DrawerFooter>
-                      <Button
-                        mt={4}
-                        colorScheme="blue"
-                        isLoading={isSubmitting}
-                        type="submit"
-                      >
+                      <Button mt={4} isLoading={isSubmitting} type="submit">
                         {selectedGoalId ? "Update" : "Create"}
                       </Button>
                       {selectedGoalId && (
@@ -552,7 +547,7 @@ function GoalView({ user, startOfDay, startOfWeek }: GoalViewProps) {
                           mt={4}
                           ml={2}
                           variant="outline"
-                          colorScheme="red"
+                          _hover={{ bgColor: "red.500", color: "white" }}
                           onClick={() => handleDelete(selectedGoalId)}
                         >
                           Delete

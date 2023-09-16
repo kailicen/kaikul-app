@@ -19,6 +19,7 @@ import {
   DrawerFooter,
   useDisclosure,
   Input,
+  useColorMode,
 } from "@chakra-ui/react";
 import {
   endOfWeek,
@@ -50,12 +51,18 @@ function Reflect({}: Props) {
   const [selectedBiggestObstacle, setSelectedBiggestObstacle] = useState("");
   const [selectedLessonLearned, setSelectedLessonLearned] = useState("");
 
+  // pagination
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 3;
+
   const currentDate = new Date();
   // Format the start and end of week for the button display
   const startOfWeekDate = startOfWeekDateFns(currentDate, { weekStartsOn: 1 }); // Monday
   const endOfWeekDate = endOfWeek(currentDate, { weekStartsOn: 1 }); // Sunday
   const formattedStartOfWeek = format(startOfWeekDate, "MMMM do");
   const formattedEndOfWeek = format(endOfWeekDate, "MMMM do, yyyy");
+
+  const { colorMode } = useColorMode();
 
   const [startOfWeek, setStartOfWeek] = useState(
     format(startOfWeekDateFns(new Date(), { weekStartsOn: 1 }), "yyyy-MM-dd")
@@ -72,6 +79,23 @@ function Reflect({}: Props) {
     // Here, you can return a loader if the authentication state is still being determined.
     return <LoadingScreen />;
   }
+
+  // Function to handle pagination
+  const handlePagination = (type: string) => {
+    if (type === "prev" && currentPage > 1) {
+      setCurrentPage((prev) => prev - 1);
+    }
+    if (
+      type === "next" &&
+      currentPage < Math.ceil(teamTabs.length / itemsPerPage)
+    ) {
+      setCurrentPage((prev) => prev + 1);
+    }
+  };
+
+  const indexOfLastItem = currentPage * itemsPerPage;
+  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+  const currentItems = teamTabs.slice(indexOfFirstItem, indexOfLastItem);
 
   const openDrawer = (
     id?: string,
@@ -140,7 +164,7 @@ function Reflect({}: Props) {
           Add Update for {formattedStartOfWeek} - {formattedEndOfWeek}
         </Button>
       )}
-      {teamTabs.map((teamTab) => {
+      {currentItems.map((teamTab) => {
         const startOfWeekDate = parseISO(teamTab.startOfWeek);
         const formattedStartOfWeek = format(startOfWeekDate, "MMM do");
 
@@ -168,6 +192,7 @@ function Reflect({}: Props) {
             flex="1"
             borderRadius="md"
             cursor="pointer"
+            bg={colorMode === "light" ? "white" : "gray.700"}
           >
             <Heading fontSize="lg">
               {formattedStartOfWeek} - {formattedEndOfWeek}
@@ -199,6 +224,11 @@ function Reflect({}: Props) {
           </Box>
         );
       })}
+
+      <Box display="flex" justifyContent="space-between" mt={5}>
+        <Button onClick={() => handlePagination("prev")}>Previous</Button>
+        <Button onClick={() => handlePagination("next")}>Next</Button>
+      </Box>
 
       <Drawer isOpen={isOpen} placement="right" onClose={onClose} size="lg">
         <DrawerOverlay>

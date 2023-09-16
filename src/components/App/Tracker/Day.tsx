@@ -619,7 +619,7 @@ const Day: React.FC<{ date: string; user: User }> = ({ date, user }) => {
                           mt={4}
                           ml={2}
                           variant="outline"
-                          colorScheme="red"
+                          _hover={{ bgColor: "red.500", color: "white" }}
                           onClick={() => handleDelete(selectedTaskId)}
                         >
                           Delete
@@ -752,7 +752,7 @@ const Day: React.FC<{ date: string; user: User }> = ({ date, user }) => {
                           mt={4}
                           ml={2}
                           variant="outline"
-                          colorScheme="red"
+                          _hover={{ bgColor: "red.500", color: "white" }}
                           onClick={() => handleBlockerDelete(selectedBlockerId)}
                         >
                           Delete

@@ -28,7 +28,8 @@ export const Button: ComponentStyleConfig = {
     }),
     outline: (props) => ({
       _hover: {
-        bg: mode("#8884d8", "#7161a1")(props),
+        bg: mode("#4130AC", "#5140BD")(props),
+        color: "white",
       },
     }),
     ghost: (props) => ({
