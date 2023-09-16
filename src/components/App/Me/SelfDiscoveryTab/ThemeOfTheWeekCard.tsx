@@ -72,13 +72,9 @@ const ThemeOfTheWeekCard: React.FC<Props> = ({ post }) => {
       borderColor={colorMode === "light" ? "gray.200" : "gray.700"}
       w="full"
       bg={colorMode === "light" ? "white" : "gray.800"}
+      alignItems="flex-start"
     >
-      <Flex
-        justifyContent="center"
-        w="100%"
-        alignItems="center"
-        position="relative"
-      >
+      <Flex justifyContent="space-between" w="100%" position="relative">
         <Text fontSize="lg" fontWeight="semibold">
           {title}
         </Text>

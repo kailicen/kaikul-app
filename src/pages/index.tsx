@@ -241,8 +241,11 @@ export async function getStaticProps() {
     accessToken: process.env.CONTENTFUL_ACCESS_KEY!,
   });
 
+  const today = new Date().toISOString();
+
   const res = await client.getEntries({
     content_type: "theme",
+    "fields.date[lt]": today,
     order: ["-fields.date"], // This orders the results in descending order based on the date field
   });
 

@@ -1,4 +1,4 @@
-import { Text, VStack, Grid } from "@chakra-ui/react";
+import { Text, VStack, Grid, Select } from "@chakra-ui/react";
 import React, { useState } from "react";
 import { UserProfileAddition } from "@/atoms/userProfileAdditionAtom";
 import { InfoIcon } from "@chakra-ui/icons";
@@ -15,6 +15,7 @@ type Props = {
 
 function SelfDiscovery({ profileAddition, onEdit, posts }: Props) {
   const [isInstructionOpen, setIsInstructionOpen] = useState(false);
+  const [selectedTheme, setSelectedTheme] = useState<string | null>(null);
 
   const handleInstructionOpen = () => {
     setIsInstructionOpen(true);
@@ -23,6 +24,14 @@ function SelfDiscovery({ profileAddition, onEdit, posts }: Props) {
   const handleInstructionClose = () => {
     setIsInstructionOpen(false);
   };
+
+  const uniqueThemes = Array.from(
+    new Set(posts.map((post) => post.fields.title))
+  );
+
+  const filteredPosts = selectedTheme
+    ? posts.filter((post) => post.fields.title === selectedTheme)
+    : posts;
 
   return (
     <VStack width="100%">
@@ -47,15 +56,22 @@ function SelfDiscovery({ profileAddition, onEdit, posts }: Props) {
         gap={4}
         width="100%"
       >
-        <VStack>
+        <VStack alignItems="flex-start">
+          <Select
+            placeholder="Select theme"
+            onChange={(e) => setSelectedTheme(e.target.value)}
+            borderRadius="full"
+            w="auto"
+          >
+            {uniqueThemes.map((theme) => (
+              <option key={theme} value={theme}>
+                {theme}
+              </option>
+            ))}
+          </Select>
           {/* First Post into ThemeOfTheWeekCard */}
-          {posts.slice(0, 1).map((post: Theme) => (
+          {filteredPosts.map((post: Theme) => (
             <ThemeOfTheWeekCard key={post.sys.id} post={post} />
-          ))}
-
-          {/* Second Post Onwards in a Different Component */}
-          {posts.slice(1).map((post: Theme) => (
-            <OtherThemeCards key={post.sys.id} post={post} />
           ))}
         </VStack>
 
