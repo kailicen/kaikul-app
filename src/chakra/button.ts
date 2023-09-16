@@ -38,11 +38,11 @@ export const Button: ComponentStyleConfig = {
       },
     }),
     oauth: (props) => ({
-      height: "34px",
+      height: "40px",
       border: "1px solid",
-      borderColor: mode("gray.300", "gray.600")(props),
+      borderColor: mode("gray.400", "gray.500")(props),
       _hover: {
-        bg: mode("gray.100", "gray.700")(props),
+        bg: mode("gray.100", "#FFF")(props),
       },
     }),
     icon: {
