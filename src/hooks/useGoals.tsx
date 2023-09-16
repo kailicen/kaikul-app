@@ -144,27 +144,26 @@ export const useGoals = (user: User, startOfWeek: string) => {
         endDate: updatedGoal.endDate,
       });
 
-      const tasks = await fetchTasks(
-        new Date(startOfWeek),
-        new Date(endOfWeek)
+      const taskQuery = query(
+        collection(firestore, "tasks"),
+        where("goalId", "==", id)
       );
 
-      let updatedTasks: Task[] = [];
+      const taskSnapshot = await getDocs(taskQuery);
+
+      const updatedTasks: Task[] = [];
       const batch = writeBatch(firestore);
 
-      // Update the color of the tasks associated with the updated goal
-      for (const task of tasks) {
-        let updatedTask = { ...task };
-        if (task.goalId === id) {
-          const taskDocRef = doc(firestore, "tasks", task.id);
-          batch.update(taskDocRef, {
-            color: updatedGoal.color,
-          });
+      taskSnapshot.forEach((taskDoc) => {
+        const task = taskDoc.data() as Task; // Assumes `Task` is a TypeScript type representing your task structure
+        const taskDocRef = doc(firestore, "tasks", taskDoc.id);
 
-          updatedTask.color = updatedGoal.color;
-        }
-        updatedTasks.push(updatedTask);
-      }
+        batch.update(taskDocRef, {
+          color: updatedGoal.color,
+        });
+
+        updatedTasks.push({ ...task, color: updatedGoal.color });
+      });
 
       // Commit the batch
       await batch.commit();
