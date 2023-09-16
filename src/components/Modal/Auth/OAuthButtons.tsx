@@ -21,7 +21,10 @@ const OAuthButtons: React.FC = () => {
         <Image src="/img/googlelogo.png" height="20px" mr={4} />
         Continue with Google
       </Button>
-      {error && <Text className="text-destructive text-center">{error.message}</Text>}
+      {error && 
+        <Text className="text-destructive text-center">
+          Errr! An error has occurred. Please try again later.
+        </Text>}
     </Flex>
   );
 };
