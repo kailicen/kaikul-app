@@ -26,6 +26,8 @@ import {
   PopoverContent,
   PopoverTrigger,
   useColorMode,
+  ListItem,
+  UnorderedList,
 } from "@chakra-ui/react";
 import { Formik, Form, Field, FieldInputProps, ErrorMessage } from "formik";
 import { MdAdd } from "react-icons/md";
@@ -33,9 +35,8 @@ import { useEffect, useState } from "react";
 import { User } from "firebase/auth";
 import useTasks from "@/hooks/useTasks";
 import { useBlockers } from "@/hooks/useReflections";
-import { format, isToday, startOfDay, startOfWeek } from "date-fns";
+import { format, startOfWeek } from "date-fns";
 import { useGoals } from "@/hooks/useGoals";
-import { Task } from "@/atoms/tasksAtom";
 import { DayPicker } from "react-day-picker";
 import "react-day-picker/dist/style.css";
 import { FaCalendarAlt } from "react-icons/fa";
@@ -49,11 +50,13 @@ const Day: React.FC<{ date: string; user: User }> = ({ date, user }) => {
   const [selectedTaskDescription, setSelectedTaskDescription] = useState("");
   const [selectedGoalId, setSelectedGoalId] = useState<string | null>(null);
   const [taskDate, setTaskDate] = useState<string>("");
+  const [selectedDateStrings, setSelectedDateStrings] = useState<string[]>([]);
 
   const [selectedBlockerId, setSelectedBlockerId] = useState<string | null>(
     null
   );
   const [selectedBlockerText, setSelectedBlockerText] = useState("");
+
   // Parse the date prop to a Date object
 
   const dateObj = new Date(date);
@@ -133,46 +136,50 @@ const Day: React.FC<{ date: string; user: User }> = ({ date, user }) => {
     task: string;
     description: string;
     goalId: string;
-    date: string;
+    date: string[]; // Change the type of date to an array of strings
   }) => {
     const selectedGoal = recoilGoals.find((goal) => goal.id === values.goalId);
     const color = selectedGoal ? selectedGoal.color : ""; // Get the color from the selected goal
 
-    if (selectedTaskId) {
-      handleEditTask(
-        selectedTaskId,
-        values.task,
-        values.description,
-        values.goalId,
-        values.date,
-        color as string // Pass the color as an argument
-      );
-      toast({
-        title: "Task updated.",
-        description: "Your task has been updated successfully.",
-        status: "success",
-        duration: 5000,
-        isClosable: true,
-      });
-    } else {
-      handleAddTask(
-        values.task,
-        values.description,
-        values.goalId,
-        values.date,
-        color as string
-      ); // Pass the color as an argument
-      toast({
-        title: "Task added.",
-        description: "Your task has been added successfully.",
-        status: "success",
-        duration: 5000,
-        isClosable: true,
-      });
-    }
+    values.date.forEach((date) => {
+      // Loop over each date in the array
+      if (selectedTaskId) {
+        handleEditTask(
+          selectedTaskId,
+          values.task,
+          values.description,
+          values.goalId,
+          date, // Pass the current date in the loop
+          color as string // Pass the color as an argument
+        );
+        toast({
+          title: "Task updated.",
+          description: `Your task for date ${date} has been updated successfully.`,
+          status: "success",
+          duration: 5000,
+          isClosable: true,
+        });
+      } else {
+        handleAddTask(
+          values.task,
+          values.description,
+          values.goalId,
+          date, // Pass the current date in the loop
+          color as string // Pass the color as an argument
+        );
+        toast({
+          title: "Task added.",
+          description: `Your task for date ${date} has been added successfully.`,
+          status: "success",
+          duration: 5000,
+          isClosable: true,
+        });
+      }
+    });
     taskDrawerDisclosure.onClose();
     setSelectedTaskId(null);
     setSelectedTaskText("");
+    setIfDuplicate(false);
   };
 
   const handleDuplicate = () => {
@@ -391,7 +398,7 @@ const Day: React.FC<{ date: string; user: User }> = ({ date, user }) => {
                   goalId: duplicateValues
                     ? duplicateValues.goalId
                     : (selectedGoalId as string),
-                  date: duplicateValues ? duplicateValues.date : taskDate,
+                  date: duplicateValues ? [duplicateValues.date] : [taskDate],
                 }}
                 onSubmit={handleFormSubmit}
                 validate={(values) => {
@@ -435,7 +442,11 @@ const Day: React.FC<{ date: string; user: User }> = ({ date, user }) => {
                             <FormLabel mb="0">Task Date:</FormLabel>
                             <Popover
                               isOpen={isTaskDatePopoverOpen}
-                              onClose={() => setTaskDatePopoverOpen(false)}
+                              onClose={() => {
+                                setTaskDatePopoverOpen(false);
+                                // Optionally reset the selectedDateStrings state when the popover is closed
+                                setSelectedDateStrings([]);
+                              }}
                             >
                               <PopoverTrigger>
                                 <Button
@@ -443,35 +454,96 @@ const Day: React.FC<{ date: string; user: User }> = ({ date, user }) => {
                                   leftIcon={<Icon as={FaCalendarAlt} />}
                                   onClick={() => setTaskDatePopoverOpen(true)}
                                 >
-                                  {field.value || "Select Task Date"}
+                                  {selectedTaskId
+                                    ? format(
+                                        new Date(field.value[0]),
+                                        "MMMM d, yyyy"
+                                      )
+                                    : field.value.length > 0
+                                    ? `${field.value.length} dates selected`
+                                    : "Select Task Dates"}
                                 </Button>
                               </PopoverTrigger>
                               <PopoverContent>
                                 <PopoverBody>
                                   <DayPicker
-                                    mode="single"
+                                    mode={
+                                      selectedTaskId ? "single" : "multiple"
+                                    }
                                     weekStartsOn={1}
                                     month={taskDisplayedMonth}
                                     onMonthChange={(month: Date) =>
                                       setTaskDisplayedMonth(month)
                                     }
-                                    selected={new Date(field.value)}
+                                    selected={
+                                      selectedTaskId
+                                        ? [new Date(field.value)]
+                                        : field.value?.length
+                                        ? field.value.map(
+                                            (date: string) => new Date(date)
+                                          )
+                                        : [new Date()]
+                                    }
                                     onSelect={(
-                                      selectedDay: Date | undefined
+                                      selectedDays: Date[] | Date | undefined
                                     ) => {
-                                      if (selectedDay) {
-                                        const formattedDate = format(
-                                          selectedDay,
-                                          "yyyy-MM-dd"
-                                        );
+                                      if (selectedDays) {
+                                        const formattedDates = Array.isArray(
+                                          selectedDays
+                                        )
+                                          ? selectedDays.map((day) =>
+                                              format(day, "yyyy-MM-dd")
+                                            )
+                                          : [
+                                              format(
+                                                selectedDays as Date,
+                                                "yyyy-MM-dd"
+                                              ),
+                                            ];
                                         form.setFieldValue(
                                           "date",
-                                          formattedDate
+                                          formattedDates
                                         );
-                                        setTaskDatePopoverOpen(false);
+
+                                        // Update the readable date strings state
+                                        const dateStrings = Array.isArray(
+                                          selectedDays
+                                        )
+                                          ? selectedDays.map((day) =>
+                                              format(day, "MMMM d, yyyy")
+                                            )
+                                          : [
+                                              format(
+                                                selectedDays as Date,
+                                                "MMMM d, yyyy"
+                                              ),
+                                            ];
+                                        setSelectedDateStrings(dateStrings);
+
+                                        if (selectedTaskId) {
+                                          setTaskDatePopoverOpen(false);
+                                        }
                                       }
                                     }}
                                   />
+
+                                  {/* Display the list of selected dates in a readable format */}
+                                  {selectedDateStrings.length > 0 && (
+                                    <Box mt={2}>
+                                      <Text fontWeight="bold">
+                                        Selected Dates:
+                                      </Text>
+                                      <UnorderedList>
+                                        {selectedDateStrings.map(
+                                          (dateStr, index) => (
+                                            <ListItem key={index}>
+                                              {dateStr}
+                                            </ListItem>
+                                          )
+                                        )}
+                                      </UnorderedList>
+                                    </Box>
+                                  )}
                                 </PopoverBody>
                               </PopoverContent>
                             </Popover>
