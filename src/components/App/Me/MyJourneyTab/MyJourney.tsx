@@ -48,7 +48,6 @@ const MyJourney: React.FC<Props> = ({ profile, onEdit }) => {
           <MyMilestoneCard />
           <MyJourneyCard profile={profile} onEdit={onEdit} />
         </VStack>
-
         <MyStatsCard />
       </Grid>
     </VStack>

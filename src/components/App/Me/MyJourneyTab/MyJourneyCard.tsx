@@ -61,7 +61,7 @@ const MyJourneyCard: React.FC<Props> = ({ profile, onEdit }) => {
         <Text fontWeight="semibold">My Ultimate Goal:</Text>
         <Box
           borderLeft="2px solid #4130AC"
-          pl={4}
+          pl={{ base: 2, md: 4 }}
           mt={2}
           fontStyle="italic"
           color={colorMode === "light" ? "brand.500" : "brand.100"}
@@ -74,7 +74,7 @@ const MyJourneyCard: React.FC<Props> = ({ profile, onEdit }) => {
         <Text fontWeight="semibold">My Challenges:</Text>
         <Box
           borderLeft="2px solid #ff5e0e"
-          pl={4}
+          pl={{ base: 2, md: 4 }}
           mt={2}
           fontStyle="italic"
           color="#ff5e0e"
@@ -84,7 +84,7 @@ const MyJourneyCard: React.FC<Props> = ({ profile, onEdit }) => {
         </Box>
       </Box>
 
-      <Flex mt={3} gap={{ base: 1, md: 2 }}>
+      <Flex mt={3} gap={{ base: 1, md: 2 }} flexWrap="wrap">
         <Button onClick={openPersonalInfo}>Edit</Button>
         <Button onClick={openPersonalInfoDepth}>Dive Deeper</Button>
         <Button

@@ -208,13 +208,14 @@ const MyStatsCard: React.FC = () => {
 
   return (
     <VStack
-      gap={4}
+      gap={{ base: 2, md: 4 }}
       p={{ base: 2, md: 4 }}
       border="1px"
       borderColor={colorMode === "light" ? "gray.200" : "gray.700"}
       bg={colorMode === "light" ? "white" : "gray.800"}
       borderRadius="md"
       boxShadow="lg"
+      w="100%"
     >
       <Text fontSize="lg" fontWeight="semibold">
         My Stats
@@ -270,27 +271,30 @@ const MyStatsCard: React.FC = () => {
           <CartesianGrid strokeDasharray="3 3" />
           <XAxis dataKey="name" />
           <YAxis />
-          <Tooltip content={<CustomTooltip />} />
+          <Tooltip
+            content={<CustomTooltip />}
+            cursor={{ width: 80, height: 40 }}
+          />
           <Legend />
           <Bar dataKey="Total" fill="#8884d8" />
           <Bar dataKey="Completed" fill="#ffa173" />
         </BarChart>
       </ResponsiveContainer>
 
-      <Table variant="simple" size={{ base: "sm", md: "md" }}>
+      <Table variant="simple" size={{ base: "sm", md: "md" }} width="100%">
         <Thead>
           <Tr>
             <Th textAlign="center" p={{ base: "1", md: "2" }}>
-              Metrics
+              {isLargerThanMD ? "Metrics" : ""}
             </Th>
             <Th textAlign="center" p={{ base: "1", md: "2" }}>
-              Total
+              {isLargerThanMD ? "Total" : "Tot."}
             </Th>
             <Th textAlign="center" p={{ base: "1", md: "2" }}>
-              Completed
+              {isLargerThanMD ? "Completed" : "Comp."}
             </Th>
             <Th textAlign="center" p={{ base: "1", md: "2" }}>
-              Completion Rate
+              {isLargerThanMD ? "Completion Rate" : "C. Rate"}
             </Th>
           </Tr>
         </Thead>

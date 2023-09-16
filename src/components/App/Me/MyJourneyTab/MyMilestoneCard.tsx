@@ -65,18 +65,27 @@ const MyMilestoneCard = () => {
     <Flex
       alignItems="center"
       justifyContent="space-evenly"
-      w="full"
+      w="100%"
       border="1px"
       borderColor={colorMode === "light" ? "gray.200" : "gray.700"}
       bg={colorMode === "light" ? "white" : "gray.800"}
       borderRadius="md"
       boxShadow="lg"
     >
-      <Flex direction="column" alignItems="center" gap={2} p={4}>
+      <Flex
+        direction="column"
+        alignItems="center"
+        gap={2}
+        p={{ base: 2, md: 4 }}
+      >
         {imagePreview != "" ? (
-          <Avatar size="xl" name={username} src={imagePreview} />
+          <Avatar
+            size={{ base: "lg", md: "xl" }}
+            name={username}
+            src={imagePreview}
+          />
         ) : (
-          <Avatar size="xl" />
+          <Avatar size={{ base: "lg", md: "xl" }} />
         )}
         <Text fontWeight={700}>
           {user?.displayName || user?.email?.split("@")[0]}

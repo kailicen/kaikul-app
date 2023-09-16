@@ -83,7 +83,7 @@ const JourneyModeCard: React.FC<Props> = ({ profile, onEdit, user }) => {
         </Box>
       </Box>
 
-      <Flex mt={3} gap={{ base: 1, md: 2 }}>
+      <Flex mt={3} gap={{ base: 1, md: 2 }} flexWrap="wrap">
         <Button onClick={openShareInfo}>Edit</Button>
         <SlackShareButton
           profile={profile}
