@@ -18,9 +18,9 @@ import MyJourney from "./MyJourneyTab/MyJourney";
 import Leaderboard from "./LeaderboardTab/Leaderboard";
 import { Theme } from "./SelfDiscoveryTab/ThemeOfTheWeekCard";
 
-type Props = { user: User; post: Theme };
+type Props = { user: User; posts: Theme[] };
 
-function MePage({ user, post }: Props) {
+function MePage({ user, posts }: Props) {
   const [onboarding, setOnboarding] = useRecoilState(onboardingState);
   const { loading, profile, updateProfile } = useUserProfile(user);
   const { profileAddition, updateProfileAddition } =
@@ -50,7 +50,7 @@ function MePage({ user, post }: Props) {
                 <SelfDiscovery
                   profileAddition={profileAddition}
                   onEdit={updateProfileAddition}
-                  post={post}
+                  posts={posts}
                 />
               </TabPanel>
             </TabPanels>

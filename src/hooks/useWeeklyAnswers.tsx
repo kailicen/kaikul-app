@@ -10,14 +10,13 @@ import {
 } from "firebase/firestore";
 import { firestore } from "../firebase/clientApp";
 import { User } from "firebase/auth";
-import { useRecoilState } from "recoil";
 import { WeeklyAnswer, weeklyAnswersState } from "@/atoms/weeklyAnswersAtom";
 
 export const useWeeklyAnswers = (
   user: User | null | undefined,
   theme: string
 ) => {
-  const [answers, setAnswers] = useRecoilState(weeklyAnswersState);
+  const [answers, setAnswers] = useState<WeeklyAnswer[]>([]);
   const [loading, setLoading] = useState(true);
 
   const fetchAnswersFromFirebase = useCallback(async () => {
@@ -81,6 +80,7 @@ export const useWeeklyAnswers = (
 
   useEffect(() => {
     if (theme) {
+      setAnswers([]); // Reset the answers state when the theme changes
       fetchAnswersFromFirebase();
     }
   }, [theme, fetchAnswersFromFirebase]);

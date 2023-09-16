@@ -138,10 +138,10 @@ const benefits = [
 ];
 
 type Props = {
-  post: Theme;
+  posts: Theme[];
 };
 
-export default function Home({ post }: Props) {
+export default function Home({ posts }: Props) {
   const [user, loading, error] = useAuthState(auth);
 
   if (loading) {
@@ -164,7 +164,7 @@ export default function Home({ post }: Props) {
 
       {user ? (
         <div className="pt-[80px] container mx-auto">
-          <MePage user={user} post={post} />
+          <MePage user={user} posts={posts} />
         </div>
       ) : (
         <>
@@ -244,12 +244,11 @@ export async function getStaticProps() {
   const res = await client.getEntries({
     content_type: "theme",
     order: ["-fields.date"], // This orders the results in descending order based on the date field
-    limit: 1, // This limits the results to 1, so you only get the most recent post
   });
 
   return {
     props: {
-      post: res.items[0], // The most recent post
+      posts: res.items, // The most recent post
     },
     revalidate: 1,
   };

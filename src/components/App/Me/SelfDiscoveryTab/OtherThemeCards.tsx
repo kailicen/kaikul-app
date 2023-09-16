@@ -6,9 +6,6 @@ import {
   Button,
   Flex,
   useColorMode,
-  UnorderedList,
-  ListItem,
-  OrderedList,
 } from "@chakra-ui/react";
 import { BLOCKS, MARKS } from "@contentful/rich-text-types";
 import { Document } from "@contentful/rich-text-types";
@@ -34,7 +31,7 @@ type Props = {
   post: Theme;
 };
 
-const ThemeOfTheWeekCard: React.FC<Props> = ({ post }) => {
+const OtherThemeCards: React.FC<Props> = ({ post }) => {
   const [user, loading] = useAuthState(auth);
   const { title, date, content, question } = post.fields;
   const [isContentModalOpen, setContentModalOpen] = useState(false);
@@ -44,15 +41,6 @@ const ThemeOfTheWeekCard: React.FC<Props> = ({ post }) => {
     renderNode: {
       [BLOCKS.PARAGRAPH]: (node: any, children: any) => (
         <Text my={4}>{children}</Text>
-      ),
-      [BLOCKS.UL_LIST]: (node: any, children: any) => (
-        <UnorderedList>{children}</UnorderedList>
-      ),
-      [BLOCKS.OL_LIST]: (node: any, children: any) => (
-        <OrderedList>{children}</OrderedList>
-      ),
-      [BLOCKS.LIST_ITEM]: (node: any, children: any) => (
-        <ListItem>{children}</ListItem>
       ),
     },
     renderMark: {
@@ -114,4 +102,4 @@ const ThemeOfTheWeekCard: React.FC<Props> = ({ post }) => {
   );
 };
 
-export default ThemeOfTheWeekCard;
+export default OtherThemeCards;

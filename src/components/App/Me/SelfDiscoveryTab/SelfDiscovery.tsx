@@ -5,14 +5,15 @@ import { InfoIcon } from "@chakra-ui/icons";
 import SelfDiscoveryModal from "@/components/Modal/Instructions/SelfDiscoveryModal";
 import SelfDiscoveryCard from "./SelfDiscoveryCard";
 import ThemeOfTheWeekCard, { Theme } from "./ThemeOfTheWeekCard";
+import OtherThemeCards from "./OtherThemeCards";
 
 type Props = {
   profileAddition: UserProfileAddition;
   onEdit: (updatedProfileAddition: UserProfileAddition) => void;
-  post: Theme;
+  posts: Theme[];
 };
 
-function SelfDiscovery({ profileAddition, onEdit, post }: Props) {
+function SelfDiscovery({ profileAddition, onEdit, posts }: Props) {
   const [isInstructionOpen, setIsInstructionOpen] = useState(false);
 
   const handleInstructionOpen = () => {
@@ -46,7 +47,19 @@ function SelfDiscovery({ profileAddition, onEdit, post }: Props) {
         gap={4}
         width="100%"
       >
-        <ThemeOfTheWeekCard post={post} />
+        <VStack>
+          {/* First Post into ThemeOfTheWeekCard */}
+          {posts.slice(0, 1).map((post: Theme) => (
+            <ThemeOfTheWeekCard key={post.sys.id} post={post} />
+          ))}
+
+          {/* Second Post Onwards in a Different Component */}
+          {posts.slice(1).map((post: Theme) => (
+            <OtherThemeCards key={post.sys.id} post={post} />
+          ))}
+        </VStack>
+
+        {/* SelfDiscoveryCard on the right */}
         <VStack gap={2}>
           <SelfDiscoveryCard
             profileAddition={profileAddition}
