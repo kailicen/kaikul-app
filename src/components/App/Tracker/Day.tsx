@@ -319,11 +319,11 @@ const Day: React.FC<{ date: string; user: User }> = ({ date, user }) => {
                   ".chakra-checkbox__control": {
                     borderColor: "gray.700",
                     _checked: {
-                      borderColor: "gray.600",
-                      bg: "gray.600",
+                      borderColor: "gray.500",
+                      bg: "gray.500",
                     },
                     _hover: {
-                      borderColor: "gray.600",
+                      borderColor: "gray.500",
                     },
                   },
                 }}

@@ -11,6 +11,7 @@ import {
   query,
   doc,
   writeBatch,
+  onSnapshot,
 } from "firebase/firestore";
 import { firestore } from "../firebase/clientApp";
 import { useRecoilState } from "recoil";
@@ -240,49 +241,37 @@ export const useGoals = (user: User, startOfWeek: string) => {
   };
 
   useEffect(() => {
-    const loadGoals = async () => {
-      // Query based on startDate
-      const qStartDate = query(
-        collection(firestore, "weeklyGoals"),
-        where("startDate", "<=", endOfWeek),
-        where("userId", "==", user.uid)
-      );
+    const weeklyGoalsCollection = collection(firestore, "weeklyGoals");
 
-      // Query based on endDate
-      const qEndDate = query(
-        collection(firestore, "weeklyGoals"),
-        where("endDate", ">=", startOfWeek),
-        where("userId", "==", user.uid)
-      );
+    // Query based on one condition first
+    const q = query(
+      weeklyGoalsCollection,
+      where("startDate", "<=", endOfWeek),
+      where("userId", "==", user.uid)
+    );
 
-      const querySnapshotStartDate = await getDocs(qStartDate);
-      const querySnapshotEndDate = await getDocs(qEndDate);
+    const unsubscribe = onSnapshot(
+      q,
+      async (snapshot) => {
+        const goalsForWeek: Goal[] = [];
+        snapshot.forEach((doc) => {
+          const goal = doc.data() as Goal;
+          goal.id = doc.id;
+          // Apply the second condition client-side
+          if (goal.endDate >= startOfWeek) {
+            goalsForWeek.push(goal);
+          }
+        });
+        setGoals(goalsForWeek);
+        setRecoilGoals(goalsForWeek);
+      },
+      (error) => {
+        console.error("Error fetching goals:", error);
+      }
+    );
 
-      const goalsFromStartDate: Goal[] = [];
-      const goalsFromEndDate: Goal[] = [];
-
-      querySnapshotStartDate.forEach((doc) => {
-        const goal = doc.data() as Goal;
-        goal.id = doc.id;
-        goalsFromStartDate.push(goal);
-      });
-
-      querySnapshotEndDate.forEach((doc) => {
-        const goal = doc.data() as Goal;
-        goal.id = doc.id;
-        goalsFromEndDate.push(goal);
-      });
-
-      // Find the intersection of the two goal arrays by id
-      const goalsForWeek: Goal[] = goalsFromStartDate.filter((goalStart) =>
-        goalsFromEndDate.some((goalEnd) => goalEnd.id === goalStart.id)
-      );
-
-      setGoals(goalsForWeek);
-      setRecoilGoals(goalsForWeek);
-    };
-
-    loadGoals();
+    // Cleanup listener on component unmount
+    return () => unsubscribe();
   }, [user, startOfWeek, endOfWeek]);
 
   return {

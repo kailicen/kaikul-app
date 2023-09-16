@@ -120,7 +120,7 @@ function GoalView({ user, startOfDay, startOfWeek }: GoalViewProps) {
     setSelectedGoalText(text || "");
     setSelectedGoalCompleted(completed || false);
     setSelectedGoalDescription(description || "");
-    setSelectedGoalColor(color || "");
+    setSelectedGoalColor(color || "white");
     setStartDate(startDate || format(new Date(), "yyyy-MM-dd"));
     setEndDate(endDate || "");
 
@@ -485,7 +485,7 @@ function GoalView({ user, startOfDay, startOfWeek }: GoalViewProps) {
                                   w="20px"
                                   h="20px"
                                   borderRadius="4px"
-                                  bg={form.values.color || "#FFFFFF"}
+                                  bg={form.values.color || "#ffffff"}
                                   mr="2"
                                 />
                               </MenuButton>

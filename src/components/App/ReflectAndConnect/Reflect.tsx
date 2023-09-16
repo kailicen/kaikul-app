@@ -51,10 +51,6 @@ function Reflect({}: Props) {
   const [selectedBiggestObstacle, setSelectedBiggestObstacle] = useState("");
   const [selectedLessonLearned, setSelectedLessonLearned] = useState("");
 
-  // pagination
-  const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 3;
-
   const currentDate = new Date();
   // Format the start and end of week for the button display
   const startOfWeekDate = startOfWeekDateFns(currentDate, { weekStartsOn: 1 }); // Monday
@@ -73,29 +69,15 @@ function Reflect({}: Props) {
     handleUpdateTeamTab,
     handleAddTeamTab,
     isCurrentWeekDataExist,
+    handleNextPage,
+    handlePrevPage,
+    currentPage,
   } = useTeamTab(user as User, startOfWeek);
 
   if (loading) {
     // Here, you can return a loader if the authentication state is still being determined.
     return <LoadingScreen />;
   }
-
-  // Function to handle pagination
-  const handlePagination = (type: string) => {
-    if (type === "prev" && currentPage > 1) {
-      setCurrentPage((prev) => prev - 1);
-    }
-    if (
-      type === "next" &&
-      currentPage < Math.ceil(teamTabs.length / itemsPerPage)
-    ) {
-      setCurrentPage((prev) => prev + 1);
-    }
-  };
-
-  const indexOfLastItem = currentPage * itemsPerPage;
-  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-  const currentItems = teamTabs.slice(indexOfFirstItem, indexOfLastItem);
 
   const openDrawer = (
     id?: string,
@@ -164,7 +146,7 @@ function Reflect({}: Props) {
           Add Update for {formattedStartOfWeek} - {formattedEndOfWeek}
         </Button>
       )}
-      {currentItems.map((teamTab) => {
+      {teamTabs.map((teamTab) => {
         const startOfWeekDate = parseISO(teamTab.startOfWeek);
         const formattedStartOfWeek = format(startOfWeekDate, "MMM do");
 
@@ -225,9 +207,16 @@ function Reflect({}: Props) {
         );
       })}
 
-      <Box display="flex" justifyContent="space-between" mt={5}>
-        <Button onClick={() => handlePagination("prev")}>Previous</Button>
-        <Button onClick={() => handlePagination("next")}>Next</Button>
+      <Box
+        display="flex"
+        justifyContent="flex-start"
+        alignItems="center"
+        gap={2}
+        mt={5}
+      >
+        <Button onClick={handlePrevPage}>Prev</Button>
+        <Text>Page: {currentPage}</Text> {/* Display the current page here */}
+        <Button onClick={handleNextPage}>Next</Button>
       </Box>
 
       <Drawer isOpen={isOpen} placement="right" onClose={onClose} size="lg">

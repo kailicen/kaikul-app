@@ -8,6 +8,10 @@ import {
   getDocs,
   where,
   orderBy,
+  limit,
+  startAfter,
+  QueryDocumentSnapshot,
+  DocumentData,
 } from "firebase/firestore";
 import { firestore } from "../firebase/clientApp";
 import { useEffect, useState } from "react";
@@ -31,6 +35,31 @@ export const useTeamTab = (user: User, startOfWeek: string) => {
   const [isCurrentWeekDataExist, setIsCurrentWeekDataExist] =
     useState<boolean>(false);
   const { updatePoints } = useUserPoints(user);
+
+  const [currentPage, setCurrentPage] = useState(1);
+  const [itemsPerPage, setItemsPerPage] = useState(3); // or any other number you want
+  const [lastVisibleDocument, setLastVisibleDocument] =
+    useState<QueryDocumentSnapshot | null>(null);
+
+  const [pageSnapshots, setPageSnapshots] = useState<
+    (QueryDocumentSnapshot<DocumentData> | null)[]
+  >([]);
+
+  const handleNextPage = () => {
+    setPageSnapshots([...pageSnapshots, lastVisibleDocument]);
+    setCurrentPage((prev) => prev + 1);
+  };
+
+  const handlePrevPage = () => {
+    if (currentPage > 1) {
+      setPageSnapshots((prev) => {
+        const newSnapshots = [...prev];
+        newSnapshots.pop();
+        return newSnapshots;
+      });
+      setCurrentPage((prev) => prev - 1);
+    }
+  };
 
   const handleAddTeamTab = async (
     startOfWeek: string,
@@ -130,15 +159,35 @@ export const useTeamTab = (user: User, startOfWeek: string) => {
   useEffect(() => {
     const loadTeamTabs = async () => {
       if (user && user.uid) {
-        // add this line
-        const q = query(
+        console.log("User ID:", user.uid); // Log the user ID
+        // Add limit and startAfter to implement pagination
+        let q = query(
           collection(firestore, "teamTabs"),
           where("userId", "==", user.uid),
-          orderBy("startOfWeek", "desc")
+          orderBy("startOfWeek", "desc"),
+          limit(itemsPerPage)
         );
+
+        if (currentPage === 1) {
+          setLastVisibleDocument(null);
+        }
+
+        if (currentPage > 1) {
+          const startAtDoc = pageSnapshots[pageSnapshots.length - 1];
+          q = query(
+            collection(firestore, "teamTabs"),
+            where("userId", "==", user.uid),
+            orderBy("startOfWeek", "desc"),
+            limit(itemsPerPage),
+            startAfter(startAtDoc)
+          );
+        }
+
         const querySnapshot = await getDocs(q);
+
         const teamTabs: WeeklyReflection[] = [];
         querySnapshot.forEach((doc) => {
+          console.log("Query snapshot:", doc.data());
           const teamTab = doc.data() as WeeklyReflection;
           teamTab.id = doc.id;
           teamTabs.push(teamTab);
@@ -147,15 +196,24 @@ export const useTeamTab = (user: User, startOfWeek: string) => {
           }
         });
         setTeamTabs(teamTabs);
-      } // and this line
+        // Set the last visible document for pagination
+        if (!querySnapshot.empty) {
+          setLastVisibleDocument(
+            querySnapshot.docs[querySnapshot.docs.length - 1]
+          );
+        }
+      }
     };
     loadTeamTabs();
-  }, [user, startOfWeek]);
+  }, [user, startOfWeek, currentPage]); // Added dependency on `currentPage`
 
   return {
     teamTabs,
     handleUpdateTeamTab,
     handleAddTeamTab,
     isCurrentWeekDataExist,
+    handleNextPage,
+    handlePrevPage,
+    currentPage,
   };
 };
