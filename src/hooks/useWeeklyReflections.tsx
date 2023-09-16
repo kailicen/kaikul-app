@@ -36,6 +36,11 @@ export const useTeamTab = (user: User, startOfWeek: string) => {
     useState<boolean>(false);
   const { updatePoints } = useUserPoints(user);
 
+  const [selectedDate, setSelectedDate] = useState<string | null>(null);
+  const [dataForSelectedDate, setDataForSelectedDate] =
+    useState<WeeklyReflection | null>(null);
+  const [uniqueDates, setUniqueDates] = useState<string[]>([]);
+
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(3); // or any other number you want
   const [lastVisibleDocument, setLastVisibleDocument] =
@@ -151,10 +156,76 @@ export const useTeamTab = (user: User, startOfWeek: string) => {
           ?.lessonLearned,
       });
       setTeamTabs(updatedTeamTabs);
+
+      // Update dataForSelectedDate state if the id matches
+      if (dataForSelectedDate && dataForSelectedDate.id === id) {
+        setDataForSelectedDate(
+          updatedTeamTabs.find((teamtab) => teamtab.id === id) || null
+        );
+      }
     } catch (error) {
       console.error("Error updating document: ", error);
     }
   };
+
+  const fetchUniqueDates = async () => {
+    if (user && user.uid) {
+      try {
+        const q = query(
+          collection(firestore, "teamTabs"),
+          where("userId", "==", user.uid),
+          orderBy("startOfWeek", "desc")
+        );
+
+        const querySnapshot = await getDocs(q);
+
+        const dates: string[] = [];
+        querySnapshot.forEach((doc) => {
+          const data = doc.data() as WeeklyReflection;
+          if (!dates.includes(data.startOfWeek)) {
+            dates.push(data.startOfWeek);
+          }
+        });
+
+        setUniqueDates(dates);
+      } catch (error) {
+        console.error("Error fetching unique dates: ", error);
+      }
+    }
+  };
+
+  useEffect(() => {
+    fetchUniqueDates();
+  }, [user]);
+
+  const fetchDataForSelectedDate = async (date: string) => {
+    if (user && user.uid) {
+      try {
+        const q = query(
+          collection(firestore, "teamTabs"),
+          where("userId", "==", user.uid),
+          where("startOfWeek", "==", date)
+        );
+
+        const querySnapshot = await getDocs(q);
+
+        let data: WeeklyReflection | null = null;
+        querySnapshot.forEach((doc) => {
+          data = { ...doc.data(), id: doc.id } as WeeklyReflection;
+        });
+
+        setDataForSelectedDate(data);
+      } catch (error) {
+        console.error("Error fetching data for selected date: ", error);
+      }
+    }
+  };
+
+  useEffect(() => {
+    if (selectedDate) {
+      fetchDataForSelectedDate(selectedDate);
+    }
+  }, [user, selectedDate]);
 
   useEffect(() => {
     const loadTeamTabs = async () => {
@@ -215,5 +286,10 @@ export const useTeamTab = (user: User, startOfWeek: string) => {
     handleNextPage,
     handlePrevPage,
     currentPage,
+    selectedDate,
+    setSelectedDate,
+    dataForSelectedDate,
+    setDataForSelectedDate,
+    uniqueDates,
   };
 };

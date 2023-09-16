@@ -19,19 +19,20 @@ import {
   DrawerFooter,
   useDisclosure,
   Input,
-  useColorMode,
+  Select,
+  Flex,
 } from "@chakra-ui/react";
 import {
   endOfWeek,
   startOfWeek as startOfWeekDateFns,
   format,
   parseISO,
-  addDays,
 } from "date-fns";
 import { User } from "firebase/auth";
 import { Formik, Form, Field } from "formik";
 import React, { useState } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
+import { WeeklyReflectionCard } from "./WeeklyReflectionCard";
 
 type Props = {};
 
@@ -55,10 +56,8 @@ function Reflect({}: Props) {
   // Format the start and end of week for the button display
   const startOfWeekDate = startOfWeekDateFns(currentDate, { weekStartsOn: 1 }); // Monday
   const endOfWeekDate = endOfWeek(currentDate, { weekStartsOn: 1 }); // Sunday
-  const formattedStartOfWeek = format(startOfWeekDate, "MMMM do");
-  const formattedEndOfWeek = format(endOfWeekDate, "MMMM do, yyyy");
-
-  const { colorMode } = useColorMode();
+  const formattedStartOfWeek = format(startOfWeekDate, "MMM do");
+  const formattedEndOfWeek = format(endOfWeekDate, "MMM do, yyyy");
 
   const [startOfWeek, setStartOfWeek] = useState(
     format(startOfWeekDateFns(new Date(), { weekStartsOn: 1 }), "yyyy-MM-dd")
@@ -72,7 +71,26 @@ function Reflect({}: Props) {
     handleNextPage,
     handlePrevPage,
     currentPage,
+    selectedDate,
+    setSelectedDate,
+    dataForSelectedDate,
+    setDataForSelectedDate,
+    uniqueDates,
   } = useTeamTab(user as User, startOfWeek);
+
+  // Use the list to populate the options in your Select dropdown.
+  const weeklyOptions = uniqueDates.map((date) => {
+    const startOfWeekDate = parseISO(date);
+    const formattedStartOfWeek = format(startOfWeekDate, "MMM do");
+
+    const endOfWeekDate = endOfWeek(startOfWeekDate);
+    const formattedEndOfWeek = format(endOfWeekDate, "MMM do, yyyy");
+
+    return {
+      label: `${formattedStartOfWeek} - ${formattedEndOfWeek}`,
+      value: date, // Storing the start date of the week as the value
+    };
+  });
 
   if (loading) {
     // Here, you can return a loader if the authentication state is still being determined.
@@ -96,6 +114,15 @@ function Reflect({}: Props) {
     setSelectedBiggestImprovement(biggestImprovement || "");
     setSelectedBiggestObstacle(biggestObstacle || "");
     setSelectedLessonLearned(lessonLearned || "");
+  };
+
+  const handleDateChange = (value: string) => {
+    if (value === "clear") {
+      setSelectedDate(null);
+      setDataForSelectedDate(null);
+    } else {
+      setSelectedDate(value);
+    }
   };
 
   const handleFormSubmit = async (values: {
@@ -141,21 +168,51 @@ function Reflect({}: Props) {
         Track your week&apos;s highlights effortlessly! Fill out your weekly
         updates, a fun, vital part of our sessions.
       </Text>
-      {!isCurrentWeekDataExist && (
-        <Button onClick={() => openDrawer()}>
-          Add Update for {formattedStartOfWeek} - {formattedEndOfWeek}
-        </Button>
-      )}
-      {teamTabs.map((teamTab) => {
-        const startOfWeekDate = parseISO(teamTab.startOfWeek);
-        const formattedStartOfWeek = format(startOfWeekDate, "MMM do");
-
-        const endOfWeekDate = addDays(startOfWeekDate, 6);
-        const formattedEndOfWeek = format(endOfWeekDate, "MMM do, yyyy");
-
-        return (
-          <Box
+      <Flex
+        direction={{ base: "column", md: "row" }}
+        justifyContent={{ base: "center", md: "space-between" }}
+        gap={2}
+      >
+        {!isCurrentWeekDataExist && (
+          <Button onClick={() => openDrawer()} whiteSpace="nowrap">
+            Add Update for {formattedStartOfWeek} - {formattedEndOfWeek}
+          </Button>
+        )}
+        <Select
+          placeholder="Search an Update"
+          borderRadius="full"
+          width="auto"
+          value={selectedDate || ""}
+          onChange={(e) => handleDateChange(e.target.value)}
+        >
+          <option value="clear">Clear Filter</option>
+          {weeklyOptions.map((option, index) => (
+            <option key={index} value={option.value}>
+              {option.label}
+            </option>
+          ))}
+        </Select>
+      </Flex>
+      {dataForSelectedDate ? (
+        <WeeklyReflectionCard
+          record={dataForSelectedDate}
+          onClick={() =>
+            openDrawer(
+              dataForSelectedDate.id,
+              dataForSelectedDate.rateWeek,
+              dataForSelectedDate.rateHappiness,
+              dataForSelectedDate.practiceHours,
+              dataForSelectedDate.biggestImprovement,
+              dataForSelectedDate.biggestObstacle,
+              dataForSelectedDate.lessonLearned
+            )
+          }
+        />
+      ) : (
+        teamTabs.map((teamTab) => (
+          <WeeklyReflectionCard
             key={teamTab.id}
+            record={teamTab}
             onClick={() =>
               openDrawer(
                 teamTab.id,
@@ -167,45 +224,9 @@ function Reflect({}: Props) {
                 teamTab.lessonLearned
               )
             }
-            mt={5}
-            p={5}
-            shadow="md"
-            borderWidth="1px"
-            flex="1"
-            borderRadius="md"
-            cursor="pointer"
-            bg={colorMode === "light" ? "white" : "gray.700"}
-          >
-            <Heading fontSize="lg">
-              {formattedStartOfWeek} - {formattedEndOfWeek}
-            </Heading>
-            <Box display="flex" alignItems="center" mt={4} gap={2}>
-              <Text fontWeight="semibold">Week Rating:</Text>
-              <Text> {teamTab.rateWeek}/10</Text>
-            </Box>
-            <Box display="flex" alignItems="center" mt={4} gap={2}>
-              <Text fontWeight="semibold">Happiness Rating:</Text>
-              <Text> {teamTab.rateHappiness}/10</Text>
-            </Box>
-            <Box display="flex" alignItems="center" mt={4} gap={2}>
-              <Text fontWeight="semibold">Practice Hours:</Text>
-              <Text> {teamTab.practiceHours}</Text>
-            </Box>
-            <Box display="flex" flexDirection="column" gap={1} mt={4}>
-              <Text fontWeight="semibold">Biggest improvement:</Text>
-              <Text> {teamTab.biggestImprovement}</Text>
-            </Box>
-            <Box display="flex" flexDirection="column" gap={1} mt={4}>
-              <Text fontWeight="semibold">Biggest obstacle:</Text>
-              <Text> {teamTab.biggestObstacle}</Text>
-            </Box>
-            <Box display="flex" flexDirection="column" gap={1} mt={4}>
-              <Text fontWeight="semibold">Lesson Learned:</Text>
-              <Text> {teamTab.lessonLearned}</Text>
-            </Box>
-          </Box>
-        );
-      })}
+          />
+        ))
+      )}
 
       <Box
         display="flex"
