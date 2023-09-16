@@ -101,16 +101,6 @@ const useTasks = (date: string, user: User) => {
       return;
     }
 
-    // Determine if a goalId has been added or removed
-    let pointsChange = 0;
-    if (!originalTask.goalId && newGoalId) {
-      pointsChange += 1; // A goalId was added
-    } else if (originalTask.goalId && !newGoalId) {
-      pointsChange -= 1; // A goalId was removed
-    }
-
-    await updatePoints(pointsChange);
-
     const updatedTask = {
       ...originalTask,
       text: newTask,
