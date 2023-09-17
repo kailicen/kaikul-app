@@ -152,11 +152,23 @@ export default function Home({ posts }: Props) {
     <div className="flex min-h-screen flex-col">
       <Head>
         <title>KaiKul | Where Ownership Meets Purpose</title>
+
+      {/* Google / Search Engine Tags */}
         <meta
           property="og:title"
           content="KaiKul | Where Ownership Meets Purpose"
         />
+        <meta 
+          property="og:description" 
+          content="KaiKul is a personal development platform designed to foster conscious living and nurture personal responsibility." 
+        />
+        <meta property="og:image" content="https://www.kaikul.com/android-chrome-512x512.png" />
         <meta property="og:image" content="/img/kaikul-thumbnail.png" />
+        <meta property="-post-thumbnail.png" />
+        <meta property="og:image" content="/android-chrome-192x192.png" />
+        <meta property="og:image" content="/android-chrome-512x512.png" />
+        <meta property="og:site_name" content="KaiKul" />
+        <meta property="og:type" content="website" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
