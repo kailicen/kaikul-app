@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import {
   VStack,
   Button,
@@ -7,17 +7,16 @@ import {
   DrawerContent,
   DrawerHeader,
   DrawerBody,
-  Text,
   Box,
   Textarea,
   DrawerCloseButton,
-  Avatar,
 } from "@chakra-ui/react";
 import { WeeklyAnswer } from "@/atoms/weeklyAnswersAtom";
 import { useWeeklyAnswers } from "@/hooks/useWeeklyAnswers";
 import { User } from "firebase/auth";
 import { useColorMode } from "@chakra-ui/react";
 import useUserPoints from "@/hooks/useUserPoints";
+import { AnswerBox } from "./AnswerBox";
 
 type Props = {
   user: User | null | undefined;
@@ -26,7 +25,8 @@ type Props = {
 };
 
 const AnswersComponent = ({ user, theme, question }: Props) => {
-  const { answers, addAnswerToFirebase } = useWeeklyAnswers(user, theme);
+  const { answers, addAnswerToFirebase, addReactionToFirebase } =
+    useWeeklyAnswers(user, theme);
   const [isDrawerOpen, setDrawerOpen] = useState(false);
   const [newAnswer, setNewAnswer] = useState("");
   const [editingAnswer, setEditingAnswer] = useState<WeeklyAnswer | null>(null);
@@ -51,8 +51,20 @@ const AnswersComponent = ({ user, theme, question }: Props) => {
     }
   };
 
-  const userAnswer = answers.find((answer) => user?.uid === answer.userId);
-  const otherAnswers = answers.filter((answer) => user?.uid !== answer.userId);
+  const handleAddReaction = async (answer: WeeklyAnswer, emoji: string) => {
+    if (user) {
+      await addReactionToFirebase(answer.id, user.uid, emoji); // assuming answer has an id property
+    }
+  };
+
+  const userAnswer = useMemo(
+    () => answers.find((answer) => user?.uid === answer.userId),
+    [answers, user]
+  );
+  const otherAnswers = useMemo(
+    () => answers.filter((answer) => user?.uid !== answer.userId),
+    [answers, user]
+  );
 
   return (
     <VStack
@@ -71,65 +83,25 @@ const AnswersComponent = ({ user, theme, question }: Props) => {
       )}
 
       {userAnswer && (
-        <Box
-          borderWidth="1px"
-          borderRadius="lg"
-          p={4}
-          display="flex"
-          alignItems="flex-start"
-          bg={colorMode === "light" ? "#e4dff3" : "gray.700"}
-          w="100%"
-        >
-          <Avatar
-            src={userAnswer.photoURL || undefined}
-            name={userAnswer.displayName || "Anonymous User"}
-            size="sm"
-            mr={4}
-          />
-          <Box>
-            <Text fontSize="sm" color="gray.500">
-              {userAnswer.displayName || "Anonymous User"}
-            </Text>
-            <Text>{userAnswer.answer}</Text>
-          </Box>
-          <Button
-            size="sm"
-            ml="2"
-            onClick={() => {
-              setEditingAnswer(userAnswer);
-              setNewAnswer(userAnswer.answer);
-              setDrawerOpen(true);
-            }}
-          >
-            Edit
-          </Button>
-        </Box>
+        <AnswerBox
+          answer={userAnswer}
+          isUserAnswer={true}
+          onEdit={() => {
+            setEditingAnswer(userAnswer);
+            setNewAnswer(userAnswer.answer);
+            setDrawerOpen(true);
+          }}
+          onAddReaction={(emoji) => handleAddReaction(userAnswer, emoji)}
+        />
       )}
 
-      {otherAnswers.map((answer: WeeklyAnswer, index: number) => (
-        <Box
-          key={index}
-          borderWidth="1px"
-          borderRadius="lg"
-          p={4}
-          display="flex"
-          alignItems="flex-start"
-          bg={colorMode === "light" ? "#e4dff3" : "gray.700"}
-          w="100%"
-        >
-          <Avatar
-            src={answer.photoURL || undefined}
-            name={answer.displayName || "Anonymous User"}
-            size="sm"
-            mr={4}
-          />
-          <Box>
-            <Text fontSize="sm" color="gray.500">
-              {answer.displayName || "Anonymous User"}
-            </Text>
-            <Text>{answer.answer}</Text>
-          </Box>
-        </Box>
+      {otherAnswers.map((answer) => (
+        <AnswerBox
+          key={answer.id}
+          answer={answer}
+          isUserAnswer={false}
+          onAddReaction={(emoji) => handleAddReaction(answer, emoji)}
+        />
       ))}
       <Drawer
         isOpen={isDrawerOpen}

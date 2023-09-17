@@ -12,10 +12,12 @@ export const Button: ComponentStyleConfig = {
   },
   sizes: {
     sm: {
-      fontSize: "8pt",
+      fontSize: "10pt",
+      paddingX: "10px", // Adjust as necessary
+      paddingY: "8px", // Adjust as necessary
     },
     md: {
-      fontSize: "10pt",
+      fontSize: "11pt",
     },
   },
   variants: {
