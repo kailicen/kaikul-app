@@ -315,6 +315,7 @@ const Day: React.FC<{ date: string; user: User }> = ({ date, user }) => {
             >
               <Checkbox
                 isChecked={task.completed}
+                colorScheme="gray"
                 sx={{
                   ".chakra-checkbox__control": {
                     borderColor: "gray.700",
@@ -324,7 +325,6 @@ const Day: React.FC<{ date: string; user: User }> = ({ date, user }) => {
                     },
                     _hover: {
                       borderColor: "gray.600",
-                      bg: "gray.600",
                     },
                   },
                 }}

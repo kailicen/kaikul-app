@@ -88,7 +88,7 @@ const JourneyModeCard: React.FC<Props> = ({ profile, onEdit, user }) => {
         <SlackShareButton
           profile={profile}
           user={user}
-          channel="#daily-sprint"
+          channel="#find-your-buddy"
         />
         <Button
           as={Link}

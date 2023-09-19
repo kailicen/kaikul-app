@@ -17,6 +17,7 @@ const SlackShareButton: React.FC<SlackShareButtonProps> = ({
   channel,
 }) => {
   const toast = useToast();
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const [isPreviewModalOpen, setIsPreviewModalOpen] = useState(false);
   const { updatePoints } = useUserPoints(user);
@@ -31,6 +32,7 @@ const SlackShareButton: React.FC<SlackShareButtonProps> = ({
   };
 
   const shareProfileOnSlack = async () => {
+    setIsLoading(true);
     let displayName = user.displayName
       ? user.displayName
       : user.email?.split("@")[0];
@@ -80,6 +82,8 @@ const SlackShareButton: React.FC<SlackShareButtonProps> = ({
       // Update user points after successful sharing
       await updatePoints(2);
 
+      setIsLoading(false);
+
       // Display a success toast
       toast({
         title: "Share Successful",
@@ -92,6 +96,8 @@ const SlackShareButton: React.FC<SlackShareButtonProps> = ({
     } catch (error) {
       console.error(error);
       const errMsg = (error as Error).message || "An unknown error occurred";
+
+      setIsLoading(false);
 
       // Display the error message to the user with a toast
       toast({
@@ -107,10 +113,12 @@ const SlackShareButton: React.FC<SlackShareButtonProps> = ({
   return (
     <>
       <Tooltip
-        label="Your profile including your goal and challenges will be shared in the #daily-sprint channel on Slack."
+        label="Your profile including your goal and challenges will be shared in the #find-your-buddy channel on Slack."
         aria-label="A tooltip"
       >
-        <Button onClick={previewAndShareProfile}>Share on Slack</Button>
+        <Button onClick={previewAndShareProfile} isLoading={isLoading}>
+          Share on Slack
+        </Button>
       </Tooltip>
 
       <ProfilePreviewModal
