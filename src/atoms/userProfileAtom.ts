@@ -28,3 +28,8 @@ export const userProfileState = atom<UserProfile>({
     challengesDepth: "",
   },
 });
+
+export const buddyUserProfilesAtom = atom({
+  key: "buddyUserProfilesAtom",
+  default: [],
+});
