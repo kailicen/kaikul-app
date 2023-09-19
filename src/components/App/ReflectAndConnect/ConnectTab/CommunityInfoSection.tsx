@@ -6,7 +6,7 @@ import {
   AccordionItem,
   AccordionPanel,
   Box,
-  Heading,
+  Text,
   Link,
   VStack,
   useDisclosure,
@@ -19,7 +19,7 @@ import { firestore } from "@/firebase/clientApp";
 
 type Props = { user: User };
 
-function Connect({ user }: Props) {
+function CommunityInfoSection({ user }: Props) {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [buddyIds, setBuddyIds] = useState<string[]>([]);
 
@@ -51,9 +51,9 @@ function Connect({ user }: Props) {
 
   return (
     <VStack spacing={4} align="stretch">
-      <Heading size="md" mb={2}>
+      <Text size="md" mb={2} fontWeight="semibold">
         Team Accountability
-      </Heading>
+      </Text>
       <Accordion allowMultiple>
         <AccordionItem>
           <h2>
@@ -133,4 +133,4 @@ function Connect({ user }: Props) {
   );
 }
 
-export default Connect;
+export default CommunityInfoSection;

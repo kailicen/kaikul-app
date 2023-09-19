@@ -36,7 +36,7 @@ import { WeeklyReflectionCard } from "./WeeklyReflectionCard";
 
 type Props = {};
 
-function Reflect({}: Props) {
+function WeeklyUpdateSection({}: Props) {
   const [user, loading] = useAuthState(auth);
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [selectedUpdateId, setSelectedUpdateId] = useState<string | null>(null);
@@ -160,10 +160,7 @@ function Reflect({}: Props) {
     setSelectedUpdateId(null);
   };
   return (
-    <>
-      <Heading size="md" mb={3}>
-        Weekly Updates
-      </Heading>
+    <VStack gap={4} p={6} align="start" w="100%">
       <Text mb={3}>
         Track your week&apos;s highlights effortlessly! Fill out your weekly
         updates, a fun, vital part of our sessions.
@@ -172,6 +169,7 @@ function Reflect({}: Props) {
         direction={{ base: "column", md: "row" }}
         justifyContent={{ base: "center", md: "space-between" }}
         gap={2}
+        w="100%"
       >
         {!isCurrentWeekDataExist && (
           <Button onClick={() => openDrawer()} whiteSpace="nowrap">
@@ -334,8 +332,8 @@ function Reflect({}: Props) {
           </DrawerContent>
         </DrawerOverlay>
       </Drawer>
-    </>
+    </VStack>
   );
 }
 
-export default Reflect;
+export default WeeklyUpdateSection;
