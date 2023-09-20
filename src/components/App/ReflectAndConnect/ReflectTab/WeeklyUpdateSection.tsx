@@ -160,7 +160,7 @@ function WeeklyUpdateSection({}: Props) {
     setSelectedUpdateId(null);
   };
   return (
-    <VStack gap={4} p={6} align="start" w="100%">
+    <VStack gap={4} align="start" w="100%">
       <Text mb={3}>
         Track your week&apos;s highlights effortlessly! Fill out your weekly
         updates, a fun, vital part of our sessions.

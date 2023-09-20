@@ -3,8 +3,8 @@ import { Grid, VStack, Text } from "@chakra-ui/react";
 import { InfoIcon } from "@chakra-ui/icons";
 import MyJourneyModal from "@/components/Modal/Instructions/MyJourneyModal";
 import { User } from "firebase/auth";
-import MyBuddy from "./MyBuddy";
-import BuddyProfile from "./BuddyProfile";
+import RightSection from "./Right/RightSection";
+import LeftSection from "./Left/LeftSection";
 
 type Props = { user: User };
 
@@ -40,8 +40,8 @@ const Connect: React.FC<Props> = ({ user }) => {
         gap={4}
         width="100%"
       >
-        <BuddyProfile />
-        <MyBuddy user={user} />
+        <LeftSection />
+        <RightSection user={user} />
       </Grid>
     </VStack>
   );

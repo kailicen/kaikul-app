@@ -11,7 +11,14 @@ import {
 } from "firebase/firestore";
 import { useState, useEffect } from "react";
 
-export const useBuddyUserProfiles = () => {
+function shuffleArray(array: any) {
+  for (let i = array.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [array[i], array[j]] = [array[j], array[i]];
+  }
+}
+
+export const useBuddyUserProfiles = (currentUserProfile: UserProfile) => {
   const [userProfiles, setUserProfiles] = useState<UserProfile[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -20,11 +27,10 @@ export const useBuddyUserProfiles = () => {
       try {
         const q = query(
           collection(firestore, "userProfiles"),
-          where("buddyOrSolo", "==", "buddy"),
-          limit(5)
+          where("buddyOrSolo", "==", "buddy")
         );
         const querySnapshot = await getDocs(q);
-        const buddyUsers = await Promise.all(
+        let buddyUsers = await Promise.all(
           querySnapshot.docs.map(async (docSnapshot) => {
             const userProfile = docSnapshot.data() as UserProfile;
             const userDoc = doc(firestore, "users", docSnapshot.id);
@@ -34,11 +40,23 @@ export const useBuddyUserProfiles = () => {
             return {
               ...userProfile,
               ...userData,
-              id: docSnapshot.id, // Including the ID can be useful
+              id: docSnapshot.id,
             };
           })
         );
-        setUserProfiles(buddyUsers);
+
+        // Exclude the current user from the list
+        buddyUsers = buddyUsers.filter(
+          (user) => user.id !== currentUserProfile.id
+        );
+
+        // Shuffle the remaining users randomly
+        shuffleArray(buddyUsers);
+
+        // Select the top 3 users from the shuffled array
+        const top3Users = buddyUsers.slice(0, 2);
+
+        setUserProfiles(top3Users);
       } catch (error) {
         console.error("Error fetching user profiles:", error);
       } finally {
@@ -47,7 +65,7 @@ export const useBuddyUserProfiles = () => {
     };
 
     fetchUserProfiles();
-  }, []);
+  }, [currentUserProfile]);
 
   return { userProfiles, loading };
 };

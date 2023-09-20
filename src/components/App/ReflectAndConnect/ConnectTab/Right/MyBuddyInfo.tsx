@@ -20,10 +20,9 @@ import { buddyRequestState } from "@/atoms/buddyRequestsAtom";
 import { User } from "firebase/auth";
 import { doc, getDoc } from "firebase/firestore";
 import { firestore } from "@/firebase/clientApp";
-import MyCommunityInfo from "./MyCommunityInfo";
-import AddBuddy from "./AddBuddy";
+import AddBuddy from "./Components/AddBuddy";
 import BuddyRequestsModal from "@/components/Modal/Connect/BuddyRequestsModal";
-import BuddyList from "./BuddyList";
+import BuddyList from "./Components/BuddyList";
 
 type Props = { user: User };
 

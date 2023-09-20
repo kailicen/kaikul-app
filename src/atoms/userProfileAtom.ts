@@ -1,6 +1,7 @@
 import { atom } from "recoil";
 
 export type UserProfile = {
+  id?: string;
   domains: string[];
   biggestGoal: string;
   challenges: string;
