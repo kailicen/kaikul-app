@@ -58,7 +58,7 @@ ${user?.displayName ? user.displayName : user?.email}
         <ModalHeader>Invite a Friend</ModalHeader>
         <ModalCloseButton />
         <ModalBody>
-          <Text fontSize="md" color="gray.600">
+          <Text fontSize="md">
             {inviteText.split("\n").map((item, key) => {
               return (
                 <span key={key}>
