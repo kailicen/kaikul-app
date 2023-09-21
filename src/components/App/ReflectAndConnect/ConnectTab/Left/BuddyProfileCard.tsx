@@ -1,4 +1,5 @@
 import { UserProfile } from "@/atoms/userProfileAtom";
+import { ConnectQuestionModal } from "@/components/Modal/Connect/ConnectQuestionModal";
 import { UserInfo } from "@/pages/team-page";
 import {
   Avatar,
@@ -11,7 +12,7 @@ import {
   useColorMode,
   Flex,
 } from "@chakra-ui/react";
-import React from "react";
+import React, { useState } from "react";
 
 type Props = {
   userProfile: UserProfile & {
@@ -25,6 +26,13 @@ type Props = {
 
 function BuddyProfileCard({ userProfile, w, mb }: Props) {
   const { colorMode } = useColorMode();
+
+  const [isOpen, setIsOpen] = useState(false);
+  const onClose = () => setIsOpen(false);
+
+  const handleConnectClick = () => {
+    setIsOpen(true);
+  };
 
   return (
     <Box
@@ -57,15 +65,15 @@ function BuddyProfileCard({ userProfile, w, mb }: Props) {
         <Text fontWeight="bold">Challenges:</Text>
         <Text>{userProfile.challenges}</Text>
 
-        <Flex
-          direction="row"
-          mt={1}
-          justifyContent="space-between"
-          width="100%"
-        >
-          <Button variant="outline">Maybe Later</Button>
-          <Button variant="solid">Connect</Button>
-        </Flex>
+        <Button variant="solid" onClick={handleConnectClick}>
+          Connect
+        </Button>
+
+        <ConnectQuestionModal
+          isOpen={isOpen}
+          onClose={onClose}
+          displayName={userProfile.displayName}
+        />
       </VStack>
     </Box>
   );

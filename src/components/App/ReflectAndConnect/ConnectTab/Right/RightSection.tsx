@@ -1,16 +1,15 @@
 import React, { useEffect, useState } from "react";
-import { Text, VStack, useDisclosure } from "@chakra-ui/react";
+import { Text, VStack } from "@chakra-ui/react";
 import { useRecoilValue } from "recoil";
 import { buddyRequestState } from "@/atoms/buddyRequestsAtom";
 import { User } from "firebase/auth";
 import { doc, getDoc } from "firebase/firestore";
 import { firestore } from "@/firebase/clientApp";
-import MyCommunityInfo from "./MyCommunityInfo";
 import MyBuddyInfo from "./MyBuddyInfo";
 
 type Props = { user: User };
 
-function CommunityInfoSection({ user }: Props) {
+function RightSection({ user }: Props) {
   const [buddyIds, setBuddyIds] = useState<string[]>([]);
 
   // Use Recoil value to get buddyRequests
@@ -41,13 +40,9 @@ function CommunityInfoSection({ user }: Props) {
 
   return (
     <VStack spacing={4} align="stretch">
-      <Text size="md" mb={2} fontWeight="semibold">
-        Team Accountability
-      </Text>
-      <MyCommunityInfo />
       <MyBuddyInfo user={user} />
     </VStack>
   );
 }
 
-export default CommunityInfoSection;
+export default RightSection;

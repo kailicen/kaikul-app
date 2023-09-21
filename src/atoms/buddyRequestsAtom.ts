@@ -8,7 +8,10 @@ export type BuddyRequest = {
   fromUserPhotoURL: string;
   toUserId: string;
   status: "pending" | "accepted" | "rejected";
-  timestamp: any; // using any here because firebase.firestore.FieldValue.serverTimestamp() does not have a specific type
+  timestamp: any;
+  reason: string;
+  gain: string;
+  offer: string;
 };
 
 export const buddyRequestState = atom<BuddyRequest[]>({

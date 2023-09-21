@@ -17,10 +17,10 @@ import {
 } from "@chakra-ui/react";
 import { doc, updateDoc } from "firebase/firestore";
 import { firestore } from "../../../firebase/clientApp";
-import { useEffect, useRef } from "react";
 import { buddyRequestState } from "@/atoms/buddyRequestsAtom";
 import { useRecoilState } from "recoil";
-import { FaCheck, FaTimes } from "react-icons/fa";
+import { FaCheck, FaChevronDown, FaChevronUp, FaTimes } from "react-icons/fa";
+import { useState } from "react";
 
 interface BuddyRequestsProps {
   isOpen: boolean;
@@ -32,8 +32,10 @@ const BuddyRequestsModal: React.FC<BuddyRequestsProps> = ({
   onClose,
 }) => {
   const [buddyRequests, setBuddyRequests] = useRecoilState(buddyRequestState);
+  const [expandedRequestId, setExpandedRequestId] = useState<string | null>(
+    null
+  ); // State to track expanded card
   const toast = useToast();
-  const previousRequestLength = useRef(0);
 
   const updateRequestStatus = async (
     requestId: string,
@@ -99,15 +101,56 @@ const BuddyRequestsModal: React.FC<BuddyRequestsProps> = ({
                     <HStack spacing="24px">
                       <Avatar size="md" name={request.fromUserDisplayName} />
                       <Box>
+                        {/* Use the expanded state to conditionally render full or truncated text */}
                         <Text fontWeight="bold">
                           {request.fromUserDisplayName}
                         </Text>
                         <Text fontSize="sm" color="gray.500">
                           {request.fromUserEmail}
                         </Text>
+                        <Text
+                          fontSize="sm"
+                          mt={2}
+                          isTruncated={request.id !== expandedRequestId}
+                          maxWidth="200px"
+                          title={request.reason}
+                        >
+                          Reason: {request.reason}
+                        </Text>
+                        <Text
+                          fontSize="sm"
+                          mt={2}
+                          isTruncated={request.id !== expandedRequestId}
+                          maxWidth="200px"
+                          title={request.gain}
+                        >
+                          Gain: {request.gain}
+                        </Text>
+                        <Text
+                          fontSize="sm"
+                          mt={2}
+                          isTruncated={request.id !== expandedRequestId}
+                          maxWidth="200px"
+                          title={request.offer}
+                        >
+                          Offer: {request.offer}
+                        </Text>
                       </Box>
                       <Spacer />
                       <Box display="flex" flexDirection="row" gap={3}>
+                        {request.id !== expandedRequestId ? (
+                          <FaChevronDown
+                            cursor="pointer"
+                            onClick={() =>
+                              setExpandedRequestId(request.id || null)
+                            }
+                          />
+                        ) : (
+                          <FaChevronUp
+                            cursor="pointer"
+                            onClick={() => setExpandedRequestId(null)}
+                          />
+                        )}
                         <FaCheck
                           color="green"
                           cursor="pointer"

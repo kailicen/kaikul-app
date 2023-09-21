@@ -58,9 +58,9 @@ function MyBuddyInfo({ user }: Props) {
 
   return (
     <>
-      <Heading size="md" mt={3} mb={2}>
+      <Text fontWeight="bold" mt={3} mb={2}>
         My Buddies
-      </Heading>
+      </Text>
       <Stack direction="row" justifyContent="space-between">
         <AddBuddy />
         <Button variant="outline" onClick={onOpen}>
@@ -68,7 +68,9 @@ function MyBuddyInfo({ user }: Props) {
           {pendingRequests > 0 && (
             <Badge
               ml="1"
+              fontSize="lg"
               colorScheme="red"
+              variant="solid"
               borderRadius="full"
               position="absolute"
               top="-1"

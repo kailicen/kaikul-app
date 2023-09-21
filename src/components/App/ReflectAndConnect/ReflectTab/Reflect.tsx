@@ -4,6 +4,7 @@ import { InfoIcon } from "@chakra-ui/icons";
 import MyJourneyModal from "@/components/Modal/Instructions/MyJourneyModal";
 import WeeklyUpdateSection from "./WeeklyUpdateSection";
 import { User } from "firebase/auth";
+import MyCommunityInfo from "./MyCommunityInfo";
 
 type Props = { user: User };
 
@@ -40,6 +41,7 @@ const Reflect: React.FC<Props> = ({ user }) => {
         width="100%"
       >
         <WeeklyUpdateSection />
+        <MyCommunityInfo />
       </Grid>
     </VStack>
   );

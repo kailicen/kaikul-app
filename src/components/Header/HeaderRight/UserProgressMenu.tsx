@@ -59,7 +59,13 @@ const ReflectConnectButton: React.FC<ReflectConnectProps> = ({
   <Button {...props}>
     {children}
     {pendingRequests > 0 && (
-      <Badge ml="1" colorScheme="red" borderRadius="full">
+      <Badge
+        ml="1"
+        colorScheme="blue"
+        variant="solid"
+        fontSize="lg"
+        borderRadius="full"
+      >
         {pendingRequests}
       </Badge>
     )}
@@ -81,41 +87,31 @@ const UserProgressMenu: React.FC<UserProgressMenuProps> = ({ user }) => {
 
   const isMobile = useBreakpointValue({ base: true, md: false });
 
+  const [loading, setLoading] = useState(true);
+
   useEffect(() => {
-    if (user) {
-      // If there are no buddy requests in the Recoil state, fetch from Firestore
-      if (!buddyRequests.length) {
-        const fetchData = async () => {
-          const q = query(
-            collection(firestore, "buddyRequests"),
-            where("toUserId", "==", user.uid),
-            where("status", "==", "pending")
-          );
-          const querySnapshot = await getDocs(q);
-          const requests: BuddyRequest[] = querySnapshot.docs.map((doc) => ({
-            id: doc.id,
-            fromUserId: doc.data().fromUserId,
-            fromUserDisplayName: doc.data().fromUserDisplayName,
-            fromUserEmail: doc.data().fromUserEmail,
-            fromUserPhotoURL: doc.data().fromUserPhotoURL,
-            toUserId: doc.data().toUserId,
-            status: doc.data().status,
-            timestamp: doc.data().timestamp,
-          })) as BuddyRequest[];
-
-          // set recoil state
-          setBuddyRequests(requests);
-        };
-
-        fetchData();
-      }
-
-      // Update pendingRequests either way
-      setPendingRequests(
-        buddyRequests.filter((request) => request.status === "pending").length
+    if (!user) return;
+    const fetchData = async () => {
+      const q = query(
+        collection(firestore, "buddyRequests"),
+        where("toUserId", "==", user.uid),
+        where("status", "==", "pending")
       );
+      const querySnapshot = await getDocs(q);
+      const requests: BuddyRequest[] = querySnapshot.docs.map((doc) => ({
+        id: doc.id,
+        ...doc.data(),
+      })) as BuddyRequest[];
+
+      setBuddyRequests(requests);
+      setPendingRequests(requests.length);
+      setLoading(false);
+    };
+
+    if (user && loading && !buddyRequests.length) {
+      fetchData();
     }
-  }, [user, buddyRequests]);
+  }, [user]);
 
   return (
     <>
@@ -161,25 +157,6 @@ const UserProgressMenu: React.FC<UserProgressMenuProps> = ({ user }) => {
             Tracker
           </Button>
         )}
-
-        {/* {isMobile ? (
-          <IconButton
-            aria-label="Weekly Statistics"
-            icon={<VscGraph />}
-            onClick={showStats}
-            borderRadius="full"
-            size="md"
-            bg={router.pathname === "/stats" ? "#ff5e0e" : undefined}
-          />
-        ) : (
-          <Button
-            leftIcon={<VscGraph />}
-            onClick={showStats}
-            bg={router.pathname === "/stats" ? "#ff5e0e" : undefined}
-          >
-            Stats
-          </Button>
-        )} */}
 
         {isMobile ? (
           <ReflectConnectIconButton

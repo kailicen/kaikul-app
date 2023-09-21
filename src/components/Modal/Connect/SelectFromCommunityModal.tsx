@@ -1,4 +1,4 @@
-import React, { useState, useEffect, ChangeEvent } from "react";
+import React, { useState, ChangeEvent } from "react";
 import {
   Button,
   Modal,
@@ -8,194 +8,75 @@ import {
   ModalCloseButton,
   ModalBody,
   ModalFooter,
-  VStack,
   Input,
   Box,
   Text,
-  useToast,
   Avatar,
   Flex,
+  useToast,
+  InputGroup,
+  InputRightElement,
 } from "@chakra-ui/react";
-import {
-  collection,
-  query,
-  getDocs,
-  serverTimestamp,
-  addDoc,
-  updateDoc,
-  getDoc,
-  doc,
-  orderBy,
-  limit,
-  startAfter,
-  where,
-} from "firebase/firestore";
-import { auth, firestore } from "../../../firebase/clientApp"; // Change this to your firebase config file
-import { useAuthState } from "react-firebase-hooks/auth";
-import { BuddyRequest, buddyRequestState } from "@/atoms/buddyRequestsAtom";
-import { useRecoilValue } from "recoil";
+import { collection, query, getDocs, where } from "firebase/firestore";
+import { firestore } from "../../../firebase/clientApp"; // Change this to your firebase config file
+import { ConnectQuestionModal } from "./ConnectQuestionModal";
+import { SearchIcon } from "@chakra-ui/icons";
 
 interface SelectFromCommunityModalProps {
   isOpen: boolean;
   onClose: () => void;
 }
 
-interface User {
+export interface AppUser {
   uid: string;
   displayName: string;
   email: string;
   photoURL: string;
-  buddies?: string[]; // Here the '?' means buddies is an optional property
-  [key: string]: any; // This is for all other properties
+  [key: string]: any;
 }
 
 const SelectFromCommunityModal: React.FC<SelectFromCommunityModalProps> = ({
   isOpen,
   onClose,
 }) => {
-  const buddyRequests = useRecoilValue(buddyRequestState);
-  const [user] = useAuthState(auth);
-  const [currentUser, setCurrentUser] = useState<User | null>(null);
+  const [searchedUser, setSearchedUser] = useState<AppUser | null>(null);
   const [searchTerm, setSearchTerm] = useState<string>("");
-  const [users, setUsers] = useState<User[]>([]);
-  const [searchResults, setSearchResults] = useState<User[]>([]);
+  const [connectModalOpen, setConnectModalOpen] = useState<boolean>(false);
   const toast = useToast();
 
-  const [lastUser, setLastUser] = useState<null | User>(null);
-  const [isFetching, setIsFetching] = useState<boolean>(false);
-
-  const fetchData = async () => {
-    try {
-      if (currentUser && !isFetching) {
-        setIsFetching(true);
-
-        let q = query(
-          collection(firestore, "users"),
-          orderBy("displayName"), // Make sure to create an index on this field in your Firestore database
-          limit(10) // you can change this limit
-        );
-
-        if (lastUser) {
-          q = query(
-            collection(firestore, "users"),
-            orderBy("displayName"), // Maintain this order in your query to work with startAfter
-            startAfter(lastUser.displayName), // Use a field that is being ordered by in your query
-            limit(10)
-          );
-        }
-
-        const querySnapshot = await getDocs(q);
-
-        const newUsers: User[] = querySnapshot.docs
-          .map((doc) => ({ ...doc.data(), uid: doc.id } as User))
-          .filter(
-            (user) =>
-              user.uid !== currentUser.uid &&
-              !currentUser.buddies?.includes(user.uid)
-          );
-
-        if (newUsers.length > 0) {
-          setLastUser(newUsers[newUsers.length - 1]);
-        }
-
-        setUsers((prevUsers) => [...prevUsers, ...newUsers]);
-        setSearchResults((prevResults) => [...prevResults, ...newUsers]);
-
-        setIsFetching(false);
-      }
-    } catch (error) {
-      console.error("Error fetching data:", error);
-    }
-  };
-
-  useEffect(() => {
-    const scrollContainer = document.getElementById("scrollContainer");
-
-    const handleScroll = () => {
-      if (
-        scrollContainer &&
-        scrollContainer.scrollTop + scrollContainer.clientHeight >=
-          scrollContainer.scrollHeight - 200 &&
-        !isFetching // Add a check to ensure fetchData is not currently in progress
-      ) {
-        fetchData(); // Call fetchData directly when nearing the bottom
-      }
-    };
-
-    if (scrollContainer) {
-      scrollContainer.addEventListener("scroll", handleScroll);
-    }
-
-    return () => {
-      if (scrollContainer) {
-        scrollContainer.removeEventListener("scroll", handleScroll);
-      }
-    };
-  }, [isFetching]); // Add isFetching to the dependency array
-
-  useEffect(() => {
-    fetchData(); // Initial fetch
-  }, [currentUser]);
-
-  const handleChange = async (event: ChangeEvent<HTMLInputElement>) => {
+  const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
     setSearchTerm(event.target.value);
-
-    if (event.target.value === "") {
-      setSearchResults(users);
-    } else {
-      const lowerCaseSearchTerm = event.target.value.toLowerCase();
-      let q = query(
-        collection(firestore, "users"),
-        where("displayName", ">=", lowerCaseSearchTerm),
-        where("displayName", "<=", lowerCaseSearchTerm + "\uf8ff")
-      );
-
-      const querySnapshot = await getDocs(q);
-      const newUsers: User[] = querySnapshot.docs.map(
-        (doc) => ({ ...doc.data(), uid: doc.id } as User)
-      );
-
-      setSearchResults(newUsers);
-    }
   };
 
-  const handleSendRequest = async (user: User) => {
-    if (currentUser) {
-      // check if user is not sending a request to themselves
-      if (user.uid !== currentUser.uid) {
-        const buddyRequest: BuddyRequest = {
-          id: "", // Firebase Firestore will auto-generate this when you add the document
-          fromUserId: currentUser.uid,
-          fromUserDisplayName: currentUser.displayName || "",
-          fromUserEmail: currentUser.email || "",
-          fromUserPhotoURL: currentUser.photoURL || "",
-          toUserId: user.uid,
-          status: "pending",
-          timestamp: serverTimestamp(),
-        };
-
-        const docRef = await addDoc(
-          collection(firestore, "buddyRequests"),
-          buddyRequest
+  const handleSearch = async () => {
+    if (searchTerm) {
+      try {
+        const userQuery = query(
+          collection(firestore, "users"),
+          where("email", "==", searchTerm)
         );
-        // Get the generated id from the document reference and update the buddyRequest
-        await updateDoc(docRef, { id: docRef.id });
+        const querySnapshot = await getDocs(userQuery);
 
-        // Show a message to the user that the buddy request has been sent
+        if (!querySnapshot.empty) {
+          const userDoc = querySnapshot.docs[0];
+          setSearchedUser({ ...userDoc.data(), uid: userDoc.id } as AppUser);
+        } else {
+          console.error("No user found with the provided email.");
+          // Displaying a toast when no user found
+          toast({
+            title: "Error.",
+            description: "No user found with the provided email.",
+            status: "error",
+            duration: 5000,
+            isClosable: true,
+          });
+        }
+      } catch (error) {
+        console.error("Error fetching user:", error);
+        // Displaying a toast when there's an error during search
         toast({
-          title: "Buddy request sent!",
-          description: `You have successfully sent a buddy request to ${
-            user.displayName ?? user.email
-          }.`,
-          status: "success",
-          duration: 5000,
-          isClosable: true,
-        });
-      } else {
-        // Show a message to the user that they cannot send a request to themselves
-        toast({
-          title: "Cannot send request",
-          description: "You cannot send a buddy request to yourself.",
+          title: "Error.",
+          description: "Error fetching user.",
           status: "error",
           duration: 5000,
           isClosable: true,
@@ -204,105 +85,66 @@ const SelectFromCommunityModal: React.FC<SelectFromCommunityModalProps> = ({
     }
   };
 
-  useEffect(() => {
-    // this will run when the component is loaded
-    if (user) {
-      const fetchUser = async () => {
-        const userDoc = await getDoc(doc(firestore, "users", user.uid));
-        if (userDoc.exists()) {
-          setCurrentUser({ ...userDoc.data(), uid: userDoc.id } as User);
-        }
-      };
-
-      fetchUser();
-    }
-  }, [user]);
-
-  // useEffect(() => {
-  //   const fetchData = async () => {
-  //     console.log(currentUser);
-  //     if (currentUser) {
-  //       const q = query(collection(firestore, "users"));
-  //       const querySnapshot = await getDocs(q);
-  //       const users: User[] = querySnapshot.docs
-  //         .map(
-  //           (doc) =>
-  //             ({
-  //               ...doc.data(),
-  //               uid: doc.id,
-  //             } as User)
-  //         )
-  //         .filter(
-  //           (user) =>
-  //             user.uid !== currentUser.uid &&
-  //             !currentUser.buddies?.includes(user.uid)
-  //         ); // exclude the current user and his/her buddies from the users list
-  //       setUsers(users);
-  //       setSearchResults(users);
-  //     }
-  //   };
-
-  //   fetchData();
-  // }, [currentUser]);
-
-  useEffect(() => {
-    if (searchTerm === "") {
-      setSearchResults(users);
-    } else {
-      const lowerCaseSearchTerm = searchTerm.toLowerCase();
-      const results: User[] = users.filter(
-        (user) =>
-          user.displayName?.toLowerCase().includes(lowerCaseSearchTerm) ||
-          user.email?.toLowerCase().includes(lowerCaseSearchTerm)
-      );
-      setSearchResults(results);
-    }
-  }, [searchTerm]);
+  const handleSendRequest = (user: AppUser) => {
+    setConnectModalOpen(true); // This will open the ConnectQuestionModal
+  };
 
   return (
-    <Modal isOpen={isOpen} onClose={onClose}>
-      <ModalOverlay />
-      <ModalContent>
-        <ModalHeader>Select from Community</ModalHeader>
-        <ModalCloseButton />
-        <ModalBody>
-          <Input
-            type="text"
-            placeholder="Search"
-            value={searchTerm}
-            onChange={handleChange}
-          />
-          <VStack
-            id="scrollContainer"
-            mt={5}
-            align="start"
-            spacing={5}
-            h="400px" // adjust this value according to your needs
-            overflowY="auto"
-          >
-            {searchResults.map((user, index) => (
-              <Flex key={user.uid} w="100%">
+    <>
+      <Modal isOpen={isOpen} onClose={onClose}>
+        <ModalOverlay />
+        <ModalContent>
+          <ModalHeader>Search for User</ModalHeader>
+          <ModalCloseButton />
+          <ModalBody>
+            <InputGroup>
+              <Input
+                type="email"
+                placeholder="Enter user's email"
+                value={searchTerm}
+                onChange={handleChange}
+              />
+              <InputRightElement>
+                <Button h="1.75rem" size="sm" onClick={handleSearch}>
+                  <SearchIcon /> {/* <-- Use the Search icon instead of text */}
+                </Button>
+              </InputRightElement>
+            </InputGroup>
+            {searchedUser && (
+              <Flex mt={5} w="100%">
                 <Avatar
-                  src={user.photoURL ? user.photoURL : ""}
+                  src={searchedUser.photoURL ? searchedUser.photoURL : ""}
                   size="md"
                   mr={3}
                 />
                 <Box flex="1">
-                  <Text fontWeight="bold">{user.displayName}</Text>
-                  <Text color="gray.500">{user.email}</Text>
+                  <Text fontWeight="bold">{searchedUser.displayName}</Text>
+                  <Text color="gray.500">{searchedUser.email}</Text>
                 </Box>
-                <Button onClick={() => handleSendRequest(user)}>Connect</Button>
+                <Button
+                  onClick={() =>
+                    searchedUser && handleSendRequest(searchedUser)
+                  }
+                  colorScheme="blue"
+                >
+                  Connect
+                </Button>
               </Flex>
-            ))}
-          </VStack>
-        </ModalBody>
-        <ModalFooter>
-          <Button colorScheme="blue" mr={3} onClick={onClose}>
-            Close
-          </Button>
-        </ModalFooter>
-      </ModalContent>
-    </Modal>
+            )}
+          </ModalBody>
+          <ModalFooter></ModalFooter>
+        </ModalContent>
+      </Modal>
+      <ConnectQuestionModal
+        isOpen={connectModalOpen}
+        onClose={() => {
+          setConnectModalOpen(false);
+          setSearchedUser(null); // Clear the selected user when modal is closed
+        }}
+        displayName={searchedUser?.displayName || searchedUser?.email}
+        selectedUser={searchedUser}
+      />
+    </>
   );
 };
 
