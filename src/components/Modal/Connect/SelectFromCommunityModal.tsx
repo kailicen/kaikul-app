@@ -16,23 +16,17 @@ import {
   useToast,
   InputGroup,
   InputRightElement,
+  HStack,
 } from "@chakra-ui/react";
 import { collection, query, getDocs, where } from "firebase/firestore";
 import { firestore } from "../../../firebase/clientApp"; // Change this to your firebase config file
 import { ConnectQuestionModal } from "./ConnectQuestionModal";
 import { SearchIcon } from "@chakra-ui/icons";
+import { AppUser } from "@/atoms/userProfileAtom";
 
 interface SelectFromCommunityModalProps {
   isOpen: boolean;
   onClose: () => void;
-}
-
-export interface AppUser {
-  uid: string;
-  displayName: string;
-  email: string;
-  photoURL: string;
-  [key: string]: any;
 }
 
 const SelectFromCommunityModal: React.FC<SelectFromCommunityModalProps> = ({
@@ -111,7 +105,7 @@ const SelectFromCommunityModal: React.FC<SelectFromCommunityModalProps> = ({
               </InputRightElement>
             </InputGroup>
             {searchedUser && (
-              <Flex mt={5} w="100%">
+              <HStack mt={5} w="100%">
                 <Avatar
                   src={searchedUser.photoURL ? searchedUser.photoURL : ""}
                   size="md"
@@ -129,7 +123,7 @@ const SelectFromCommunityModal: React.FC<SelectFromCommunityModalProps> = ({
                 >
                   Connect
                 </Button>
-              </Flex>
+              </HStack>
             )}
           </ModalBody>
           <ModalFooter></ModalFooter>
@@ -141,8 +135,8 @@ const SelectFromCommunityModal: React.FC<SelectFromCommunityModalProps> = ({
           setConnectModalOpen(false);
           setSearchedUser(null); // Clear the selected user when modal is closed
         }}
-        displayName={searchedUser?.displayName || searchedUser?.email}
         selectedUser={searchedUser}
+        type="sender"
       />
     </>
   );

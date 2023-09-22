@@ -16,7 +16,7 @@ import { MdOutlineLogin } from "react-icons/md";
 import { auth } from "../../../firebase/clientApp";
 import { useRouter } from "next/router";
 import { useResetRecoilState } from "recoil";
-import { buddyRequestState } from "@/atoms/buddyRequestsAtom";
+import { buddyRequestState } from "@/atoms/buddyAtom";
 import { IoSparkles } from "react-icons/io5";
 import useUserPoints from "@/hooks/useUserPoints";
 import { useUserData } from "@/hooks/useUserData";

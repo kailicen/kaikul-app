@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Text, VStack } from "@chakra-ui/react";
 import { useRecoilValue } from "recoil";
-import { buddyRequestState } from "@/atoms/buddyRequestsAtom";
+import { buddyRequestState } from "@/atoms/buddyAtom";
 import { User } from "firebase/auth";
 import { doc, getDoc } from "firebase/firestore";
 import { firestore } from "@/firebase/clientApp";

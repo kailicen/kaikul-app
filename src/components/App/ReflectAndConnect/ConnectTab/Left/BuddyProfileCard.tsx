@@ -1,17 +1,7 @@
 import { UserProfile } from "@/atoms/userProfileAtom";
 import { ConnectQuestionModal } from "@/components/Modal/Connect/ConnectQuestionModal";
 import { UserInfo } from "@/pages/team-page";
-import {
-  Avatar,
-  Box,
-  Text,
-  VStack,
-  Heading,
-  Button,
-  Stack,
-  useColorMode,
-  Flex,
-} from "@chakra-ui/react";
+import { Box, Text, VStack, Button, useColorMode } from "@chakra-ui/react";
 import React, { useState } from "react";
 
 type Props = {
@@ -72,7 +62,13 @@ function BuddyProfileCard({ userProfile, w, mb }: Props) {
         <ConnectQuestionModal
           isOpen={isOpen}
           onClose={onClose}
-          displayName={userProfile.displayName}
+          selectedUser={{
+            uid: userProfile.userId,
+            displayName: userProfile.displayName || "",
+            email: userProfile.email || "",
+            photoURL: userProfile.photoURL || "",
+          }}
+          type="sender"
         />
       </VStack>
     </Box>

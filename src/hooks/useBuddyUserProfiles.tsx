@@ -5,7 +5,6 @@ import {
   getDocs,
   query,
   where,
-  limit,
   doc,
   getDoc,
 } from "firebase/firestore";
@@ -47,7 +46,7 @@ export const useBuddyUserProfiles = (currentUserProfile: UserProfile) => {
 
         // Exclude the current user from the list
         buddyUsers = buddyUsers.filter(
-          (user) => user.id !== currentUserProfile.id
+          (user) => user.userId !== currentUserProfile.userId // changed from user.id to user.uid for clarity
         );
 
         // Shuffle the remaining users randomly

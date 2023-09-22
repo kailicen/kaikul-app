@@ -17,14 +17,17 @@ import {
 } from "@chakra-ui/react";
 import { doc, updateDoc } from "firebase/firestore";
 import { firestore } from "../../../firebase/clientApp";
-import { buddyRequestState } from "@/atoms/buddyRequestsAtom";
+import { buddyRequestState } from "@/atoms/buddyAtom";
 import { useRecoilState } from "recoil";
 import { FaCheck, FaChevronDown, FaChevronUp, FaTimes } from "react-icons/fa";
 import { useState } from "react";
+import { ConnectQuestionModal } from "./ConnectQuestionModal";
 
 interface BuddyRequestsProps {
   isOpen: boolean;
   onClose: () => void;
+  type: "sender" | "receiver";
+  requestId?: string;
 }
 
 const BuddyRequestsModal: React.FC<BuddyRequestsProps> = ({
@@ -35,6 +38,9 @@ const BuddyRequestsModal: React.FC<BuddyRequestsProps> = ({
   const [expandedRequestId, setExpandedRequestId] = useState<string | null>(
     null
   ); // State to track expanded card
+  const [newModalOpen, setNewModalOpen] = useState(false);
+  const [currentRequestId, setCurrentRequestId] = useState<string | null>(null);
+
   const toast = useToast();
 
   const updateRequestStatus = async (
@@ -108,36 +114,51 @@ const BuddyRequestsModal: React.FC<BuddyRequestsProps> = ({
                         <Text fontSize="sm" color="gray.500">
                           {request.fromUserEmail}
                         </Text>
-                        <Text
-                          fontSize="sm"
-                          mt={2}
-                          isTruncated={request.id !== expandedRequestId}
-                          maxWidth="200px"
-                          title={request.reason}
-                        >
-                          Reason: {request.reason}
-                        </Text>
-                        <Text
-                          fontSize="sm"
-                          mt={2}
-                          isTruncated={request.id !== expandedRequestId}
-                          maxWidth="200px"
-                          title={request.gain}
-                        >
-                          Gain: {request.gain}
-                        </Text>
-                        <Text
-                          fontSize="sm"
-                          mt={2}
-                          isTruncated={request.id !== expandedRequestId}
-                          maxWidth="200px"
-                          title={request.offer}
-                        >
-                          Offer: {request.offer}
-                        </Text>
                       </Box>
                       <Spacer />
                       <Box display="flex" flexDirection="row" gap={3}>
+                        <FaCheck
+                          color="green"
+                          cursor="pointer"
+                          onClick={() => {
+                            setCurrentRequestId(request.id || null);
+                            setNewModalOpen(true);
+                          }}
+                        />
+                        <FaTimes
+                          color="red"
+                          cursor="pointer"
+                          onClick={() =>
+                            updateRequestStatus(
+                              request.id as string,
+                              "rejected"
+                            )
+                          }
+                        />
+                      </Box>
+                    </HStack>
+                    <ConnectQuestionModal
+                      isOpen={newModalOpen}
+                      onClose={() => setNewModalOpen(false)}
+                      onConnectClose={onClose}
+                      type="receiver"
+                      requestId={currentRequestId}
+                      selectedUser={{
+                        uid: request.fromUserId,
+                        displayName: request.fromUserDisplayName,
+                        email: request.fromUserEmail,
+                        photoURL: request.fromUserPhotoURL,
+                      }}
+                    />
+                    <HStack spacing="24px" mt={2}>
+                      <Text
+                        fontSize="sm"
+                        isTruncated={request.id !== expandedRequestId}
+                        title={request.senderReason}
+                      >
+                        Message: {request.senderReason}
+                      </Text>
+                      <Box>
                         {request.id !== expandedRequestId ? (
                           <FaChevronDown
                             cursor="pointer"
@@ -151,26 +172,6 @@ const BuddyRequestsModal: React.FC<BuddyRequestsProps> = ({
                             onClick={() => setExpandedRequestId(null)}
                           />
                         )}
-                        <FaCheck
-                          color="green"
-                          cursor="pointer"
-                          onClick={() =>
-                            updateRequestStatus(
-                              request.id as string,
-                              "accepted"
-                            )
-                          }
-                        />
-                        <FaTimes
-                          color="red"
-                          cursor="pointer"
-                          onClick={() =>
-                            updateRequestStatus(
-                              request.id as string,
-                              "rejected"
-                            )
-                          }
-                        />
                       </Box>
                     </HStack>
                   </Box>

@@ -1,7 +1,7 @@
 import { atom } from "recoil";
 
 export type UserProfile = {
-  id?: string;
+  userId: string;
   domains: string[];
   biggestGoal: string;
   challenges: string;
@@ -17,6 +17,7 @@ export type UserProfile = {
 export const userProfileState = atom<UserProfile>({
   key: "userProfileState",
   default: {
+    userId: "",
     domains: [],
     biggestGoal: "",
     challenges: "",

@@ -16,8 +16,10 @@ import { firestore } from "@/firebase/clientApp";
 import { ArrowForwardIcon } from "@chakra-ui/icons";
 import { useRouter } from "next/router";
 import { User } from "firebase/auth";
+import { useRecoilState } from "recoil";
+import { buddyListState } from "@/atoms/buddyAtom";
 
-type Buddy = {
+export type Buddy = {
   id: string;
   displayName: string;
   email: string;
@@ -31,7 +33,7 @@ type Props = {
 
 const BuddyList: React.FC<Props> = ({ buddyIds, user }) => {
   const router = useRouter();
-  const [buddies, setBuddies] = useState<Buddy[]>([]);
+  const [buddies, setBuddies] = useRecoilState(buddyListState);
 
   const showTeamPage = (buddyId: string) => {
     router.push(`/team-page?buddyId=${buddyId}`);

@@ -12,9 +12,15 @@ import { LuSmilePlus } from "react-icons/lu";
 import { BsCalendarWeek } from "react-icons/bs";
 import { MdOutlineForum } from "react-icons/md";
 import { User } from "firebase/auth";
-import { collection, query, where, getDocs } from "firebase/firestore";
+import {
+  collection,
+  query,
+  where,
+  getDocs,
+  onSnapshot,
+} from "firebase/firestore";
 import { firestore } from "@/firebase/clientApp";
-import { BuddyRequest, buddyRequestState } from "@/atoms/buddyRequestsAtom";
+import { BuddyRequest, buddyRequestState } from "@/atoms/buddyAtom";
 import { useRecoilState } from "recoil";
 
 type UserProgressMenuProps = {
@@ -77,27 +83,23 @@ const UserProgressMenu: React.FC<UserProgressMenuProps> = ({ user }) => {
   const [buddyRequests, setBuddyRequests] = useRecoilState(buddyRequestState);
   const [pendingRequests, setPendingRequests] = useState(0);
 
-  // const showStats = () => {
-  //   router.push("/stats");
-  // };
-
   const showWeeklyReview = () => {
     router.push("/review");
   };
 
   const isMobile = useBreakpointValue({ base: true, md: false });
 
-  const [loading, setLoading] = useState(true);
-
   useEffect(() => {
     if (!user) return;
-    const fetchData = async () => {
-      const q = query(
-        collection(firestore, "buddyRequests"),
-        where("toUserId", "==", user.uid),
-        where("status", "==", "pending")
-      );
-      const querySnapshot = await getDocs(q);
+
+    const q = query(
+      collection(firestore, "buddyRequests"),
+      where("toUserId", "==", user.uid),
+      where("status", "==", "pending")
+    );
+
+    // Setting up real-time listener using onSnapshot
+    const unsubscribe = onSnapshot(q, (querySnapshot) => {
       const requests: BuddyRequest[] = querySnapshot.docs.map((doc) => ({
         id: doc.id,
         ...doc.data(),
@@ -105,12 +107,12 @@ const UserProgressMenu: React.FC<UserProgressMenuProps> = ({ user }) => {
 
       setBuddyRequests(requests);
       setPendingRequests(requests.length);
-      setLoading(false);
-    };
+    });
 
-    if (user && loading && !buddyRequests.length) {
-      fetchData();
-    }
+    // Cleanup: Unsubscribe from the listener when component is unmounted
+    return () => {
+      unsubscribe();
+    };
   }, [user]);
 
   return (
