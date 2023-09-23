@@ -22,6 +22,7 @@ import { UserInfo } from "../Components/UserInfoComponent";
 import { useBuddyData } from "@/hooks/useBuddyData";
 import { Buddy } from "@/atoms/buddyAtom";
 import { useRouter } from "next/router";
+import { IoChevronBack } from "react-icons/io5";
 
 type Props = {
   user: User;
@@ -61,7 +62,6 @@ function WeeklyUpdatesShare({ user, buddyId }: Props) {
   };
 
   const breakpoint = useBreakpointValue({ base: "base", md: "md", lg: "lg" });
-  const buttonText = useBreakpointValue({ base: "", md: "Back to Team" });
 
   const handleUserDiscussionChange = (
     event: React.ChangeEvent<HTMLTextAreaElement>
@@ -122,6 +122,8 @@ function WeeklyUpdatesShare({ user, buddyId }: Props) {
           />
         ) : (
           <Button
+            leftIcon={<IoChevronBack />}
+            variant="ghost"
             position="absolute"
             top={2}
             left={2}

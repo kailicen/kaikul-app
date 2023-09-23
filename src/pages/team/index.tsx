@@ -5,12 +5,19 @@ import { auth } from "@/firebase/clientApp";
 import { useRouter } from "next/router";
 import LoadingScreen from "@/components/LoadingScreen";
 import { Buddy } from "@/atoms/buddyAtom";
-import { Grid, VStack } from "@chakra-ui/react";
+import {
+  Button,
+  Grid,
+  IconButton,
+  VStack,
+  useBreakpointValue,
+} from "@chakra-ui/react";
 import { useBuddyData } from "@/hooks/useBuddyData";
 import ChatSection from "@/components/App/TeamPage/IndexPage/ChatSection";
 import SharedActivityFeed from "@/components/App/TeamPage/IndexPage/ShareActivityFeed";
-import TeamActions from "@/components/App/TeamPage/IndexPage/TeamAction";
 import TeamHeader from "@/components/App/TeamPage/IndexPage/TeamHeader";
+import { ArrowBackIcon } from "@chakra-ui/icons";
+import { IoChevronBack } from "react-icons/io5";
 
 type Props = {};
 
@@ -21,6 +28,8 @@ function TeamPage({}: Props) {
   const buddyId = Array.isArray(buddyIdQuery) ? buddyIdQuery[0] : buddyIdQuery;
   const { fetchBuddyById } = useBuddyData();
   const [buddy, setBuddy] = useState<Buddy | null>(null);
+
+  const breakpoint = useBreakpointValue({ base: "base", md: "md", lg: "lg" });
 
   useEffect(() => {
     // Fetch buddy data when component mounts or buddyId changes
@@ -44,7 +53,29 @@ function TeamPage({}: Props) {
   return (
     <>
       <AuthenticatedHeader user={user} />
-      <div className="container mx-auto pt-[80px]">
+      <div className="container mx-auto top-[80px] relative">
+        {breakpoint === "base" ? (
+          <IconButton
+            position="absolute"
+            top={2}
+            left={2}
+            aria-label="Back to Team"
+            icon={<ArrowBackIcon />}
+            onClick={() => router.push("/review")}
+            borderRadius="full"
+          />
+        ) : (
+          <Button
+            leftIcon={<IoChevronBack />}
+            variant="ghost"
+            position="absolute"
+            top={2}
+            left={2}
+            onClick={() => router.push("/review")}
+          >
+            Back to Connect
+          </Button>
+        )}
         <VStack spacing={4} p={2} width="100%">
           <TeamHeader user={user} buddy={buddy as Buddy} />
           <Grid
