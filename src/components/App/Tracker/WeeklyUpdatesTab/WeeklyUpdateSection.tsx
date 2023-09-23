@@ -21,6 +21,8 @@ import {
   Input,
   Select,
   Flex,
+  Alert,
+  AlertIcon,
 } from "@chakra-ui/react";
 import {
   endOfWeek,
@@ -206,7 +208,7 @@ function WeeklyUpdateSection({}: Props) {
             )
           }
         />
-      ) : (
+      ) : teamTabs.length > 0 ? (
         teamTabs.map((teamTab) => (
           <WeeklyReflectionCard
             key={teamTab.id}
@@ -224,6 +226,11 @@ function WeeklyUpdateSection({}: Props) {
             }
           />
         ))
+      ) : (
+        <Alert status="info">
+          <AlertIcon />
+          No weekly reflections have been added yet. Start by adding some!
+        </Alert>
       )}
 
       <Box

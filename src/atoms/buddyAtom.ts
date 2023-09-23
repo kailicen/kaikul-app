@@ -1,12 +1,5 @@
 import { atom } from "recoil";
 
-export type Buddy = {
-  id: string;
-  displayName: string;
-  email: string;
-  photoURL: string; // URL of the avatar image
-};
-
 export type BuddyRequest = {
   id?: string;
   fromUserId: string;
@@ -25,12 +18,28 @@ export const buddyRequestState = atom<BuddyRequest[]>({
   default: [],
 });
 
+export type Message = {
+  id?: string;
+  chatId: string;
+  senderId: string;
+  receiverId: string;
+  message: string;
+  timestamp: any;
+};
+
 export type AppUser = {
   uid: string;
   displayName: string;
   email: string;
   photoURL: string;
   [key: string]: any;
+};
+
+export type Buddy = {
+  id: string;
+  displayName: string;
+  email: string;
+  photoURL: string; // URL of the avatar image
 };
 
 export const buddyListState = atom<Buddy[]>({

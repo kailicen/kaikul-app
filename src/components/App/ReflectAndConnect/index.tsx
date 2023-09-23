@@ -8,7 +8,7 @@ import LeftSection from "./Left/LeftSection";
 
 type Props = { user: User };
 
-const Connect: React.FC<Props> = ({ user }) => {
+const ConnectPage: React.FC<Props> = ({ user }) => {
   const [isInstructionOpen, setIsInstructionOpen] = useState(false);
 
   const handleInstructionOpen = () => {
@@ -47,4 +47,4 @@ const Connect: React.FC<Props> = ({ user }) => {
   );
 };
 
-export default Connect;
+export default ConnectPage;

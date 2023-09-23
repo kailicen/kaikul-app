@@ -22,20 +22,11 @@ import {
 } from "firebase/firestore";
 import { firestore } from "@/firebase/clientApp";
 import { User } from "firebase/auth";
-import { Buddy } from "@/atoms/buddyAtom";
+import { Buddy, Message } from "@/atoms/buddyAtom";
 import { IoMdSend } from "react-icons/io";
 
 const getChatId = (user1: string, user2: string) => {
   return [user1, user2].sort().join("_");
-};
-
-type Message = {
-  id?: string;
-  chatId: string;
-  senderId: string;
-  receiverId: string;
-  message: string;
-  timestamp: any;
 };
 
 type Props = {

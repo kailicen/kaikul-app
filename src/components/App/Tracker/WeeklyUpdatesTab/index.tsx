@@ -9,19 +9,19 @@ import MyCommunityInfo from "./MyCommunityInfo";
 type Props = { user: User };
 
 const Reflect: React.FC<Props> = ({ user }) => {
-  const [isInstructionOpen, setIsInstructionOpen] = useState(false);
+  // const [isInstructionOpen, setIsInstructionOpen] = useState(false);
 
-  const handleInstructionOpen = () => {
-    setIsInstructionOpen(true);
-  };
+  // const handleInstructionOpen = () => {
+  //   setIsInstructionOpen(true);
+  // };
 
-  const handleInstructionClose = () => {
-    setIsInstructionOpen(false);
-  };
+  // const handleInstructionClose = () => {
+  //   setIsInstructionOpen(false);
+  // };
 
   return (
-    <VStack width="100%">
-      <Text fontWeight="bold" fontSize="lg" mb="2">
+    <VStack width="100%" pt={5} px={10}>
+      {/* <Text fontWeight="bold" fontSize="lg" mb="2">
         Weekly Updates{" "}
         <InfoIcon
           color="purple.500"
@@ -30,14 +30,13 @@ const Reflect: React.FC<Props> = ({ user }) => {
           cursor="pointer"
         />
       </Text>
-      {/* Use the modal component here */}
       <MyJourneyModal
         isOpen={isInstructionOpen}
         onClose={handleInstructionClose}
-      />
+      /> */}
       <Grid
         templateColumns={{ base: "1fr", lg: "2fr 1fr" }}
-        gap={4}
+        gap={6}
         width="100%"
       >
         <WeeklyUpdateSection />

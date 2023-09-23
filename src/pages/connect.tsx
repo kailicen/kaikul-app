@@ -2,11 +2,10 @@ import React from "react";
 import AuthenticatedHeader from "@/components/Header/AuthenticatedHeader";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { auth } from "@/firebase/clientApp";
-import { User } from "firebase/auth";
-import ReflectAndConnectPage from "@/components/App/ReflectAndConnect/ReflectAndConnectPage";
 import LoadingScreen from "@/components/LoadingScreen";
+import ConnectPage from "@/components/App/ReflectAndConnect";
 
-function Review() {
+function Connect() {
   const [user] = useAuthState(auth);
 
   return (
@@ -14,7 +13,7 @@ function Review() {
       <AuthenticatedHeader user={user} />
       {user ? (
         <div className="pt-[80px] container mx-auto">
-          <ReflectAndConnectPage user={user} />
+          <ConnectPage user={user} />
         </div>
       ) : (
         <LoadingScreen />
@@ -23,4 +22,4 @@ function Review() {
   );
 }
 
-export default Review;
+export default Connect;

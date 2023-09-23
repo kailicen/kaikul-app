@@ -43,7 +43,7 @@ function MyBuddyInfo({ user }: Props) {
 
   return (
     <>
-      <Text fontWeight="bold" mt={3} mb={2}>
+      <Text fontWeight="bold" mb={2} textAlign="center">
         My Buddies
       </Text>
       <Stack direction="row" justifyContent="space-between">

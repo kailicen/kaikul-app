@@ -5,7 +5,7 @@ import { auth, firestore } from "@/firebase/clientApp";
 import { Reflection } from "@/atoms/reflectionsAtom";
 import { Task } from "@/atoms/tasksAtom";
 import { format, startOfWeek, subDays } from "date-fns";
-import { WeeklyReflection } from "./useWeeklyReflections";
+import { WeeklyReflection } from "@/atoms/weeklyReflectionAtom";
 
 export type ProgressOption = "Daily Sprint" | "Weekly Reflection";
 

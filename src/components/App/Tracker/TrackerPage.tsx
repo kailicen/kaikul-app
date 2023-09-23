@@ -8,27 +8,27 @@ import {
   Tabs,
 } from "@chakra-ui/react";
 import { User } from "firebase/auth";
-import Reflect from "./ReflectTab/Reflect";
-import Connect from "./ConnectTab/Connect";
+import Reflect from "./WeeklyUpdatesTab";
+import WeeklyPlanner from "./DailyTasksTab";
 
 type Props = { user: User };
 
-function ReflectAndConnectPage({ user }: Props) {
+function TrackerPage({ user }: Props) {
   return (
     <Flex direction="column" width="100%">
       <Tabs colorScheme="purple" variant="enclosed" width="100%" mx="auto">
-        <TabList mb="1em" display="flex" justifyContent="center">
-          <Tab>Reflect</Tab>
-          <Tab>Connect</Tab>
+        <TabList display="flex" justifyContent="center">
+          <Tab>Daily Tasks</Tab>
+          <Tab>Weekly Updates</Tab>
         </TabList>
 
         <TabPanels>
           <TabPanel>
-            <Reflect user={user} />
+            <WeeklyPlanner user={user} />
           </TabPanel>
 
           <TabPanel>
-            <Connect user={user} />
+            <Reflect user={user} />
           </TabPanel>
         </TabPanels>
       </Tabs>
@@ -36,4 +36,4 @@ function ReflectAndConnectPage({ user }: Props) {
   );
 }
 
-export default ReflectAndConnectPage;
+export default TrackerPage;

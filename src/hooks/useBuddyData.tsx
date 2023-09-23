@@ -1,4 +1,4 @@
-import { AppUser, Buddy } from "@/atoms/buddyAtom";
+import { Buddy } from "@/atoms/buddyAtom";
 import { UserProfile } from "@/atoms/userProfileAtom";
 import { auth, firestore } from "@/firebase/clientApp";
 import {

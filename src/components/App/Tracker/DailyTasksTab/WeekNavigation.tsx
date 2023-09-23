@@ -20,16 +20,12 @@ type WeekNavigationProps = {
   onPreviousWeek: () => void;
   onNextWeek: () => void;
   startOfWeek: string;
-  setActiveTab: (value: "me" | "team") => void; // <- Define this here
-  activeTab: "me" | "team"; // New prop
 };
 
 const WeekNavigation: React.FC<WeekNavigationProps> = ({
   onPreviousWeek,
   onNextWeek,
   startOfWeek,
-  setActiveTab, // <- Add this here
-  activeTab, // New argument
 }) => {
   const currentDate = moment(startOfWeek);
   const startOfWeekDate = currentDate.format("MMM Do");
@@ -47,50 +43,38 @@ const WeekNavigation: React.FC<WeekNavigationProps> = ({
     setIsShareModalOpen(false);
   };
 
-  // const handleTabChange = (index: any) => {
-  //   if (index === 0) {
-  //     setActiveTab("me");
-  //   } else if (index === 1) {
-  //     setActiveTab("team");
-  //   }
-  // };
-
   return (
     <Flex align="center" justify="space-between" h={12}>
       <Flex align="center">
-        {activeTab === "me" && (
-          <>
-            <Tooltip label="Previous Week" placement="top">
-              <Box
-                as="button"
-                aria-label="Previous Week"
-                onClick={onPreviousWeek}
-                cursor="pointer"
-                _hover={{ bg: "gray.100" }}
-                rounded="md"
-              >
-                <Icon as={MdChevronLeft} fontSize="24px" color="gray.500" />
-              </Box>
-            </Tooltip>
-            <Tooltip label="Next Week" placement="top">
-              <Box
-                as="button"
-                aria-label="Next Week"
-                onClick={onNextWeek}
-                cursor="pointer"
-                _hover={{ bg: "gray.100" }}
-                p={1}
-                rounded="md"
-                ml={2}
-              >
-                <Icon as={MdChevronRight} fontSize="24px" color="gray.500" />
-              </Box>
-            </Tooltip>
-            <Text fontSize="xl" fontWeight="semibold" ml={2}>
-              {startOfWeekDate} - {endOfWeekDate}
-            </Text>
-          </>
-        )}
+        <Tooltip label="Previous Week" placement="top">
+          <Box
+            as="button"
+            aria-label="Previous Week"
+            onClick={onPreviousWeek}
+            cursor="pointer"
+            _hover={{ bg: "gray.100" }}
+            rounded="md"
+          >
+            <Icon as={MdChevronLeft} fontSize="24px" color="gray.500" />
+          </Box>
+        </Tooltip>
+        <Tooltip label="Next Week" placement="top">
+          <Box
+            as="button"
+            aria-label="Next Week"
+            onClick={onNextWeek}
+            cursor="pointer"
+            _hover={{ bg: "gray.100" }}
+            p={1}
+            rounded="md"
+            ml={2}
+          >
+            <Icon as={MdChevronRight} fontSize="24px" color="gray.500" />
+          </Box>
+        </Tooltip>
+        <Text fontSize="xl" fontWeight="semibold" ml={2}>
+          {startOfWeekDate} - {endOfWeekDate}
+        </Text>
       </Flex>
       <Flex>
         <Button

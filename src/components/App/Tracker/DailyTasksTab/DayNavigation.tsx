@@ -7,27 +7,15 @@ type DayNavigationProps = {
   onPreviousDay: () => void;
   onNextDay: () => void;
   startOfDay: string;
-  setActiveTab: (value: "me" | "team") => void; // <- Define this here
-  activeTab: "me" | "team"; // New prop
 };
 
 const DayNavigation: React.FC<DayNavigationProps> = ({
   onPreviousDay,
   onNextDay,
   startOfDay,
-  setActiveTab, // <- Add this here
-  activeTab, // New argument
 }) => {
   const currentDate = moment(startOfDay);
   const currentDay = currentDate.format("DD MMM YYYY");
-
-  const handleTabChange = (index: any) => {
-    if (index === 0) {
-      setActiveTab("me");
-    } else if (index === 1) {
-      setActiveTab("team");
-    }
-  };
 
   return (
     <Flex align="center" justify="space-between">
@@ -59,21 +47,6 @@ const DayNavigation: React.FC<DayNavigationProps> = ({
           {currentDay}
         </Text>
       </Flex>
-      {/* <Flex align="center">
-        <Tabs
-          variant="soft-rounded"
-          colorScheme="purple"
-          defaultIndex={activeTab === "me" ? 0 : 1}
-          onChange={handleTabChange}
-          align="center"
-          mr={{ base: 2, md: 10 }}
-        >
-          <TabList mb="1em">
-            <Tab>Me</Tab>
-            <Tab>Team</Tab>
-          </TabList>
-        </Tabs>
-      </Flex> */}
     </Flex>
   );
 };

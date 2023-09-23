@@ -1,4 +1,4 @@
-import { WeeklyReflection } from "@/hooks/useWeeklyReflections";
+import { WeeklyReflection } from "@/atoms/weeklyReflectionAtom";
 import { Box, Heading, Text, useColorMode } from "@chakra-ui/react";
 import { format, parseISO, addDays } from "date-fns";
 

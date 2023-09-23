@@ -9,7 +9,7 @@ import "moment/locale/en-gb";
 import { useMediaQuery } from "@chakra-ui/react";
 import Day from "./Day";
 import DayNavigation from "./DayNavigation";
-import FloatingFeedbackButton from "../FloatingFeedbackButton";
+import FloatingFeedbackButton from "../../FloatingFeedbackButton";
 import { useRecoilState } from "recoil";
 import { weekTaskListState } from "@/atoms/tasksAtom";
 
@@ -58,22 +58,18 @@ function WeeklyPlanner({ user }: Props) {
   };
 
   return (
-    <Flex direction="column" gap={2}>
+    <>
       {isLargerThan768 ? (
         <WeekNavigation
           onPreviousWeek={handlePreviousWeek}
           onNextWeek={handleNextWeek}
           startOfWeek={startOfWeek}
-          setActiveTab={setActiveTab} // <- Pass down the setActiveTab function
-          activeTab={activeTab}
         />
       ) : (
         <DayNavigation
           onPreviousDay={handlePreviousDay}
           onNextDay={handleNextDay}
           startOfDay={startOfDay}
-          setActiveTab={setActiveTab} // <- Pass down the setActiveTab function
-          activeTab={activeTab}
         />
       )}
       <GoalView user={user} startOfDay={startOfDay} startOfWeek={startOfWeek} />
@@ -83,7 +79,7 @@ function WeeklyPlanner({ user }: Props) {
         <Day user={user} date={startOfDay} />
       )}
       <FloatingFeedbackButton /> {/* Add the feedback button */}
-    </Flex>
+    </>
   );
 }
 
