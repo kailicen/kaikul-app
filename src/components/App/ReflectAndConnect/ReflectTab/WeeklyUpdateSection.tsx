@@ -1,6 +1,6 @@
 import LoadingScreen from "@/components/LoadingScreen";
 import { auth } from "@/firebase/clientApp";
-import { useTeamTab } from "@/hooks/useWeeklyReflections";
+import { useWeeklyReflections } from "@/hooks/useWeeklyReflections";
 import {
   Box,
   Text,
@@ -76,7 +76,7 @@ function WeeklyUpdateSection({}: Props) {
     dataForSelectedDate,
     setDataForSelectedDate,
     uniqueDates,
-  } = useTeamTab(user as User, startOfWeek);
+  } = useWeeklyReflections(user as User, startOfWeek);
 
   // Use the list to populate the options in your Select dropdown.
   const weeklyOptions = uniqueDates.map((date) => {

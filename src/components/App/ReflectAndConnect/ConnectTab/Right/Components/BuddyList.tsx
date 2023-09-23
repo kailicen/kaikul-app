@@ -17,14 +17,7 @@ import { ArrowForwardIcon } from "@chakra-ui/icons";
 import { useRouter } from "next/router";
 import { User } from "firebase/auth";
 import { useRecoilState } from "recoil";
-import { buddyListState } from "@/atoms/buddyAtom";
-
-export type Buddy = {
-  id: string;
-  displayName: string;
-  email: string;
-  photoURL: string; // URL of the avatar image
-};
+import { Buddy, buddyListState } from "@/atoms/buddyAtom";
 
 type Props = {
   user: User;
@@ -36,7 +29,7 @@ const BuddyList: React.FC<Props> = ({ buddyIds, user }) => {
   const [buddies, setBuddies] = useRecoilState(buddyListState);
 
   const showTeamPage = (buddyId: string) => {
-    router.push(`/team-page?buddyId=${buddyId}`);
+    router.push(`/team?buddyId=${buddyId}`);
   };
 
   useEffect(() => {

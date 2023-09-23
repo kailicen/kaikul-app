@@ -1,6 +1,6 @@
 import { UserProfile } from "@/atoms/userProfileAtom";
+import { UserInfo } from "@/components/App/TeamPage/UserInfoComponent";
 import { ConnectQuestionModal } from "@/components/Modal/Connect/ConnectQuestionModal";
-import { UserInfo } from "@/pages/team-page";
 import { Box, Text, VStack, Button, useColorMode } from "@chakra-ui/react";
 import React, { useState } from "react";
 
@@ -62,6 +62,7 @@ function BuddyProfileCard({ userProfile, w, mb }: Props) {
         <ConnectQuestionModal
           isOpen={isOpen}
           onClose={onClose}
+          onConnectClose={onClose}
           selectedUser={{
             uid: userProfile.userId,
             displayName: userProfile.displayName || "",

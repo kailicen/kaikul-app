@@ -16,21 +16,9 @@ import {
 import { firestore } from "../firebase/clientApp";
 import { useEffect, useState } from "react";
 import useUserPoints from "./useUserPoints";
+import { WeeklyReflection } from "@/atoms/weeklyReflectionAtom";
 
-export type WeeklyReflection = {
-  id: string;
-  startOfWeek: string;
-  rateWeek: number;
-  rateHappiness: number;
-  practiceHours: number;
-  biggestImprovement: string;
-  biggestObstacle: string;
-  lessonLearned: string;
-  userId: string;
-  discussion?: string;
-};
-
-export const useTeamTab = (user: User, startOfWeek: string) => {
+export const useWeeklyReflections = (user: User, startOfWeek: string) => {
   const [teamTabs, setTeamTabs] = useState<WeeklyReflection[]>([]);
   const [isCurrentWeekDataExist, setIsCurrentWeekDataExist] =
     useState<boolean>(false);

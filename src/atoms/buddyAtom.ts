@@ -1,5 +1,11 @@
-import { Buddy } from "@/components/App/ReflectAndConnect/ConnectTab/Right/Components/BuddyList";
 import { atom } from "recoil";
+
+export type Buddy = {
+  id: string;
+  displayName: string;
+  email: string;
+  photoURL: string; // URL of the avatar image
+};
 
 export type BuddyRequest = {
   id?: string;

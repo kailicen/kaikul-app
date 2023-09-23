@@ -7,10 +7,13 @@ import {
   doc,
 } from "firebase/firestore";
 import { useState, useEffect } from "react";
-import { WeeklyReflection } from "./useWeeklyReflections";
 import { firestore } from "@/firebase/clientApp";
+import { WeeklyReflection } from "@/atoms/weeklyReflectionAtom";
 
-export const useSingleTeamTab = (userId: string, startOfWeek: string) => {
+export const useSingleWeeklyReflection = (
+  userId: string,
+  startOfWeek: string
+) => {
   const [teamTab, setTeamTab] = useState<WeeklyReflection[]>([]);
 
   const handleAddDiscussion = async (id: string, discussion: string) => {
