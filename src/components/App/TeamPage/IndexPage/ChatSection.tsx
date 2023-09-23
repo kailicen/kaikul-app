@@ -13,6 +13,7 @@ import {
 import {
   addDoc,
   collection,
+  limit,
   onSnapshot,
   orderBy,
   query,
@@ -67,7 +68,8 @@ const ChatSection: React.FC<Props> = ({ user, buddy }) => {
       const messagesQuery = query(
         collection(firestore, "messages"),
         where("chatId", "==", chatId),
-        orderBy("timestamp", "desc")
+        orderBy("timestamp", "desc"),
+        limit(10)
       );
 
       const unsubscribe = onSnapshot(messagesQuery, (snapshot) => {
