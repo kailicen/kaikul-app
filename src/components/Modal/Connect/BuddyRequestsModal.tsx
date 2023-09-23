@@ -26,8 +26,6 @@ import { ConnectQuestionModal } from "./ConnectQuestionModal";
 interface BuddyRequestsProps {
   isOpen: boolean;
   onClose: () => void;
-  type: "sender" | "receiver";
-  requestId?: string;
 }
 
 const BuddyRequestsModal: React.FC<BuddyRequestsProps> = ({

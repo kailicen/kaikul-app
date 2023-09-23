@@ -69,7 +69,7 @@ const LeaderboardCard = () => {
         const userProfileData = userProfiles[index].data();
 
         let displayName = "Anonymous";
-        let photoURL = "path/to/your/anonymous/icon.png"; // Set a default anonymous icon path
+        let photoURL = ""; // Set a default anonymous icon path
         let bio = "";
 
         if (userProfileData?.leaderboardParticipation) {

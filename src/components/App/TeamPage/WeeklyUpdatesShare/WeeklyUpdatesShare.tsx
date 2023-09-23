@@ -18,7 +18,7 @@ import { endOfWeek, format, startOfWeek } from "date-fns";
 import { ArrowBackIcon, InfoOutlineIcon } from "@chakra-ui/icons";
 import { useSingleWeeklyReflection } from "@/hooks/useSingleWeeklyReflection";
 import { User } from "firebase/auth";
-import { UserInfo } from "../UserInfoComponent";
+import { UserInfo } from "../Components/UserInfoComponent";
 import { useBuddyData } from "@/hooks/useBuddyData";
 import { Buddy } from "@/atoms/buddyAtom";
 import { useRouter } from "next/router";

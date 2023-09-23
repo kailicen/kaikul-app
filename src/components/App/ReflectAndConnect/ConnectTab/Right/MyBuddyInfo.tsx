@@ -1,20 +1,5 @@
 import React, { useEffect, useState } from "react";
-import {
-  Accordion,
-  AccordionButton,
-  AccordionIcon,
-  AccordionItem,
-  AccordionPanel,
-  Box,
-  Text,
-  Link,
-  VStack,
-  useDisclosure,
-  Heading,
-  Stack,
-  Button,
-  Badge,
-} from "@chakra-ui/react";
+import { Text, useDisclosure, Stack, Button, Badge } from "@chakra-ui/react";
 import { useRecoilValue } from "recoil";
 import { buddyRequestState } from "@/atoms/buddyAtom";
 import { User } from "firebase/auth";

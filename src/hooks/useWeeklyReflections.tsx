@@ -218,7 +218,6 @@ export const useWeeklyReflections = (user: User, startOfWeek: string) => {
   useEffect(() => {
     const loadTeamTabs = async () => {
       if (user && user.uid) {
-        console.log("User ID:", user.uid); // Log the user ID
         // Add limit and startAfter to implement pagination
         let q = query(
           collection(firestore, "teamTabs"),
@@ -246,7 +245,6 @@ export const useWeeklyReflections = (user: User, startOfWeek: string) => {
 
         const teamTabs: WeeklyReflection[] = [];
         querySnapshot.forEach((doc) => {
-          console.log("Query snapshot:", doc.data());
           const teamTab = doc.data() as WeeklyReflection;
           teamTab.id = doc.id;
           teamTabs.push(teamTab);

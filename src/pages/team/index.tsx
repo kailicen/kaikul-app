@@ -44,17 +44,17 @@ function TeamPage({}: Props) {
   return (
     <>
       <AuthenticatedHeader user={user} />
-      <div className="container mx-auto">
-        <VStack spacing={8} p={8} pt="100px">
+      <div className="container mx-auto pt-[80px]">
+        <VStack spacing={4} p={2} width="100%">
           <TeamHeader user={user} buddy={buddy as Buddy} />
           <Grid
             templateColumns={{ base: "1fr", lg: "2fr 1fr" }}
             gap={4}
             width="100%"
           >
-            <SharedActivityFeed buddyId={buddyId} />
-            <ChatSection />
-            <TeamActions />
+            <SharedActivityFeed user={user} buddyId={buddyId} buddy={buddy} />
+            <ChatSection user={user} buddy={buddy} />
+            {/* <TeamActions /> */}
           </Grid>
         </VStack>
       </div>

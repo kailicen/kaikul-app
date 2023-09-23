@@ -35,7 +35,7 @@ type ModalType = "sender" | "receiver";
 type ConnectModalProps = {
   isOpen: boolean;
   onClose: () => void;
-  onConnectClose: () => void;
+  onConnectClose?: () => void;
   selectedUser: AppUser | null;
   type: ModalType;
   requestId?: string | null; // Optional request ID for receivers
@@ -124,7 +124,9 @@ export const ConnectQuestionModal: React.FC<ConnectModalProps> = ({
       ]);
 
       onClose();
-      onConnectClose(); // This closes the BuddyRequestsModal
+      if (onConnectClose) {
+        onConnectClose(); // This closes the BuddyRequestsModal
+      }
 
       toast({
         title: "Buddy request accepted",

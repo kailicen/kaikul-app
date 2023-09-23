@@ -1,7 +1,16 @@
 import { UserProfile } from "@/atoms/userProfileAtom";
-import { UserInfo } from "@/components/App/TeamPage/UserInfoComponent";
+import { UserInfo } from "@/components/App/TeamPage/Components/UserInfoComponent";
 import { ConnectQuestionModal } from "@/components/Modal/Connect/ConnectQuestionModal";
-import { Box, Text, VStack, Button, useColorMode } from "@chakra-ui/react";
+import {
+  Box,
+  Text,
+  VStack,
+  Button,
+  useColorMode,
+  Flex,
+  Tag,
+  TagLabel,
+} from "@chakra-ui/react";
 import React, { useState } from "react";
 
 type Props = {
@@ -10,11 +19,9 @@ type Props = {
     photoURL?: string;
     email?: string;
   };
-  w?: string | string[];
-  mb?: number;
 };
 
-function BuddyProfileCard({ userProfile, w, mb }: Props) {
+function BuddyProfileCard({ userProfile }: Props) {
   const { colorMode } = useColorMode();
 
   const [isOpen, setIsOpen] = useState(false);
@@ -29,8 +36,6 @@ function BuddyProfileCard({ userProfile, w, mb }: Props) {
       border="1px"
       borderRadius="md"
       p={4}
-      w={w || "full"}
-      mb={mb}
       boxShadow="lg"
       borderColor={colorMode === "light" ? "gray.200" : "gray.700"}
       bg={colorMode === "light" ? "white" : "gray.700"}
@@ -43,17 +48,48 @@ function BuddyProfileCard({ userProfile, w, mb }: Props) {
         />
 
         {userProfile.selfIntroduction && (
-          <Text>{userProfile.selfIntroduction}</Text>
+          <Box>
+            <Text fontWeight="semibold">Self Introduction:</Text>
+            <Box pl={{ base: 2, md: 4 }} mt={2}>
+              “{userProfile.selfIntroduction}”
+            </Box>
+          </Box>
         )}
 
-        <Text fontWeight="bold">Domains:</Text>
-        <Text>{userProfile.domains.join(", ")}</Text>
-
-        <Text fontWeight="bold">Biggest Goal:</Text>
-        <Text>{userProfile.biggestGoal}</Text>
-
-        <Text fontWeight="bold">Challenges:</Text>
-        <Text>{userProfile.challenges}</Text>
+        <Box>
+          <Text fontWeight="semibold">Domains of Interest:</Text>
+          <Flex wrap="wrap">
+            {userProfile.domains.map((domain, index) => (
+              <Tag key={index} borderRadius="full" colorScheme="purple" m={1}>
+                <TagLabel>{domain}</TagLabel>
+              </Tag>
+            ))}
+          </Flex>
+        </Box>
+        <Box>
+          <Text fontWeight="semibold">Ultimate Goal:</Text>
+          <Box
+            borderLeft="2px solid #4130AC"
+            pl={{ base: 2, md: 4 }}
+            mt={2}
+            fontStyle="italic"
+            color={colorMode === "light" ? "brand.500" : "brand.100"}
+          >
+            “{userProfile.biggestGoal}”
+          </Box>
+        </Box>
+        <Box>
+          <Text fontWeight="semibold">Challenges:</Text>
+          <Box
+            borderLeft="2px solid #ff5e0e"
+            pl={{ base: 2, md: 4 }}
+            mt={2}
+            fontStyle="italic"
+            color="#ff5e0e"
+          >
+            “{userProfile.challenges}”
+          </Box>
+        </Box>
 
         <Button variant="solid" onClick={handleConnectClick}>
           Connect
@@ -62,7 +98,6 @@ function BuddyProfileCard({ userProfile, w, mb }: Props) {
         <ConnectQuestionModal
           isOpen={isOpen}
           onClose={onClose}
-          onConnectClose={onClose}
           selectedUser={{
             uid: userProfile.userId,
             displayName: userProfile.displayName || "",

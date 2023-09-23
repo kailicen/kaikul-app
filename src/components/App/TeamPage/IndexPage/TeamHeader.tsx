@@ -16,10 +16,14 @@ const TeamHeader: React.FC<TeamHeaderProps> = ({ user, buddy }) => {
           name={user.displayName || user.email?.split("@")[0] || ""}
           mr={4}
         />
-        <Avatar src={buddy?.photoURL || ""} name={buddy?.displayName || ""} />
+        <Avatar
+          src={buddy?.photoURL || ""}
+          name={buddy?.displayName || buddy?.email.split("@")[0] || ""}
+        />
       </Box>
       <Text fontSize="xl">
-        {user.displayName || user.email?.split("@")[0]} & {buddy?.displayName}
+        {user.displayName || user.email?.split("@")[0]} &{" "}
+        {buddy?.displayName || buddy?.email.split("@")[0]}
         &apos;s Team
       </Text>
     </VStack>

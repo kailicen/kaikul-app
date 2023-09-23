@@ -2,7 +2,7 @@ import React from "react";
 import BuddyProfileCard from "./BuddyProfileCard";
 import { useRecoilState } from "recoil";
 import { userProfileState } from "@/atoms/userProfileAtom";
-import { Flex } from "@chakra-ui/react";
+import { Grid } from "@chakra-ui/react";
 import { useBuddyData } from "@/hooks/useBuddyData";
 
 type Props = {};
@@ -16,21 +16,11 @@ function BuddyProfilesContainer({}: Props) {
   }
 
   return (
-    <Flex
-      direction={["column", "row"]}
-      wrap="wrap"
-      justifyContent="space-around"
-      gap={1}
-    >
+    <Grid templateColumns={{ base: "1fr", lg: "1fr 1fr" }} gap={4} width="100%">
       {buddyProfiles.map((buddyProfile, index) => (
-        <BuddyProfileCard
-          key={index}
-          userProfile={buddyProfile}
-          w={["100%", "45%"]}
-          mb={4}
-        />
+        <BuddyProfileCard key={index} userProfile={buddyProfile} />
       ))}
-    </Flex>
+    </Grid>
   );
 }
 

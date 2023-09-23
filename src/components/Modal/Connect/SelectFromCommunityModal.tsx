@@ -12,7 +12,6 @@ import {
   Box,
   Text,
   Avatar,
-  Flex,
   useToast,
   InputGroup,
   InputRightElement,
@@ -22,7 +21,7 @@ import { collection, query, getDocs, where } from "firebase/firestore";
 import { firestore } from "../../../firebase/clientApp"; // Change this to your firebase config file
 import { ConnectQuestionModal } from "./ConnectQuestionModal";
 import { SearchIcon } from "@chakra-ui/icons";
-import { AppUser } from "@/atoms/userProfileAtom";
+import { AppUser } from "@/atoms/buddyAtom";
 
 interface SelectFromCommunityModalProps {
   isOpen: boolean;
