@@ -1,50 +1,41 @@
-import React, { useState } from "react";
-import { Grid, VStack, Text } from "@chakra-ui/react";
-import { InfoIcon } from "@chakra-ui/icons";
-import MyJourneyModal from "@/components/Modal/Instructions/MyJourneyModal";
+import React from "react";
+import {
+  Flex,
+  Tab,
+  TabList,
+  TabPanel,
+  TabPanels,
+  Tabs,
+  Text,
+} from "@chakra-ui/react";
 import { User } from "firebase/auth";
-import RightSection from "./Right/RightSection";
-import LeftSection from "./Left/LeftSection";
+import ConnectTab from "./Connect";
 
 type Props = { user: User };
 
-const ConnectPage: React.FC<Props> = ({ user }) => {
-  const [isInstructionOpen, setIsInstructionOpen] = useState(false);
-
-  const handleInstructionOpen = () => {
-    setIsInstructionOpen(true);
-  };
-
-  const handleInstructionClose = () => {
-    setIsInstructionOpen(false);
-  };
-
+function ConnectPage({ user }: Props) {
   return (
-    <VStack width="100%">
-      <Text fontWeight="bold" fontSize="lg" mb="2">
-        Connect{" "}
-        <InfoIcon
-          color="purple.500"
-          onClick={handleInstructionOpen}
-          mb={1}
-          cursor="pointer"
-        />
-      </Text>
-      {/* Use the modal component here */}
-      <MyJourneyModal
-        isOpen={isInstructionOpen}
-        onClose={handleInstructionClose}
-      />
-      <Grid
-        templateColumns={{ base: "1fr", lg: "2fr 1fr" }}
-        gap={4}
-        width="100%"
-      >
-        <LeftSection />
-        <RightSection user={user} />
-      </Grid>
-    </VStack>
+    <Flex direction="column" width="100%">
+      <Tabs colorScheme="purple" variant="enclosed" width="100%" mx="auto">
+        <TabList display="flex" justifyContent="center">
+          <Tab>Connect</Tab>
+          <Tab>More to Come...</Tab>
+        </TabList>
+
+        <TabPanels>
+          <TabPanel>
+            <ConnectTab user={user} />
+          </TabPanel>
+
+          <TabPanel>
+            <Text fontWeight="bold" fontSize="lg" mb="2">
+              More features are on the horizon.
+            </Text>
+          </TabPanel>
+        </TabPanels>
+      </Tabs>
+    </Flex>
   );
-};
+}
 
 export default ConnectPage;

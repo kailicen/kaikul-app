@@ -5,9 +5,9 @@ import { buddyRequestState } from "@/atoms/buddyAtom";
 import { User } from "firebase/auth";
 import { doc, getDoc } from "firebase/firestore";
 import { firestore } from "@/firebase/clientApp";
-import AddBuddy from "./Components/AddBuddy";
 import BuddyRequestsModal from "@/components/Modal/Connect/BuddyRequestsModal";
 import BuddyList from "./Components/BuddyList";
+import AddBuddy from "./Components/AddBuddy";
 
 type Props = { user: User };
 
@@ -43,9 +43,6 @@ function MyBuddyInfo({ user }: Props) {
 
   return (
     <>
-      <Text fontWeight="bold" mb={2} textAlign="center">
-        My Buddies
-      </Text>
       <Stack direction="row" justifyContent="space-between">
         <AddBuddy />
         <Button variant="outline" onClick={onOpen}>

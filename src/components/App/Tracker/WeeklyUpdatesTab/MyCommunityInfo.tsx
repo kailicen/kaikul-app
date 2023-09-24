@@ -52,9 +52,10 @@ function MyCommunityInfo() {
             </AccordionButton>
           </h2>
           <AccordionPanel pb={4}>
-            Begin by enrolling in the #find-your-buddy channel on Slack. Feel
-            free to introduce yourself and interact with prospective buddies.
-            Plan for a weekly call with your buddy. Check the{" "}
+            Begin by enrolling in the #find-your-buddy channel on Slack, or
+            connect with people on our Connect Page. Feel free to introduce
+            yourself and interact with prospective buddies. Plan for a weekly
+            call with your buddy. Check the{" "}
             <Link
               color="purple.500"
               fontWeight="bold"

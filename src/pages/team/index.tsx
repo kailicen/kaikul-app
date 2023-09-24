@@ -61,7 +61,7 @@ function TeamPage({}: Props) {
             left={2}
             aria-label="Back to Team"
             icon={<ArrowBackIcon />}
-            onClick={() => router.push("/review")}
+            onClick={() => router.push("/connect")}
             borderRadius="full"
           />
         ) : (
@@ -71,7 +71,7 @@ function TeamPage({}: Props) {
             position="absolute"
             top={2}
             left={2}
-            onClick={() => router.push("/review")}
+            onClick={() => router.push("/connect")}
           >
             Back to Connect
           </Button>

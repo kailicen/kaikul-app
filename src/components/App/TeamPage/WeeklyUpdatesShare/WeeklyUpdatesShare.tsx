@@ -15,7 +15,7 @@ import {
   IconButton,
 } from "@chakra-ui/react";
 import { endOfWeek, format, startOfWeek } from "date-fns";
-import { ArrowBackIcon, InfoOutlineIcon } from "@chakra-ui/icons";
+import { ArrowBackIcon, InfoIcon, InfoOutlineIcon } from "@chakra-ui/icons";
 import { useSingleWeeklyReflection } from "@/hooks/useSingleWeeklyReflection";
 import { User } from "firebase/auth";
 import { UserInfo } from "../Components/UserInfoComponent";
@@ -23,6 +23,7 @@ import { useBuddyData } from "@/hooks/useBuddyData";
 import { Buddy } from "@/atoms/buddyAtom";
 import { useRouter } from "next/router";
 import { IoChevronBack } from "react-icons/io5";
+import WeeklyUpdatesModal from "@/components/Modal/Instructions/WeeklyUpdatesModal";
 
 type Props = {
   user: User;
@@ -57,6 +58,17 @@ function WeeklyUpdatesShare({ user, buddyId }: Props) {
   const [isEditMode, setIsEditMode] = useState(false);
 
   const router = useRouter();
+
+  const [isInstructionOpen, setIsInstructionOpen] = useState(false);
+
+  const handleInstructionOpen = () => {
+    setIsInstructionOpen(true);
+  };
+
+  const handleInstructionClose = () => {
+    setIsInstructionOpen(false);
+  };
+
   const showTeamPage = (buddyId: string) => {
     router.push(`/team?buddyId=${buddyId}`);
   };
@@ -104,12 +116,7 @@ function WeeklyUpdatesShare({ user, buddyId }: Props) {
 
   return (
     <Center>
-      <Box
-        position="relative"
-        p={{ base: 2, md: 5 }}
-        top="80px"
-        w={{ base: "100%", md: "90%", lg: "1200px" }}
-      >
+      <Box position="relative" w={{ base: "100%", md: "90%", lg: "1200px" }}>
         {breakpoint === "base" ? (
           <IconButton
             position="absolute"
@@ -134,17 +141,20 @@ function WeeklyUpdatesShare({ user, buddyId }: Props) {
         )}
         <Center display="flex" flexDirection="column" gap={2}>
           <Flex alignItems="center" gap={2}>
-            <Heading fontSize="lg">Share Weekly Updates</Heading>
-            <Tooltip
-              label="Share your weekly progress and catch up with your buddy."
-              bg="gray.800"
-              color="white"
-              fontSize="sm"
-              borderRadius="md"
-              p={2}
-            >
-              <Icon as={InfoOutlineIcon} boxSize={4} color="purple" />
-            </Tooltip>
+            <Text fontWeight="bold" fontSize="lg" mb="2">
+              Shared Weekly Updates{" "}
+              <InfoIcon
+                color="purple.500"
+                onClick={handleInstructionOpen}
+                mb={1}
+                cursor="pointer"
+              />
+            </Text>
+            {/* Use the modal component here */}
+            <WeeklyUpdatesModal
+              isOpen={isInstructionOpen}
+              onClose={handleInstructionClose}
+            />
           </Flex>
           <Text>
             {formattedStartOfWeek} {formattedEndOfWeek}

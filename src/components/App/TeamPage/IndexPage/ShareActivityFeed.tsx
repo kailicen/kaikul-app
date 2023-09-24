@@ -40,7 +40,7 @@ const SharedActivityFeed: React.FC<Props> = ({ user, buddyId, buddy }) => {
   return (
     <VStack spacing={4} w="full" alignItems="start">
       <Button onClick={() => showWeeklyUpdatesPage(buddyId)}>
-        View Team Weekly Updates
+        Structured Weekly Catch-ups
       </Button>
       <Grid
         templateColumns={{ base: "1fr", lg: "1fr 1fr" }}

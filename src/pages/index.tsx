@@ -13,7 +13,7 @@ import AuthenticatedHeader from "@/components/Header/AuthenticatedHeader";
 import LoadingScreen from "@/components/LoadingScreen";
 import { Benefits } from "@/components/landing-page/benefits";
 import { WhatIsAP } from "@/components/landing-page/what-is-ap";
-import MePage from "@/components/App/Me/MePage";
+import MePage from "@/components/App/Me";
 import { createClient } from "contentful";
 import { Theme } from "@/components/App/Me/SelfDiscoveryTab/ThemeOfTheWeekCard";
 
@@ -153,16 +153,19 @@ export default function Home({ posts }: Props) {
       <Head>
         <title>KaiKul | Where Ownership Meets Purpose</title>
 
-      {/* Google / Search Engine Tags */}
+        {/* Google / Search Engine Tags */}
         <meta
           property="og:title"
           content="KaiKul | Where Ownership Meets Purpose"
         />
-        <meta 
-          property="og:description" 
-          content="KaiKul is a personal development platform designed to foster conscious living and nurture personal responsibility." 
+        <meta
+          property="og:description"
+          content="KaiKul is a personal development platform designed to foster conscious living and nurture personal responsibility."
         />
-        <meta property="og:image" content="https://www.kaikul.com/android-chrome-512x512.png" />
+        <meta
+          property="og:image"
+          content="https://www.kaikul.com/android-chrome-512x512.png"
+        />
         <meta property="og:image" content="/img/kaikul-thumbnail.png" />
         <meta property="-post-thumbnail.png" />
         <meta property="og:image" content="/android-chrome-192x192.png" />
