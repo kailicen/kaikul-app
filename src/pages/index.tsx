@@ -179,13 +179,13 @@ export default function Home({ posts }: Props) {
       <AuthenticatedHeader user={user} />
 
       {user ? (
-        <div className="pt-[80px] container mx-auto">
+        <div className="pt-[80px] container mx-auto xxs:px-3">
           <MePage user={user} posts={posts} />
           <FloatingFeedbackButton /> {/* Add the feedback button */}
         </div>
       ) : (
         <>
-          <main className="container flex-1 mx-auto px-3">
+          <main className="container flex-1 mx-auto px-3 xxs:px-3">
             <Hero />
 
             <WhatIsAP />
