@@ -13,9 +13,9 @@ import OnboardingModal from "@/components/Modal/Me/OnboardingModal";
 import { User } from "firebase/auth";
 import { useUserProfile } from "@/hooks/useUserProfile";
 import { useUserProfileAddition } from "@/hooks/useUserProfileAddition";
-import SelfDiscovery from "./SelfDiscoveryTab/SelfDiscovery";
-import MyJourney from "./MyJourneyTab/MyJourney";
-import Leaderboard from "./LeaderboardTab/Leaderboard";
+import SelfDiscovery from "./SelfDiscoveryTab";
+import MyJourney from "./MyJourneyTab";
+import Leaderboard from "./LeaderboardTab";
 import { Theme } from "./SelfDiscoveryTab/ThemeOfTheWeekCard";
 
 type Props = { user: User; posts: Theme[] };
@@ -31,7 +31,7 @@ function MePage({ user, posts }: Props) {
       {!loading && profile && (
         <Flex direction="column" width="100%">
           <Tabs colorScheme="purple" variant="enclosed" width="100%" mx="auto">
-            <TabList mb="1em" display="flex" justifyContent="center">
+            <TabList display="flex" justifyContent="center">
               <Tab>My Journey</Tab>
               <Tab>Leaderboard</Tab>
               <Tab>Self Discovery</Tab>

@@ -15,7 +15,7 @@ function Authentication({ user }: Props) {
       <div className="flex flex-row">
         {user ? (
           <Flex gap={2}>
-            <UserProgressMenu user={user} />
+            <UserProgressMenu />
             <UserMenu user={user} />
           </Flex>
         ) : (

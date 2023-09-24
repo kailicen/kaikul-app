@@ -1,4 +1,4 @@
-import { WeeklyReflection } from "@/hooks/useWeeklyReflections";
+import { WeeklyReflection } from "@/atoms/weeklyReflectionAtom";
 import { Box, Heading, Text, useColorMode } from "@chakra-ui/react";
 import { format, parseISO, addDays } from "date-fns";
 
@@ -20,7 +20,7 @@ export function WeeklyReflectionCard({ record, onClick }: Props) {
     <Box
       key={record.id}
       onClick={onClick}
-      mt={5}
+      mt={2}
       p={5}
       shadow="md"
       borderWidth="1px"
@@ -28,6 +28,7 @@ export function WeeklyReflectionCard({ record, onClick }: Props) {
       borderRadius="md"
       cursor="pointer"
       bg={colorMode === "light" ? "white" : "gray.700"}
+      w="100%"
     >
       <Heading fontSize="lg">
         {formattedStartOfWeek} - {formattedEndOfWeek}

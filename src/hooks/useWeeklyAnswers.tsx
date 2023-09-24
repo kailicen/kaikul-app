@@ -5,18 +5,13 @@ import {
   setDoc,
   query,
   collection,
-  getDocs,
   where,
   runTransaction,
   onSnapshot,
 } from "firebase/firestore";
 import { firestore } from "../firebase/clientApp";
 import { User } from "firebase/auth";
-import {
-  Reaction,
-  WeeklyAnswer,
-  weeklyAnswersState,
-} from "@/atoms/weeklyAnswersAtom";
+import { Reaction, WeeklyAnswer } from "@/atoms/weeklyAnswersAtom";
 
 export const useWeeklyAnswers = (
   user: User | null | undefined,

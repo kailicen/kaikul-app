@@ -16,21 +16,9 @@ import {
 import { firestore } from "../firebase/clientApp";
 import { useEffect, useState } from "react";
 import useUserPoints from "./useUserPoints";
+import { WeeklyReflection } from "@/atoms/weeklyReflectionAtom";
 
-export type WeeklyReflection = {
-  id: string;
-  startOfWeek: string;
-  rateWeek: number;
-  rateHappiness: number;
-  practiceHours: number;
-  biggestImprovement: string;
-  biggestObstacle: string;
-  lessonLearned: string;
-  userId: string;
-  discussion?: string;
-};
-
-export const useTeamTab = (user: User, startOfWeek: string) => {
+export const useWeeklyReflections = (user: User, startOfWeek: string) => {
   const [teamTabs, setTeamTabs] = useState<WeeklyReflection[]>([]);
   const [isCurrentWeekDataExist, setIsCurrentWeekDataExist] =
     useState<boolean>(false);
@@ -230,7 +218,6 @@ export const useTeamTab = (user: User, startOfWeek: string) => {
   useEffect(() => {
     const loadTeamTabs = async () => {
       if (user && user.uid) {
-        console.log("User ID:", user.uid); // Log the user ID
         // Add limit and startAfter to implement pagination
         let q = query(
           collection(firestore, "teamTabs"),
@@ -258,7 +245,6 @@ export const useTeamTab = (user: User, startOfWeek: string) => {
 
         const teamTabs: WeeklyReflection[] = [];
         querySnapshot.forEach((doc) => {
-          console.log("Query snapshot:", doc.data());
           const teamTab = doc.data() as WeeklyReflection;
           teamTab.id = doc.id;
           teamTabs.push(teamTab);

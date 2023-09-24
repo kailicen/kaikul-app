@@ -1,6 +1,6 @@
 import LoadingScreen from "@/components/LoadingScreen";
 import { auth } from "@/firebase/clientApp";
-import { useTeamTab } from "@/hooks/useWeeklyReflections";
+import { useWeeklyReflections } from "@/hooks/useWeeklyReflections";
 import {
   Box,
   Text,
@@ -21,6 +21,8 @@ import {
   Input,
   Select,
   Flex,
+  Alert,
+  AlertIcon,
 } from "@chakra-ui/react";
 import {
   endOfWeek,
@@ -36,7 +38,7 @@ import { WeeklyReflectionCard } from "./WeeklyReflectionCard";
 
 type Props = {};
 
-function Reflect({}: Props) {
+function WeeklyUpdateSection({}: Props) {
   const [user, loading] = useAuthState(auth);
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [selectedUpdateId, setSelectedUpdateId] = useState<string | null>(null);
@@ -76,7 +78,7 @@ function Reflect({}: Props) {
     dataForSelectedDate,
     setDataForSelectedDate,
     uniqueDates,
-  } = useTeamTab(user as User, startOfWeek);
+  } = useWeeklyReflections(user as User, startOfWeek);
 
   // Use the list to populate the options in your Select dropdown.
   const weeklyOptions = uniqueDates.map((date) => {
@@ -160,10 +162,7 @@ function Reflect({}: Props) {
     setSelectedUpdateId(null);
   };
   return (
-    <>
-      <Heading size="md" mb={3}>
-        Weekly Updates
-      </Heading>
+    <VStack gap={4} align="start" w="100%">
       <Text mb={3}>
         Track your week&apos;s highlights effortlessly! Fill out your weekly
         updates, a fun, vital part of our sessions.
@@ -172,6 +171,7 @@ function Reflect({}: Props) {
         direction={{ base: "column", md: "row" }}
         justifyContent={{ base: "center", md: "space-between" }}
         gap={2}
+        w="100%"
       >
         {!isCurrentWeekDataExist && (
           <Button onClick={() => openDrawer()} whiteSpace="nowrap">
@@ -208,7 +208,7 @@ function Reflect({}: Props) {
             )
           }
         />
-      ) : (
+      ) : teamTabs.length > 0 ? (
         teamTabs.map((teamTab) => (
           <WeeklyReflectionCard
             key={teamTab.id}
@@ -226,6 +226,11 @@ function Reflect({}: Props) {
             }
           />
         ))
+      ) : (
+        <Alert status="info">
+          <AlertIcon />
+          No weekly reflections have been added yet. Start by adding some!
+        </Alert>
       )}
 
       <Box
@@ -334,8 +339,8 @@ function Reflect({}: Props) {
           </DrawerContent>
         </DrawerOverlay>
       </Drawer>
-    </>
+    </VStack>
   );
 }
 
-export default Reflect;
+export default WeeklyUpdateSection;

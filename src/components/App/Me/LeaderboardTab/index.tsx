@@ -13,7 +13,7 @@ type Props = {
   user: User;
 };
 
-const MyJourney: React.FC<Props> = ({ onEdit, user }) => {
+const Leaderboard: React.FC<Props> = ({ onEdit, user }) => {
   const { profile } = useUserProfile(user);
 
   const [isInstructionOpen, setIsInstructionOpen] = useState(false);
@@ -58,4 +58,4 @@ const MyJourney: React.FC<Props> = ({ onEdit, user }) => {
   );
 };
 
-export default MyJourney;
+export default Leaderboard;

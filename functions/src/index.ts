@@ -21,16 +21,43 @@ export const createUserDocument = functions.auth
     db.collection("users").doc(user.uid).set(newUser);
   });
 
-exports.updateBuddyLists = functions.firestore
+exports.updateBuddyListsAndSendMessages = functions.firestore
   .document("buddyRequests/{requestId}")
   .onUpdate(async (change) => {
     const newValue = change.after.data();
     const previousValue = change.before.data();
 
     if (newValue.status === "accepted" && previousValue.status === "pending") {
-      const {fromUserId, toUserId} = newValue;
+      const {
+        fromUserId,
+        toUserId,
+        senderReason,
+        recipientResponse,
+      } = newValue;
 
       const usersRef = admin.firestore().collection("users");
+      const messagesRef = admin.firestore().collection("messages");
+
+      const chatId = [fromUserId, toUserId].sort().join("_");
+
+      const senderMessage = {
+        chatId: chatId,
+        senderId: fromUserId,
+        receiverId: toUserId,
+        message: senderReason,
+        timestamp: admin.firestore.FieldValue.serverTimestamp(),
+        isRead: false,
+      };
+
+      const recipientMessage = {
+        chatId: chatId,
+        senderId: toUserId,
+        receiverId: fromUserId,
+        message: recipientResponse,
+        timestamp: admin.firestore.FieldValue.serverTimestamp(),
+        isRead: false,
+        // Optionally add senderName and senderPhotoURL if needed
+      };
 
       await Promise.all([
         usersRef.doc(fromUserId).update({
@@ -39,13 +66,15 @@ exports.updateBuddyLists = functions.firestore
         usersRef.doc(toUserId).update({
           buddies: admin.firestore.FieldValue.arrayUnion(fromUserId),
         }),
+        messagesRef.add(senderMessage),
+        messagesRef.add(recipientMessage),
       ]);
     }
   });
 
 exports.createGoalOnProfileAddition = functions.firestore
   .document("userProfiles/{profileId}")
-  .onCreate(async (snap, _context) => {
+  .onCreate(async (snap) => {
     // Get the data from the newly created profile
     const userProfile = snap.data();
 
