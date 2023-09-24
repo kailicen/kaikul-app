@@ -27,14 +27,19 @@ import FloatingFeedbackButton from "@/components/App/FloatingFeedbackButton";
 const Activity: NextPage = () => {
   const [user] = useAuthState(auth);
   const router = useRouter();
-  const { buddyRequests, unreadMessages, reactionNotifications } =
-    useNotifications(user);
+  const {
+    buddyRequests,
+    numOfNotifications,
+    reactionNotifications,
+    unreadMessages,
+  } = useNotifications(user);
   const [localReactions, setLocalReactions] = useState<Reaction[]>(
     reactionNotifications
   );
 
   useEffect(() => {
     setLocalReactions(reactionNotifications);
+    console.log(reactionNotifications);
   }, [reactionNotifications]);
 
   const redirectToConnect = () => {
@@ -75,7 +80,7 @@ const Activity: NextPage = () => {
           <VStack spacing={4} align="start">
             <Heading size="lg">Activity</Heading>
 
-            {buddyRequests.length === 0 && unreadMessages.length === 0 ? (
+            {buddyRequests.length === 0 && numOfNotifications === 0 ? (
               <Text>No new notifications.</Text>
             ) : (
               <VStack spacing={4} w="full">
