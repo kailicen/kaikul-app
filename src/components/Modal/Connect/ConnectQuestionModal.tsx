@@ -13,12 +13,7 @@ import {
   Button,
   useToast,
 } from "@chakra-ui/react";
-import {
-  AppUser,
-  BuddyRequest,
-  buddyListState,
-  buddyRequestState,
-} from "@/atoms/buddyAtom";
+import { AppUser, BuddyRequest, buddyListState } from "@/atoms/buddyAtom";
 import {
   collection,
   serverTimestamp,
@@ -57,6 +52,18 @@ export const ConnectQuestionModal: React.FC<ConnectModalProps> = ({
   const toast = useToast();
 
   const handleSubmit = async (selectedUser: AppUser | null) => {
+    // Check if message is empty
+    if (!message.trim()) {
+      toast({
+        title: "Field Required",
+        description: "Please provide an answer in the field.",
+        status: "error",
+        duration: 5000,
+        isClosable: true,
+      });
+      return; // Exit out of the function
+    }
+
     if (type === "sender") {
       // Existing logic for the sender...
       if (user && selectedUser) {
@@ -152,17 +159,19 @@ export const ConnectQuestionModal: React.FC<ConnectModalProps> = ({
           <FormControl id="reason">
             <FormLabel>
               {type === "sender"
-                ? `What's one thing you're currently trying to improve or learn, and how do you think connecting with ${
+                ? `Share something you're currently working on or trying to learn. How do you feel ${
                     selectedUser?.displayName || selectedUser?.email
-                  } will help?`
-                : `What's a personal development goal or interest you're passionate about, and how do you think connecting with ${
+                  } might offer insights or support in this?`
+                : `Talk about a personal goal or interest that excites you. How might a chat with ${
                     selectedUser?.displayName || selectedUser?.email
-                  } can contribute to that?`}
+                  } add value or perspective to it?`}
             </FormLabel>
+
             <Textarea
               value={message}
               onChange={(e) => setMessage(e.target.value)}
               placeholder="Your answer..."
+              required
             />
           </FormControl>
         </ModalBody>

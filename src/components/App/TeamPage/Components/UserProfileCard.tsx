@@ -11,13 +11,7 @@ import {
 import { UserInfo } from "./UserInfoComponent";
 import { User } from "firebase/auth";
 import { Buddy } from "@/atoms/buddyAtom";
-
-export type UserProfile = {
-  domains: string[];
-  biggestGoal: string;
-  challenges: string;
-  selfIntroduction: string;
-};
+import { UserProfile } from "@/atoms/userProfileAtom";
 
 type Props = {
   profile: UserProfile;

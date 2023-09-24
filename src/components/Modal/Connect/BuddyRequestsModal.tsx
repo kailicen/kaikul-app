@@ -20,8 +20,10 @@ import { firestore } from "../../../firebase/clientApp";
 import { buddyRequestState } from "@/atoms/buddyAtom";
 import { useRecoilState } from "recoil";
 import { FaCheck, FaChevronDown, FaChevronUp, FaTimes } from "react-icons/fa";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { ConnectQuestionModal } from "./ConnectQuestionModal";
+import { UserProfile } from "@/atoms/userProfileAtom";
+import { useBuddyData } from "@/hooks/useBuddyData";
 
 interface BuddyRequestsProps {
   isOpen: boolean;
@@ -38,6 +40,24 @@ const BuddyRequestsModal: React.FC<BuddyRequestsProps> = ({
   ); // State to track expanded card
   const [newModalOpen, setNewModalOpen] = useState(false);
   const [currentRequestId, setCurrentRequestId] = useState<string | null>(null);
+
+  const [buddyId, setBuddyId] = useState<string | null>(null);
+  const [buddyProfile, setBuddyProfile] = useState<UserProfile | null>(null);
+  const { fetchBuddyProfileById } = useBuddyData();
+
+  useEffect(() => {
+    // Fetch buddy data when component mounts or buddyId changes
+    const fetchBuddyProfileData = async () => {
+      if (buddyId) {
+        const fetchedBuddyProfile = await fetchBuddyProfileById(buddyId);
+        if (fetchedBuddyProfile) {
+          setBuddyProfile(fetchedBuddyProfile);
+        }
+      }
+    };
+
+    fetchBuddyProfileData();
+  }, [buddyId, fetchBuddyProfileById]);
 
   const toast = useToast();
 
@@ -160,18 +180,50 @@ const BuddyRequestsModal: React.FC<BuddyRequestsProps> = ({
                         {request.id !== expandedRequestId ? (
                           <FaChevronDown
                             cursor="pointer"
-                            onClick={() =>
-                              setExpandedRequestId(request.id || null)
-                            }
+                            onClick={() => {
+                              setExpandedRequestId(request.id || null);
+                              setBuddyId(request.fromUserId || null); // Set the buddyId when expanding
+                            }}
                           />
                         ) : (
                           <FaChevronUp
                             cursor="pointer"
-                            onClick={() => setExpandedRequestId(null)}
+                            onClick={() => {
+                              setExpandedRequestId(null);
+                              setBuddyId(null); // Reset the buddyId when collapsing
+                            }}
                           />
                         )}
                       </Box>
                     </HStack>
+                    {request.id === expandedRequestId && buddyProfile && (
+                      <VStack align="start" mt={4} spacing={2} fontSize="sm">
+                        <Text fontWeight="bold">Introduction:</Text>
+                        <Text>
+                          {buddyProfile.selfIntroduction || "Not provided"}
+                        </Text>
+
+                        <Text fontWeight="bold">Domains:</Text>
+                        {buddyProfile.domains &&
+                        buddyProfile.domains.length > 0 ? (
+                          <VStack align="start" spacing={1}>
+                            {buddyProfile.domains.map((domain, idx) => (
+                              <Text key={idx}>{domain}</Text>
+                            ))}
+                          </VStack>
+                        ) : (
+                          <Text>Not provided</Text>
+                        )}
+
+                        <Text fontWeight="bold">Biggest Goal:</Text>
+                        <Text>
+                          {buddyProfile.biggestGoal || "Not provided"}
+                        </Text>
+
+                        <Text fontWeight="bold">Challenges:</Text>
+                        <Text>{buddyProfile.challenges || "Not provided"}</Text>
+                      </VStack>
+                    )}
                   </Box>
                 ))}
               </>

@@ -4,8 +4,9 @@ import { Box, VStack, Text, Link, Button, Grid } from "@chakra-ui/react";
 import { User } from "firebase/auth";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
-import UserProfileCard, { UserProfile } from "../Components/UserProfileCard";
+import UserProfileCard from "../Components/UserProfileCard";
 import { Buddy } from "@/atoms/buddyAtom";
+import { UserProfile } from "@/atoms/userProfileAtom";
 
 type Props = {
   user: User;
