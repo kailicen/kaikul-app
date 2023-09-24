@@ -80,7 +80,7 @@ const Activity: NextPage = () => {
           <VStack spacing={4} align="start">
             <Heading size="lg">Activity</Heading>
 
-            {buddyRequests.length === 0 && numOfNotifications === 0 ? (
+            {numOfNotifications === 0 ? (
               <Text>No new notifications.</Text>
             ) : (
               <VStack spacing={4} w="full">
