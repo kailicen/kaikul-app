@@ -9,13 +9,22 @@ import {
   getDoc,
 } from "firebase/firestore";
 import { firestore } from "@/firebase/clientApp";
-import { BuddyRequest, Message, buddyRequestState } from "@/atoms/buddyAtom";
+import {
+  AppUser,
+  BuddyRequest,
+  Message,
+  buddyRequestState,
+} from "@/atoms/buddyAtom";
 import { useRecoilState } from "recoil";
+import { Reaction, WeeklyAnswer } from "@/atoms/weeklyAnswersAtom";
 
 export const useNotifications = (user?: User | null) => {
   const [numOfNotifications, setNumOfNotifications] = useState(0);
   const [buddyRequests, setBuddyRequests] = useRecoilState(buddyRequestState);
   const [unreadMessages, setUnreadMessages] = useState<Message[]>([]);
+  const [reactionNotifications, setReactionNotifications] = useState<
+    Reaction[]
+  >([]);
 
   const fetchBuddyRequests = () => {
     if (!user) return;
@@ -97,14 +106,72 @@ export const useNotifications = (user?: User | null) => {
     };
   };
 
+  const fetchReactions = () => {
+    if (!user) return;
+
+    const q = query(
+      collection(firestore, "weeklyAnswers"),
+      where("userId", "==", user.uid)
+    );
+
+    const unsubscribe = onSnapshot(q, async (snapshot) => {
+      let fetchedReactions: Reaction[] = [];
+
+      for (const documentSnapshot of snapshot.docs) {
+        const weeklyAnswer = documentSnapshot.data() as WeeklyAnswer;
+        const answerId = documentSnapshot.id;
+
+        if (weeklyAnswer.reactions) {
+          for (const reaction of weeklyAnswer.reactions) {
+            if (!reaction.seen) {
+              const userDocRef = doc(firestore, "users", reaction.userId);
+              const userDocSnap = await getDoc(userDocRef);
+
+              if (userDocSnap.exists()) {
+                const userData = userDocSnap.data() as AppUser;
+                reaction.userDetails = {
+                  displayName:
+                    userData?.displayName || userData?.email.split("@")[0],
+                  photoURL: userData?.photoURL,
+                };
+              }
+
+              fetchedReactions.push({
+                ...reaction,
+                answerId,
+                theme: weeklyAnswer.theme,
+              });
+            }
+          }
+        }
+      }
+
+      setReactionNotifications(fetchedReactions);
+    });
+
+    return () => {
+      unsubscribe();
+    };
+  };
+
   useEffect(() => {
     fetchBuddyRequests();
     fetchUnreadMessages();
+    fetchReactions();
   }, [user]);
 
   useEffect(() => {
-    setNumOfNotifications(buddyRequests.length + unreadMessages.length);
-  }, [buddyRequests, unreadMessages]);
+    setNumOfNotifications(
+      buddyRequests.length +
+        unreadMessages.length +
+        reactionNotifications.length
+    );
+  }, [buddyRequests, unreadMessages, reactionNotifications]);
 
-  return { numOfNotifications, buddyRequests, unreadMessages };
+  return {
+    numOfNotifications,
+    buddyRequests,
+    unreadMessages,
+    reactionNotifications,
+  };
 };

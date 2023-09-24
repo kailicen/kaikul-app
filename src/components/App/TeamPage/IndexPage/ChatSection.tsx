@@ -120,6 +120,7 @@ const ChatSection: React.FC<Props> = ({ user, buddy }) => {
 
     try {
       await addDoc(messagesCollection, newMsg);
+      await markAllAsRead();
     } catch (error) {
       console.error("Error sending message:", error);
     }
