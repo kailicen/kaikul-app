@@ -5,11 +5,9 @@ import { BsCalendarWeek } from "react-icons/bs";
 import { MdOutlineForum } from "react-icons/md";
 import { User } from "firebase/auth";
 
-type UserProgressMenuProps = {
-  user?: User | null;
-};
+type UserProgressMenuProps = {};
 
-const UserProgressMenu: React.FC<UserProgressMenuProps> = ({ user }) => {
+const UserProgressMenu: React.FC<UserProgressMenuProps> = ({}) => {
   const router = useRouter();
 
   const isMobile = useBreakpointValue({ base: true, md: false });

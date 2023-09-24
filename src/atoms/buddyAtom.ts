@@ -25,7 +25,26 @@ export type Message = {
   receiverId: string;
   message: string;
   timestamp: any;
+  isRead: boolean;
+  senderName?: string;
+  senderPhotoURL?: string;
+  unreadCount?: number;
 };
+
+export const messagesAtom = atom<Message[]>({
+  key: "messagesAtom",
+  default: [],
+});
+
+export const unreadMessagesAtom = atom<Message[]>({
+  key: "unreadMessagesAtom",
+  default: [],
+});
+
+export const readMessagesAtom = atom<Message[]>({
+  key: "readMessagesAtom",
+  default: [],
+});
 
 export type AppUser = {
   uid: string;

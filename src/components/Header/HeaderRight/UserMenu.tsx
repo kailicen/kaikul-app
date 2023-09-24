@@ -29,7 +29,7 @@ const UserMenu: React.FC<UserMenuProps> = ({ user }) => {
   const router = useRouter();
   const resetBuddyRequests = useResetRecoilState(buddyRequestState);
 
-  const { numOfPendingRequests } = useNotifications(user);
+  const { numOfNotifications } = useNotifications(user);
 
   const { userPoints } = useUserPoints(user as User);
 
@@ -46,7 +46,7 @@ const UserMenu: React.FC<UserMenuProps> = ({ user }) => {
 
     try {
       await signOut(auth);
-      router.push("/");
+      router.replace("/");
     } catch (error) {
       console.error("Error logging out:", error);
     }
@@ -74,9 +74,9 @@ const UserMenu: React.FC<UserMenuProps> = ({ user }) => {
                 {user?.displayName || user?.email?.split("@")[0]}
               </Text>
 
-              {numOfPendingRequests > 0 && (
+              {numOfNotifications > 0 && (
                 <Badge colorScheme="red" variant="solid" borderRadius="full">
-                  {numOfPendingRequests}
+                  {numOfNotifications}
                 </Badge>
               )}
             </Flex>
@@ -98,14 +98,14 @@ const UserMenu: React.FC<UserMenuProps> = ({ user }) => {
           <Flex align="center">
             <Icon fontSize={20} mr={2} as={MdOutlineNotifications} />
             Activity
-            {numOfPendingRequests > 0 && (
+            {numOfNotifications > 0 && (
               <Badge
                 ml="1"
                 colorScheme="red"
                 variant="solid"
                 borderRadius="full"
               >
-                {numOfPendingRequests}
+                {numOfNotifications}
               </Badge>
             )}
           </Flex>

@@ -10,7 +10,7 @@ type TeamHeaderProps = {
 const TeamHeader: React.FC<TeamHeaderProps> = ({ user, buddy }) => {
   return (
     <VStack spacing={4} align="center">
-      <Box>
+      {/* <Box>
         <Avatar
           src={user.photoURL || ""}
           name={user.displayName || user.email?.split("@")[0] || ""}
@@ -20,7 +20,7 @@ const TeamHeader: React.FC<TeamHeaderProps> = ({ user, buddy }) => {
           src={buddy?.photoURL || ""}
           name={buddy?.displayName || buddy?.email.split("@")[0] || ""}
         />
-      </Box>
+      </Box> */}
       <Text fontSize="xl">
         {user.displayName || user.email?.split("@")[0]} &{" "}
         {buddy?.displayName || buddy?.email.split("@")[0]}

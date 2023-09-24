@@ -9,21 +9,32 @@ import {
   InputGroup,
   useColorModeValue,
   Textarea,
+  Divider,
 } from "@chakra-ui/react";
 import {
   addDoc,
   collection,
+  doc,
+  getDocs,
   limit,
   onSnapshot,
   orderBy,
   query,
   serverTimestamp,
+  updateDoc,
   where,
 } from "firebase/firestore";
 import { firestore } from "@/firebase/clientApp";
 import { User } from "firebase/auth";
-import { Buddy, Message } from "@/atoms/buddyAtom";
+import {
+  Buddy,
+  Message,
+  messagesAtom,
+  readMessagesAtom,
+  unreadMessagesAtom,
+} from "@/atoms/buddyAtom";
 import { IoMdSend } from "react-icons/io";
+import { useRecoilState } from "recoil";
 
 const getChatId = (user1: string, user2: string) => {
   return [user1, user2].sort().join("_");
@@ -35,7 +46,10 @@ type Props = {
 };
 
 const ChatSection: React.FC<Props> = ({ user, buddy }) => {
-  const [messages, setMessages] = useState<Message[]>([]);
+  const [messages, setMessages] = useRecoilState(messagesAtom);
+  const [unreadMessages, setUnreadMessages] =
+    useRecoilState(unreadMessagesAtom);
+  const [readMessages, setReadMessages] = useRecoilState(readMessagesAtom);
   const [newMessage, setNewMessage] = useState<string>("");
   const textareaRef = useRef<HTMLTextAreaElement | null>(null);
 
@@ -52,7 +66,7 @@ const ChatSection: React.FC<Props> = ({ user, buddy }) => {
     }
   };
 
-  useEffect(() => {
+  const fetchMessages = async () => {
     if (buddy && user) {
       const chatId = getChatId(user.uid, buddy.id);
 
@@ -63,16 +77,28 @@ const ChatSection: React.FC<Props> = ({ user, buddy }) => {
         limit(10)
       );
 
-      const unsubscribe = onSnapshot(messagesQuery, (snapshot) => {
-        const messages = snapshot.docs.map((doc) => ({
-          ...(doc.data() as Omit<Message, "id">),
-          id: doc.id,
-        }));
-        setMessages(messages);
-      });
+      const snapshot = await getDocs(messagesQuery);
+      const fetchedMessages = snapshot.docs.map((doc) => ({
+        ...(doc.data() as Omit<Message, "id">),
+        id: doc.id,
+      }));
 
-      return () => unsubscribe();
+      setMessages(fetchedMessages);
+
+      const unreads = fetchedMessages.filter(
+        (msg) => !msg.isRead && msg.receiverId === user.uid
+      );
+      const reads = fetchedMessages.filter(
+        (msg) => msg.isRead || msg.senderId === user.uid
+      );
+
+      setUnreadMessages(unreads);
+      setReadMessages(reads);
     }
+  };
+
+  useEffect(() => {
+    fetchMessages();
   }, [user, buddy]);
 
   const sendMessage = async (e: React.FormEvent) => {
@@ -87,6 +113,7 @@ const ChatSection: React.FC<Props> = ({ user, buddy }) => {
       receiverId: buddy.id,
       message: newMessage,
       timestamp: serverTimestamp(),
+      isRead: false,
     };
 
     setNewMessage("");
@@ -103,8 +130,30 @@ const ChatSection: React.FC<Props> = ({ user, buddy }) => {
     }
   };
 
+  // Function to mark a message as read
+  const markMessageAsRead = async (messageId?: string) => {
+    if (!messageId) return;
+
+    const docRef = doc(firestore, "messages", messageId);
+    await updateDoc(docRef, {
+      isRead: true,
+    });
+  };
+  const markAllAsRead = async () => {
+    const unreadMessages = messages.filter(
+      (msg) => !msg.isRead && msg.receiverId === user.uid
+    );
+
+    for (const msg of unreadMessages) {
+      await markMessageAsRead(msg.id);
+    }
+  };
+
   return (
-    <VStack spacing={4} w="100%" h="500px" bg={chatBg}>
+    <VStack spacing={4} w="100%" minH="50vh" flexGrow={1} bg={chatBg}>
+      <Button onClick={fetchMessages} mt={2} size="xs" variant="outline">
+        Refresh Messages
+      </Button>
       <Box
         overflowY="auto"
         flexGrow={1}
@@ -114,7 +163,50 @@ const ChatSection: React.FC<Props> = ({ user, buddy }) => {
         gap={2}
         p={4}
       >
-        {messages.reverse().map((msg) => (
+        {/* Only show the divider if there are unread messages */}
+        {unreadMessages.length > 0 && (
+          <>
+            {unreadMessages.map((msg) => (
+              <Box
+                key={msg.id}
+                maxWidth="90%"
+                p={2}
+                alignSelf={
+                  msg.senderId === user.uid ? "flex-end" : "flex-start"
+                }
+                bg={
+                  msg.senderId === user.uid
+                    ? bgMessageSender
+                    : bgMessageReceiver
+                }
+                borderRadius="md"
+              >
+                <Text color={msg.senderId === user.uid ? "white" : "black"}>
+                  {msg.message}
+                </Text>
+              </Box>
+            ))}
+
+            <Box
+              width="100%"
+              textAlign="center"
+              my={2} // some margin for better separation
+            >
+              <Text color="gray.500">Unread Messages</Text>
+              <Divider /> {/* A simple line; you can style it as needed */}
+              <Button
+                onClick={markAllAsRead}
+                size="xs"
+                mt={2}
+                variant="outline"
+              >
+                Mark All as Read
+              </Button>
+            </Box>
+          </>
+        )}
+
+        {readMessages.map((msg) => (
           <Box
             key={msg.id}
             maxWidth="90%"
@@ -129,6 +221,7 @@ const ChatSection: React.FC<Props> = ({ user, buddy }) => {
           </Box>
         ))}
       </Box>
+
       <Box width="100%" p={2}>
         <form onSubmit={sendMessage}>
           <InputGroup size="md">
