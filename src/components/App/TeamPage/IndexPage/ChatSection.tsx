@@ -150,7 +150,14 @@ const ChatSection: React.FC<Props> = ({ user, buddy }) => {
   };
 
   return (
-    <VStack spacing={4} w="100%" minH="50vh" flexGrow={1} bg={chatBg}>
+    <VStack
+      spacing={4}
+      w="100%"
+      minH="50vh"
+      flexGrow={1}
+      bg={chatBg}
+      borderRadius="md"
+    >
       <Button onClick={fetchMessages} mt={2} size="xs" variant="outline">
         Refresh Messages
       </Button>

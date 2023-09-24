@@ -9,11 +9,12 @@ import {
   getDoc,
 } from "firebase/firestore";
 import { firestore } from "@/firebase/clientApp";
-import { BuddyRequest, Message } from "@/atoms/buddyAtom";
+import { BuddyRequest, Message, buddyRequestState } from "@/atoms/buddyAtom";
+import { useRecoilState } from "recoil";
 
 export const useNotifications = (user?: User | null) => {
   const [numOfNotifications, setNumOfNotifications] = useState(0);
-  const [buddyRequests, setBuddyRequests] = useState<BuddyRequest[]>([]);
+  const [buddyRequests, setBuddyRequests] = useRecoilState(buddyRequestState);
   const [unreadMessages, setUnreadMessages] = useState<Message[]>([]);
 
   const fetchBuddyRequests = () => {

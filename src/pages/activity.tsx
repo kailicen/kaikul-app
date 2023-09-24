@@ -19,11 +19,16 @@ import AuthenticatedHeader from "@/components/Header/AuthenticatedHeader";
 import LoadingScreen from "@/components/LoadingScreen";
 import { doc, updateDoc } from "firebase/firestore";
 import { useRouter } from "next/router";
+import { NotificationCard } from "@/components/App/Activity/NotificationCard";
 
 const Activity: NextPage = () => {
   const [user] = useAuthState(auth);
   const router = useRouter();
   const { buddyRequests, unreadMessages } = useNotifications(user);
+
+  const redirectToConnect = () => {
+    router.push("/connect");
+  };
 
   const showTeamPage = (buddyId: string) => {
     router.push(`/team?buddyId=${buddyId}`);
@@ -37,12 +42,12 @@ const Activity: NextPage = () => {
           <VStack spacing={4} align="start">
             <Heading size="lg">Activity</Heading>
 
-            {buddyRequests.length === 0 ? (
+            {buddyRequests.length === 0 && unreadMessages.length === 0 ? (
               <Text>No new notifications.</Text>
             ) : (
-              <List spacing={3}>
+              <VStack spacing={4} w="full">
                 {buddyRequests.map((request, index) => (
-                  <ListItem key={index}>
+                  <NotificationCard key={index} onClick={redirectToConnect}>
                     <HStack spacing={3}>
                       <Avatar
                         src={request.fromUserPhotoURL}
@@ -56,20 +61,16 @@ const Activity: NextPage = () => {
                           {request.fromUserDisplayName || request.fromUserEmail}{" "}
                           sent you a buddy request.
                         </Text>
-                        {/* Add more details or actions related to the request if necessary */}
                       </Box>
                     </HStack>
-                  </ListItem>
+                  </NotificationCard>
                 ))}
-              </List>
-            )}
 
-            {unreadMessages.length === 0 ? (
-              <Text>No unread messages.</Text>
-            ) : (
-              <List spacing={3}>
                 {unreadMessages.map((msg, index) => (
-                  <ListItem key={index}>
+                  <NotificationCard
+                    key={index}
+                    onClick={() => showTeamPage(msg.senderId)}
+                  >
                     <HStack spacing={3}>
                       <Avatar
                         src={msg.senderPhotoURL}
@@ -77,22 +78,15 @@ const Activity: NextPage = () => {
                         name={msg.senderName}
                       />
                       <Box>
-                        <Button
-                          onClick={() => showTeamPage(msg.senderId)}
-                          variant="ghost"
-                          width="full"
-                          textAlign="left"
-                        >
-                          <Text fontSize="sm">
-                            {msg.senderName} sent you {msg.unreadCount}{" "}
-                            message(s): {msg.message}
-                          </Text>
-                        </Button>
+                        <Text fontSize="sm">
+                          {msg.senderName} sent you {msg.unreadCount}{" "}
+                          message(s): {msg.message}
+                        </Text>
                       </Box>
                     </HStack>
-                  </ListItem>
+                  </NotificationCard>
                 ))}
-              </List>
+              </VStack>
             )}
           </VStack>
         </div>
