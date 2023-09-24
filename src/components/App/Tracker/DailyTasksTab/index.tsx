@@ -9,7 +9,6 @@ import "moment/locale/en-gb";
 import { useMediaQuery } from "@chakra-ui/react";
 import Day from "./Day";
 import DayNavigation from "./DayNavigation";
-import FloatingFeedbackButton from "../../FloatingFeedbackButton";
 import { useRecoilState } from "recoil";
 import { weekTaskListState } from "@/atoms/tasksAtom";
 
@@ -78,7 +77,6 @@ function WeeklyPlanner({ user }: Props) {
       ) : (
         <Day user={user} date={startOfDay} />
       )}
-      <FloatingFeedbackButton /> {/* Add the feedback button */}
     </>
   );
 }

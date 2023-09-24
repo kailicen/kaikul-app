@@ -16,14 +16,14 @@ import {
 } from "@chakra-ui/react";
 import { endOfWeek, format, startOfWeek } from "date-fns";
 import { ArrowBackIcon, InfoIcon, InfoOutlineIcon } from "@chakra-ui/icons";
-import { useSingleWeeklyReflection } from "@/hooks/useSingleWeeklyReflection";
 import { User } from "firebase/auth";
-import { UserInfo } from "../Components/UserInfoComponent";
-import { useBuddyData } from "@/hooks/useBuddyData";
 import { Buddy } from "@/atoms/buddyAtom";
 import { useRouter } from "next/router";
 import { IoChevronBack } from "react-icons/io5";
 import WeeklyUpdatesModal from "@/components/Modal/Instructions/WeeklyUpdatesModal";
+import { UserInfo } from "../Components/UserInfoComponent";
+import { useSingleWeeklyReflection } from "@/hooks/useSingleWeeklyReflection";
+import { useBuddyData } from "@/hooks/useBuddyData";
 
 type Props = {
   user: User;

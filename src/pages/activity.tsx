@@ -22,6 +22,7 @@ import { useRouter } from "next/router";
 import { NotificationCard } from "@/components/App/Activity/NotificationCard";
 import { Reaction } from "@/atoms/weeklyAnswersAtom";
 import { useEffect, useState } from "react";
+import FloatingFeedbackButton from "@/components/App/FloatingFeedbackButton";
 
 const Activity: NextPage = () => {
   const [user] = useAuthState(auth);
@@ -150,6 +151,7 @@ const Activity: NextPage = () => {
               </VStack>
             )}
           </VStack>
+          <FloatingFeedbackButton /> {/* Add the feedback button */}
         </div>
       ) : (
         <LoadingScreen />

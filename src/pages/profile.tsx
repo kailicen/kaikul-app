@@ -21,6 +21,7 @@ import { doc, getDoc, setDoc, updateDoc } from "firebase/firestore";
 import { EditIcon } from "@chakra-ui/icons";
 import AuthenticatedHeader from "@/components/Header/AuthenticatedHeader";
 import { useUserData } from "@/hooks/useUserData";
+import FloatingFeedbackButton from "@/components/App/FloatingFeedbackButton";
 
 interface ProfileFormValues {
   username: string;
@@ -185,6 +186,7 @@ function ProfilePage() {
           </Button>
         </VStack>
       </Flex>
+      <FloatingFeedbackButton /> {/* Add the feedback button */}
     </>
   );
 }

@@ -18,6 +18,7 @@ import SharedActivityFeed from "@/components/App/TeamPage/IndexPage/ShareActivit
 import TeamHeader from "@/components/App/TeamPage/IndexPage/TeamHeader";
 import { ArrowBackIcon } from "@chakra-ui/icons";
 import { IoChevronBack } from "react-icons/io5";
+import FloatingFeedbackButton from "@/components/App/FloatingFeedbackButton";
 
 type Props = {};
 
@@ -88,6 +89,7 @@ function TeamPage({}: Props) {
             {/* <TeamActions /> */}
           </Grid>
         </VStack>
+        <FloatingFeedbackButton /> {/* Add the feedback button */}
       </div>
     </>
   );

@@ -22,7 +22,7 @@ export type Theme = {
   fields: {
     title: string;
     date: string;
-    question: string;
+    long_question: string;
     content: Document;
   };
   sys: {
@@ -36,7 +36,7 @@ type Props = {
 
 const ThemeOfTheWeekCard: React.FC<Props> = ({ post }) => {
   const [user, loading] = useAuthState(auth);
-  const { title, date, content, question } = post.fields;
+  const { title, date, content, long_question } = post.fields;
   const [isContentModalOpen, setContentModalOpen] = useState(false);
   const { colorMode } = useColorMode();
 
@@ -102,9 +102,9 @@ const ThemeOfTheWeekCard: React.FC<Props> = ({ post }) => {
       <Text fontSize="sm" color="gray.500">
         {new Date(date).toLocaleDateString()}
       </Text>
-      <Box>{question}</Box>
+      <Box>{long_question}</Box>
       {!loading && (
-        <AnswersComponent user={user} theme={title} question={question} />
+        <AnswersComponent user={user} theme={title} question={long_question} />
       )}
     </VStack>
   );

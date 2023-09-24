@@ -5,6 +5,7 @@ import { useRouter } from "next/router";
 import LoadingScreen from "@/components/LoadingScreen";
 import AuthenticatedHeader from "@/components/Header/AuthenticatedHeader";
 import TrackerPage from "@/components/App/Tracker";
+import FloatingFeedbackButton from "@/components/App/FloatingFeedbackButton";
 
 type Props = {};
 
@@ -26,6 +27,7 @@ function Tracker({}: Props) {
       {user ? (
         <div className="pt-[80px] px-2 md:px-10 3xl:px-32">
           <TrackerPage user={user} />
+          <FloatingFeedbackButton /> {/* Add the feedback button */}
         </div>
       ) : null}
     </>

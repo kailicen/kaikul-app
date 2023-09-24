@@ -16,6 +16,7 @@ import { WhatIsAP } from "@/components/landing-page/what-is-ap";
 import MePage from "@/components/App/Me";
 import { createClient } from "contentful";
 import { Theme } from "@/components/App/Me/SelfDiscoveryTab/ThemeOfTheWeekCard";
+import FloatingFeedbackButton from "@/components/App/FloatingFeedbackButton";
 
 const testimonials = [
   {
@@ -180,6 +181,7 @@ export default function Home({ posts }: Props) {
       {user ? (
         <div className="pt-[80px] container mx-auto">
           <MePage user={user} posts={posts} />
+          <FloatingFeedbackButton /> {/* Add the feedback button */}
         </div>
       ) : (
         <>

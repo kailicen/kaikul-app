@@ -21,6 +21,7 @@ import {
 import { updateProfile } from "firebase/auth";
 import profile from "../profile";
 import { ExternalLinkIcon } from "@chakra-ui/icons";
+import FloatingFeedbackButton from "@/components/App/FloatingFeedbackButton";
 
 type Props = {};
 
@@ -76,6 +77,7 @@ function WeeklyUpdatePage({}: Props) {
               </TabPanels>
             </Tabs>
           </Flex>
+          <FloatingFeedbackButton /> {/* Add the feedback button */}
         </div>
       ) : (
         <LoadingScreen />
