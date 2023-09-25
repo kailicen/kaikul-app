@@ -265,6 +265,7 @@ const Day: React.FC<{ date: string; user: User }> = ({ date, user }) => {
   return (
     <VStack
       align="stretch"
+      width="100%"
       minHeight="400px"
       border="1px"
       borderColor={colorMode === "light" ? "gray.200" : "gray.700"}

@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import GoalView from "./GoalView";
 import WeekView from "./WeekView";
 import { User } from "firebase/auth";
-import { Flex } from "@chakra-ui/react";
+import { Flex, VStack } from "@chakra-ui/react";
 import WeekNavigation from "./WeekNavigation";
 import moment from "moment";
 import "moment/locale/en-gb";
@@ -57,7 +57,7 @@ function WeeklyPlanner({ user }: Props) {
   };
 
   return (
-    <>
+    <VStack width="100%">
       {isLargerThan768 ? (
         <WeekNavigation
           onPreviousWeek={handlePreviousWeek}
@@ -77,7 +77,7 @@ function WeeklyPlanner({ user }: Props) {
       ) : (
         <Day user={user} date={startOfDay} />
       )}
-    </>
+    </VStack>
   );
 }
 

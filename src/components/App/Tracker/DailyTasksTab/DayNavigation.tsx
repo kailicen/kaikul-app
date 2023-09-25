@@ -18,7 +18,7 @@ const DayNavigation: React.FC<DayNavigationProps> = ({
   const currentDay = currentDate.format("DD MMM YYYY");
 
   return (
-    <Flex align="center" justify="space-between">
+    <Flex align="center" justify="space-between" width="100%">
       <Flex align="center">
         <Box
           as="button"

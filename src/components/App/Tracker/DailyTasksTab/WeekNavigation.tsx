@@ -44,7 +44,7 @@ const WeekNavigation: React.FC<WeekNavigationProps> = ({
   };
 
   return (
-    <Flex align="center" justify="space-between" h={12}>
+    <Flex align="center" justify="space-between" h={12} width="100%">
       <Flex align="center">
         <Tooltip label="Previous Week" placement="top">
           <Box

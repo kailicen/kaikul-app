@@ -12,7 +12,7 @@ function WeekView({ user, startOfWeek }: Props) {
   const endOfWeek = moment(startOfWeek).add(6, "days").format("YYYY-MM-DD");
 
   return (
-    <Box display="flex" justifyContent="space-between" w="full" mb={10}>
+    <Box display="flex" justifyContent="space-between" w="100%" mb={10}>
       {Array.from({ length: 7 }).map((_, index) => {
         const date = moment(startOfWeek)
           .add(index, "days")

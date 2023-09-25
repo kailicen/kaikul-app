@@ -195,8 +195,8 @@ function GoalView({ user, startOfDay, startOfWeek }: GoalViewProps) {
   };
 
   return (
-    <Center>
-      <Box width="100%" p={4}>
+    <Center width="100%">
+      <Box width="100%" p={2}>
         <Text mb={2} fontWeight="semibold">
           Goal Setting:{" "}
           <Button

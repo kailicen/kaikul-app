@@ -9,14 +9,16 @@ import {
   UnorderedList,
   ListItem,
   OrderedList,
+  useBreakpointValue,
+  IconButton,
 } from "@chakra-ui/react";
 import { BLOCKS, MARKS } from "@contentful/rich-text-types";
 import { Document } from "@contentful/rich-text-types";
 import ThemeContentModal from "@/components/Modal/Me/ThemeContentModal";
-import { ViewIcon } from "@chakra-ui/icons";
 import AnswersComponent from "./AnswersComponent";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { auth } from "@/firebase/clientApp";
+import { FaSearchPlus } from "react-icons/fa";
 
 export type Theme = {
   fields: {
@@ -39,6 +41,7 @@ const ThemeOfTheWeekCard: React.FC<Props> = ({ post }) => {
   const { title, date, content, long_question } = post.fields;
   const [isContentModalOpen, setContentModalOpen] = useState(false);
   const { colorMode } = useColorMode();
+  const isMobile = useBreakpointValue({ base: true, md: false });
 
   const options = {
     renderNode: {
@@ -74,20 +77,29 @@ const ThemeOfTheWeekCard: React.FC<Props> = ({ post }) => {
       bg={colorMode === "light" ? "white" : "gray.800"}
       alignItems="flex-start"
     >
-      <Flex justifyContent="space-between" w="100%" position="relative">
+      <Flex justifyContent="space-between" w="100%">
         <Text fontSize="lg" fontWeight="semibold">
           {title}
         </Text>
-        <Button
-          rightIcon={<ViewIcon />}
-          onClick={() => setContentModalOpen(true)}
-          size="sm"
-          variant="outline"
-          position="absolute"
-          right={0}
-        >
-          View More
-        </Button>
+        {isMobile ? (
+          <IconButton
+            aria-label="Me"
+            icon={<FaSearchPlus />}
+            onClick={() => setContentModalOpen(true)}
+            borderRadius="full"
+            size="sm"
+            variant="outline"
+          />
+        ) : (
+          <Button
+            rightIcon={<FaSearchPlus />}
+            onClick={() => setContentModalOpen(true)}
+            size="sm"
+            variant="outline"
+          >
+            View More
+          </Button>
+        )}
       </Flex>
       {isContentModalOpen && (
         <ThemeContentModal
