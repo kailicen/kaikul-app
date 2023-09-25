@@ -1,7 +1,18 @@
-import React from "react";
-import { Box, Icon, Text, Tabs, TabList, Tab, Flex } from "@chakra-ui/react";
+import React, { useState } from "react";
+import {
+  Box,
+  Icon,
+  Text,
+  Tabs,
+  TabList,
+  Tab,
+  Flex,
+  IconButton,
+} from "@chakra-ui/react";
 import { MdChevronLeft, MdChevronRight } from "react-icons/md";
 import moment from "moment";
+import { AiOutlineShareAlt } from "react-icons/ai";
+import ShareProgressModal from "@/components/Modal/ShareProgress/ShareProgressModal";
 
 type DayNavigationProps = {
   onPreviousDay: () => void;
@@ -16,6 +27,16 @@ const DayNavigation: React.FC<DayNavigationProps> = ({
 }) => {
   const currentDate = moment(startOfDay);
   const currentDay = currentDate.format("DD MMM YYYY");
+
+  const [isShareModalOpen, setIsShareModalOpen] = useState(false);
+
+  const openShareModal = () => {
+    setIsShareModalOpen(true);
+  };
+
+  const closeShareModal = () => {
+    setIsShareModalOpen(false);
+  };
 
   return (
     <Flex align="center" justify="space-between" width="100%">
@@ -47,6 +68,18 @@ const DayNavigation: React.FC<DayNavigationProps> = ({
           {currentDay}
         </Text>
       </Flex>
+      <Flex>
+        <IconButton
+          aria-label="share"
+          icon={<AiOutlineShareAlt />}
+          onClick={openShareModal}
+          borderRadius="full"
+          size="md"
+          variant="outline"
+        />
+      </Flex>
+      {/* Share Progress Modal */}
+      <ShareProgressModal isOpen={isShareModalOpen} onClose={closeShareModal} />
     </Flex>
   );
 };
