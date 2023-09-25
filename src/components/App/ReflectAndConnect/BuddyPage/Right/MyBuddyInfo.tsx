@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
-import { Text, useDisclosure, Stack, Button, Badge } from "@chakra-ui/react";
+import { useDisclosure, Stack, Button, Badge } from "@chakra-ui/react";
 import { useRecoilValue } from "recoil";
-import { buddyRequestState } from "@/atoms/buddyAtom";
+import { Buddy, buddyRequestState } from "@/atoms/buddyAtom";
 import { User } from "firebase/auth";
 import { doc, getDoc } from "firebase/firestore";
 import { firestore } from "@/firebase/clientApp";
@@ -9,9 +9,9 @@ import BuddyRequestsModal from "@/components/Modal/Connect/BuddyRequestsModal";
 import BuddyList from "./Components/BuddyList";
 import AddBuddy from "./Components/AddBuddy";
 
-type Props = { user: User };
+type Props = { user: User; setSelectedBuddy: (buddy: Buddy | null) => void };
 
-function MyBuddyInfo({ user }: Props) {
+function MyBuddyInfo({ user, setSelectedBuddy }: Props) {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [buddyIds, setBuddyIds] = useState<string[]>([]);
 
@@ -64,7 +64,7 @@ function MyBuddyInfo({ user }: Props) {
         </Button>
         <BuddyRequestsModal isOpen={isOpen} onClose={onClose} />
       </Stack>
-      <BuddyList buddyIds={buddyIds} user={user} />
+      <BuddyList buddyIds={buddyIds} setSelectedBuddy={setSelectedBuddy} />
     </>
   );
 }

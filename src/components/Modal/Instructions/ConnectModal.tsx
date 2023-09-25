@@ -41,13 +41,13 @@ const ConnectModal: React.FC<Props> = ({ isOpen, onClose }) => (
           journey.
         </Text>
 
-        <Text fontWeight="bold" mb={2}>
+        {/* <Text fontWeight="bold" mb={2}>
           3. Collaborative Activities:
         </Text>
         <Text mb={4}>
           Manage your buddy list, view requests, and dive into team activities
           for a holistic collaboration experience.
-        </Text>
+        </Text> */}
       </ModalBody>
       <ModalFooter justifyContent="center">
         <Button onClick={onClose}>Start Connecting</Button>

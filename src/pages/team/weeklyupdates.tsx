@@ -4,10 +4,7 @@ import { useAuthState } from "react-firebase-hooks/auth";
 import { auth } from "@/firebase/clientApp";
 import { useRouter } from "next/router";
 import LoadingScreen from "@/components/LoadingScreen";
-import WeeklyUpdatesShare from "@/components/App/TeamPage/WeeklyUpdatesShare/WeeklyUpdatesShare";
-import Leaderboard from "@/components/App/Me/LeaderboardTab";
-import MyJourney from "@/components/App/Me/MyJourneyTab";
-import SelfDiscovery from "@/components/App/Me/SelfDiscoveryTab";
+import WeeklyUpdatesShare from "@/components/App/ReflectAndConnect/BuddyPage/WeeklyUpdatesShare/WeeklyUpdatesShare";
 import {
   Flex,
   Tabs,
@@ -18,8 +15,6 @@ import {
   VStack,
   Link,
 } from "@chakra-ui/react";
-import { updateProfile } from "firebase/auth";
-import profile from "../profile";
 import { ExternalLinkIcon } from "@chakra-ui/icons";
 import FloatingFeedbackButton from "@/components/App/FloatingFeedbackButton";
 
