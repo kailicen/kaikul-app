@@ -80,7 +80,13 @@ const BuddyList: React.FC<Props> = ({ buddyIds, setSelectedBuddy }) => {
   }, [buddyIds]);
 
   return buddies.length ? (
-    <VStack spacing={4} align="stretch">
+    <VStack
+      spacing={2}
+      align="stretch"
+      minH="50vh"
+      flexGrow={1}
+      overflowY="auto"
+    >
       {buddies.map((buddy) => (
         <Box
           key={buddy.id}
