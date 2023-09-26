@@ -1,32 +1,28 @@
 import React, { useState } from "react";
-import {
-  Box,
-  Icon,
-  Text,
-  Tabs,
-  TabList,
-  Tab,
-  Flex,
-  IconButton,
-} from "@chakra-ui/react";
+import { Box, Icon, Text, Flex, IconButton } from "@chakra-ui/react";
 import { MdChevronLeft, MdChevronRight } from "react-icons/md";
-import moment from "moment";
 import { AiOutlineShareAlt } from "react-icons/ai";
 import ShareProgressModal from "@/components/Modal/ShareProgress/ShareProgressModal";
+import { format } from "date-fns";
+import { utcToZonedTime } from "date-fns-tz";
 
 type DayNavigationProps = {
   onPreviousDay: () => void;
   onNextDay: () => void;
-  startOfDay: string;
+  currentDayStart: string;
 };
 
 const DayNavigation: React.FC<DayNavigationProps> = ({
   onPreviousDay,
   onNextDay,
-  startOfDay,
+  currentDayStart,
 }) => {
-  const currentDate = moment(startOfDay);
-  const currentDay = currentDate.format("DD MMM YYYY");
+  // Convert to user's timezone
+  const userTimeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+  const zonedDate = utcToZonedTime(new Date(currentDayStart), userTimeZone);
+
+  // Format the zonedDate
+  const currentDay = format(zonedDate, "dd MMM yyyy");
 
   const [isShareModalOpen, setIsShareModalOpen] = useState(false);
 

@@ -35,6 +35,7 @@ import { Formik, Form, Field } from "formik";
 import React, { useState } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { WeeklyReflectionCard } from "./WeeklyReflectionCard";
+import { utcToZonedTime } from "date-fns-tz";
 
 type Props = {};
 
@@ -54,15 +55,35 @@ function WeeklyUpdateSection({}: Props) {
   const [selectedBiggestObstacle, setSelectedBiggestObstacle] = useState("");
   const [selectedLessonLearned, setSelectedLessonLearned] = useState("");
 
-  const currentDate = new Date();
   // Format the start and end of week for the button display
-  const startOfWeekDate = startOfWeekDateFns(currentDate, { weekStartsOn: 1 }); // Monday
-  const endOfWeekDate = endOfWeek(currentDate, { weekStartsOn: 1 }); // Sunday
-  const formattedStartOfWeek = format(startOfWeekDate, "MMM do");
-  const formattedEndOfWeek = format(endOfWeekDate, "MMM do, yyyy");
+  // Get user's timezone
+  const userTimeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+
+  // Convert the current date to user's timezone
+  const currentDateInUserTz = utcToZonedTime(new Date(), userTimeZone);
+
+  // Adjust your existing date manipulations
+  const startOfWeekDate = startOfWeekDateFns(currentDateInUserTz, {
+    weekStartsOn: 1,
+  });
+  const endOfWeekDate = endOfWeek(currentDateInUserTz, { weekStartsOn: 1 });
+  const formattedStartOfWeek = format(
+    utcToZonedTime(startOfWeekDate, userTimeZone),
+    "MMM do"
+  );
+  const formattedEndOfWeek = format(
+    utcToZonedTime(endOfWeekDate, userTimeZone),
+    "MMM do, yyyy"
+  );
 
   const [startOfWeek, setStartOfWeek] = useState(
-    format(startOfWeekDateFns(new Date(), { weekStartsOn: 1 }), "yyyy-MM-dd")
+    format(
+      utcToZonedTime(
+        startOfWeekDateFns(new Date(), { weekStartsOn: 1 }),
+        userTimeZone
+      ),
+      "yyyy-MM-dd"
+    )
   );
 
   const {
@@ -82,15 +103,17 @@ function WeeklyUpdateSection({}: Props) {
 
   // Use the list to populate the options in your Select dropdown.
   const weeklyOptions = uniqueDates.map((date) => {
-    const startOfWeekDate = parseISO(date);
+    const startOfWeekDateUTC = parseISO(date);
+    const startOfWeekDate = utcToZonedTime(startOfWeekDateUTC, userTimeZone);
     const formattedStartOfWeek = format(startOfWeekDate, "MMM do");
 
-    const endOfWeekDate = endOfWeek(startOfWeekDate);
+    const endOfWeekDateUTC = endOfWeek(startOfWeekDateUTC);
+    const endOfWeekDate = utcToZonedTime(endOfWeekDateUTC, userTimeZone);
     const formattedEndOfWeek = format(endOfWeekDate, "MMM do, yyyy");
 
     return {
       label: `${formattedStartOfWeek} - ${formattedEndOfWeek}`,
-      value: date, // Storing the start date of the week as the value
+      value: date,
     };
   });
 

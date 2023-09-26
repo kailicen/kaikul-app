@@ -12,15 +12,12 @@ import {
 } from "firebase/firestore";
 import { firestore } from "../firebase/clientApp";
 import { User } from "firebase/auth";
-import { useToast } from "@chakra-ui/react";
 import useUserPoints from "./useUserPoints";
 
 const useTasks = (date: string, user: User) => {
   const [tasks, setTasks] = useState<Task[]>([]);
   const { userPoints, computePointsForTask, updatePoints } =
     useUserPoints(user);
-
-  const toast = useToast();
 
   const handleAddTask = async (
     task: string,
