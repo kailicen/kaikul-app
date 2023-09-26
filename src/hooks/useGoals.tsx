@@ -289,7 +289,7 @@ export const useGoals = (user: User, startOfWeekString: string) => {
         snapshot.forEach((doc) => {
           const goal = doc.data() as Goal;
           goal.id = doc.id;
-          // Apply the second condition client-side
+          // apply the second condition client-side
           if (goal.endDate >= startOfWeekString) {
             goalsForWeek.push(goal);
           }
