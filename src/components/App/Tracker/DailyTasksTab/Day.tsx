@@ -40,6 +40,7 @@ import { useGoals } from "@/hooks/useGoals";
 import { DayPicker } from "react-day-picker";
 import "react-day-picker/dist/style.css";
 import { FaCalendarAlt } from "react-icons/fa";
+import { utcToZonedTime } from "date-fns-tz";
 
 const Day: React.FC<{ date: string; user: User }> = ({ date, user }) => {
   const taskDrawerDisclosure = useDisclosure();
@@ -57,27 +58,29 @@ const Day: React.FC<{ date: string; user: User }> = ({ date, user }) => {
   );
   const [selectedBlockerText, setSelectedBlockerText] = useState("");
 
-  // Parse the date prop to a Date object
+  // Get the user's timezone
+  const userTimeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
 
-  const dateObj = new Date(date);
-  const todayInUTC = new Date(
-    Date.UTC(
-      new Date().getUTCFullYear(),
-      new Date().getUTCMonth(),
-      new Date().getUTCDate()
-    )
+  // Parse the date prop to a Date object and adjust to user's timezone
+  const dateObj = utcToZonedTime(new Date(date), userTimeZone);
+  const todayInUserTimeZone = utcToZonedTime(new Date(), userTimeZone);
+
+  // Adjust the dateObj to the start of day in user's timezone
+  const dateObjStartOfDay = new Date(
+    dateObj.getFullYear(),
+    dateObj.getMonth(),
+    dateObj.getDate()
   );
 
-  // Adjust the dateObj to UTC
-  const dateObjInUTC = new Date(
-    Date.UTC(
-      dateObj.getUTCFullYear(),
-      dateObj.getUTCMonth(),
-      dateObj.getUTCDate()
-    )
+  // Adjust today's date to the start of day in user's timezone
+  const todayStartOfDay = new Date(
+    todayInUserTimeZone.getFullYear(),
+    todayInUserTimeZone.getMonth(),
+    todayInUserTimeZone.getDate()
   );
 
-  const isCurrentDay = dateObjInUTC.getTime() === todayInUTC.getTime();
+  const isCurrentDay =
+    dateObjStartOfDay.getTime() === todayStartOfDay.getTime();
 
   const startOfWeekDate = startOfWeek(dateObj, { weekStartsOn: 1 });
   const startOfWeekString = format(startOfWeekDate, "yyyy-MM-dd");

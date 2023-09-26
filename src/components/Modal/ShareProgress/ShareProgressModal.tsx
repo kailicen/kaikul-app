@@ -22,13 +22,14 @@ import {
 } from "@chakra-ui/react";
 import { useEffect, useRef, useState } from "react";
 import useProgress, { ProgressOption } from "@/hooks/useProgress";
-import { endOfWeek, format, startOfWeek } from "date-fns";
+import { endOfWeek, startOfWeek } from "date-fns";
 import { toPng } from "html-to-image";
 import * as clipboard from "clipboard-polyfill";
 import { doc, getDoc } from "firebase/firestore";
 import { firestore } from "../../../firebase/clientApp";
 import useUserPoints from "@/hooks/useUserPoints";
 import { User } from "firebase/auth";
+import { utcToZonedTime, format } from "date-fns-tz";
 
 type ShareProgressModalProps = {
   isOpen: boolean;
@@ -61,18 +62,31 @@ const ShareProgressModal: React.FC<ShareProgressModalProps> = ({
     "Weekly Reflection",
   ];
 
-  // Get current date
-  const now = new Date();
+  // Get the user's timezone
+  const userTimeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
 
-  const formattedDate = format(now, "EEEE, MMM do, yyyy");
+  // Get the current date in the user's timezone
+  const nowInUserTz = utcToZonedTime(new Date(), userTimeZone);
+
+  const formattedDate = format(nowInUserTz, "EEEE, MMM do, yyyy", {
+    timeZone: userTimeZone,
+  });
 
   // Get the start (Monday) and end (Sunday) of the week
-  const start = startOfWeek(now, { weekStartsOn: 1 }); // weekStartsOn: 1 makes week start from Monday
-  const end = endOfWeek(now, { weekStartsOn: 1 });
+  const startInUTC = startOfWeek(nowInUserTz, { weekStartsOn: 1 });
+  const endInUTC = endOfWeek(nowInUserTz, { weekStartsOn: 1 });
 
-  // Format these dates
-  const formattedStart = format(start, "MMM do");
-  const formattedEnd = format(end, "MMM do, yyyy");
+  // Convert these UTC dates to the user's timezone and then format
+  const formattedStart = format(
+    utcToZonedTime(startInUTC, userTimeZone),
+    "MMM do",
+    { timeZone: userTimeZone }
+  );
+  const formattedEnd = format(
+    utcToZonedTime(endInUTC, userTimeZone),
+    "MMM do, yyyy",
+    { timeZone: userTimeZone }
+  );
 
   const { user, yesterdayTasks, todayTasks, blockers, weeklyReflection } =
     useProgress(selectedProgress, lastOpened);
