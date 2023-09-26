@@ -16,19 +16,35 @@ import {
 import { firestore } from "../firebase/clientApp";
 import { useRecoilState } from "recoil";
 import { useStatistics } from "./useStatistics";
-import moment from "moment";
 import { Task, weekTaskListState } from "@/atoms/tasksAtom";
 import useUserPoints from "./useUserPoints";
+import {
+  endOfWeek,
+  format,
+  isAfter,
+  isBefore,
+  isEqual,
+  parseISO,
+} from "date-fns";
+import { utcToZonedTime } from "date-fns-tz";
 
-export const useGoals = (user: User, startOfWeek: string) => {
+export const useGoals = (user: User, startOfWeekString: string) => {
   const [recoilGoals, setRecoilGoals] = useRecoilState(weeklyGoalListState);
   const { userPoints, computePointsForGoal, computeGoalPoints, updatePoints } =
     useUserPoints(user);
 
-  // Fetch tasks for the current week
-  const endOfWeek = moment(startOfWeek).add(6, "days").format("YYYY-MM-DD");
+  // Get the user's timezone
+  const timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+
+  const startOfWeekDate = parseISO(startOfWeekString);
+  const zonedStartOfWeek = utcToZonedTime(startOfWeekDate, timeZone);
+  const zonedEndOfWeek = endOfWeek(zonedStartOfWeek, { weekStartsOn: 1 });
+
+  // Formatting the endOfWeek to the desired format
+  const formattedZonedEndOfWeek = format(zonedEndOfWeek, "yyyy-MM-dd");
+
   const [weekTasks, setWeekTasks] = useRecoilState(
-    weekTaskListState([startOfWeek, endOfWeek])
+    weekTaskListState([startOfWeekString, formattedZonedEndOfWeek])
   );
   const [goals, setGoals] = useState<Goal[]>([]);
   const { fetchTasks } = useStatistics();
@@ -56,9 +72,16 @@ export const useGoals = (user: User, startOfWeek: string) => {
         goalToAdd
       );
       goalToAdd.id = docRef.id; // Update the id value
+
+      const userTimezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+      const goalStartDate = utcToZonedTime(goalToAdd.startDate, userTimezone);
+      const goalEndDate = utcToZonedTime(goalToAdd.endDate, userTimezone);
+
       if (
-        moment(goalToAdd.startDate).isSameOrBefore(endOfWeek) &&
-        moment(goalToAdd.endDate).isSameOrAfter(startOfWeek)
+        (isBefore(goalStartDate, zonedEndOfWeek) ||
+          isEqual(goalStartDate, zonedEndOfWeek)) &&
+        (isAfter(goalEndDate, zonedStartOfWeek) ||
+          isEqual(goalEndDate, zonedStartOfWeek))
       ) {
         setGoals([...goals, goalToAdd]);
         setRecoilGoals([...goals, goalToAdd]);
@@ -170,9 +193,15 @@ export const useGoals = (user: User, startOfWeek: string) => {
       await batch.commit();
 
       // Check if the updated goal is within the current week
+      const userTimezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+      const goalStartDate = utcToZonedTime(updatedGoal.startDate, userTimezone);
+      const goalEndDate = utcToZonedTime(updatedGoal.endDate, userTimezone);
+
       if (
-        moment(updatedGoal.startDate).isSameOrBefore(endOfWeek) &&
-        moment(updatedGoal.endDate).isSameOrAfter(startOfWeek)
+        (isBefore(goalStartDate, zonedEndOfWeek) ||
+          isEqual(goalStartDate, zonedEndOfWeek)) &&
+        (isAfter(goalEndDate, zonedStartOfWeek) ||
+          isEqual(goalEndDate, zonedStartOfWeek))
       ) {
         setGoals(updatedGoals);
         setRecoilGoals(updatedGoals);
@@ -210,7 +239,10 @@ export const useGoals = (user: User, startOfWeek: string) => {
     setRecoilGoals(goals.filter((goal) => goal.id !== id));
 
     // Fetch tasks associated with the goal
-    const tasks = await fetchTasks(new Date(startOfWeek), new Date(endOfWeek));
+    const tasks = await fetchTasks(
+      new Date(startOfWeekString),
+      new Date(formattedZonedEndOfWeek)
+    );
     const tasksForGoal = tasks.filter((task) => task.goalId === id);
 
     if (tasksForGoal.length > 0) {
@@ -246,7 +278,7 @@ export const useGoals = (user: User, startOfWeek: string) => {
     // Query based on one condition first
     const q = query(
       weeklyGoalsCollection,
-      where("startDate", "<=", endOfWeek),
+      where("startDate", "<=", formattedZonedEndOfWeek),
       where("userId", "==", user.uid)
     );
 
@@ -258,7 +290,7 @@ export const useGoals = (user: User, startOfWeek: string) => {
           const goal = doc.data() as Goal;
           goal.id = doc.id;
           // Apply the second condition client-side
-          if (goal.endDate >= startOfWeek) {
+          if (goal.endDate >= startOfWeekString) {
             goalsForWeek.push(goal);
           }
         });
@@ -272,7 +304,7 @@ export const useGoals = (user: User, startOfWeek: string) => {
 
     // Cleanup listener on component unmount
     return () => unsubscribe();
-  }, [user, startOfWeek, endOfWeek]);
+  }, [user, formattedZonedEndOfWeek, endOfWeek]);
 
   return {
     goals,

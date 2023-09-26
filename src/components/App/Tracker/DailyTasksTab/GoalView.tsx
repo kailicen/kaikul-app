@@ -32,44 +32,45 @@ import {
   PopoverBody,
   PopoverContent,
   PopoverTrigger,
-  FormHelperText,
-  Tooltip,
-  Modal,
-  ModalBody,
-  ModalCloseButton,
-  ModalContent,
-  ModalFooter,
-  ModalHeader,
-  ModalOverlay,
 } from "@chakra-ui/react";
 import { User } from "firebase/auth";
 import { MdAdd } from "react-icons/md";
 import { useGoals } from "@/hooks/useGoals";
-import moment from "moment";
 import { Formik, Field, Form, FieldInputProps, ErrorMessage } from "formik";
 import { CirclePicker } from "react-color";
 import { ChevronDownIcon, InfoIcon } from "@chakra-ui/icons";
 import { DayPicker } from "react-day-picker";
 import "react-day-picker/dist/style.css";
-import { format, isBefore } from "date-fns";
 import { FaCalendarAlt } from "react-icons/fa";
 import GoalSettingModal from "@/components/Modal/Instructions/GoalSettingModal";
+import { startOfWeek, format, isBefore } from "date-fns";
+import { utcToZonedTime } from "date-fns-tz";
 
-type GoalViewProps = { user: User; startOfDay: string; startOfWeek: string };
+type GoalViewProps = {
+  user: User;
+  currentDayStart: string;
+  currentWeekStart: string;
+};
 
-function GoalView({ user, startOfDay, startOfWeek }: GoalViewProps) {
+function GoalView({ user, currentDayStart, currentWeekStart }: GoalViewProps) {
   const [isLargerThan768] = useMediaQuery("(min-width: 768px)");
-  const [mobileStartOfWeek, setMobileStartOfWeek] = useState(startOfWeek);
+  const [mobileStartOfWeek, setMobileStartOfWeek] = useState(currentWeekStart);
   const toast = useToast();
 
   useEffect(() => {
+    const userTimeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+
     if (!isLargerThan768) {
-      const startOfWeekMoment = moment(startOfDay).startOf("week");
-      setMobileStartOfWeek(startOfWeekMoment.format("YYYY-MM-DD"));
+      const startOfDayZoned = utcToZonedTime(
+        new Date(currentDayStart),
+        userTimeZone
+      );
+      const startOfWeekDate = startOfWeek(startOfDayZoned, { weekStartsOn: 1 });
+      setMobileStartOfWeek(format(startOfWeekDate, "yyyy-MM-dd"));
     } else {
-      setMobileStartOfWeek(startOfWeek);
+      setMobileStartOfWeek(currentWeekStart);
     }
-  }, [isLargerThan768, startOfDay, startOfWeek]);
+  }, [isLargerThan768, currentDayStart, currentWeekStart]);
 
   const {
     goals,
@@ -77,7 +78,7 @@ function GoalView({ user, startOfDay, startOfWeek }: GoalViewProps) {
     handleCompleteGoal,
     handleUpdateGoal,
     handleDeleteGoal,
-  } = useGoals(user, isLargerThan768 ? startOfWeek : mobileStartOfWeek);
+  } = useGoals(user, isLargerThan768 ? currentWeekStart : mobileStartOfWeek);
 
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [selectedGoalId, setSelectedGoalId] = useState<string | null>(null);

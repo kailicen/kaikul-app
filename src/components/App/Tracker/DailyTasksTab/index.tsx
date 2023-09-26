@@ -2,58 +2,62 @@ import React, { useState } from "react";
 import GoalView from "./GoalView";
 import WeekView from "./WeekView";
 import { User } from "firebase/auth";
-import { Flex, VStack } from "@chakra-ui/react";
+import { VStack } from "@chakra-ui/react";
 import WeekNavigation from "./WeekNavigation";
-import moment from "moment";
 import "moment/locale/en-gb";
 import { useMediaQuery } from "@chakra-ui/react";
 import Day from "./Day";
 import DayNavigation from "./DayNavigation";
-import { useRecoilState } from "recoil";
-import { weekTaskListState } from "@/atoms/tasksAtom";
-
-moment.updateLocale("en", {
-  week: {
-    dow: 1, // Monday is the first day of the week
-  },
-});
+import {
+  startOfWeek,
+  startOfDay,
+  format,
+  addDays,
+  subWeeks,
+  addWeeks,
+  subDays,
+} from "date-fns";
+import { utcToZonedTime } from "date-fns-tz";
 
 type Props = { user: User };
 
 function WeeklyPlanner({ user }: Props) {
-  // might have future feature regarding to me/team tab
-  const [activeTab, setActiveTab] = useState<"me" | "team">("me");
-
   const [isLargerThan768] = useMediaQuery("(min-width: 768px)");
 
-  const [startOfWeek, setStartOfWeek] = useState(
-    moment().startOf("week").format("YYYY-MM-DD")
-  );
-  const [startOfDay, setStartOfDay] = useState(
-    moment().startOf("day").format("YYYY-MM-DD")
-  );
+  const userTimeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+  const nowInUserTimezone = utcToZonedTime(new Date(), userTimeZone);
 
-  const endOfWeek = moment(startOfWeek).add(6, "days").format("YYYY-MM-DD");
-  const [weekTasks, setWeekTasks] = useRecoilState(
-    weekTaskListState([startOfWeek, endOfWeek])
+  const weekStartInUserTimezone = startOfWeek(nowInUserTimezone, {
+    weekStartsOn: 1,
+  });
+  const dayStartInUserTimezone = startOfDay(nowInUserTimezone);
+
+  // Updated useState with new variable names:
+  const [currentWeekStart, setCurrentWeekStart] = useState(
+    format(weekStartInUserTimezone, "yyyy-MM-dd")
+  );
+  const [currentDayStart, setCurrentDayStart] = useState(
+    format(dayStartInUserTimezone, "yyyy-MM-dd")
   );
 
   const handlePreviousWeek = () => {
-    setStartOfWeek(
-      moment(startOfWeek).subtract(1, "week").format("YYYY-MM-DD")
-    );
+    const newWeekStart = subWeeks(new Date(currentWeekStart), 1);
+    setCurrentWeekStart(format(newWeekStart, "yyyy-MM-dd"));
   };
 
   const handleNextWeek = () => {
-    setStartOfWeek(moment(startOfWeek).add(1, "week").format("YYYY-MM-DD"));
+    const newWeekStart = addWeeks(new Date(currentWeekStart), 1);
+    setCurrentWeekStart(format(newWeekStart, "yyyy-MM-dd"));
   };
 
   const handlePreviousDay = () => {
-    setStartOfDay(moment(startOfDay).subtract(1, "day").format("YYYY-MM-DD"));
+    const newDayStart = subDays(new Date(currentDayStart), 1);
+    setCurrentDayStart(format(newDayStart, "yyyy-MM-dd"));
   };
 
   const handleNextDay = () => {
-    setStartOfDay(moment(startOfDay).add(1, "day").format("YYYY-MM-DD"));
+    const newDayStart = addDays(new Date(currentDayStart), 1);
+    setCurrentDayStart(format(newDayStart, "yyyy-MM-dd"));
   };
 
   return (
@@ -62,20 +66,24 @@ function WeeklyPlanner({ user }: Props) {
         <WeekNavigation
           onPreviousWeek={handlePreviousWeek}
           onNextWeek={handleNextWeek}
-          startOfWeek={startOfWeek}
+          currentWeekStart={currentWeekStart}
         />
       ) : (
         <DayNavigation
           onPreviousDay={handlePreviousDay}
           onNextDay={handleNextDay}
-          startOfDay={startOfDay}
+          currentDayStart={currentDayStart}
         />
       )}
-      <GoalView user={user} startOfDay={startOfDay} startOfWeek={startOfWeek} />
+      <GoalView
+        user={user}
+        currentDayStart={currentDayStart}
+        currentWeekStart={currentWeekStart}
+      />
       {isLargerThan768 ? (
-        <WeekView user={user} startOfWeek={startOfWeek} />
+        <WeekView user={user} currentWeekStart={currentWeekStart} />
       ) : (
-        <Day user={user} date={startOfDay} />
+        <Day user={user} date={currentDayStart} />
       )}
     </VStack>
   );
