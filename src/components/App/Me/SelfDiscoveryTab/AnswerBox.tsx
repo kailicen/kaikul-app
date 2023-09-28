@@ -37,6 +37,7 @@ AnswerBoxProps) => {
       borderRadius="lg"
       p={4}
       display="flex"
+      // flexDirection={{xxs: 'column'}}
       alignItems="flex-start"
       bg={colorMode === "light" ? "gray.50" : "gray.700"}
       w="100%"
