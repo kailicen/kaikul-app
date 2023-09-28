@@ -1,22 +1,23 @@
 import { User } from "firebase/auth";
-import moment from "moment";
 import Day from "./Day";
 import { Box } from "@chakra-ui/react";
-import { useRecoilState, useRecoilValue } from "recoil";
-import { weekTaskListState } from "@/atoms/tasksAtom";
-import useTasks from "@/hooks/useTasks";
+import { addDays, format } from "date-fns";
+import { utcToZonedTime } from "date-fns-tz";
 
-type Props = { user: User; startOfWeek: string };
+type Props = { user: User; currentWeekStart: string };
 
-function WeekView({ user, startOfWeek }: Props) {
-  const endOfWeek = moment(startOfWeek).add(6, "days").format("YYYY-MM-DD");
+function WeekView({ user, currentWeekStart }: Props) {
+  const userTimeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+  const startOfWeekZoned = utcToZonedTime(
+    new Date(currentWeekStart),
+    userTimeZone
+  );
 
   return (
-    <Box display="flex" justifyContent="space-between" w="full" mb={10}>
+    <Box display="flex" justifyContent="space-between" w="100%" mb={10}>
       {Array.from({ length: 7 }).map((_, index) => {
-        const date = moment(startOfWeek)
-          .add(index, "days")
-          .format("YYYY-MM-DD");
+        const dateZoned = addDays(startOfWeekZoned, index);
+        const date = format(dateZoned, "yyyy-MM-dd");
         return (
           <Box key={index} flex="1">
             <Day date={date} user={user} />

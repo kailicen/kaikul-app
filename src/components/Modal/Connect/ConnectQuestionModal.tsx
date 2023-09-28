@@ -20,6 +20,9 @@ import {
   addDoc,
   updateDoc,
   doc,
+  query,
+  where,
+  getDocs,
 } from "firebase/firestore";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { auth, firestore } from "@/firebase/clientApp";
@@ -69,6 +72,29 @@ export const ConnectQuestionModal: React.FC<ConnectModalProps> = ({
       if (user && selectedUser) {
         // check if user is not sending a request to themselves
         if (user.uid !== selectedUser.uid) {
+          // Check if there's an existing pending request to the same user
+          // Check if there's an existing pending request to the same user
+          const q = query(
+            collection(firestore, "buddyRequests"),
+            where("fromUserId", "==", user.uid),
+            where("toUserId", "==", selectedUser.uid),
+            where("status", "==", "pending")
+          );
+
+          const existingRequestSnapshot = await getDocs(q);
+
+          if (!existingRequestSnapshot.empty) {
+            toast({
+              title: "Request already sent",
+              description:
+                "You have already sent a buddy request to this user.",
+              status: "error",
+              duration: 5000,
+              isClosable: true,
+            });
+            return;
+          }
+
           const buddyRequest: BuddyRequest = {
             id: "", // Firebase Firestore will auto-generate this when you add the document
             fromUserId: user.uid,

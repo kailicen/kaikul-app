@@ -1,13 +1,15 @@
 import React, { useState } from "react";
-import { VStack, Text } from "@chakra-ui/react";
-import { InfoIcon } from "@chakra-ui/icons";
+import { Grid, VStack } from "@chakra-ui/react";
 import { User } from "firebase/auth";
-import BuddyProfileContainer from "./BuddyProfileContainer";
-import ConnectModal from "@/components/Modal/Instructions/ConnectModal";
+import RightSection from "./Right";
+import { Buddy } from "@/atoms/buddyAtom";
+import LeftSection from "./Left";
 
 type Props = { user: User };
 
-const ConnectTab: React.FC<Props> = ({ user }) => {
+const MyBuddiesTab: React.FC<Props> = ({ user }) => {
+  const [selectedBuddy, setSelectedBuddy] = useState<Buddy | null>(null);
+
   const [isInstructionOpen, setIsInstructionOpen] = useState(false);
 
   const handleInstructionOpen = () => {
@@ -20,7 +22,7 @@ const ConnectTab: React.FC<Props> = ({ user }) => {
 
   return (
     <VStack width="100%">
-      <Text fontWeight="bold" fontSize="lg" mb="2">
+      {/* <Text fontWeight="bold" fontSize="lg" mb="2">
         Connect{" "}
         <InfoIcon
           color="purple.500"
@@ -29,15 +31,20 @@ const ConnectTab: React.FC<Props> = ({ user }) => {
           cursor="pointer"
         />
       </Text>
-      {/* Use the modal component here */}
       <ConnectModal
         isOpen={isInstructionOpen}
         onClose={handleInstructionClose}
-      />
-
-      <BuddyProfileContainer />
+      /> */}
+      <Grid
+        templateColumns={{ base: "1fr", lg: "1fr 3fr" }}
+        gap={4}
+        width="100%"
+      >
+        <RightSection user={user} setSelectedBuddy={setSelectedBuddy} />
+        <LeftSection selectedBuddy={selectedBuddy} user={user} />
+      </Grid>
     </VStack>
   );
 };
 
-export default ConnectTab;
+export default MyBuddiesTab;

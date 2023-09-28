@@ -6,7 +6,7 @@ import BuddyProfileCard from "./BuddyProfileCard";
 
 type Props = {};
 
-function UserInfoSection({}: Props) {
+function BuddyProfileContainer({}: Props) {
   const { buddyProfiles, loading } = useBuddyData();
 
   if (loading) {
@@ -27,4 +27,4 @@ function UserInfoSection({}: Props) {
   );
 }
 
-export default UserInfoSection;
+export default BuddyProfileContainer;

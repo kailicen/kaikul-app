@@ -16,7 +16,7 @@ export function HowItWorks() {
           <div className="flex flex-col items-start xxs:my-3 xxs:justify-center xxs:items-center xxxs:items-center xxxs:my-3">
             <img
               src="/images/how-it-works/goal-setting.png"
-              alt="Goal Setting"
+              alt="Consistent Vision"
               className="h-[200px] w-full rounded-md object-cover shadow-lg"
             />
             <p className="mt-2 text-base font-bold xxs:mt-5 md:text-xl xxxs:my-2">
@@ -24,18 +24,18 @@ export function HowItWorks() {
                 1
               </span>
               <span className="xxxs:text-3xl">
-                Goal Setting
+                Consistent Vision
               </span>
             </p>
             <p className="ml-7 text-left xxs:text-center xxs:ml-0 xxs:mt-2 xxxs:text-center xxxs:ml-0">
-              Start with a clear, long-term aspiration, breaking free from the
-              short-sightedness that clouds modern life.
+              Transform your vision into daily tasks. Every consistent step, no
+              matter how small, propels you forward.
             </p>
           </div>
           <div className="flex flex-col items-start xxs:my-3 xxs:justify-center xxs:items-center xxxs:items-center xxxs:my-3">
             <img
               src="/images/how-it-works/daily-tracking.png"
-              alt="Task Management"
+              alt="Consistent Actions"
               className="h-[200px] w-full rounded-md object-cover shadow-lg"
             />
             <p className="mt-2 text-base font-bold xxs:mt-5 md:text-xl xxxs:my-2">
@@ -43,7 +43,7 @@ export function HowItWorks() {
                 2
               </span>
               <span className="xxxs:text-3xl">
-                Task Management
+                Consistent Actions
               </span>
             </p>
             <p className="ml-7 text-left xxs:text-center xxs:ml-0 xxs:mt-2 xxxs:text-center xxxs:ml-0">
@@ -54,7 +54,7 @@ export function HowItWorks() {
           <div className="flex flex-col items-start xxs:my-3 xxs:justify-center xxs:items-center xxxs:items-center xxxs:my-3">
             <img
               src="/images/how-it-works/weekly-reflection.png"
-              alt="Reflection"
+              alt="Consistent Reflection"
               className="h-[200px] w-full rounded-md object-cover shadow-lg"
             />
             <p className="mt-2 text-base font-bold xxs:mt-5 md:text-xl xxxs:my-2">
@@ -62,12 +62,12 @@ export function HowItWorks() {
                 3
               </span>
               <span className="xxxs:text-3xl">
-                Reflection
+                Consistent Reflection
               </span>
             </p>
             <p className="ml-7 text-left xxs:text-center xxs:ml-0 xxs:mt-2 xxxs:text-center xxxs:ml-0">
-              Foster growth through conscious living, learning from each day and
-              dynamically adapting and evolving.
+              Evaluate and adapt regularly, ensuring that your actions are
+              consistently aligned with your evolving vision.
             </p>
           </div>
         </div>

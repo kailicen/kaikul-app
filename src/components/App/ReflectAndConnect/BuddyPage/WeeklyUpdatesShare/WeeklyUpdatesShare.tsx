@@ -21,7 +21,7 @@ import { Buddy } from "@/atoms/buddyAtom";
 import { useRouter } from "next/router";
 import { IoChevronBack } from "react-icons/io5";
 import WeeklyUpdatesModal from "@/components/Modal/Instructions/WeeklyUpdatesModal";
-import { UserInfo } from "../Components/UserInfoComponent";
+import { UserInfo } from "../Left/Components/UserInfoComponent";
 import { useSingleWeeklyReflection } from "@/hooks/useSingleWeeklyReflection";
 import { useBuddyData } from "@/hooks/useBuddyData";
 
@@ -70,7 +70,7 @@ function WeeklyUpdatesShare({ user, buddyId }: Props) {
   };
 
   const showTeamPage = (buddyId: string) => {
-    router.push(`/team?buddyId=${buddyId}`);
+    router.push("/connect?tab=buddies");
   };
 
   const breakpoint = useBreakpointValue({ base: "base", md: "md", lg: "lg" });

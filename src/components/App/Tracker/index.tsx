@@ -16,8 +16,8 @@ type Props = { user: User };
 function TrackerPage({ user }: Props) {
   return (
     <Flex direction="column" width="100%">
-      <Tabs colorScheme="purple" variant="enclosed" width="100%" mx="auto">
-        <TabList display="flex" justifyContent="center">
+      <Tabs colorScheme="purple" variant="enclosed" width="100%">
+        <TabList display="flex" justifyContent="center" width="100%">
           <Tab>Daily Tasks</Tab>
           <Tab>Weekly Updates</Tab>
         </TabList>

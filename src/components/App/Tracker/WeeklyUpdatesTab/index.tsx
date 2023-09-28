@@ -20,7 +20,7 @@ const Reflect: React.FC<Props> = ({ user }) => {
   // };
 
   return (
-    <VStack width="100%" pt={5} px={10}>
+    <VStack width="100%" pt={5} px={{ base: 0, md: 10 }}>
       {/* <Text fontWeight="bold" fontSize="lg" mb="2">
         Weekly Updates{" "}
         <InfoIcon

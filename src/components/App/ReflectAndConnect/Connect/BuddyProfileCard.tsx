@@ -1,5 +1,5 @@
 import { UserProfile } from "@/atoms/userProfileAtom";
-import { UserInfo } from "@/components/App/TeamPage/Components/UserInfoComponent";
+import { UserInfo } from "@/components/App/ReflectAndConnect/BuddyPage/Left/Components/UserInfoComponent";
 import { ConnectQuestionModal } from "@/components/Modal/Connect/ConnectQuestionModal";
 import {
   Box,

@@ -1,6 +1,7 @@
 import { WeeklyReflection } from "@/atoms/weeklyReflectionAtom";
 import { Box, Heading, Text, useColorMode } from "@chakra-ui/react";
 import { format, parseISO, addDays } from "date-fns";
+import { utcToZonedTime } from "date-fns-tz";
 
 interface Props {
   record: WeeklyReflection;
@@ -10,10 +11,15 @@ interface Props {
 export function WeeklyReflectionCard({ record, onClick }: Props) {
   const { colorMode } = useColorMode();
 
-  const startOfWeekDate = parseISO(record.startOfWeek);
+  // Get user's timezone
+  const userTimeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+
+  const startOfWeekDateUTC = parseISO(record.startOfWeek);
+  const startOfWeekDate = utcToZonedTime(startOfWeekDateUTC, userTimeZone);
   const formattedStartOfWeek = format(startOfWeekDate, "MMM do");
 
-  const endOfWeekDate = addDays(startOfWeekDate, 6);
+  const endOfWeekDateUTC = addDays(startOfWeekDateUTC, 6);
+  const endOfWeekDate = utcToZonedTime(endOfWeekDateUTC, userTimeZone);
   const formattedEndOfWeek = format(endOfWeekDate, "MMM do, yyyy");
 
   return (

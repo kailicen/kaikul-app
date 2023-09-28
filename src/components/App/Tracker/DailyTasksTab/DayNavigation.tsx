@@ -1,24 +1,41 @@
-import React from "react";
-import { Box, Icon, Text, Tabs, TabList, Tab, Flex } from "@chakra-ui/react";
+import React, { useState } from "react";
+import { Box, Icon, Text, Flex, IconButton } from "@chakra-ui/react";
 import { MdChevronLeft, MdChevronRight } from "react-icons/md";
-import moment from "moment";
+import { AiOutlineShareAlt } from "react-icons/ai";
+import ShareProgressModal from "@/components/Modal/ShareProgress/ShareProgressModal";
+import { format } from "date-fns";
+import { utcToZonedTime } from "date-fns-tz";
 
 type DayNavigationProps = {
   onPreviousDay: () => void;
   onNextDay: () => void;
-  startOfDay: string;
+  currentDayStart: string;
 };
 
 const DayNavigation: React.FC<DayNavigationProps> = ({
   onPreviousDay,
   onNextDay,
-  startOfDay,
+  currentDayStart,
 }) => {
-  const currentDate = moment(startOfDay);
-  const currentDay = currentDate.format("DD MMM YYYY");
+  // Convert to user's timezone
+  const userTimeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+  const zonedDate = utcToZonedTime(new Date(currentDayStart), userTimeZone);
+
+  // Format the zonedDate
+  const currentDay = format(zonedDate, "dd MMM yyyy");
+
+  const [isShareModalOpen, setIsShareModalOpen] = useState(false);
+
+  const openShareModal = () => {
+    setIsShareModalOpen(true);
+  };
+
+  const closeShareModal = () => {
+    setIsShareModalOpen(false);
+  };
 
   return (
-    <Flex align="center" justify="space-between">
+    <Flex align="center" justify="space-between" width="100%">
       <Flex align="center">
         <Box
           as="button"
@@ -47,6 +64,18 @@ const DayNavigation: React.FC<DayNavigationProps> = ({
           {currentDay}
         </Text>
       </Flex>
+      <Flex>
+        <IconButton
+          aria-label="share"
+          icon={<AiOutlineShareAlt />}
+          onClick={openShareModal}
+          borderRadius="full"
+          size="md"
+          variant="outline"
+        />
+      </Flex>
+      {/* Share Progress Modal */}
+      <ShareProgressModal isOpen={isShareModalOpen} onClose={closeShareModal} />
     </Flex>
   );
 };

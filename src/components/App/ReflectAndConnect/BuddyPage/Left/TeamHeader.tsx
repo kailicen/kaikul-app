@@ -1,8 +1,9 @@
 import { Buddy } from "@/atoms/buddyAtom";
 import TeamPageModal from "@/components/Modal/Instructions/TeamPageModal";
 import { InfoIcon } from "@chakra-ui/icons";
-import { Box, Avatar, Text, VStack } from "@chakra-ui/react";
+import { Button, HStack, Text, VStack } from "@chakra-ui/react";
 import { User } from "firebase/auth";
+import { useRouter } from "next/router";
 import { useState } from "react";
 
 type TeamHeaderProps = {
@@ -11,6 +12,7 @@ type TeamHeaderProps = {
 };
 
 const TeamHeader: React.FC<TeamHeaderProps> = ({ user, buddy }) => {
+  const router = useRouter();
   const [isInstructionOpen, setIsInstructionOpen] = useState(false);
 
   const handleInstructionOpen = () => {
@@ -20,8 +22,12 @@ const TeamHeader: React.FC<TeamHeaderProps> = ({ user, buddy }) => {
   const handleInstructionClose = () => {
     setIsInstructionOpen(false);
   };
+
+  const showWeeklyUpdatesPage = (buddyId: string) => {
+    router.push(`/team/weeklyupdates?buddyId=${buddyId}`);
+  };
   return (
-    <VStack spacing={4} align="center">
+    <HStack spacing={4} align="center" justifyItems="center">
       {/* <Box>
         <Avatar
           src={user.photoURL || ""}
@@ -33,7 +39,7 @@ const TeamHeader: React.FC<TeamHeaderProps> = ({ user, buddy }) => {
           name={buddy?.displayName || buddy?.email.split("@")[0] || ""}
         />
       </Box> */}
-      <Text fontWeight="bold" fontSize="lg" mb="2">
+      {/* <Text fontWeight="bold" fontSize="lg" mb="2">
         {user.displayName || user.email?.split("@")[0]} &{" "}
         {buddy?.displayName || buddy?.email.split("@")[0]}
         &apos;s Team{" "}
@@ -43,13 +49,16 @@ const TeamHeader: React.FC<TeamHeaderProps> = ({ user, buddy }) => {
           mb={1}
           cursor="pointer"
         />
-      </Text>
+      </Text> */}
+      <Button onClick={() => showWeeklyUpdatesPage(buddy.id)}>
+        Structured Weekly Catch-ups
+      </Button>
       {/* Use the modal component here */}
       <TeamPageModal
         isOpen={isInstructionOpen}
         onClose={handleInstructionClose}
       />
-    </VStack>
+    </HStack>
   );
 };
 

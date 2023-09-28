@@ -152,16 +152,16 @@ export default function Home({ posts }: Props) {
   return (
     <div className="flex min-h-screen flex-col">
       <Head>
-        <title>KaiKul | Where Ownership Meets Purpose</title>
+        <title>KaiKul | Guiding Consistent Personal Growth</title>
 
         {/* Google / Search Engine Tags */}
         <meta
           property="og:title"
-          content="KaiKul | Where Ownership Meets Purpose"
+          content="KaiKul | Guiding Consistent Personal Growth"
         />
         <meta
           property="og:description"
-          content="KaiKul is a personal development platform designed to foster conscious living and nurture personal responsibility."
+          content="KaiKul: Your daily companion for consistent personal growth. With our tools and community, we make mindful living a lifestyle. Let's shape your future together."
         />
         <meta
           property="og:image"

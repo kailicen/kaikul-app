@@ -25,7 +25,7 @@ function Tracker({}: Props) {
     <>
       <AuthenticatedHeader user={user} />
       {user ? (
-        <div className="pt-[80px] px-2 md:px-10 3xl:px-32">
+        <div className="pt-[80px] md:px-10 3xl:px-32">
           <TrackerPage user={user} />
           <FloatingFeedbackButton /> {/* Add the feedback button */}
         </div>

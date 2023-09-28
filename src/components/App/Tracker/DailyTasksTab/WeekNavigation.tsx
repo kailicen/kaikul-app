@@ -1,38 +1,32 @@
 import React, { useState } from "react";
-import {
-  Box,
-  Icon,
-  Text,
-  Tooltip,
-  Flex,
-  Tabs,
-  TabList,
-  Tab,
-  Button,
-  IconButton,
-} from "@chakra-ui/react";
+import { Box, Icon, Text, Tooltip, Flex, Button } from "@chakra-ui/react";
 import { MdChevronLeft, MdChevronRight } from "react-icons/md";
-import moment from "moment";
 import { AiOutlineShareAlt } from "react-icons/ai";
 import ShareProgressModal from "@/components/Modal/ShareProgress/ShareProgressModal";
+import { utcToZonedTime } from "date-fns-tz";
+import { addDays, format, parseISO } from "date-fns";
 
 type WeekNavigationProps = {
   onPreviousWeek: () => void;
   onNextWeek: () => void;
-  startOfWeek: string;
+  currentWeekStart: string;
 };
 
 const WeekNavigation: React.FC<WeekNavigationProps> = ({
   onPreviousWeek,
   onNextWeek,
-  startOfWeek,
+  currentWeekStart,
 }) => {
-  const currentDate = moment(startOfWeek);
-  const startOfWeekDate = currentDate.format("MMM Do");
-  const endOfWeekDate = currentDate
-    .clone()
-    .add(6, "days")
-    .format("MMM Do, YYYY");
+  const userTimeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+  const currentWeekStartDate = utcToZonedTime(
+    parseISO(currentWeekStart),
+    userTimeZone
+  );
+  const startOfWeekDate = format(currentWeekStartDate, "MMM do");
+  const endOfWeekDate = format(
+    addDays(currentWeekStartDate, 6),
+    "MMM do, yyyy"
+  );
   const [isShareModalOpen, setIsShareModalOpen] = useState(false);
 
   const openShareModal = () => {
@@ -44,7 +38,7 @@ const WeekNavigation: React.FC<WeekNavigationProps> = ({
   };
 
   return (
-    <Flex align="center" justify="space-between" h={12}>
+    <Flex align="center" justify="space-between" h={12} width="100%">
       <Flex align="center">
         <Tooltip label="Previous Week" placement="top">
           <Box
@@ -88,22 +82,6 @@ const WeekNavigation: React.FC<WeekNavigationProps> = ({
 
       {/* Share Progress Modal */}
       <ShareProgressModal isOpen={isShareModalOpen} onClose={closeShareModal} />
-
-      {/* <Flex align="center">
-        <Tabs
-          variant="soft-rounded"
-          colorScheme="purple"
-          defaultIndex={activeTab === "me" ? 0 : 1}
-          onChange={handleTabChange}
-          mr={{ base: 2, md: 10 }}
-          mb={5}
-        >
-          <TabList>
-            <Tab>Me</Tab>
-            <Tab>Team</Tab>
-          </TabList>
-        </Tabs>
-      </Flex> */}
     </Flex>
   );
 };

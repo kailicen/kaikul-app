@@ -41,6 +41,7 @@ import {
   ResponsiveContainer,
 } from "recharts";
 import { CustomTooltip } from "./CustomTooltip";
+import { utcToZonedTime } from "date-fns-tz";
 
 type TimeRange = "day" | "week" | "month" | "6months" | "year";
 type ChartData = {
@@ -140,32 +141,34 @@ const MyStatsCard: React.FC = () => {
   useEffect(() => {
     let start: Date;
 
-    const now = new Date();
-    let end: Date = new Date(now); // Setting end to the current date and time
+    const userTimeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+    const nowInUserTimezone = utcToZonedTime(new Date(), userTimeZone);
+
+    let end: Date = new Date(nowInUserTimezone); // Setting end to the date and time in user's timezone
 
     switch (timeRange) {
       case "day":
-        start = startOfDay(now);
+        start = startOfDay(nowInUserTimezone);
         break;
 
       case "week":
-        start = subDays(now, 6); // Go back 7 days from now
+        start = subDays(nowInUserTimezone, 6); // Go back 7 days from now
         break;
 
       case "month":
-        start = subMonths(now, 1); // Go back 1 month from now
+        start = subMonths(nowInUserTimezone, 1); // Go back 1 month from now
         break;
 
       case "6months":
-        start = subMonths(now, 6); // Go back 6 months from now
+        start = subMonths(nowInUserTimezone, 6); // Go back 6 months from now
         break;
 
       case "year":
-        start = subMonths(now, 12); // Go back 12 months from now
+        start = subMonths(nowInUserTimezone, 12); // Go back 12 months from now
         break;
 
       default:
-        start = new Date();
+        start = new Date(nowInUserTimezone);
     }
 
     const fetchStatistics = async () => {
