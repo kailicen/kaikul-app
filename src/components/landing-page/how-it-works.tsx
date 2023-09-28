@@ -16,31 +16,31 @@ export function HowItWorks() {
           <div className="flex flex-col items-start">
             <img
               src="/images/how-it-works/goal-setting.png"
-              alt="Goal Setting"
+              alt="Consistent Vision"
               className="h-[200px] w-full rounded-md object-cover shadow-lg"
             />
             <p className="mt-2 text-base font-bold md:text-xl">
               <span className="mr-3 text-3xl font-extrabold text-[#ff5e0e]">
                 1
               </span>
-              Goal Setting
+              Consistent Vision
             </p>
             <p className="ml-7 text-left">
-              Start with a clear, long-term aspiration, breaking free from the
-              short-sightedness that clouds modern life.
+              Transform your vision into daily tasks. Every consistent step, no
+              matter how small, propels you forward.
             </p>
           </div>
           <div className="flex flex-col items-start">
             <img
               src="/images/how-it-works/daily-tracking.png"
-              alt="Task Management"
+              alt="Consistent Actions"
               className="h-[200px] w-full rounded-md object-cover shadow-lg"
             />
             <p className="mt-2 text-base font-bold md:text-xl">
               <span className="mr-3 text-3xl font-extrabold text-[#ff5e0e]">
                 2
               </span>
-              Task Management
+              Consistent Actions
             </p>
             <p className="ml-7 text-left">
               Break your overarching goals into daily, grounded tasks to
@@ -50,18 +50,18 @@ export function HowItWorks() {
           <div className="flex flex-col items-start">
             <img
               src="/images/how-it-works/weekly-reflection.png"
-              alt="Reflection"
+              alt="Consistent Reflection"
               className="h-[200px] w-full rounded-md object-cover shadow-lg"
             />
             <p className="mt-2 text-base font-bold md:text-xl">
               <span className="mr-3 text-3xl font-extrabold text-[#ff5e0e]">
                 3
               </span>
-              Reflection
+              Consistent Reflection
             </p>
             <p className="ml-7 text-left">
-              Foster growth through conscious living, learning from each day and
-              dynamically adapting and evolving.
+              Evaluate and adapt regularly, ensuring that your actions are
+              consistently aligned with your evolving vision.
             </p>
           </div>
         </div>

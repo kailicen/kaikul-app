@@ -6,36 +6,25 @@ export function WhatIsAP() {
     >
       <div className="mx-auto flex max-w-[58rem] flex-col items-center space-y-8 text-center">
         <h2 className="font-heading font-bold text-3xl sm:text-3xl md:text-6xl">
-          What is{" "}
-          <span className="text-[#4130AC] dark:text-[#ff5e0e]">Ownership</span>?
+          The Power of{" "}
+          <span className="text-[#4130AC] dark:text-[#ff5e0e]">
+            Consistency
+          </span>
         </h2>
 
         <div className="text-base md:text-lg">
           <p>
-            Taking ownership of your life means embracing your unique journey,
-            honoring self-commitments, and making every step a conscious choice
-            aligned with your deepest goals.
+            {`Have you ever started something with enthusiasm only to leave it
+            midway? Do your goals often feel out of reach, no matter how hard
+            you try? What if the key isn't just effort, but consistent effort?`}
           </p>
         </div>
 
         <blockquote
           className="rounded border-l-4 border-[#4130AC] dark:border-[#ff5e0e] bg-white dark:bg-gray-700
-          py-2 px-4 text-base italic shadow-md md:text-lg text-gray-700 dark:text-gray-100"
+          py-4 px-6 text-base italic shadow-md md:text-lg text-gray-700 dark:text-gray-100"
         >
-          <ul className="text-start">
-            <li>
-              💬 <span className="font-semibold">Integrity</span>: Do what you
-              say you will do.
-            </li>
-            <li>
-              🤲 <span className="font-semibold">Self-compassion</span>: Accept
-              yourself when you cannot fulfill a commitment.
-            </li>
-            <li>
-              🔁 <span className="font-semibold">Resilience</span>: Persistently
-              pursue what you set out to do.
-            </li>
-          </ul>
+          How consistently do you pursue what matters?
           {/* <p>
             &quot;A habit contract fosters a tangible sense of
             responsibility.&quot;
