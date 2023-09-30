@@ -2,10 +2,10 @@ export function WhatIsAP() {
   return (
     <section
       id="what-is-accountability"
-      className="lg:py-18 container mb-4 space-y-8 rounded-lg bg-[#fff8f5] py-12 dark:bg-gray-800"
+      className="lg:py-18 container mb-4 space-y-8 rounded-lg bg-[#fff8f5] py-12 xxs:px-4 sm:p-6 lg:p-8 dark:bg-gray-800"
     >
-      <div className="mx-auto flex max-w-[58rem] flex-col items-center space-y-8 text-center">
-        <h2 className="font-heading font-bold text-3xl sm:text-3xl md:text-6xl">
+      <div className="mx-auto flex max-w-[58rem] flex-col items-center space-y-8 text-center xxxs:px-3">
+        <h2 className="font-heading font-bold text-3xl xs:text-6xl sm:text-3xl md:text-6xl">
           The Power of{" "}
           <span className="text-[#4130AC] dark:text-[#ff5e0e]">
             Consistency

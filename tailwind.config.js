@@ -13,6 +13,10 @@ module.exports = {
       //   "gradient-conic":
       //     "conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))",
       // },
+      screens: {
+        'xxxs': '280px',
+        'xxs': '324px', // Define your custom breakpoint for screens smaller than xs
+      },
       fontFamily: {
         heading: ["Inter", "sans-serif"],
       },
