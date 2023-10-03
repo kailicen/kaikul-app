@@ -23,9 +23,7 @@ export function HowItWorks() {
               <span className="mr-3 text-3xl font-extrabold text-[#ff5e0e]">
                 1
               </span>
-              <span className="xxxs:text-3xl">
-                Consistent Vision
-              </span>
+              <span className="xxxs:text-2xl">Consistent Vision</span>
             </p>
             <p className="ml-7 text-left xxs:text-center xxs:ml-0 xxs:mt-2 xxxs:text-center xxxs:ml-0">
               Transform your vision into daily tasks. Every consistent step, no
@@ -42,9 +40,7 @@ export function HowItWorks() {
               <span className="mr-3 text-3xl font-extrabold text-[#ff5e0e]">
                 2
               </span>
-              <span className="xxxs:text-3xl">
-                Consistent Actions
-              </span>
+              <span className="xxxs:text-2xl">Consistent Actions</span>
             </p>
             <p className="ml-7 text-left xxs:text-center xxs:ml-0 xxs:mt-2 xxxs:text-center xxxs:ml-0">
               Break your overarching goals into daily, grounded tasks to
@@ -61,9 +57,7 @@ export function HowItWorks() {
               <span className="mr-3 text-3xl font-extrabold text-[#ff5e0e]">
                 3
               </span>
-              <span className="xxxs:text-3xl">
-                Consistent Reflection
-              </span>
+              <span className="xxxs:text-2xl">Consistent Reflection</span>
             </p>
             <p className="ml-7 text-left xxs:text-center xxs:ml-0 xxs:mt-2 xxxs:text-center xxxs:ml-0">
               Evaluate and adapt regularly, ensuring that your actions are
