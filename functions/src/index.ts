@@ -3,6 +3,7 @@ import * as functions from "firebase-functions";
 import * as admin from "firebase-admin";
 import {format, addYears} from "date-fns";
 import * as nodemailer from "nodemailer";
+import * as mg from "nodemailer-mailgun-transport";
 
 admin.initializeApp();
 const db = admin.firestore();
@@ -28,12 +29,8 @@ exports.updateBuddyListsAndSendMessages = functions.firestore
     const previousValue = change.before.data();
 
     if (newValue.status === "accepted" && previousValue.status === "pending") {
-      const {
-        fromUserId,
-        toUserId,
-        senderReason,
-        recipientResponse,
-      } = newValue;
+      const {fromUserId, toUserId, senderReason, recipientResponse} =
+        newValue;
 
       const usersRef = admin.firestore().collection("users");
       const messagesRef = admin.firestore().collection("messages");
@@ -104,7 +101,6 @@ exports.createGoalOnProfileAddition = functions.firestore
   });
 
 exports.sendWelcomeEmail = functions.auth.user().onCreate(async (user) => {
-  console.log("functions.config().smtp", functions.config().smtp);
   const email = user.email;
   const displayName = user.displayName || user.email?.split("@")[0];
 
@@ -113,19 +109,20 @@ exports.sendWelcomeEmail = functions.auth.user().onCreate(async (user) => {
     return {success: false, error: "No email provided"};
   }
 
-  const mailTransport = nodemailer.createTransport({
-    host: "sandbox.smtp.mailtrap.io",
-    port: 2525,
+  // Configure Nodemailer to use Mailgun
+  const auth = {
     auth: {
-      user: functions.config().smtp.user,
-      pass: functions.config().smtp.pass,
+      api_key: functions.config().mailgun.apikey,
+      domain: functions.config().mailgun.domain,
     },
-  });
+  };
+
+  const mailTransport = nodemailer.createTransport(mg(auth));
 
   const mailOptions = {
-    from: "Kaikul : no-reply@kaikul.com",
+    from: "KaiKul : no-reply@kaikul.com",
     to: email,
-    subject: "Welcome to Kaikul",
+    subject: "Welcome to KaiKul",
     html: `
   <p>Hi ${displayName},</p>
   
@@ -142,7 +139,7 @@ exports.sendWelcomeEmail = functions.auth.user().onCreate(async (user) => {
   </ol>
   
   <ul>
-    <li><strong>Community:</strong> Connect with like-minded individuals on our <a href="https://join.slack.com/t/kaikul/shared_invite/zt-22ty7x0ps-89ruM2VXwB1v49yY35cYdw">Slack community</a>.</li>
+    <li><strong>Community:</strong> Connect with like-minded individuals on our <a href="https://join.slack.com/t/kaikul/shared_invite/zt-24ics6msx-9kIO6aBwt9n7uyy9fhffgw">Slack community</a>.</li>
     <li><strong>Guide:</strong> Check out our <a href="https://www.canva.com/design/DAFuQHGqA1Y/rIa9fyabkD0dnyBQh4ynKg/view">how-to guide</a> to bootstrap your KaiKul journey.</li>
   </ul>
 

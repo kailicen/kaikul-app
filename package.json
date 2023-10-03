@@ -51,6 +51,7 @@
     "mongodb": "^5.7.0",
     "next": "13.4.9",
     "nodemailer": "^6.9.5",
+    "nodemailer-mailgun-transport": "^2.1.5",
     "postcss": "8.4.25",
     "react": "18.2.0",
     "react-color": "^2.19.3",

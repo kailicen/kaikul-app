@@ -92,7 +92,7 @@ const JourneyModeCard: React.FC<Props> = ({ profile, onEdit, user }) => {
         />
         <Button
           as={Link}
-          href="https://join.slack.com/t/kaikul/shared_invite/zt-22ty7x0ps-89ruM2VXwB1v49yY35cYdw"
+          href="https://join.slack.com/t/kaikul/shared_invite/zt-24ics6msx-9kIO6aBwt9n7uyy9fhffgw"
           isExternal
           _hover={{
             textDecoration: "none",

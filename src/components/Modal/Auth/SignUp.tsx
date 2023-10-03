@@ -1,12 +1,10 @@
 import { Input, Button, Flex, Text } from "@chakra-ui/react";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { useSetRecoilState } from "recoil";
 import { authModalState } from "../../../atoms/authModalAtom";
 import { useCreateUserWithEmailAndPassword } from "react-firebase-hooks/auth";
-import { auth, firestore } from "../../../firebase/clientApp";
+import { auth } from "../../../firebase/clientApp";
 import { FIREBASE_ERRORS } from "../../../firebase/errors";
-import { User, sendEmailVerification } from "firebase/auth";
-import { doc, setDoc } from "firebase/firestore";
 const SignUp: React.FC = () => {
   const setAuthModalState = useSetRecoilState(authModalState);
   const [signUpForm, setSignUpForm] = useState({
@@ -27,18 +25,12 @@ const SignUp: React.FC = () => {
       return;
     }
     // passwords match
-    createUserWithEmailAndPassword(signUpForm.email, signUpForm.password)
-      // .then((userCredential) => {
-      //   // User has been created, now we can create the Firestore document
-      //   if (userCredential && userCredential.user) {
-      //     createUserDocument(userCredential.user);
-      //   }
-      // })
-      
-      .catch((err) => {
+    createUserWithEmailAndPassword(signUpForm.email, signUpForm.password).catch(
+      (err) => {
         // Handle errors here
         console.error(err);
-      });
+      }
+    );
   };
 
   const onChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -48,16 +40,6 @@ const SignUp: React.FC = () => {
       [event.target.name]: event.target.value,
     }));
   };
-
-  // const createUserDocument = async (user: User) => {
-  //   const userData = {
-  //     email: user.email,
-  //     displayName: user.displayName,
-  //     photoURL: user.photoURL,
-  //     // Add more user fields here if needed
-  //   };
-  //   await setDoc(doc(firestore, "users", user.uid), userData);
-  // };
 
   return (
     <form onSubmit={onSubmit}>
@@ -71,17 +53,14 @@ const SignUp: React.FC = () => {
         fontSize="10pt"
         _placeholder={{ color: "gray.500" }}
         _hover={{
-          bg: "white",
           border: "1px solid",
           borderColor: "purple.500",
         }}
         _focus={{
           outline: "none",
-          bg: "white",
           border: "1px solid",
           borderColor: "purple.500",
         }}
-        bg="gray.50"
       />
       <Input
         required
@@ -93,17 +72,14 @@ const SignUp: React.FC = () => {
         fontSize="10pt"
         _placeholder={{ color: "gray.500" }}
         _hover={{
-          bg: "white",
           border: "1px solid",
           borderColor: "purple.500",
         }}
         _focus={{
           outline: "none",
-          bg: "white",
           border: "1px solid",
           borderColor: "purple.500",
         }}
-        bg="gray.50"
       />
       <Input
         required
@@ -115,17 +91,14 @@ const SignUp: React.FC = () => {
         fontSize="10pt"
         _placeholder={{ color: "gray.500" }}
         _hover={{
-          bg: "white",
           border: "1px solid",
           borderColor: "purple.500",
         }}
         _focus={{
           outline: "none",
-          bg: "white",
           border: "1px solid",
           borderColor: "purple.500",
         }}
-        bg="gray.50"
       />
       <Text textAlign="center" color="red" fontSize="10pt">
         {error ||

@@ -44,17 +44,14 @@ const Login: React.FC<LoginProps> = () => {
         fontSize="10pt"
         _placeholder={{ color: "gray.500" }}
         _hover={{
-          bg: "white",
           border: "1px solid",
           borderColor: "purple.500",
         }}
         _focus={{
           outline: "none",
-          bg: "white",
           border: "1px solid",
           borderColor: "purple.500",
         }}
-        bg="gray.50"
       />
       <Input
         required
@@ -66,17 +63,14 @@ const Login: React.FC<LoginProps> = () => {
         fontSize="10pt"
         _placeholder={{ color: "gray.500" }}
         _hover={{
-          bg: "white",
           border: "1px solid",
           borderColor: "purple.500",
         }}
         _focus={{
           outline: "none",
-          bg: "white",
           border: "1px solid",
           borderColor: "purple.500",
         }}
-        bg="gray.50"
       />
       <Text textAlign="center" color="red" fontSize="10pt">
         {FIREBASE_ERRORS[error?.message as keyof typeof FIREBASE_ERRORS]}
@@ -98,6 +92,7 @@ const Login: React.FC<LoginProps> = () => {
         <Text
           fontSize="9pt"
           color="purple.500"
+          fontWeight={700}
           cursor="pointer"
           onClick={() =>
             setAuthModalState((prev) => ({
@@ -106,7 +101,7 @@ const Login: React.FC<LoginProps> = () => {
             }))
           }
         >
-          Reset
+          RESET
         </Text>
       </Flex>
       <Flex fontSize="9pt" justifyContent="center">
