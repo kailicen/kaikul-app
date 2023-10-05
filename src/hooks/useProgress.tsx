@@ -6,6 +6,7 @@ import { Reflection } from "@/atoms/reflectionsAtom";
 import { Task } from "@/atoms/tasksAtom";
 import { format, startOfWeek, subDays } from "date-fns";
 import { WeeklyReflection } from "@/atoms/weeklyReflectionAtom";
+import { utcToZonedTime, format as formatTZ } from "date-fns-tz";
 
 export type ProgressOption = "Daily Sprint" | "Weekly Reflection";
 
@@ -19,8 +20,20 @@ const useProgress = (selectedProgress: ProgressOption, lastOpened: Date) => {
   useEffect(() => {
     const fetchDailyProgress = async () => {
       if (user) {
-        const yesterday = format(subDays(new Date(), 1), "yyyy-MM-dd");
-        const today = format(new Date(), "yyyy-MM-dd");
+        const userTimeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+
+        const zonedToday = utcToZonedTime(new Date(), userTimeZone);
+        const zonedYesterday = utcToZonedTime(
+          subDays(new Date(), 1),
+          userTimeZone
+        );
+
+        const today = formatTZ(zonedToday, "yyyy-MM-dd", {
+          timeZone: userTimeZone,
+        });
+        const yesterday = formatTZ(zonedYesterday, "yyyy-MM-dd", {
+          timeZone: userTimeZone,
+        });
 
         // Fetch yesterday's tasks
         const yesterdayTasksQuery = query(
@@ -64,10 +77,17 @@ const useProgress = (selectedProgress: ProgressOption, lastOpened: Date) => {
 
     const fetchWeeklyReflection = async () => {
       if (user) {
-        const weekStart = format(
-          startOfWeek(new Date(), { weekStartsOn: 1 }),
-          "yyyy-MM-dd"
-        );
+        // Get the user's timezone
+        const userTimeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+
+        const zonedCurrentDate = utcToZonedTime(new Date(), userTimeZone);
+        const zonedWeekStart = startOfWeek(zonedCurrentDate, {
+          weekStartsOn: 1,
+        });
+
+        const weekStart = formatTZ(zonedWeekStart, "yyyy-MM-dd", {
+          timeZone: userTimeZone,
+        });
 
         // Fetch weekly goals
         const weeklyReflectionQuery = query(

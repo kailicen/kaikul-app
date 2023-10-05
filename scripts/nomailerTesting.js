@@ -1,3 +1,5 @@
+require("dotenv").config();
+
 const nodemailer = require("nodemailer");
 const mg = require("nodemailer-mailgun-transport");
 
@@ -13,10 +15,13 @@ const auth = {
 const mailTransport = nodemailer.createTransport(mg(auth));
 
 const mailOptions = {
-  from: "Kaikul : no-reply@kaikul.com",
+  from: "KaiKul <no-reply@kaikul.com>",
   to: "kailicen226@gmail.com", // Replace with your own email address for testing
-  subject: "Welcome to Kaikul",
-  html: "<p>Test email from Kaikul</p>",
+  subject: "Welcome to KaiKul",
+  template: "welcome_email", // Use the template name you defined in Mailgun
+  "h:X-Mailgun-Variables": JSON.stringify({
+    displayName: "Kaili Cen",
+  }),
 };
 
 async function sendTestEmail() {

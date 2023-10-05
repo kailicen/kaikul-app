@@ -120,37 +120,13 @@ exports.sendWelcomeEmail = functions.auth.user().onCreate(async (user) => {
   const mailTransport = nodemailer.createTransport(mg(auth));
 
   const mailOptions = {
-    from: "KaiKul : no-reply@kaikul.com",
+    from: "KaiKul <no-reply@kaikul.com>",
     to: email,
     subject: "Welcome to KaiKul",
-    html: `
-  <p>Hi ${displayName},</p>
-  
-  <p>Welcome to the KaiKul family – where ownership meets purpose!</p>
-
-  <p>I'm Kaili, the heart behind KaiKul. Inspired by personal struggles to stay committed to my goals, I created this platform to help individuals like you and me not just set intentions, but truly live them, every single day.</p>
-
-  <p>Here's how we do it:</p>
-
-  <ol>
-    <li><strong>Goal:</strong> Define what matters most to you.</li>
-    <li><strong>Task:</strong> Break it down into achievable tasks.</li>
-    <li><strong>Reflection:</strong> Reflect, learn, and grow from each experience.</li>
-  </ol>
-  
-  <ul>
-    <li><strong>Community:</strong> Connect with like-minded individuals on our <a href="https://join.slack.com/t/kaikul/shared_invite/zt-24ics6msx-9kIO6aBwt9n7uyy9fhffgw">Slack community</a>.</li>
-    <li><strong>Guide:</strong> Check out our <a href="https://www.canva.com/design/DAFuQHGqA1Y/rIa9fyabkD0dnyBQh4ynKg/view">how-to guide</a> to bootstrap your KaiKul journey.</li>
-  </ul>
-
-  <p>Ready to take the leap? <a href="https://kaikul.com">Sign up for our web app</a> to embrace a life where your ownership meets purpose.</p>
-
-  <p>Here’s to living consciously and fulfilling promises to yourself, one small step at a time.</p>
-
-  <p>See you inside,</p>
-
-  <p>KaiKul Team</p>
-`,
+    template: "welcome_email", // Use the template name you defined in Mailgun
+    "h:X-Mailgun-Variables": JSON.stringify({
+      displayName: displayName,
+    }),
   };
 
   try {
