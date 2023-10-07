@@ -23,12 +23,15 @@ import {
   Flex,
   Alert,
   AlertIcon,
+  useToast,
 } from "@chakra-ui/react";
 import {
   endOfWeek,
   startOfWeek as startOfWeekDateFns,
   format,
   parseISO,
+  subWeeks,
+  formatISO,
 } from "date-fns";
 import { User } from "firebase/auth";
 import { Formik, Form, Field } from "formik";
@@ -55,9 +58,21 @@ function WeeklyUpdateSection({}: Props) {
   const [selectedBiggestObstacle, setSelectedBiggestObstacle] = useState("");
   const [selectedLessonLearned, setSelectedLessonLearned] = useState("");
 
-  // Format the start and end of week for the button display
   // Get user's timezone
   const userTimeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+  const [startOfWeek, setStartOfWeek] = useState(
+    format(
+      utcToZonedTime(
+        startOfWeekDateFns(new Date(), { weekStartsOn: 1 }),
+        userTimeZone
+      ),
+      "yyyy-MM-dd"
+    )
+  );
+  const [selectedWeekStart, setSelectedWeekStart] =
+    useState<string>(startOfWeek); // defaulting to current week's start
+
+  // Format the start and end of week for the button display
 
   // Convert the current date to user's timezone
   const currentDateInUserTz = utcToZonedTime(new Date(), userTimeZone);
@@ -76,21 +91,23 @@ function WeeklyUpdateSection({}: Props) {
     "MMM do, yyyy"
   );
 
-  const [startOfWeek, setStartOfWeek] = useState(
-    format(
-      utcToZonedTime(
-        startOfWeekDateFns(new Date(), { weekStartsOn: 1 }),
-        userTimeZone
-      ),
-      "yyyy-MM-dd"
-    )
+  const previousWeekStartDate = subWeeks(startOfWeekDate, 1);
+  const previousWeekEndDate = subWeeks(endOfWeekDate, 1);
+  const formattedPreviousStartOfWeek = format(
+    utcToZonedTime(previousWeekStartDate, userTimeZone),
+    "MMM do"
   );
+  const formattedPreviousEndOfWeek = format(
+    utcToZonedTime(previousWeekEndDate, userTimeZone),
+    "MMM do, yyyy"
+  );
+
+  const toast = useToast();
 
   const {
     teamTabs,
     handleUpdateTeamTab,
     handleAddTeamTab,
-    isCurrentWeekDataExist,
     handleNextPage,
     handlePrevPage,
     currentPage,
@@ -172,7 +189,7 @@ function WeeklyUpdateSection({}: Props) {
     } else {
       // handleAdd
       handleAddTeamTab(
-        startOfWeek,
+        selectedWeekStart,
         values.rateWeek,
         values.rateHappiness,
         values.practiceHours,
@@ -184,6 +201,7 @@ function WeeklyUpdateSection({}: Props) {
     onClose();
     setSelectedUpdateId(null);
   };
+
   return (
     <VStack gap={4} align="start" w="100%">
       <Text mb={3}>
@@ -196,11 +214,40 @@ function WeeklyUpdateSection({}: Props) {
         gap={2}
         w="100%"
       >
-        {!isCurrentWeekDataExist && (
-          <Button onClick={() => openDrawer()} whiteSpace="nowrap">
-            Add Update for {formattedStartOfWeek} - {formattedEndOfWeek}
-          </Button>
-        )}
+        <Select
+          placeholder="Select week to add update"
+          borderRadius="full"
+          width="auto"
+          onChange={(e) => {
+            let selectedDate = "";
+            if (e.target.value === "currentWeek") {
+              selectedDate = startOfWeek;
+            } else if (e.target.value === "previousWeek") {
+              selectedDate = format(previousWeekStartDate, "yyyy-MM-dd");
+            } else {
+              // Return early if a valid week option wasn't selected (i.e., when selecting the placeholder)
+              return;
+            }
+
+            // Check if data already exists for the selected week
+            if (teamTabs.some((tab) => tab.startOfWeek === selectedDate)) {
+              toast({
+                title: "Update Exists",
+                description: `You've already added an update for the week of ${selectedDate}.`,
+                status: "warning",
+                duration: 3000,
+                isClosable: true,
+              });
+            } else {
+              setSelectedWeekStart(selectedDate);
+              openDrawer();
+            }
+          }}
+        >
+          <option value="currentWeek">{`Add Update for ${formattedStartOfWeek} - ${formattedEndOfWeek}`}</option>
+          <option value="previousWeek">{`Add Update for ${formattedPreviousStartOfWeek} - ${formattedPreviousEndOfWeek}`}</option>
+        </Select>
+
         <Select
           placeholder="Search an Update"
           borderRadius="full"

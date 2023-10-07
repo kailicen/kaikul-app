@@ -17,11 +17,10 @@ import { firestore } from "../firebase/clientApp";
 import { useEffect, useState } from "react";
 import useUserPoints from "./useUserPoints";
 import { WeeklyReflection } from "@/atoms/weeklyReflectionAtom";
+import { useToast } from "@chakra-ui/react";
 
 export const useWeeklyReflections = (user: User, startOfWeek: string) => {
   const [teamTabs, setTeamTabs] = useState<WeeklyReflection[]>([]);
-  const [isCurrentWeekDataExist, setIsCurrentWeekDataExist] =
-    useState<boolean>(false);
   const { updatePoints } = useUserPoints(user);
 
   const [selectedDate, setSelectedDate] = useState<string | null>(null);
@@ -37,6 +36,8 @@ export const useWeeklyReflections = (user: User, startOfWeek: string) => {
   const [pageSnapshots, setPageSnapshots] = useState<
     (QueryDocumentSnapshot<DocumentData> | null)[]
   >([]);
+
+  const toast = useToast();
 
   const handleNextPage = () => {
     setPageSnapshots([...pageSnapshots, lastVisibleDocument]);
@@ -63,6 +64,18 @@ export const useWeeklyReflections = (user: User, startOfWeek: string) => {
     biggestObstacle: string,
     lessonLearned: string
   ) => {
+    // Check if data already exists for the selected week
+    if (teamTabs.some((tab) => tab.startOfWeek === startOfWeek)) {
+      toast({
+        title: "Update Exists",
+        description: `You've already added an update for the week starting ${startOfWeek}.`,
+        status: "error",
+        duration: 3000,
+        isClosable: true,
+      });
+      return; // Exit the function early
+    }
+
     const teamTabToAdd: WeeklyReflection = {
       id: "",
       startOfWeek,
@@ -248,9 +261,6 @@ export const useWeeklyReflections = (user: User, startOfWeek: string) => {
           const teamTab = doc.data() as WeeklyReflection;
           teamTab.id = doc.id;
           teamTabs.push(teamTab);
-          if (teamTab.startOfWeek === startOfWeek) {
-            setIsCurrentWeekDataExist(true);
-          }
         });
         setTeamTabs(teamTabs);
         // Set the last visible document for pagination
@@ -268,7 +278,6 @@ export const useWeeklyReflections = (user: User, startOfWeek: string) => {
     teamTabs,
     handleUpdateTeamTab,
     handleAddTeamTab,
-    isCurrentWeekDataExist,
     handleNextPage,
     handlePrevPage,
     currentPage,
