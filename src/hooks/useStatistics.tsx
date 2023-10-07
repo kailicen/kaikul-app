@@ -17,6 +17,7 @@ export const useStatistics = () => {
     async (start: Date, end: Date) => {
       const startString = format(start, "yyyy-MM-dd");
       const endString = format(end, "yyyy-MM-dd");
+      //console.log(`fetchTasks:start:${startString}, end:${endString}`);
 
       const tasksQuery = query(
         collection(firestore, "tasks"),

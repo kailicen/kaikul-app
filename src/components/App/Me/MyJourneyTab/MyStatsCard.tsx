@@ -50,6 +50,12 @@ type ChartData = {
   Completed: number;
 };
 
+// Helper function to convert date string to local Date object
+const toDateObj = (dateStr: string): Date => {
+  const [year, month, day] = dateStr.split("-");
+  return new Date(+year, +month - 1, +day);
+};
+
 const groupData = (
   data: Task[],
   timeRange: TimeRange,
@@ -72,16 +78,16 @@ const groupData = (
     case "week":
     case "month":
       groupedData = data.reduce<Record<string, Task[]>>((acc, task) => {
-        const date = format(new Date(task.date), "yyyy-MM-dd");
+        const date = format(toDateObj(task.date), "yyyy-MM-dd");
         if (!acc[date]) acc[date] = [];
         acc[date].push(task);
         return acc;
-      }, groupedData); // Note that we are passing groupedData here instead of {}
+      }, groupedData);
       break;
     case "6months":
       groupedData = data.reduce<Record<string, Task[]>>((acc, task) => {
         const weekStart = format(
-          startOfWeek(new Date(task.date)),
+          startOfWeek(toDateObj(task.date)),
           "yyyy-MM-dd"
         );
         if (!acc[weekStart]) acc[weekStart] = [];
@@ -91,7 +97,10 @@ const groupData = (
       break;
     case "year":
       groupedData = data.reduce<Record<string, Task[]>>((acc, task) => {
-        const monthStart = format(startOfMonth(new Date(task.date)), "yyyy-MM");
+        const monthStart = format(
+          startOfMonth(toDateObj(task.date)),
+          "yyyy-MM"
+        );
         if (!acc[monthStart]) acc[monthStart] = [];
         acc[monthStart].push(task);
         return acc;
@@ -105,6 +114,8 @@ const groupData = (
 };
 
 const formatDateLabel = (date: Date, timeRange: TimeRange): string => {
+  //console.log("Raw Date:", date);
+
   switch (timeRange) {
     case "day":
       return format(date, "eee d"); // E.g., "Mon"
@@ -150,8 +161,8 @@ const MyStatsCard: React.FC = () => {
 
       case "week":
         start = subDays(end, 6); // Go back 7 days from now
-        console.log("Start Date:", start);
-        console.log("End Date:", end);
+        //console.log("Start Date:", start);
+        //console.log("End Date:", end);
         break;
 
       case "month":
@@ -172,9 +183,11 @@ const MyStatsCard: React.FC = () => {
 
     const fetchStatistics = async () => {
       const tasks = await fetchTasks(start, end);
+      //console.log("Fetched tasks:", tasks);
       const goals = await fetchGoals(start, end);
 
       setTaskData(groupData(tasks, timeRange, start, end));
+      //console.log("Grouped Tasks:", taskData);
       setGoalData(goals);
     };
 
@@ -193,11 +206,20 @@ const MyStatsCard: React.FC = () => {
   const completedGoals = goalData.filter((goal) => goal.completed).length;
 
   useEffect(() => {
-    const newChartData = Object.entries(taskData).map(([date, tasks]) => ({
-      name: formatDateLabel(new Date(date), timeRange),
-      Total: tasks.length,
-      Completed: tasks.filter((task) => task.completed).length,
-    }));
+    const newChartData = Object.entries(taskData).map(([date, tasks]) => {
+      //console.log("Current Date:", date);
+      const name = formatDateLabel(toDateObj(date), timeRange);
+      //console.log("Formatted Name:", name);
+      const totalTasksForDate = tasks.length;
+      const completedTasksForDate = tasks.filter(
+        (task) => task.completed
+      ).length;
+      return {
+        name,
+        Total: totalTasksForDate,
+        Completed: completedTasksForDate,
+      };
+    });
 
     if (filter === "completed") {
       newChartData.forEach((data) => {
@@ -206,7 +228,7 @@ const MyStatsCard: React.FC = () => {
     }
 
     setChartData(newChartData);
-    console.log("Chart Data:", newChartData);
+    //console.log("Chart Data:", newChartData);
   }, [taskData, filter, timeRange]);
 
   return (
