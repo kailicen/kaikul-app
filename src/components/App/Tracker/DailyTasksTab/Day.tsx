@@ -62,7 +62,8 @@ const Day: React.FC<{ date: string; user: User }> = ({ date, user }) => {
   const userTimeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
 
   // Parse the date prop to a Date object and adjust to user's timezone
-  const dateObj = utcToZonedTime(new Date(date), userTimeZone);
+  const adjustedDate = new Date(`${date}T12:00:00`); // Set to noon
+  const dateObj = utcToZonedTime(new Date(adjustedDate), userTimeZone);
   const todayInUserTimeZone = utcToZonedTime(new Date(), userTimeZone);
 
   // Adjust the dateObj to the start of day in user's timezone
@@ -472,9 +473,9 @@ const Day: React.FC<{ date: string; user: User }> = ({ date, user }) => {
                                 >
                                   {selectedTaskId
                                     ? format(
-                                        new Date(field.value[0]),
+                                        new Date(`${field.value[0]}T12:00:00`),
                                         "MMMM d, yyyy"
-                                      )
+                                      ) + ` (${field.value[0]})`
                                     : field.value.length > 0
                                     ? `${field.value.length} dates selected`
                                     : "Select Task Dates"}
@@ -493,17 +494,24 @@ const Day: React.FC<{ date: string; user: User }> = ({ date, user }) => {
                                     }
                                     selected={
                                       selectedTaskId
-                                        ? [new Date(field.value)]
+                                        ? [new Date(`${field.value}T12:00:00`)]
                                         : field.value?.length
                                         ? field.value.map(
-                                            (date: string) => new Date(date)
+                                            (date: string) =>
+                                              new Date(`${date}T12:00:00`)
                                           )
-                                        : [new Date()]
+                                        : [
+                                            utcToZonedTime(
+                                              new Date(),
+                                              userTimeZone
+                                            ),
+                                          ]
                                     }
                                     onSelect={(
                                       selectedDays: Date[] | Date | undefined
                                     ) => {
                                       if (selectedDays) {
+                                        // Directly use the date strings returned from the date picker
                                         const formattedDates = Array.isArray(
                                           selectedDays
                                         )
@@ -516,24 +524,39 @@ const Day: React.FC<{ date: string; user: User }> = ({ date, user }) => {
                                                 "yyyy-MM-dd"
                                               ),
                                             ];
+
                                         form.setFieldValue(
                                           "date",
                                           formattedDates
                                         );
+                                        console.log(
+                                          "Selected Date:",
+                                          formattedDates
+                                        );
 
-                                        // Update the readable date strings state
+                                        // Convert to the user's timezone when setting the readable date strings
                                         const dateStrings = Array.isArray(
                                           selectedDays
                                         )
                                           ? selectedDays.map((day) =>
-                                              format(day, "MMMM d, yyyy")
+                                              format(
+                                                utcToZonedTime(
+                                                  day,
+                                                  userTimeZone
+                                                ),
+                                                "MMMM d, yyyy"
+                                              )
                                             )
                                           : [
                                               format(
-                                                selectedDays as Date,
+                                                utcToZonedTime(
+                                                  selectedDays as Date,
+                                                  userTimeZone
+                                                ),
                                                 "MMMM d, yyyy"
                                               ),
                                             ];
+
                                         setSelectedDateStrings(dateStrings);
 
                                         if (selectedTaskId) {

@@ -18,10 +18,12 @@
     "date-fns": "^2.30.0",
     "firebase-admin": "^11.8.0",
     "firebase-functions": "^4.3.1",
+    "mailgun-js": "^0.22.0",
     "nodemailer": "^6.9.5",
     "nodemailer-mailgun-transport": "^2.1.5"
   },
   "devDependencies": {
+    "@types/mailgun-js": "^0.22.14",
     "@types/nodemailer": "^6.4.10",
     "@types/nodemailer-mailgun-transport": "^1.4.4",
     "@typescript-eslint/eslint-plugin": "^5.62.0",

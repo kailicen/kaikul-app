@@ -36,6 +36,7 @@ function WeeklyPlanner({ user }: Props) {
   const [currentWeekStart, setCurrentWeekStart] = useState(
     format(weekStartInUserTimezone, "yyyy-MM-dd")
   );
+  console.log("Current Week Start:", currentWeekStart);
   const [currentDayStart, setCurrentDayStart] = useState(
     format(dayStartInUserTimezone, "yyyy-MM-dd")
   );

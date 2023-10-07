@@ -91,9 +91,10 @@ export function Features() {
           <div className="flex min-h-[200px] flex-col justify-between gap-4 rounded-md p-6">
             <Icons.Lightbulb className="h-12 w-12" />
             <div className="space-y-2">
-              <h3 className="font-bold md:text-lg">AI Recommendations</h3>
+              <h3 className="font-bold md:text-lg">Brain Food</h3>
               <p className="text-sm">
-                Enjoy upcoming AI-guided suggestions for personal growth.
+                Curated content to stimulate your mind and promote continuous
+                learning.
               </p>
             </div>
           </div>

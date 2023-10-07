@@ -2,11 +2,15 @@
 import * as functions from "firebase-functions";
 import * as admin from "firebase-admin";
 import {format, addYears} from "date-fns";
-import * as nodemailer from "nodemailer";
-import * as mg from "nodemailer-mailgun-transport";
+import * as mailgun from "mailgun-js";
 
 admin.initializeApp();
 const db = admin.firestore();
+
+const mg = mailgun({
+  apiKey: functions.config().mailgun.apikey,
+  domain: functions.config().mailgun.domain,
+});
 
 export const createUserDocument = functions.auth
   .user()
@@ -109,28 +113,18 @@ exports.sendWelcomeEmail = functions.auth.user().onCreate(async (user) => {
     return {success: false, error: "No email provided"};
   }
 
-  // Configure Nodemailer to use Mailgun
-  const auth = {
-    auth: {
-      api_key: functions.config().mailgun.apikey,
-      domain: functions.config().mailgun.domain,
-    },
-  };
-
-  const mailTransport = nodemailer.createTransport(mg(auth));
-
-  const mailOptions = {
+  const data = {
     from: "KaiKul <no-reply@kaikul.com>",
     to: email,
     subject: "Welcome to KaiKul",
-    template: "welcome_email", // Use the template name you defined in Mailgun
+    template: "welcome_email",
     "h:X-Mailgun-Variables": JSON.stringify({
       displayName: displayName,
     }),
   };
 
   try {
-    await mailTransport.sendMail(mailOptions);
+    await mg.messages().send(data);
     console.log("Welcome Mail Sent");
     return {success: true};
   } catch (error) {
@@ -141,3 +135,39 @@ exports.sendWelcomeEmail = functions.auth.user().onCreate(async (user) => {
     return {success: false, error: (error as Error).message};
   }
 });
+
+exports.sendWeeklyNewsletter = functions.pubsub
+  .schedule("every day 09:00")
+  .timeZone("America/Los_Angeles")
+  .onRun(async (_context) => {
+    try {
+      // Fetch subscribers from Firebase (assuming Firestore here)
+      const snapshot = await admin.firestore().collection("users").get();
+      if (snapshot.empty) {
+        console.log("No subscribers found.");
+        return;
+      }
+
+      const recipients: string[] = [];
+      snapshot.forEach((doc) => {
+        const email = doc.data().email;
+        if (email === "kailicen226@gmail.com") {
+          // TODO: Remove test condition before deploying
+          recipients.push(email);
+        }
+      });
+
+      // Send emails using Mailgun
+      const data = {
+        from: "KaiKul <no-reply@kaikul.com>",
+        to: recipients,
+        subject: "Your Weekly Newsletter",
+        template: "newsletter",
+      };
+
+      const result = await mg.messages().send(data);
+      console.log(result);
+    } catch (error) {
+      console.error("Error sending newsletter:", error);
+    }
+  });

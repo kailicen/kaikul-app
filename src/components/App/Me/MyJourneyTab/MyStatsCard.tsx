@@ -141,34 +141,33 @@ const MyStatsCard: React.FC = () => {
   useEffect(() => {
     let start: Date;
 
-    const userTimeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
-    const nowInUserTimezone = utcToZonedTime(new Date(), userTimeZone);
-
-    let end: Date = new Date(nowInUserTimezone); // Setting end to the date and time in user's timezone
+    let end: Date = new Date(); // Setting end to the date and time in user's timezone
 
     switch (timeRange) {
       case "day":
-        start = startOfDay(nowInUserTimezone);
+        start = startOfDay(end);
         break;
 
       case "week":
-        start = subDays(nowInUserTimezone, 6); // Go back 7 days from now
+        start = subDays(end, 6); // Go back 7 days from now
+        console.log("Start Date:", start);
+        console.log("End Date:", end);
         break;
 
       case "month":
-        start = subMonths(nowInUserTimezone, 1); // Go back 1 month from now
+        start = subMonths(end, 1); // Go back 1 month from now
         break;
 
       case "6months":
-        start = subMonths(nowInUserTimezone, 6); // Go back 6 months from now
+        start = subMonths(end, 6); // Go back 6 months from now
         break;
 
       case "year":
-        start = subMonths(nowInUserTimezone, 12); // Go back 12 months from now
+        start = subMonths(end, 12); // Go back 12 months from now
         break;
 
       default:
-        start = new Date(nowInUserTimezone);
+        start = new Date(end);
     }
 
     const fetchStatistics = async () => {
@@ -207,6 +206,7 @@ const MyStatsCard: React.FC = () => {
     }
 
     setChartData(newChartData);
+    console.log("Chart Data:", newChartData);
   }, [taskData, filter, timeRange]);
 
   return (
