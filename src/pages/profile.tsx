@@ -16,6 +16,7 @@ import {
   Flex,
   Text,
   Spinner,
+  useColorMode,
 } from "@chakra-ui/react";
 import { doc, getDoc, setDoc, updateDoc } from "firebase/firestore";
 import { EditIcon } from "@chakra-ui/icons";
@@ -32,7 +33,9 @@ function ProfilePage() {
   const [user] = useAuthState(auth);
   const [profilePicture, setProfilePicture] = useState<File | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const { colorMode } = useColorMode();
   const toast = useToast();
+  const [userEmail, setUserEmail] = useState("");
   const { username, imagePreview, setUsername, setImagePreview } = useUserData(
     user as User
   );
@@ -133,14 +136,38 @@ function ProfilePage() {
     setIsSubmitting(false);
   };
 
+  useEffect(() => {
+    // Load the user's email from localStorage when the component mounts
+    const storedUserEmail = localStorage.getItem("userEmail");
+    
+    if (storedUserEmail) {
+      setUserEmail(storedUserEmail);
+    } else if (user?.email) { // Use optional chaining to check for user.email
+      setUserEmail(user.email);
+      localStorage.setItem("userEmail", user.email); // Store in localStorage
+    }
+  }, [user?.email]); // Add user?.email as a dependency with optional chaining
+
   return (
     <>
       <AuthenticatedHeader user={user} />
-      <Flex direction="column" align="center" justify="center" m={5} pt="100px">
+      <Flex 
+        direction="row" 
+        align="center" 
+        justify="center" 
+        m={5}
+        mt="100px"
+        py="32px"
+        border="1px"
+        borderRadius="md"
+        boxShadow="lg"
+        borderColor={colorMode === "light" ? "gray.200" : "gray.700"}
+      >
         <Box position="relative">
           <Avatar
             src={imagePreview} // Add a default avatar picture url here
-            size="xl"
+            // size="xl"
+            style={{ width: '150px', height: '150px' }} // Adjust the size as needed
             objectFit="cover"
             borderRadius="full"
           />
@@ -148,7 +175,7 @@ function ProfilePage() {
             <IconButton
               aria-label="Upload new picture"
               icon={<EditIcon />}
-              size="sm"
+              size="lg"
               position="absolute"
               bottom="0"
               right="0"
@@ -167,7 +194,16 @@ function ProfilePage() {
             />
           </label>
         </Box>
-        <VStack spacing={4} align="center" pt="10">
+        <Box pl="32px" position="relative" justifyContent="space-between" alignItems="center" >
+          <Text style={{ fontSize: '48px', fontWeight: 'bold' }}>{username}</Text>
+          <Text style={{ color: colorMode === "light" ? "gray.700" : "gray.200" }}>
+            {userEmail}
+          </Text>
+          <Text style={{ color: colorMode === "light" ? "gray.700" : "gray.200" }}>
+            🟢 Online
+          </Text>
+        </Box>
+        {/* <VStack spacing={4} align="center" pt="10">
           <FormControl>
             <FormLabel>Username:</FormLabel>
             <Input
@@ -184,7 +220,7 @@ function ProfilePage() {
           >
             {isSubmitting ? <Spinner /> : "Update Profile"}
           </Button>
-        </VStack>
+        </VStack> */}
       </Flex>
       <FloatingFeedbackButton /> {/* Add the feedback button */}
     </>
