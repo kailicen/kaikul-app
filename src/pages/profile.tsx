@@ -149,14 +149,16 @@ function ProfilePage() {
   }, [user?.email]); // Add user?.email as a dependency with optional chaining
 
   return (
-    <>
+    <div className="container">
       <AuthenticatedHeader user={user} />
-      <Flex 
+      <Flex
+        maxWidth="768px" 
         direction="row" 
         align="center" 
-        justify="center" 
+        justify="start" 
         m={5}
         mt="100px"
+        px="16"
         py="32px"
         border="1px"
         borderRadius="md"
@@ -196,10 +198,10 @@ function ProfilePage() {
         </Box>
         <Box pl="32px" position="relative" justifyContent="space-between" alignItems="center" >
           <Text style={{ fontSize: '48px', fontWeight: 'bold' }}>{username}</Text>
-          <Text style={{ color: colorMode === "light" ? "gray.700" : "gray.200" }}>
+          <Text style={{ marginBottom: "8px" }} color={ colorMode === "light" ? "gray.700" : "gray.500" }>
             {userEmail}
           </Text>
-          <Text style={{ color: colorMode === "light" ? "gray.700" : "gray.200" }}>
+          <Text color={ colorMode === "light" ? "gray.700" : "gray.500" }>
             🟢 Online
           </Text>
         </Box>
@@ -223,7 +225,7 @@ function ProfilePage() {
         </VStack> */}
       </Flex>
       <FloatingFeedbackButton /> {/* Add the feedback button */}
-    </>
+    </div>
   );
 }
 
