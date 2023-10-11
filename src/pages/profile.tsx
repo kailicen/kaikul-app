@@ -149,83 +149,220 @@ function ProfilePage() {
   }, [user?.email]); // Add user?.email as a dependency with optional chaining
 
   return (
-    <div className="container">
+    <>
       <AuthenticatedHeader user={user} />
-      <Flex
-        maxWidth="768px" 
-        direction="row" 
-        align="center" 
-        justify="start" 
-        m={5}
-        mt="100px"
-        px="16"
-        py="32px"
-        border="1px"
-        borderRadius="md"
-        boxShadow="lg"
-        borderColor={colorMode === "light" ? "gray.200" : "gray.700"}
-      >
-        <Box position="relative">
-          <Avatar
-            src={imagePreview} // Add a default avatar picture url here
-            // size="xl"
-            style={{ width: '150px', height: '150px' }} // Adjust the size as needed
-            objectFit="cover"
-            borderRadius="full"
-          />
-          <label htmlFor="upload-profile-pic">
-            <IconButton
-              aria-label="Upload new picture"
-              icon={<EditIcon />}
-              size="lg"
-              position="absolute"
-              bottom="0"
-              right="0"
-              onClick={() => {
-                const fileInput = document.getElementById(
-                  "upload-profile-pic"
-                ) as HTMLInputElement;
-                fileInput.click();
-              }}
+      <div style={{ marginLeft: "80px", marginRight: "80px" }} className="container">
+        <Flex
+          maxWidth="768px" 
+          direction="row" 
+          align="center"
+          justify="start" 
+          mt="120px"
+          mb="96px"
+          px="16"
+          py="32px"
+          border="1px"
+          borderRadius="md"
+          boxShadow="lg"
+          borderColor={colorMode === "light" ? "gray.200" : "gray.500"}
+        >
+          <Box position="relative">
+            <Avatar
+              src={imagePreview} // Add a default avatar picture url here
+              // size="xl"
+              style={{ width: '150px', height: '150px' }} // Adjust the size as needed
+              objectFit="cover"
+              borderRadius="full"
             />
-            <Input
-              type="file"
-              id="upload-profile-pic"
-              style={{ display: "none" }}
-              onChange={handleProfilePictureChange}
-            />
-          </label>
-        </Box>
-        <Box pl="32px" position="relative" justifyContent="space-between" alignItems="center" >
-          <Text style={{ fontSize: '48px', fontWeight: 'bold' }}>{username}</Text>
-          <Text style={{ marginBottom: "8px" }} color={ colorMode === "light" ? "gray.700" : "gray.500" }>
-            {userEmail}
-          </Text>
-          <Text color={ colorMode === "light" ? "gray.700" : "gray.500" }>
-            🟢 Online
-          </Text>
-        </Box>
-        {/* <VStack spacing={4} align="center" pt="10">
-          <FormControl>
-            <FormLabel>Username:</FormLabel>
-            <Input
-              type="text"
-              value={username}
-              onChange={(e) => setUsername(e.target.value)}
-            />
-          </FormControl>
-          <Button
-            type="button"
-            colorScheme="blue"
-            isLoading={isSubmitting}
-            onClick={handleProfileSubmit}
+            <label htmlFor="upload-profile-pic">
+              <IconButton
+                aria-label="Upload new picture"
+                icon={<EditIcon />}
+                size="lg"
+                position="absolute"
+                bottom="0"
+                right="0"
+                onClick={() => {
+                  const fileInput = document.getElementById(
+                    "upload-profile-pic"
+                  ) as HTMLInputElement;
+                  fileInput.click();
+                }}
+              />
+              <Input
+                type="file"
+                id="upload-profile-pic"
+                style={{ display: "none" }}
+                onChange={handleProfilePictureChange}
+              />
+            </label>
+          </Box>
+          <Box pl="32px" position="relative" justifyContent="space-between" alignItems="center" >
+            <Text style={{ fontSize: '48px', fontWeight: 'bold' }}>{username}</Text>
+            <Text style={{ marginBottom: "8px" }} color={ colorMode === "light" ? "gray.700" : "gray.500" }>
+              {userEmail}
+            </Text>
+            <Text color={ colorMode === "light" ? "gray.700" : "gray.500" }>
+              🟢 Online
+            </Text>
+          </Box>
+          {/* <VStack spacing={4} align="center" pt="10">
+            <FormControl>
+              <FormLabel>Username:</FormLabel>
+              <Input
+                type="text"
+                value={username}
+                onChange={(e) => setUsername(e.target.value)}
+              />
+            </FormControl>
+            <Button
+              type="button"
+              colorScheme="blue"
+              isLoading={isSubmitting}
+              onClick={handleProfileSubmit}
+            >
+              {isSubmitting ? <Spinner /> : "Update Profile"}
+            </Button>
+          </VStack> */}
+        </Flex>
+        <h1 style={{ fontSize: "40px", fontWeight: "bold", marginBottom: "24px" }}>Profile</h1>
+        <Flex
+          direction="column" 
+          align="start" 
+          justify="start" 
+          bg={colorMode === "light" ? "gray.50" : "gray.700"}
+          mb="80px"
+          px="16"
+          py="32px"
+          border="1px"
+          borderRadius="md"
+          boxShadow="lg"
+          borderColor={colorMode === "light" ? "gray.200" : "gray.500"}
+        >
+          <Flex
+            width="100%"
+            direction="row"
+            align="center"
+            justifyContent="space-between"
+            justify="between"
+            marginBottom="16px"
+            borderBottom="1px solid"
+            borderColor={colorMode === "light" ? "gray.200" : "gray.500"}
           >
-            {isSubmitting ? <Spinner /> : "Update Profile"}
-          </Button>
-        </VStack> */}
-      </Flex>
-      <FloatingFeedbackButton /> {/* Add the feedback button */}
-    </div>
+            {/* ROW */}
+            <Flex
+              direction="column"
+              align="start" 
+              justify="start" 
+            >
+              <Flex
+                direction="row"
+                align="center"
+                justify="start" 
+              >
+                <img src="" alt="" />
+                <Text>
+                  Two-Word Bio
+                </Text>
+              </Flex>
+              <Text style={{ fontSize: "20px", fontWeight: "bold" }}>Driven Innovator</Text>
+            </Flex>
+            <Button borderRadius="8px">Edit</Button>
+          </Flex>
+          <Flex
+            width="100%"
+            direction="row"
+            align="center"
+            justifyContent="space-between"
+            justify="between"
+            marginBottom="16px"
+            borderBottom="1px solid"
+            borderColor={colorMode === "light" ? "gray.200" : "gray.500"}
+          >
+            {/* ROW */}
+            <Flex
+              direction="column"
+              align="start" 
+              justify="start"
+            >
+              <Flex
+                direction="row"
+                align="center"
+                justify="start" 
+              >
+                <img src="" alt="" />
+                <Text>
+                  Profession
+                </Text>
+              </Flex>
+              <Text style={{ fontSize: "20px", fontWeight: "bold" }}>Frontend Engineer</Text>
+            </Flex>
+            <Button borderRadius="8px">Edit</Button>
+          </Flex>
+          <Flex
+            width="100%"
+            direction="row"
+            align="center"
+            justifyContent="space-between"
+            justify="between"
+            marginBottom="16px"
+            borderBottom="1px solid"
+            borderColor={colorMode === "light" ? "gray.200" : "gray.500"}
+          >
+            {/* ROW */}
+            <Flex
+              direction="column"
+              align="start" 
+              justify="start" 
+            >
+              <Flex
+                direction="row"
+                align="center"
+                justify="start" 
+              >
+                <img src="" alt="" />
+                <Text>
+                  Date of Joining
+                </Text>
+              </Flex>
+              <Text style={{ fontSize: "20px", fontWeight: "bold" }}>31-May-2023</Text>
+            </Flex>
+            <Button borderRadius="8px">Edit</Button>
+          </Flex>
+          <Flex
+            width="100%"
+            direction="row"
+            align="center"
+            justifyContent="space-between"
+            justify="between"
+            marginBottom="16px"
+            borderBottom="1px solid"
+            borderColor={colorMode === "light" ? "gray.200" : "gray.500"}
+          >
+            {/* ROW */}
+            <Flex
+              direction="column"
+              align="start" 
+              justify="start" 
+            >
+              <Flex
+                direction="row"
+                align="center"
+                justify="start" 
+              >
+                <img src="" alt="" />
+                <Text>
+                  Self-Quote
+                </Text>
+              </Flex>
+              <Text style={{ fontSize: "20px", fontWeight: "bold" }}>Do the impossible and you'll never doubt yourself ever again.</Text>
+            </Flex>
+            <Button borderRadius="8px">Edit</Button>
+          </Flex>
+        </Flex>
+        <FloatingFeedbackButton /> {/* Add the feedback button */}
+      </div>
+    </>
   );
 }
 
