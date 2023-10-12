@@ -114,7 +114,7 @@ exports.sendWelcomeEmail = functions.auth.user().onCreate(async (user) => {
   }
 
   const data = {
-    from: "KaiKul <no-reply@kaikul.com>",
+    from: "KaiKul Team <kaili@kaikul.com>",
     to: email,
     subject: "Welcome to KaiKul",
     template: "welcome_email",
@@ -159,7 +159,7 @@ exports.sendWeeklyNewsletter = functions.pubsub
 
       // Send emails using Mailgun
       const data = {
-        from: "KaiKul <no-reply@kaikul.com>",
+        from: "KaiKul Team <kaili@kaikul.com>",
         to: recipients,
         subject: "Your Weekly Newsletter",
         template: "newsletter",

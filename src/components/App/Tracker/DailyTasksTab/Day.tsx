@@ -475,7 +475,7 @@ const Day: React.FC<{ date: string; user: User }> = ({ date, user }) => {
                                     ? format(
                                         new Date(`${field.value[0]}T12:00:00`),
                                         "MMMM d, yyyy"
-                                      ) + ` (${field.value[0]})`
+                                      )
                                     : field.value.length > 0
                                     ? `${field.value.length} dates selected`
                                     : "Select Task Dates"}
