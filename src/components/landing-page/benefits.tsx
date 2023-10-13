@@ -16,7 +16,7 @@ export function Benefits({ benefits }: BenefitsProps) {
   return (
     <section
       id="benefits"
-      className="lg:py-18 container mb-4 space-y-8 rounded-lg py-12 dark:bg-transparent"
+      className="lg:py-18 mb-4 space-y-8 rounded-lg py-12 dark:bg-transparent"
     >
       <div className="mx-auto flex max-w-[64rem] flex-col items-center space-y-8 text-left">
         {/* {benefits.map((benefit, index) => (

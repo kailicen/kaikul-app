@@ -13,7 +13,7 @@ function Connect() {
     <>
       <AuthenticatedHeader user={user} />
       {user ? (
-        <div className="pt-[80px] container mx-auto">
+        <div className="pt-[80px] mx-auto">
           <ConnectPage user={user} />
           <FloatingFeedbackButton /> {/* Add the feedback button */}
         </div>

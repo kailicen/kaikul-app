@@ -8,7 +8,7 @@ export function Features() {
   return (
     <section
       id="features"
-      className="container mb-4 flex flex-col items-center space-y-6 rounded-lg py-8 dark:bg-transparent lg:py-8"
+      className="mb-4 flex flex-col items-center space-y-6 rounded-lg py-8 dark:bg-transparent lg:py-8"
     >
       {/* Button to toggle feature visibility */}
       <Button

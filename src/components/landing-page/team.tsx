@@ -15,7 +15,7 @@ export function Team({ clients }: TeamProps) {
   return (
     <section
       id="team"
-      className="lg:py-18 container mb-4 space-y-6 rounded-lg py-8 dark:bg-transparent"
+      className="lg:py-18 mb-4 space-y-6 rounded-lg py-8 dark:bg-transparent"
     >
       <div className="mx-auto flex max-w-[58rem] flex-col items-center space-y-4 text-center">
         <h2 className="font-heading font-bold text-3xl sm:text-3xl md:text-6xl">
