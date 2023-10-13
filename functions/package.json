@@ -24,6 +24,7 @@
     "nodemailer-mailgun-transport": "^2.1.5"
   },
   "devDependencies": {
+    "@types/cors": "^2.8.14",
     "@types/mailgun-js": "^0.22.14",
     "@types/nodemailer": "^6.4.10",
     "@types/nodemailer-mailgun-transport": "^1.4.4",

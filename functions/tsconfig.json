@@ -6,8 +6,9 @@
     "outDir": "lib",
     "sourceMap": true,
     "strict": true,
-    "target": "es2017",
-    "typeRoots": ["./src", "./node_modules/@types"]
+    "target": "es2018",
+    "typeRoots": ["./src", "./node_modules/@types"],
+    "allowSyntheticDefaultImports": true
   },
   "compileOnSave": true,
   "include": ["src"]
