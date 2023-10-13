@@ -3,8 +3,7 @@ import * as functions from "firebase-functions";
 import * as admin from "firebase-admin";
 import {format, addYears} from "date-fns";
 import * as mailgun from "mailgun-js";
-import cors = require("cors");
-
+import * as cors from "cors";
 
 admin.initializeApp();
 const db = admin.firestore();
