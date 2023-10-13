@@ -12,6 +12,10 @@ import {
   RadioGroup,
   Stack,
   Radio,
+  Spinner,
+  Heading,
+  HStack,
+  Icon,
 } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 import {
@@ -21,8 +25,10 @@ import {
   where,
   doc,
   updateDoc,
+  addDoc,
 } from "firebase/firestore";
 import { firestore } from "@/firebase/clientApp";
+import { FaSadTear } from "react-icons/fa";
 
 const Unsubscribe: React.FC = () => {
   const router = useRouter();
@@ -72,8 +78,9 @@ const Unsubscribe: React.FC = () => {
       setUserId(data.userId); // Set the userId in state (ensure you have a state variable set up to store this)
     } catch (error) {
       toast({
-        title: "An error occurred",
-        description: "Unable to unsubscribe. Please try again later.",
+        title: "An error occurred.",
+        description:
+          "Unable to unsubscribe. Please contact us and we will help you out;)",
         status: "error",
         duration: 3000,
         isClosable: true,
@@ -84,11 +91,11 @@ const Unsubscribe: React.FC = () => {
 
   const handleFeedbackSubmit = async () => {
     try {
-      // Check if userId, selectedReason, or feedback are undefined or null
-      if (!userId || !selectedReason || !feedback) {
+      // Check if selectedReason is undefined or null
+      if (!selectedReason) {
         toast({
           title: "Error",
-          description: "Unable to submit feedback due to missing information.",
+          description: "Please select a reason.",
           status: "error",
           duration: 3000,
           isClosable: true,
@@ -96,12 +103,14 @@ const Unsubscribe: React.FC = () => {
         return; // exit the function early to prevent further execution
       }
 
-      const userRef = doc(firestore, "users", userId);
-      await updateDoc(userRef, {
-        feedback: {
-          reason: selectedReason,
-          comments: feedback,
-        },
+      // Generate a new feedback doc in the feedback collection
+      const feedbackRef = collection(firestore, "feedback");
+      // Add a new document with auto-generated ID, storing reason, comments, and optional userId
+      await addDoc(feedbackRef, {
+        reason: selectedReason,
+        comments: feedback,
+        userId: userId || null, // store userId or null if not available
+        timestamp: new Date().getTime(), // store the current timestamp
       });
 
       toast({
@@ -128,37 +137,57 @@ const Unsubscribe: React.FC = () => {
   return (
     <Box p={4}>
       {!showFeedbackForm ? (
-        <Text mb={4}>Unsubscribing...</Text>
+        <VStack spacing={6} align="center" mt={20}>
+          <Spinner size="xl" />
+          <Heading size="lg">Unsubscribing...</Heading>
+        </VStack>
       ) : (
-        <VStack spacing={4}>
-          <Text mb={4}>
-            You have been unsubscribed. We&apos;re sorry to see you go!
+        <VStack spacing={8} align="center" mt={12}>
+          <Icon as={FaSadTear} boxSize={16} color="gray.600" />
+          <Heading size="lg">We&apos;re sad to see you go!</Heading>
+          <Text>
+            We appreciate your time with us and would love to hear why
+            you&apos;re leaving.
           </Text>
-          <Text mb={4}>Please share why you decided to unsubscribe:</Text>
-          <FormControl as="fieldset" id="feedback" mb={4}>
-            <FormLabel as="legend">Reason for unsubscribing</FormLabel>
-            <RadioGroup onChange={setSelectedReason} value={selectedReason}>
-              <Stack spacing={4} direction="column">
-                <Radio value="No longer interested">No longer interested</Radio>
-                <Radio value="Too many emails">Too many emails</Radio>
-                <Radio value="Content not relevant">Content not relevant</Radio>
-                <Radio value="Other">Other</Radio>
-              </Stack>
-            </RadioGroup>
-          </FormControl>
-          <FormControl id="additional-feedback">
-            <FormLabel>Additional feedback (optional)</FormLabel>
-            <Textarea
-              placeholder="Your feedback helps us improve our service"
-              value={feedback}
-              onChange={(e) => setFeedback(e.target.value)}
-            />
-            <FormHelperText>We appreciate your honest feedback.</FormHelperText>
-          </FormControl>
-          <Button onClick={handleFeedbackSubmit}>Submit Feedback</Button>
-          <Button variant="link" onClick={() => router.push("/")}>
-            Skip and Return Home
-          </Button>
+
+          <VStack align="start" w={["full", null, "2xl"]} spacing={6}>
+            <FormControl as="fieldset" id="feedback" mb={4}>
+              <FormLabel as="legend" fontWeight="medium" fontSize="lg">
+                Reason for unsubscribing
+              </FormLabel>
+              <RadioGroup onChange={setSelectedReason} value={selectedReason}>
+                <Stack spacing={4} direction="column">
+                  <Radio value="No longer interested">
+                    No longer interested
+                  </Radio>
+                  <Radio value="Too many emails">Too many emails</Radio>
+                  <Radio value="Content not relevant">
+                    Content not relevant
+                  </Radio>
+                  <Radio value="Other">Other</Radio>
+                </Stack>
+              </RadioGroup>
+            </FormControl>
+            <FormControl id="additional-feedback">
+              <FormLabel>Additional feedback (optional)</FormLabel>
+              <Textarea
+                placeholder="Your feedback helps us improve our service"
+                value={feedback}
+                onChange={(e) => setFeedback(e.target.value)}
+              />
+              <FormHelperText>
+                We appreciate your honest feedback.
+              </FormHelperText>
+            </FormControl>
+            <HStack spacing={4} w="full" justify="flex-end">
+              <Button variant="outline" onClick={() => router.push("/")}>
+                Skip
+              </Button>
+              <Button colorScheme="blue" onClick={handleFeedbackSubmit}>
+                Submit Feedback
+              </Button>
+            </HStack>
+          </VStack>
         </VStack>
       )}
     </Box>
