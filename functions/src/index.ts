@@ -137,7 +137,7 @@ exports.sendWelcomeEmail = functions.auth.user().onCreate(async (user) => {
 });
 
 exports.sendWeeklyNewsletter = functions.pubsub
-  .schedule("every day 09:00")
+  .schedule("every sunday 09:00")
   .timeZone("America/Los_Angeles")
   .onRun(async (_context) => {
     try {
@@ -171,3 +171,52 @@ exports.sendWeeklyNewsletter = functions.pubsub
       console.error("Error sending newsletter:", error);
     }
   });
+
+
+exports.unsubscribeUser = functions.https.onRequest(async (req, res) => {
+  // Ensure you're using POST for better security
+  if (req.method !== "POST") {
+    res.status(405).send("Method Not Allowed");
+    return;
+  }
+
+  // Get the token from the request body
+  const {token} = req.body;
+
+  if (!token) {
+    res.status(400).send("Bad Request: Token is required");
+    return;
+  }
+
+  try {
+    const userSnapshot = await db
+      .collection("users")
+      .where("token", "==", token)
+      .get();
+
+    if (userSnapshot.empty) {
+      res.status(404).send("User not found");
+      return;
+    }
+
+    // Update all matching documents
+    const batch = db.batch();
+    let userId = null; // Initialize userId
+
+    userSnapshot.forEach((docSnap) => {
+      batch.update(docSnap.ref, {
+        isSubscribed: false,
+        token: null,
+      });
+      // Retrieve the user id
+      userId = docSnap.id;
+    });
+    await batch.commit();
+
+    // Sending userId in the response
+    res.status(200).json({message: "User unsubscribed successfully", userId});
+  } catch (error) {
+    console.error("Error unsubscribing user: ", error);
+    res.status(500).send("Internal Server Error");
+  }
+});
