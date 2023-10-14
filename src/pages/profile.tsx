@@ -36,6 +36,7 @@ function ProfilePage() {
   const { colorMode } = useColorMode();
   const toast = useToast();
   const [userEmail, setUserEmail] = useState("");
+  const [direction, setDirection] = useState("row");
   const { username, imagePreview, setUsername, setImagePreview } = useUserData(
     user as User
   );
@@ -148,13 +149,39 @@ function ProfilePage() {
     }
   }, [user?.email]); // Add user?.email as a dependency with optional chaining
 
+  useEffect(() => {
+    function handleResize() {
+      if (window.innerWidth <= 640) {
+        setDirection("column");
+      } else {
+        setDirection("row");
+      }
+    }
+
+    // Add a resize event listener
+    window.addEventListener("resize", handleResize);
+
+    // Initial direction based on window width
+    if (window.innerWidth <= 640) {
+      setDirection("column");
+    } else {
+      setDirection("row");
+    }
+
+    // Clean up the event listener on component unmount
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
+  }, []);
+
   return (
     <>
       <AuthenticatedHeader user={user} />
       <div style={{ marginLeft: "80px", marginRight: "80px" }} className="container">
         <Flex
           maxWidth="768px" 
-          direction="row" 
+          direction="row"
+          // direction={direction}
           align="center"
           justify="start" 
           mt="120px"
@@ -254,6 +281,7 @@ function ProfilePage() {
               direction="column"
               align="start" 
               justify="start" 
+              marginBottom="16px"
             >
               <Flex
                 direction="row"
@@ -267,7 +295,7 @@ function ProfilePage() {
               </Flex>
               <Text style={{ fontSize: "20px", fontWeight: "bold" }}>Driven Innovator</Text>
             </Flex>
-            <Button borderRadius="8px">Edit</Button>
+            <Button borderRadius="8px" marginBottom="16px">Edit</Button>
           </Flex>
           <Flex
             width="100%"
@@ -284,6 +312,7 @@ function ProfilePage() {
               direction="column"
               align="start" 
               justify="start"
+              marginBottom="16px"
             >
               <Flex
                 direction="row"
@@ -297,7 +326,7 @@ function ProfilePage() {
               </Flex>
               <Text style={{ fontSize: "20px", fontWeight: "bold" }}>Frontend Engineer</Text>
             </Flex>
-            <Button borderRadius="8px">Edit</Button>
+            <Button borderRadius="8px" marginBottom="16px">Edit</Button>
           </Flex>
           <Flex
             width="100%"
@@ -313,7 +342,8 @@ function ProfilePage() {
             <Flex
               direction="column"
               align="start" 
-              justify="start" 
+              justify="start"
+              marginBottom="16px"
             >
               <Flex
                 direction="row"
@@ -327,7 +357,7 @@ function ProfilePage() {
               </Flex>
               <Text style={{ fontSize: "20px", fontWeight: "bold" }}>31-May-2023</Text>
             </Flex>
-            <Button borderRadius="8px">Edit</Button>
+            <Button borderRadius="8px" marginBottom="16px">Edit</Button>
           </Flex>
           <Flex
             width="100%"
@@ -344,6 +374,7 @@ function ProfilePage() {
               direction="column"
               align="start" 
               justify="start" 
+              marginBottom="16px"
             >
               <Flex
                 direction="row"
@@ -357,7 +388,7 @@ function ProfilePage() {
               </Flex>
               <Text style={{ fontSize: "20px", fontWeight: "bold" }}>Do the impossible and you'll never doubt yourself ever again.</Text>
             </Flex>
-            <Button borderRadius="8px">Edit</Button>
+            <Button borderRadius="8px" marginBottom="16px">Edit</Button>
           </Flex>
         </Flex>
         <FloatingFeedbackButton /> {/* Add the feedback button */}
