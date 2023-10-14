@@ -9,6 +9,7 @@ import {
   doc,
   deleteDoc,
   onSnapshot,
+  orderBy,
 } from "firebase/firestore";
 import { firestore } from "../firebase/clientApp";
 import { User } from "firebase/auth";
@@ -21,6 +22,8 @@ const useTasks = (date: string, user: User) => {
 
   const handleAddTask = async (
     task: string,
+    priority: string,
+    focusHours: number,
     description: string,
     goalId: string,
     date: string,
@@ -33,6 +36,8 @@ const useTasks = (date: string, user: User) => {
         completed: false,
         date,
         userId: user.uid,
+        priority,
+        focusHours,
         description,
         goalId,
         color,
@@ -86,6 +91,8 @@ const useTasks = (date: string, user: User) => {
   const handleEditTask = async (
     id: string,
     newTask: string,
+    newPriority: string,
+    newFocusHours: number,
     newDescription: string,
     newGoalId: string,
     newTaskDate: string,
@@ -101,6 +108,8 @@ const useTasks = (date: string, user: User) => {
     const updatedTask = {
       ...originalTask,
       text: newTask,
+      priority: newPriority,
+      focusHours: newFocusHours,
       description: newDescription,
       goalId: newGoalId,
       date: newTaskDate,
@@ -112,6 +121,8 @@ const useTasks = (date: string, user: User) => {
       await updateDoc(taskDocRef, {
         text: updatedTask.text,
         description: updatedTask.description,
+        priority: updatedTask.priority,
+        focusHours: updatedTask.focusHours,
         goalId: updatedTask.goalId,
         date: updatedTask.date,
         color: updatedTask.color,
@@ -159,7 +170,8 @@ const useTasks = (date: string, user: User) => {
     const q = query(
       taskCollection,
       where("date", "==", date),
-      where("userId", "==", user.uid)
+      where("userId", "==", user.uid),
+      orderBy("priority", "asc")
     );
 
     const unsubscribe = onSnapshot(

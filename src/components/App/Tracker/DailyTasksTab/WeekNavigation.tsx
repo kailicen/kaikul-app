@@ -1,10 +1,20 @@
-import React, { useState } from "react";
-import { Box, Icon, Text, Tooltip, Flex, Button } from "@chakra-ui/react";
+import React, { useEffect, useState } from "react";
+import {
+  Box,
+  Icon,
+  Text,
+  Tooltip,
+  Flex,
+  Button,
+  Badge,
+  VStack,
+} from "@chakra-ui/react";
 import { MdChevronLeft, MdChevronRight } from "react-icons/md";
 import { AiOutlineShareAlt } from "react-icons/ai";
 import ShareProgressModal from "@/components/Modal/ShareProgress/ShareProgressModal";
 import { utcToZonedTime } from "date-fns-tz";
 import { addDays, format, parseISO } from "date-fns";
+import { useStatistics } from "@/hooks/useStatistics";
 
 type WeekNavigationProps = {
   onPreviousWeek: () => void;
@@ -36,6 +46,26 @@ const WeekNavigation: React.FC<WeekNavigationProps> = ({
   const closeShareModal = () => {
     setIsShareModalOpen(false);
   };
+
+  const { getWeeklyStats } = useStatistics();
+  const [weeklyStats, setWeeklyStats] = useState({
+    totalFocusHours: 0,
+    completionRate: 0,
+    completedCount: 0,
+  });
+
+  useEffect(() => {
+    const fetchTotalFocusHours = async () => {
+      try {
+        const stats = await getWeeklyStats(currentWeekStart);
+        setWeeklyStats(stats);
+      } catch (error) {
+        console.error("Failed to fetch total focus hours: ", error);
+      }
+    };
+
+    fetchTotalFocusHours();
+  }, [currentWeekStart]);
 
   return (
     <Flex align="center" justify="space-between" h={12} width="100%">
@@ -70,7 +100,15 @@ const WeekNavigation: React.FC<WeekNavigationProps> = ({
           {startOfWeekDate} - {endOfWeekDate}
         </Text>
       </Flex>
-      <Flex>
+      <Flex alignItems="center" gap={3}>
+        <VStack spacing={1}>
+          <Badge colorScheme="purple">
+            Completion Rate: {(weeklyStats.completionRate * 100).toFixed(2)}%
+          </Badge>
+          <Badge colorScheme="purple">
+            Focus Hours: {weeklyStats.totalFocusHours} hrs
+          </Badge>
+        </VStack>
         <Button
           variant="outline"
           rightIcon={<AiOutlineShareAlt />}

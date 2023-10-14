@@ -12,7 +12,13 @@ function WeekView({ user, currentWeekStart }: Props) {
   const adjustedDate = new Date(`${currentWeekStart}T12:00:00`); // Set to noon
 
   return (
-    <Box display="flex" justifyContent="space-between" w="100%" mb={10}>
+    <Box
+      display="flex"
+      justifyContent="space-between"
+      w="100%"
+      mb={10}
+      overflowX="auto" // Enable horizontal scrolling
+    >
       {Array.from({ length: 7 }).map((_, index) => {
         const dateZoned = addDays(adjustedDate, index);
         const date = format(dateZoned, "yyyy-MM-dd");

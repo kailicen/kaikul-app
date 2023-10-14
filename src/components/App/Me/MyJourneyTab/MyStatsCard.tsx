@@ -17,10 +17,6 @@ import {
 } from "@chakra-ui/react";
 import {
   eachDayOfInterval,
-  endOfDay,
-  endOfMonth,
-  endOfWeek,
-  endOfYear,
   format,
   getISOWeek,
   startOfDay,
@@ -41,7 +37,6 @@ import {
   ResponsiveContainer,
 } from "recharts";
 import { CustomTooltip } from "./CustomTooltip";
-import { utcToZonedTime } from "date-fns-tz";
 
 type TimeRange = "day" | "week" | "month" | "6months" | "year";
 type ChartData = {

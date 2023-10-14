@@ -28,6 +28,13 @@ import {
   useColorMode,
   ListItem,
   UnorderedList,
+  FormHelperText,
+  NumberDecrementStepper,
+  NumberIncrementStepper,
+  NumberInput,
+  NumberInputField,
+  NumberInputStepper,
+  Tag,
 } from "@chakra-ui/react";
 import { Formik, Form, Field, FieldInputProps, ErrorMessage } from "formik";
 import { MdAdd } from "react-icons/md";
@@ -41,6 +48,7 @@ import { DayPicker } from "react-day-picker";
 import "react-day-picker/dist/style.css";
 import { FaCalendarAlt } from "react-icons/fa";
 import { utcToZonedTime } from "date-fns-tz";
+import { Task } from "@/atoms/tasksAtom";
 
 const Day: React.FC<{ date: string; user: User }> = ({ date, user }) => {
   const taskDrawerDisclosure = useDisclosure();
@@ -48,6 +56,8 @@ const Day: React.FC<{ date: string; user: User }> = ({ date, user }) => {
 
   const [selectedTaskId, setSelectedTaskId] = useState<string | null>(null);
   const [selectedTaskText, setSelectedTaskText] = useState("");
+  const [selectedPriority, setSelectedPriority] = useState("");
+  const [selectedFocusHours, setSelectedFocusHours] = useState(0);
   const [selectedTaskDescription, setSelectedTaskDescription] = useState("");
   const [selectedGoalId, setSelectedGoalId] = useState<string | null>(null);
   const [taskDate, setTaskDate] = useState<string>("");
@@ -91,18 +101,12 @@ const Day: React.FC<{ date: string; user: User }> = ({ date, user }) => {
   const [taskDisplayedMonth, setTaskDisplayedMonth] = useState(new Date());
 
   const [ifDuplicate, setIfDuplicate] = useState<boolean>(false);
-  const [duplicateValues, setDuplicateValues] = useState<{
-    task: string;
-    description: string;
-    goalId: string;
-    date: string;
-  } | null>(null);
+  const [duplicateValues, setDuplicateValues] = useState<Task | null>(null);
 
   const { colorMode } = useColorMode();
 
   const {
     tasks,
-    setTasks,
     handleAddTask,
     handleCompleteTask,
     handleEditTask,
@@ -115,10 +119,18 @@ const Day: React.FC<{ date: string; user: User }> = ({ date, user }) => {
   //use recoil state
   const { recoilGoals } = useGoals(user, startOfWeekString);
 
+  const priorities = [
+    { value: "1", label: "High", emoji: "🏔️" },
+    { value: "2", label: "Medium", emoji: "🏕️" },
+    { value: "3", label: "Low", emoji: "🏖️" },
+  ];
+
   const openDrawer = (
     date: string,
     id?: string,
     text?: string,
+    priority?: string,
+    focusHours?: number,
     description?: string,
     goalId?: string
   ) => {
@@ -126,6 +138,8 @@ const Day: React.FC<{ date: string; user: User }> = ({ date, user }) => {
     setTaskDate(date);
     setSelectedTaskId(id || null);
     setSelectedTaskText(text || "");
+    setSelectedPriority(priority || "");
+    setSelectedFocusHours(focusHours || 0);
     setSelectedTaskDescription(description || "");
     setSelectedGoalId(goalId || "");
   };
@@ -138,6 +152,8 @@ const Day: React.FC<{ date: string; user: User }> = ({ date, user }) => {
 
   const handleFormSubmit = (values: {
     task: string;
+    priority: string;
+    focusHours: number;
     description: string;
     goalId: string;
     date: string[]; // Change the type of date to an array of strings
@@ -151,6 +167,8 @@ const Day: React.FC<{ date: string; user: User }> = ({ date, user }) => {
         handleEditTask(
           selectedTaskId,
           values.task,
+          values.priority,
+          values.focusHours,
           values.description,
           values.goalId,
           date, // Pass the current date in the loop
@@ -166,6 +184,8 @@ const Day: React.FC<{ date: string; user: User }> = ({ date, user }) => {
       } else {
         handleAddTask(
           values.task,
+          values.priority,
+          values.focusHours,
           values.description,
           values.goalId,
           date, // Pass the current date in the loop
@@ -192,7 +212,9 @@ const Day: React.FC<{ date: string; user: User }> = ({ date, user }) => {
 
     taskDrawerDisclosure.onClose();
     const valuesToDuplicate = {
-      task: selectedTaskText,
+      text: selectedTaskText,
+      priority: selectedPriority,
+      focusHours: selectedFocusHours,
       description: selectedTaskDescription,
       goalId: selectedGoalId as string,
       date: taskDate,
@@ -302,51 +324,89 @@ const Day: React.FC<{ date: string; user: User }> = ({ date, user }) => {
           position="relative"
           role="group"
           cursor="pointer"
-          onClick={() =>
+          onClick={() => {
             openDrawer(
               task.date,
               task.id,
               task.text,
+              task.priority,
+              task.focusHours,
               task.description,
               task.goalId
-            )
-          }
+            );
+          }}
         >
-          <HStack spacing={2}>
-            <Flex
-              onClick={(e) => {
-                e.stopPropagation();
-              }}
-            >
-              <Checkbox
-                isChecked={task.completed}
-                colorScheme="gray"
-                sx={{
-                  ".chakra-checkbox__control": {
-                    borderColor: "gray.700",
-                    _checked: {
-                      borderColor: "gray.500",
-                      bg: "gray.500",
-                    },
-                    _hover: {
-                      borderColor: "gray.600",
-                    },
-                  },
+          <VStack align="left">
+            <HStack spacing={2}>
+              <Flex
+                onClick={(e) => {
+                  e.stopPropagation();
                 }}
-                onChange={(e) => {
-                  handleCompleteTask(task.id);
-                }}
-              />
-            </Flex>
+              >
+                <Checkbox
+                  isChecked={task.completed}
+                  colorScheme="gray"
+                  sx={{
+                    ".chakra-checkbox__control": {
+                      borderColor: "gray.700",
+                      _checked: {
+                        borderColor: "gray.500",
+                        bg: "gray.500",
+                      },
+                      _hover: {
+                        borderColor: "gray.600",
+                      },
+                    },
+                  }}
+                  onChange={(e) => {
+                    handleCompleteTask(task.id as string);
+                  }}
+                />
+              </Flex>
 
-            <Text
-              fontSize="sm"
-              flexGrow={1}
-              textDecoration={task.completed ? "line-through" : "none"}
-            >
-              {task.text}
-            </Text>
-          </HStack>
+              <Text
+                fontSize="sm"
+                flexGrow={1}
+                textDecoration={task.completed ? "line-through" : "none"}
+              >
+                {task.text}
+              </Text>
+            </HStack>
+            {/* Additional Task Information: Priority and Focus Hours */}
+            <HStack spacing={1}>
+              {task.priority && task.priority !== "9" && (
+                <Tag
+                  colorScheme={colorMode === "light" ? "gray" : "black"}
+                  size="sm"
+                  variant="solid"
+                  borderRadius="full"
+                  whiteSpace="nowrap"
+                  isTruncated
+                >
+                  {/* Find and display the emoji and label corresponding to task.priority */}
+                  {priorities
+                    .filter((p) => p.value === task.priority?.toString())
+                    .map((p) => (
+                      <>
+                        {p.emoji} {p.label}
+                      </>
+                    ))}
+                </Tag>
+              )}
+              {task.focusHours && (
+                <Tag
+                  colorScheme={colorMode === "light" ? "gray" : "black"}
+                  size="sm"
+                  variant="solid"
+                  borderRadius="full"
+                  whiteSpace="nowrap"
+                  isTruncated
+                >
+                  {task.focusHours} hrs
+                </Tag>
+              )}
+            </HStack>
+          </VStack>
         </Box>
       ))}
       {/* add a task */}
@@ -407,13 +467,19 @@ const Day: React.FC<{ date: string; user: User }> = ({ date, user }) => {
               <Formik
                 initialValues={{
                   task: duplicateValues
-                    ? duplicateValues.task
+                    ? duplicateValues.text
                     : selectedTaskText,
+                  priority: duplicateValues
+                    ? (duplicateValues.priority as string)
+                    : selectedPriority,
+                  focusHours: duplicateValues
+                    ? (duplicateValues.focusHours as number)
+                    : selectedFocusHours,
                   description: duplicateValues
-                    ? duplicateValues.description
+                    ? (duplicateValues.description as string)
                     : selectedTaskDescription,
                   goalId: duplicateValues
-                    ? duplicateValues.goalId
+                    ? (duplicateValues.goalId as string)
                     : (selectedGoalId as string),
                   date: duplicateValues ? [duplicateValues.date] : [taskDate],
                 }}
@@ -456,7 +522,7 @@ const Day: React.FC<{ date: string; user: User }> = ({ date, user }) => {
                             alignItems="center"
                             mt={4}
                           >
-                            <FormLabel mb="0">Task Date:</FormLabel>
+                            <FormLabel mb="0">Task Date</FormLabel>
                             <Popover
                               isOpen={isTaskDatePopoverOpen}
                               onClose={() => {
@@ -586,6 +652,84 @@ const Day: React.FC<{ date: string; user: User }> = ({ date, user }) => {
                                 </PopoverBody>
                               </PopoverContent>
                             </Popover>
+                          </FormControl>
+                        </Box>
+                      )}
+                    </Field>
+
+                    <Field name="priority">
+                      {({
+                        field,
+                        form,
+                      }: {
+                        field: FieldInputProps<any>;
+                        form: any;
+                      }) => (
+                        <Box mt={4}>
+                          <FormControl
+                            display="flex"
+                            alignItems="center"
+                            mt={4}
+                          >
+                            <FormLabel mb="0">Priority</FormLabel>
+                            <Select
+                              {...field}
+                              maxW="150px"
+                              borderRadius="full"
+                              placeholder="Optional"
+                              value={field.value} // Set the selected value
+                              onChange={(e) => {
+                                setFieldValue("priority", e.target.value);
+                              }}
+                            >
+                              {priorities.map((priority) => (
+                                <option
+                                  key={priority.value}
+                                  value={priority.value}
+                                >
+                                  {priority.emoji} {priority.label}
+                                </option>
+                              ))}
+                            </Select>
+                          </FormControl>
+                        </Box>
+                      )}
+                    </Field>
+
+                    <Field name="focusHours">
+                      {({
+                        field,
+                        form,
+                      }: {
+                        field: FieldInputProps<any>;
+                        form: any;
+                      }) => (
+                        <Box mt={4}>
+                          <FormControl
+                            display="flex"
+                            alignItems="center"
+                            mt={4}
+                          >
+                            <FormLabel mb="0">Track Focus Hours</FormLabel>
+                            <NumberInput
+                              maxW="100px"
+                              value={field.value} // Use field.value from Formik
+                              placeholder="e.g., 2"
+                              min={0}
+                              step={0.5}
+                              onChange={(valueString) => {
+                                form.setFieldValue(
+                                  "focusHours",
+                                  parseFloat(valueString) // Parse as a floating-point number
+                                ); // Use Formik’s setFieldValue to ensure updates
+                              }}
+                            >
+                              <NumberInputField />
+                              <NumberInputStepper>
+                                <NumberIncrementStepper />
+                                <NumberDecrementStepper />
+                              </NumberInputStepper>
+                            </NumberInput>
                           </FormControl>
                         </Box>
                       )}

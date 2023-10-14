@@ -3,6 +3,8 @@ import * as functions from "firebase-functions";
 import * as admin from "firebase-admin";
 import {format, addYears} from "date-fns";
 import * as mailgun from "mailgun-js";
+// import * as cors from "cors";
+// default is for Vercel deployment issue, but it will break the functions
 import {default as cors} from "cors";
 
 
@@ -151,7 +153,11 @@ exports.sendWeeklyNewsletter = functions.pubsub
   .onRun(async (_context) => {
     try {
       // Fetch subscribers from Firebase (assuming Firestore here)
-      const snapshot = await admin.firestore().collection("users").get();
+      const snapshot = await admin
+        .firestore()
+        .collection("users")
+        .where("isSubscribed", "==", true)
+        .get();
       if (snapshot.empty) {
         console.log("No subscribers found.");
         return;

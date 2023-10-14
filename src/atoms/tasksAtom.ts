@@ -2,14 +2,16 @@ import { format } from "date-fns";
 import { atom, DefaultValue, selectorFamily } from "recoil";
 
 export type Task = {
-  id: string;
+  id?: string;
   text: string;
-  completed: boolean;
+  completed?: boolean;
   date: string; // represents a date in the format 'yyyy-mm-dd'
-  userId: string | null;
+  userId?: string | null;
   goalId?: string; // This is the ID of the associated goal
   description?: string;
   color?: string;
+  priority?: string;
+  focusHours?: number;
 };
 
 interface TaskState {

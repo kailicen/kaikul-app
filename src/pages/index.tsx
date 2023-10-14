@@ -179,7 +179,7 @@ export default function Home({ posts }: Props) {
       <AuthenticatedHeader user={user} />
 
       {user ? (
-        <div className="pt-[80px] mx-auto">
+        <div className="pt-[80px] mx-auto md:container">
           <MePage user={user} posts={posts} />
           <FloatingFeedbackButton /> {/* Add the feedback button */}
         </div>
