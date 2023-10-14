@@ -184,7 +184,7 @@ const Day: React.FC<{ date: string; user: User }> = ({ date, user }) => {
       } else {
         handleAddTask(
           values.task,
-          values.priority,
+          values.priority === "" ? "9" : values.priority,
           values.focusHours,
           values.description,
           values.goalId,
@@ -293,6 +293,8 @@ const Day: React.FC<{ date: string; user: User }> = ({ date, user }) => {
       align="stretch"
       width="100%"
       minHeight="400px"
+      maxHeight="600px"
+      overflowY="auto"
       border="1px"
       borderColor={colorMode === "light" ? "gray.200" : "gray.700"}
       bg={
