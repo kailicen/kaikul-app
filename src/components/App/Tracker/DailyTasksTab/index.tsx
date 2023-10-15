@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import GoalView from "./GoalView";
 import WeekView from "./WeekView";
 import { User } from "firebase/auth";
-import { Button, HStack, VStack } from "@chakra-ui/react";
+import { VStack } from "@chakra-ui/react";
 import WeekNavigation from "./WeekNavigation";
 import "moment/locale/en-gb";
 import { useMediaQuery } from "@chakra-ui/react";
@@ -18,7 +18,8 @@ import {
   subDays,
 } from "date-fns";
 import { utcToZonedTime } from "date-fns-tz";
-import TaskSidePanel from "./TaskSidePanel";
+import { DndProvider } from "react-dnd";
+import { HTML5Backend } from "react-dnd-html5-backend";
 
 type Props = { user: User };
 
@@ -68,41 +69,43 @@ function WeeklyPlanner({ user }: Props) {
   };
 
   return (
-    <VStack
-      position="relative"
-      ml={isPanelOpen && isLargerThan768 ? "300px" : "0"}
-      width={isPanelOpen && isLargerThan768 ? "calc(100% - 300px)" : "100%"}
-      transition="margin-left 0.3s ease, width 0.3s ease"
-    >
-      {isLargerThan768 ? (
-        <WeekNavigation
-          onPreviousWeek={handlePreviousWeek}
-          onNextWeek={handleNextWeek}
-          currentWeekStart={currentWeekStart}
-        />
-      ) : (
-        <DayNavigation
-          onPreviousDay={handlePreviousDay}
-          onNextDay={handleNextDay}
+    <DndProvider backend={HTML5Backend}>
+      <VStack
+        position="relative"
+        ml={isPanelOpen && isLargerThan768 ? "300px" : "0"}
+        width={isPanelOpen && isLargerThan768 ? "calc(100% - 300px)" : "100%"}
+        transition="margin-left 0.3s ease, width 0.3s ease"
+      >
+        {isLargerThan768 ? (
+          <WeekNavigation
+            onPreviousWeek={handlePreviousWeek}
+            onNextWeek={handleNextWeek}
+            currentWeekStart={currentWeekStart}
+          />
+        ) : (
+          <DayNavigation
+            onPreviousDay={handlePreviousDay}
+            onNextDay={handleNextDay}
+            currentDayStart={currentDayStart}
+          />
+        )}
+
+        <GoalView
+          user={user}
           currentDayStart={currentDayStart}
+          currentWeekStart={currentWeekStart}
+          onTogglePanel={togglePanel}
+          isPanelOpen={isPanelOpen}
+          setIsPanelOpen={setIsPanelOpen}
         />
-      )}
 
-      <GoalView
-        user={user}
-        currentDayStart={currentDayStart}
-        currentWeekStart={currentWeekStart}
-        onTogglePanel={togglePanel}
-        isPanelOpen={isPanelOpen}
-        setIsPanelOpen={setIsPanelOpen}
-      />
-
-      {isLargerThan768 ? (
-        <WeekView user={user} currentWeekStart={currentWeekStart} />
-      ) : (
-        <Day user={user} date={currentDayStart} />
-      )}
-    </VStack>
+        {isLargerThan768 ? (
+          <WeekView user={user} currentWeekStart={currentWeekStart} />
+        ) : (
+          <Day user={user} date={currentDayStart} />
+        )}
+      </VStack>
+    </DndProvider>
   );
 }
 

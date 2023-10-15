@@ -28,7 +28,6 @@ import {
   useColorMode,
   ListItem,
   UnorderedList,
-  FormHelperText,
   NumberDecrementStepper,
   NumberIncrementStepper,
   NumberInput,
@@ -38,7 +37,7 @@ import {
 } from "@chakra-ui/react";
 import { Formik, Form, Field, FieldInputProps, ErrorMessage } from "formik";
 import { MdAdd } from "react-icons/md";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { User } from "firebase/auth";
 import useTasks from "@/hooks/useTasks";
 import { useBlockers } from "@/hooks/useReflections";
@@ -49,6 +48,9 @@ import "react-day-picker/dist/style.css";
 import { FaCalendarAlt } from "react-icons/fa";
 import { utcToZonedTime } from "date-fns-tz";
 import { Task } from "@/atoms/tasksAtom";
+import { useDrop } from "react-dnd";
+import { doc, getDoc } from "firebase/firestore";
+import { firestore } from "@/firebase/clientApp";
 
 export const priorities = [
   { value: "1", label: "High", emoji: "🏔️" },
@@ -110,6 +112,13 @@ const Day: React.FC<{ date: string; user: User }> = ({ date, user }) => {
   const [duplicateValues, setDuplicateValues] = useState<Task | null>(null);
 
   const { colorMode } = useColorMode();
+
+  const dateRef = useRef<string>();
+
+  useEffect(() => {
+    // Always keep the most recent value of date in the ref
+    dateRef.current = date;
+  }, [date]);
 
   const {
     tasks,
@@ -282,21 +291,74 @@ const Day: React.FC<{ date: string; user: User }> = ({ date, user }) => {
     }
   };
 
+  const handleDrop = useCallback(
+    async (item: { task: Task }) => {
+      console.log(`date:${dateRef.current}`);
+      const { goalId, id: id } = item.task;
+
+      try {
+        // Query for the task in Firestore
+        if (!goalId || !id) {
+          console.error("Undefined goalId or taskId");
+          return; // Exit early if either is not defined
+        }
+
+        const taskDocRef = doc(firestore, "weeklyGoals", goalId);
+        const taskSnapshot = await getDoc(taskDocRef);
+
+        if (taskSnapshot.exists()) {
+          const goalData = taskSnapshot.data();
+          const taskData = goalData?.tasks?.find(
+            (task: Task) => task.id === id
+          );
+
+          if (taskData) {
+            handleAddTask(
+              taskData.text,
+              taskData.priority,
+              0,
+              taskData.description || "",
+              taskData.goalId as string,
+              dateRef.current as string,
+              taskData.color || "white"
+            );
+          } else {
+            console.error(`Task with id ${id} not found.`);
+          }
+        }
+      } catch (error) {
+        console.error("Error fetching task: ", error);
+      }
+    },
+    [date, handleAddTask, firestore]
+  ); // include all dependencies used within the handler
+
   useEffect(() => {
     if (!taskDrawerDisclosure.isOpen) {
       setDuplicateValues(null);
     }
   }, [taskDrawerDisclosure.isOpen]);
 
+  const [{ isOver }, drop] = useDrop(() => ({
+    accept: "TASK",
+    drop: handleDrop,
+    collect: (monitor) => ({
+      isOver: monitor.isOver(),
+    }),
+  }));
+
   return (
     <VStack
+      ref={drop}
       align="stretch"
       width="100%"
       height="550px"
       maxHeight="calc(100vh - 200px)"
       overflowY="auto"
-      border="1px"
-      borderColor={colorMode === "light" ? "gray.200" : "gray.700"}
+      border={isOver ? "2px" : "1px"}
+      borderColor={
+        isOver ? "purple.500" : colorMode === "light" ? "gray.200" : "gray.700"
+      }
       bg={
         isCurrentDay
           ? colorMode === "light"

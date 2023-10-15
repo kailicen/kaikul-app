@@ -6,44 +6,18 @@ import {
   Flex,
   Grid,
   useMediaQuery,
-  Drawer,
-  DrawerBody,
-  DrawerHeader,
-  DrawerOverlay,
-  DrawerContent,
-  DrawerCloseButton,
   useDisclosure,
   Button,
-  Input,
-  Spacer,
   Badge,
-  Switch,
-  FormControl,
-  FormLabel,
   useToast,
   Icon,
-  Textarea,
-  Menu,
-  MenuButton,
-  MenuItem,
-  MenuList,
-  DrawerFooter,
-  Popover,
-  PopoverBody,
-  PopoverContent,
-  PopoverTrigger,
 } from "@chakra-ui/react";
 import { User } from "firebase/auth";
 import { MdAdd } from "react-icons/md";
 import { useGoals } from "@/hooks/useGoals";
-import { Formik, Field, Form, FieldInputProps, ErrorMessage } from "formik";
-import { CirclePicker } from "react-color";
-import { ChevronDownIcon, InfoIcon } from "@chakra-ui/icons";
-import { DayPicker } from "react-day-picker";
 import "react-day-picker/dist/style.css";
-import { FaCalendarAlt } from "react-icons/fa";
 import GoalSettingModal from "@/components/Modal/Instructions/GoalSettingModal";
-import { startOfWeek, format, isBefore } from "date-fns";
+import { startOfWeek, format } from "date-fns";
 import { utcToZonedTime } from "date-fns-tz";
 import GoalDrawer from "./DrawerComponents/GoalDrawer";
 import TaskSidePanel from "./TaskSidePanel";
@@ -209,18 +183,18 @@ function GoalView({
       <Box width="100%" p={2}>
         <Text mb={2} fontWeight="semibold">
           Goal Setting:{" "}
-          <Button onClick={onTogglePanel} mb={1} ml={1}>
-            Toggle Task Panel
-          </Button>
-          {/* <Button
-            leftIcon={<InfoIcon />}
-            colorScheme="purple"
-            variant="ghost"
-            onClick={handleInstructionOpen}
+          <Button
+            onClick={onTogglePanel}
             mb={1}
+            ml={1}
+            _hover={{ transform: "scale(1.05)" }}
+            transition="all 0.2s"
           >
-            Get a Goal Guide
-          </Button> */}
+            Break Down My Goals
+          </Button>{" "}
+          <Badge ml={1} colorScheme="green">
+            New
+          </Badge>
         </Text>
         {/* Use the modal component here */}
         <GoalSettingModal

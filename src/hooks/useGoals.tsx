@@ -310,6 +310,8 @@ export const useGoals = (user: User, startOfWeekString: string) => {
       await updateDoc(goalDocRef, {
         tasks: updatedGoal.tasks,
       });
+      setGoals(updatedGoals);
+      setRecoilGoals(updatedGoals);
     } catch (error) {
       console.error("Error updating document: ", error);
     }

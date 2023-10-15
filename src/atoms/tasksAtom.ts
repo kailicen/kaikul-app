@@ -12,7 +12,6 @@ export type Task = {
   color?: string;
   priority: string;
   focusHours?: number;
-  isPlanned?: boolean;
 };
 
 interface TaskState {

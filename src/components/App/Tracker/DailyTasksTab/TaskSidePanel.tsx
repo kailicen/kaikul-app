@@ -12,6 +12,7 @@ import {
   HStack,
   Icon,
   Tag,
+  Badge,
 } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import { User } from "firebase/auth";
@@ -23,6 +24,8 @@ import { Task } from "@/atoms/tasksAtom";
 import BreakdownTaskDrawer from "./DrawerComponents/BreakdownTaskDrawer";
 import useTasks from "@/hooks/useTasks";
 import { v4 as uuidv4 } from "uuid";
+import DraggableTask from "./DraggableComponents/DraggableTask";
+import { useRecoilValue } from "recoil";
 
 type Props = {
   user: User;
@@ -102,6 +105,7 @@ function TaskSidePanel({
         const newTask = {
           ...task,
           id: uuidv4(), // Assigning a unique id to the new task
+          userId: user.uid,
         };
         // Adding a new task
         newTasks = associatedGoal.tasks
@@ -188,6 +192,10 @@ function TaskSidePanel({
           <CloseButton onClick={togglePanel} />
         </Flex>
         <VStack spacing={2} mt={2}>
+          <Text fontSize="sm" color="gray.600" textAlign="center" mb={4}>
+            🚀 Drag & Drop subtasks into your weekly planner for easy
+            scheduling! (Large screen)
+          </Text>
           {goals && goals.length > 0 ? (
             goals.map((goal) => (
               <Box key={goal.id} w="100%">
@@ -232,7 +240,6 @@ function TaskSidePanel({
                           description: "",
                           goalId: goal.id,
                           color: goal.color,
-                          isPlanned: true,
                         })
                       }
                       mt={2}
@@ -245,46 +252,48 @@ function TaskSidePanel({
                   {goal.tasks && goal.tasks.length > 0 && (
                     <VStack spacing={1} mt={1} ml={3} w="100%">
                       {goal.tasks.map((task, index) => (
-                        <Box
-                          key={index}
-                          px={3}
-                          py={1}
-                          borderRadius="md"
-                          boxShadow="sm"
-                          bgColor={task.color || "white"} // Applying color
-                          color="black"
-                          _hover={{ boxShadow: "md" }}
-                          cursor="pointer"
-                          onClick={() => {
-                            openTaskDrawer(task);
-                          }}
-                          w="100%"
-                        >
-                          <Text fontSize="sm">{task.text}</Text>
-                          {task.priority && task.priority !== "9" && (
-                            <Tag
-                              colorScheme={
-                                colorMode === "light" ? "gray" : "black"
-                              }
-                              size="sm"
-                              variant="solid"
-                              borderRadius="full"
-                              whiteSpace="nowrap"
-                              isTruncated
-                              mt={1}
-                            >
-                              {priorities
-                                .filter(
-                                  (p) => p.value === task.priority?.toString()
-                                )
-                                .map((p) => (
-                                  <>
-                                    {p.emoji} {p.label}
-                                  </>
-                                ))}
-                            </Tag>
-                          )}
-                        </Box>
+                        <DraggableTask key={index} task={task}>
+                          <Box
+                            key={index}
+                            px={3}
+                            py={1}
+                            borderRadius="md"
+                            boxShadow="sm"
+                            bgColor={task.color || "white"} // Applying color
+                            color="black"
+                            _hover={{ boxShadow: "md" }}
+                            cursor="pointer"
+                            onClick={() => {
+                              openTaskDrawer(task);
+                            }}
+                            w="100%"
+                          >
+                            <Text fontSize="sm">{task.text}</Text>
+                            {task.priority && task.priority !== "9" && (
+                              <Tag
+                                colorScheme={
+                                  colorMode === "light" ? "gray" : "black"
+                                }
+                                size="sm"
+                                variant="solid"
+                                borderRadius="full"
+                                whiteSpace="nowrap"
+                                isTruncated
+                                mt={1}
+                              >
+                                {priorities
+                                  .filter(
+                                    (p) => p.value === task.priority?.toString()
+                                  )
+                                  .map((p) => (
+                                    <>
+                                      {p.emoji} {p.label}
+                                    </>
+                                  ))}
+                              </Tag>
+                            )}
+                          </Box>
+                        </DraggableTask>
                       ))}
                     </VStack>
                   )}
