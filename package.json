@@ -67,11 +67,13 @@
     "tailwind-merge": "^1.14.0",
     "tailwindcss": "3.3.2",
     "typescript": "5.1.6",
+    "uuid": "^9.0.1",
     "yup": "^1.2.0"
   },
   "devDependencies": {
     "@types/glob": "^8.1.0",
     "@types/nodemailer": "^6.4.10",
-    "@types/react-color": "^3.0.6"
+    "@types/react-color": "^3.0.6",
+    "@types/uuid": "^9.0.5"
   }
 }

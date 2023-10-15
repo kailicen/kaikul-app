@@ -50,6 +50,12 @@ import { FaCalendarAlt } from "react-icons/fa";
 import { utcToZonedTime } from "date-fns-tz";
 import { Task } from "@/atoms/tasksAtom";
 
+export const priorities = [
+  { value: "1", label: "High", emoji: "🏔️" },
+  { value: "2", label: "Medium", emoji: "🏕️" },
+  { value: "3", label: "Low", emoji: "🏖️" },
+];
+
 const Day: React.FC<{ date: string; user: User }> = ({ date, user }) => {
   const taskDrawerDisclosure = useDisclosure();
   const blockerDrawerDisclosure = useDisclosure();
@@ -119,12 +125,6 @@ const Day: React.FC<{ date: string; user: User }> = ({ date, user }) => {
   //use recoil state
   const { recoilGoals } = useGoals(user, startOfWeekString);
 
-  const priorities = [
-    { value: "1", label: "High", emoji: "🏔️" },
-    { value: "2", label: "Medium", emoji: "🏕️" },
-    { value: "3", label: "Low", emoji: "🏖️" },
-  ];
-
   const openDrawer = (
     date: string,
     id?: string,
@@ -167,7 +167,7 @@ const Day: React.FC<{ date: string; user: User }> = ({ date, user }) => {
         handleEditTask(
           selectedTaskId,
           values.task,
-          values.priority,
+          values.priority === "" ? "9" : values.priority,
           values.focusHours,
           values.description,
           values.goalId,
@@ -292,8 +292,8 @@ const Day: React.FC<{ date: string; user: User }> = ({ date, user }) => {
     <VStack
       align="stretch"
       width="100%"
-      minHeight="400px"
-      maxHeight="600px"
+      height="550px"
+      maxHeight="calc(100vh - 200px)"
       overflowY="auto"
       border="1px"
       borderColor={colorMode === "light" ? "gray.200" : "gray.700"}
@@ -306,8 +306,9 @@ const Day: React.FC<{ date: string; user: User }> = ({ date, user }) => {
           ? "white"
           : "gray.800"
       }
-      p={3}
+      p={2}
       mb={4} // add bottom margin
+      spacing={1}
     >
       <Text fontSize="lg" fontWeight="semibold">
         {format(dateObj, "eee dd")}
@@ -317,7 +318,8 @@ const Day: React.FC<{ date: string; user: User }> = ({ date, user }) => {
       {tasks.map((task) => (
         <Box
           key={task.id}
-          p={2}
+          py={1}
+          px={2}
           borderRadius="md"
           boxShadow="md"
           _hover={{ boxShadow: "0 0 0 2px purple.400" }}
@@ -338,7 +340,7 @@ const Day: React.FC<{ date: string; user: User }> = ({ date, user }) => {
             );
           }}
         >
-          <VStack align="left">
+          <VStack align="left" spacing={0}>
             <HStack spacing={2}>
               <Flex
                 onClick={(e) => {
@@ -375,7 +377,7 @@ const Day: React.FC<{ date: string; user: User }> = ({ date, user }) => {
               </Text>
             </HStack>
             {/* Additional Task Information: Priority and Focus Hours */}
-            <HStack spacing={1}>
+            <HStack spacing={1} mt={1}>
               {task.priority && task.priority !== "9" && (
                 <Tag
                   colorScheme={colorMode === "light" ? "gray" : "black"}
@@ -385,7 +387,6 @@ const Day: React.FC<{ date: string; user: User }> = ({ date, user }) => {
                   whiteSpace="nowrap"
                   isTruncated
                 >
-                  {/* Find and display the emoji and label corresponding to task.priority */}
                   {priorities
                     .filter((p) => p.value === task.priority?.toString())
                     .map((p) => (

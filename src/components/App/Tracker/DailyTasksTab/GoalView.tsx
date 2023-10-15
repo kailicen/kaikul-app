@@ -45,14 +45,26 @@ import { FaCalendarAlt } from "react-icons/fa";
 import GoalSettingModal from "@/components/Modal/Instructions/GoalSettingModal";
 import { startOfWeek, format, isBefore } from "date-fns";
 import { utcToZonedTime } from "date-fns-tz";
+import GoalDrawer from "./DrawerComponents/GoalDrawer";
+import TaskSidePanel from "./TaskSidePanel";
 
 type GoalViewProps = {
   user: User;
   currentDayStart: string;
   currentWeekStart: string;
+  onTogglePanel: () => void; // Added prop
+  isPanelOpen: boolean;
+  setIsPanelOpen: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
-function GoalView({ user, currentDayStart, currentWeekStart }: GoalViewProps) {
+function GoalView({
+  user,
+  currentDayStart,
+  currentWeekStart,
+  onTogglePanel,
+  isPanelOpen,
+  setIsPanelOpen,
+}: GoalViewProps) {
   const [isLargerThan768] = useMediaQuery("(min-width: 768px)");
   const [mobileStartOfWeek, setMobileStartOfWeek] = useState(currentWeekStart);
   const toast = useToast();
@@ -93,9 +105,6 @@ function GoalView({ user, currentDayStart, currentWeekStart }: GoalViewProps) {
     new Date()
   );
   const [endDisplayedMonth, setEndDisplayedMonth] = useState<Date>(new Date());
-
-  const [isStartDatePopoverOpen, setStartDatePopoverOpen] = useState(false);
-  const [isEndDatePopoverOpen, setEndDatePopoverOpen] = useState(false);
 
   const [isInstructionOpen, setIsInstructionOpen] = useState(false);
 
@@ -200,7 +209,10 @@ function GoalView({ user, currentDayStart, currentWeekStart }: GoalViewProps) {
       <Box width="100%" p={2}>
         <Text mb={2} fontWeight="semibold">
           Goal Setting:{" "}
-          <Button
+          <Button onClick={onTogglePanel} mb={1} ml={1}>
+            Toggle Task Panel
+          </Button>
+          {/* <Button
             leftIcon={<InfoIcon />}
             colorScheme="purple"
             variant="ghost"
@@ -208,360 +220,93 @@ function GoalView({ user, currentDayStart, currentWeekStart }: GoalViewProps) {
             mb={1}
           >
             Get a Goal Guide
-          </Button>
+          </Button> */}
         </Text>
         {/* Use the modal component here */}
         <GoalSettingModal
           isOpen={isInstructionOpen}
           onClose={handleInstructionClose}
         />
-        <Grid templateColumns={{ base: "1fr", md: "1fr 1fr 1fr" }} gap={3}>
-          {goals.map((goal) => (
-            <Flex
-              key={goal.id}
-              px={4}
-              py={2}
-              align="center"
-              borderRadius="md"
-              boxShadow="md"
-              _hover={{ boxShadow: "0 0 0 2px purple.400" }}
-              cursor="pointer"
-              bg={goal.color}
-              color="black"
-              onClick={() =>
-                openDrawer(
-                  goal.id,
-                  goal.text,
-                  goal.completed,
-                  goal.description,
-                  goal.color,
-                  goal.startDate,
-                  goal.endDate
-                )
-              }
-            >
-              <Text fontSize="sm" fontWeight="semibold" flexGrow={1}>
-                {goal.text}
-              </Text>
-              {goal.completed && (
-                <Badge ml="1" h="5">
-                  done
-                </Badge>
-              )}
-            </Flex>
-          ))}
-          <Flex align="center">
-            <Icon
-              as={MdAdd}
-              color="gray.400"
-              fontSize={26}
-              cursor="pointer"
-              onClick={() => openDrawer()}
-            />
-          </Flex>
-        </Grid>
-      </Box>
-      <Drawer isOpen={isOpen} placement="right" onClose={onClose} size="md">
-        <DrawerOverlay>
-          <DrawerContent>
-            <DrawerCloseButton />
-            <DrawerHeader>
-              {selectedGoalId ? "Edit Goal" : "Create New Goal"}
-            </DrawerHeader>
-            <DrawerBody>
-              <Formik
-                initialValues={{
-                  goal: selectedGoalText,
-                  description: selectedGoalDescription,
-                  color: selectedGoalColor,
-                  startDate: startDate,
-                  endDate: endDate || "", // or some default value
-                }}
-                onSubmit={handleFormSubmit}
-                validate={(values) => {
-                  const errors: any = {};
-                  if (!values.goal.trim()) {
-                    errors.goal = "Goal is required";
-                  }
-                  if (!values.endDate) {
-                    errors.endDate = "End date is required";
-                  } else if (values.endDate <= values.startDate) {
-                    errors.endDate = "End date should be after start date";
-                  }
-                  return errors;
-                }}
+        {!isPanelOpen && (
+          <Grid templateColumns={{ base: "1fr", md: "1fr 1fr 1fr" }} gap={3}>
+            {goals.map((goal) => (
+              <Flex
+                key={goal.id}
+                px={4}
+                py={2}
+                align="center"
+                borderRadius="md"
+                boxShadow="md"
+                _hover={{ boxShadow: "0 0 0 2px purple.400" }}
+                cursor="pointer"
+                bg={goal.color}
+                color="black"
+                onClick={() =>
+                  openDrawer(
+                    goal.id,
+                    goal.text,
+                    goal.completed,
+                    goal.description,
+                    goal.color,
+                    goal.startDate,
+                    goal.endDate
+                  )
+                }
               >
-                {({ isSubmitting }) => (
-                  <Form>
-                    <Field
-                      name="goal"
-                      render={({ field }: { field: FieldInputProps<any> }) => (
-                        <div>
-                          <Input
-                            {...field}
-                            placeholder="Enter your goal here (e.g., 'Lose 5 pounds')"
-                          />
-                          <ErrorMessage
-                            name="goal"
-                            component="div"
-                            style={{ color: "red" }}
-                          />
-                        </div>
-                      )}
-                    />
-
-                    <Field name="startDate">
-                      {({
-                        field,
-                        form,
-                      }: {
-                        field: FieldInputProps<any>;
-                        form: any;
-                      }) => (
-                        <Box mt={4}>
-                          <FormControl
-                            display="flex"
-                            alignItems="center"
-                            mt={4}
-                          >
-                            <FormLabel mb="0">Start Date:</FormLabel>
-                            <Popover
-                              isOpen={isStartDatePopoverOpen}
-                              onClose={() => setStartDatePopoverOpen(false)}
-                            >
-                              <PopoverTrigger>
-                                <Button
-                                  variant="outline"
-                                  leftIcon={<Icon as={FaCalendarAlt} />}
-                                  onClick={() => setStartDatePopoverOpen(true)}
-                                >
-                                  {field.value || "Select Start Date"}
-                                </Button>
-                              </PopoverTrigger>
-                              <PopoverContent>
-                                <PopoverBody>
-                                  <DayPicker
-                                    mode="single"
-                                    weekStartsOn={1}
-                                    month={startDisplayedMonth}
-                                    onMonthChange={(month: Date) =>
-                                      setStartDisplayedMonth(month)
-                                    }
-                                    selected={new Date(field.value)}
-                                    onSelect={(
-                                      selectedDay: Date | undefined
-                                    ) => {
-                                      if (selectedDay) {
-                                        const formattedDate = format(
-                                          selectedDay,
-                                          "yyyy-MM-dd"
-                                        );
-                                        setStartDate(formattedDate);
-                                        form.setFieldValue(
-                                          "startDate",
-                                          formattedDate
-                                        );
-                                        setStartDatePopoverOpen(false);
-                                      }
-                                    }}
-                                  />
-                                </PopoverBody>
-                              </PopoverContent>
-                            </Popover>
-                          </FormControl>
-                        </Box>
-                      )}
-                    </Field>
-
-                    <Field name="endDate">
-                      {({
-                        field,
-                        form,
-                      }: {
-                        field: FieldInputProps<any>;
-                        form: any;
-                      }) => (
-                        <Box mt={4}>
-                          <FormControl
-                            display="flex"
-                            alignItems="center"
-                            mt={4}
-                          >
-                            <FormLabel mb="0">End Date:</FormLabel>
-                            <Popover
-                              isOpen={isEndDatePopoverOpen}
-                              onClose={() => setEndDatePopoverOpen(false)}
-                            >
-                              <PopoverTrigger>
-                                <Button
-                                  variant="outline"
-                                  leftIcon={<Icon as={FaCalendarAlt} />}
-                                  onClick={() => setEndDatePopoverOpen(true)}
-                                >
-                                  {field.value || "Select End Date"}
-                                </Button>
-                              </PopoverTrigger>
-                              <PopoverContent>
-                                <PopoverBody>
-                                  <DayPicker
-                                    mode="single"
-                                    weekStartsOn={1}
-                                    month={endDisplayedMonth}
-                                    onMonthChange={(month: Date) =>
-                                      setEndDisplayedMonth(month)
-                                    }
-                                    disabled={(day: Date) =>
-                                      isBefore(day, new Date(startDate))
-                                    }
-                                    selected={
-                                      endDate
-                                        ? new Date(field.value)
-                                        : undefined
-                                    }
-                                    onSelect={(
-                                      selectedDay: Date | undefined
-                                    ) => {
-                                      if (selectedDay) {
-                                        const formattedDate = format(
-                                          selectedDay,
-                                          "yyyy-MM-dd"
-                                        );
-                                        setEndDate(formattedDate);
-                                        form.setFieldValue(
-                                          "endDate",
-                                          formattedDate
-                                        );
-                                        setEndDatePopoverOpen(false);
-                                      }
-                                    }}
-                                  />
-                                </PopoverBody>
-                              </PopoverContent>
-                            </Popover>
-                            <ErrorMessage
-                              name="endDate"
-                              component="div"
-                              style={{ color: "red" }}
-                            />
-                          </FormControl>
-                        </Box>
-                      )}
-                    </Field>
-
-                    <Field
-                      name="description"
-                      render={({ field }: { field: FieldInputProps<any> }) => (
-                        <Textarea
-                          {...field}
-                          placeholder="Description..."
-                          mt={4}
-                          rows={10}
-                        />
-                      )}
-                    />
-
-                    <Field name="color">
-                      {({
-                        field,
-                        form,
-                      }: {
-                        field: FieldInputProps<any>;
-                        form: any;
-                      }) => (
-                        <Box mt={4}>
-                          <FormControl
-                            display="flex"
-                            alignItems="center"
-                            mt={4}
-                          >
-                            <FormLabel mb="0">Choose a color:</FormLabel>
-                            <Menu>
-                              <MenuButton
-                                as={Button}
-                                rightIcon={<ChevronDownIcon />}
-                                variant="outline"
-                                borderColor="gray.300"
-                              >
-                                <Box
-                                  w="20px"
-                                  h="20px"
-                                  borderRadius="4px"
-                                  bg={form.values.color || "#ffffff"}
-                                  mr="2"
-                                />
-                              </MenuButton>
-                              <MenuList>
-                                <MenuItem onSelect={() => {}}>
-                                  <CirclePicker
-                                    color={form.values.color}
-                                    onChangeComplete={(color) => {
-                                      form.setFieldValue("color", color.hex);
-                                      form.setFieldTouched("color", true);
-                                    }}
-                                    colors={[
-                                      "#f0f8e6", // WHITE
-                                      "#fbfbef", // Wheat
-                                      "#f3f3f3", // MistyRose
-                                      "#e0edf4", // LightGray
-                                      "#e9e5f3", // LightCyan
-                                      "#feeef5", // GhostWhite
-                                      "#EA8C87", // Salmon
-                                      "#FFB6C1", // LightPink
-                                      "#FFA500", // Orange
-                                      "#FFD700", // Gold
-                                      "#f5f32e", // Champagne
-                                      "#80ed99",
-                                      "#D8BFD8", // Thistle
-                                      "#B795EC", // MediumPurple
-                                      "#6495ED", // CornflowerBlue
-                                      "#87CEFA", // LightSkyBlue
-                                      "#3CB371", // MediumSeaGreen
-                                      "#2ec4b6", // Gold
-                                    ]}
-                                  />
-                                </MenuItem>
-                              </MenuList>
-                            </Menu>
-                          </FormControl>
-                        </Box>
-                      )}
-                    </Field>
-                    {selectedGoalId && (
-                      <FormControl display="flex" alignItems="center" mt={4}>
-                        <FormLabel mb="0">Completed:</FormLabel>
-                        <Switch
-                          isChecked={selectedGoalCompleted}
-                          onChange={() => {
-                            handleCompleteGoal(selectedGoalId);
-                            setSelectedGoalCompleted(!selectedGoalCompleted);
-                          }}
-                        />
-                        <Spacer />
-                      </FormControl>
-                    )}
-                    <DrawerFooter>
-                      <Button mt={4} isLoading={isSubmitting} type="submit">
-                        {selectedGoalId ? "Update" : "Create"}
-                      </Button>
-                      {selectedGoalId && (
-                        <Button
-                          mt={4}
-                          ml={2}
-                          variant="outline"
-                          _hover={{ bgColor: "red.500", color: "white" }}
-                          onClick={() => handleDelete(selectedGoalId)}
-                        >
-                          Delete
-                        </Button>
-                      )}
-                    </DrawerFooter>
-                  </Form>
+                <Text fontSize="sm" fontWeight="semibold" flexGrow={1}>
+                  {goal.text}
+                </Text>
+                {goal.completed && (
+                  <Badge ml="1" h="5">
+                    done
+                  </Badge>
                 )}
-              </Formik>
-            </DrawerBody>
-          </DrawerContent>
-        </DrawerOverlay>
-      </Drawer>
+              </Flex>
+            ))}
+            <Flex align="center">
+              <Icon
+                as={MdAdd}
+                color="gray.400"
+                fontSize={26}
+                cursor="pointer"
+                onClick={() => openDrawer()}
+              />
+            </Flex>
+          </Grid>
+        )}
+      </Box>
+      <GoalDrawer
+        isOpen={isOpen}
+        onClose={onClose}
+        selectedGoalId={selectedGoalId as string}
+        selectedGoalText={selectedGoalText}
+        selectedGoalDescription={selectedGoalDescription}
+        selectedGoalColor={selectedGoalColor}
+        startDate={startDate}
+        setStartDate={setStartDate}
+        endDate={endDate as string}
+        setEndDate={setEndDate}
+        handleFormSubmit={handleFormSubmit}
+        startDisplayedMonth={startDisplayedMonth}
+        setStartDisplayedMonth={setStartDisplayedMonth}
+        endDisplayedMonth={endDisplayedMonth}
+        setEndDisplayedMonth={setEndDisplayedMonth}
+        selectedGoalCompleted={selectedGoalCompleted}
+        setSelectedGoalCompleted={setSelectedGoalCompleted}
+        handleCompleteGoal={handleCompleteGoal}
+        handleDelete={handleDelete}
+      />
+
+      {/* Ensure the TaskSidePanel is outside the VStack to not squeeze itself */}
+      {isPanelOpen && (
+        <TaskSidePanel
+          user={user}
+          currentWeekStart={currentWeekStart}
+          isPanelOpen={isPanelOpen}
+          setIsPanelOpen={setIsPanelOpen}
+          openDrawer={openDrawer}
+        />
+      )}
     </Center>
   );
 }

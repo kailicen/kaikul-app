@@ -10,8 +10,9 @@ export type Task = {
   goalId?: string; // This is the ID of the associated goal
   description?: string;
   color?: string;
-  priority?: string;
+  priority: string;
   focusHours?: number;
+  isPlanned?: boolean;
 };
 
 interface TaskState {
