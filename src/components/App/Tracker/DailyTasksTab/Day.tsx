@@ -28,7 +28,6 @@ import {
   useColorMode,
   ListItem,
   UnorderedList,
-  FormHelperText,
   NumberDecrementStepper,
   NumberIncrementStepper,
   NumberInput,
@@ -38,7 +37,7 @@ import {
 } from "@chakra-ui/react";
 import { Formik, Form, Field, FieldInputProps, ErrorMessage } from "formik";
 import { MdAdd } from "react-icons/md";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { User } from "firebase/auth";
 import useTasks from "@/hooks/useTasks";
 import { useBlockers } from "@/hooks/useReflections";
@@ -49,6 +48,15 @@ import "react-day-picker/dist/style.css";
 import { FaCalendarAlt } from "react-icons/fa";
 import { utcToZonedTime } from "date-fns-tz";
 import { Task } from "@/atoms/tasksAtom";
+import { useDrop } from "react-dnd";
+import { doc, getDoc } from "firebase/firestore";
+import { firestore } from "@/firebase/clientApp";
+
+export const priorities = [
+  { value: "1", label: "High", emoji: "🏔️" },
+  { value: "2", label: "Medium", emoji: "🏕️" },
+  { value: "3", label: "Low", emoji: "🏖️" },
+];
 
 const Day: React.FC<{ date: string; user: User }> = ({ date, user }) => {
   const taskDrawerDisclosure = useDisclosure();
@@ -105,6 +113,13 @@ const Day: React.FC<{ date: string; user: User }> = ({ date, user }) => {
 
   const { colorMode } = useColorMode();
 
+  const dateRef = useRef<string>();
+
+  useEffect(() => {
+    // Always keep the most recent value of date in the ref
+    dateRef.current = date;
+  }, [date]);
+
   const {
     tasks,
     handleAddTask,
@@ -118,12 +133,6 @@ const Day: React.FC<{ date: string; user: User }> = ({ date, user }) => {
 
   //use recoil state
   const { recoilGoals } = useGoals(user, startOfWeekString);
-
-  const priorities = [
-    { value: "1", label: "High", emoji: "🏔️" },
-    { value: "2", label: "Medium", emoji: "🏕️" },
-    { value: "3", label: "Low", emoji: "🏖️" },
-  ];
 
   const openDrawer = (
     date: string,
@@ -167,7 +176,7 @@ const Day: React.FC<{ date: string; user: User }> = ({ date, user }) => {
         handleEditTask(
           selectedTaskId,
           values.task,
-          values.priority,
+          values.priority === "" ? "9" : values.priority,
           values.focusHours,
           values.description,
           values.goalId,
@@ -282,21 +291,74 @@ const Day: React.FC<{ date: string; user: User }> = ({ date, user }) => {
     }
   };
 
+  const handleDrop = useCallback(
+    async (item: { task: Task }) => {
+      console.log(`date:${dateRef.current}`);
+      const { goalId, id: id } = item.task;
+
+      try {
+        // Query for the task in Firestore
+        if (!goalId || !id) {
+          console.error("Undefined goalId or taskId");
+          return; // Exit early if either is not defined
+        }
+
+        const taskDocRef = doc(firestore, "weeklyGoals", goalId);
+        const taskSnapshot = await getDoc(taskDocRef);
+
+        if (taskSnapshot.exists()) {
+          const goalData = taskSnapshot.data();
+          const taskData = goalData?.tasks?.find(
+            (task: Task) => task.id === id
+          );
+
+          if (taskData) {
+            handleAddTask(
+              taskData.text,
+              taskData.priority,
+              0,
+              taskData.description || "",
+              taskData.goalId as string,
+              dateRef.current as string,
+              taskData.color || "white"
+            );
+          } else {
+            console.error(`Task with id ${id} not found.`);
+          }
+        }
+      } catch (error) {
+        console.error("Error fetching task: ", error);
+      }
+    },
+    [date, handleAddTask, firestore]
+  ); // include all dependencies used within the handler
+
   useEffect(() => {
     if (!taskDrawerDisclosure.isOpen) {
       setDuplicateValues(null);
     }
   }, [taskDrawerDisclosure.isOpen]);
 
+  const [{ isOver }, drop] = useDrop(() => ({
+    accept: "TASK",
+    drop: handleDrop,
+    collect: (monitor) => ({
+      isOver: monitor.isOver(),
+    }),
+  }));
+
   return (
     <VStack
+      ref={drop}
       align="stretch"
       width="100%"
-      minHeight="400px"
-      maxHeight="600px"
+      height="550px"
+      maxHeight="calc(100vh - 200px)"
       overflowY="auto"
-      border="1px"
-      borderColor={colorMode === "light" ? "gray.200" : "gray.700"}
+      border={isOver ? "2px" : "1px"}
+      borderColor={
+        isOver ? "purple.500" : colorMode === "light" ? "gray.200" : "gray.700"
+      }
       bg={
         isCurrentDay
           ? colorMode === "light"
@@ -306,8 +368,9 @@ const Day: React.FC<{ date: string; user: User }> = ({ date, user }) => {
           ? "white"
           : "gray.800"
       }
-      p={3}
+      p={2}
       mb={4} // add bottom margin
+      spacing={1}
     >
       <Text fontSize="lg" fontWeight="semibold">
         {format(dateObj, "eee dd")}
@@ -317,7 +380,8 @@ const Day: React.FC<{ date: string; user: User }> = ({ date, user }) => {
       {tasks.map((task) => (
         <Box
           key={task.id}
-          p={2}
+          py={1}
+          px={2}
           borderRadius="md"
           boxShadow="md"
           _hover={{ boxShadow: "0 0 0 2px purple.400" }}
@@ -338,7 +402,7 @@ const Day: React.FC<{ date: string; user: User }> = ({ date, user }) => {
             );
           }}
         >
-          <VStack align="left">
+          <VStack align="left" spacing={0}>
             <HStack spacing={2}>
               <Flex
                 onClick={(e) => {
@@ -375,7 +439,7 @@ const Day: React.FC<{ date: string; user: User }> = ({ date, user }) => {
               </Text>
             </HStack>
             {/* Additional Task Information: Priority and Focus Hours */}
-            <HStack spacing={1}>
+            <HStack spacing={1} mt={1}>
               {task.priority && task.priority !== "9" && (
                 <Tag
                   colorScheme={colorMode === "light" ? "gray" : "black"}
@@ -385,7 +449,6 @@ const Day: React.FC<{ date: string; user: User }> = ({ date, user }) => {
                   whiteSpace="nowrap"
                   isTruncated
                 >
-                  {/* Find and display the emoji and label corresponding to task.priority */}
                   {priorities
                     .filter((p) => p.value === task.priority?.toString())
                     .map((p) => (

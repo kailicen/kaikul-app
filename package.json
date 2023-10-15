@@ -57,6 +57,8 @@
     "react": "18.2.0",
     "react-color": "^2.19.3",
     "react-day-picker": "^8.8.1",
+    "react-dnd": "^16.0.1",
+    "react-dnd-html5-backend": "^16.0.1",
     "react-dom": "18.2.0",
     "react-firebase-hooks": "^5.1.1",
     "react-hook-form": "^7.45.1",
@@ -67,11 +69,13 @@
     "tailwind-merge": "^1.14.0",
     "tailwindcss": "3.3.2",
     "typescript": "5.1.6",
+    "uuid": "^9.0.1",
     "yup": "^1.2.0"
   },
   "devDependencies": {
     "@types/glob": "^8.1.0",
     "@types/nodemailer": "^6.4.10",
-    "@types/react-color": "^3.0.6"
+    "@types/react-color": "^3.0.6",
+    "@types/uuid": "^9.0.5"
   }
 }

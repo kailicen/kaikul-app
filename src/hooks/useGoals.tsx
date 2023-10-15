@@ -12,6 +12,7 @@ import {
   doc,
   writeBatch,
   onSnapshot,
+  getDoc,
 } from "firebase/firestore";
 import { firestore } from "../firebase/clientApp";
 import { useRecoilState } from "recoil";
@@ -160,12 +161,27 @@ export const useGoals = (user: User, startOfWeekString: string) => {
 
     try {
       const goalDocRef = doc(firestore, "weeklyGoals", id);
+
+      const goalDoc = await getDoc(goalDocRef);
+
+      if (!goalDoc.exists()) {
+        console.error(`Goal with id ${id} not found.`);
+        return;
+      }
+
+      const goalData = goalDoc.data() as Goal;
+      const updatedTasksInGoal = (goalData.tasks || []).map((task) => ({
+        ...task,
+        color: newColor,
+      }));
+
       await updateDoc(goalDocRef, {
         text: updatedGoal.text,
         description: updatedGoal.description,
         color: updatedGoal.color,
         startDate: updatedGoal.startDate,
         endDate: updatedGoal.endDate,
+        tasks: updatedTasksInGoal, // Updating embedded tasks
       });
 
       const taskQuery = query(
@@ -272,6 +288,35 @@ export const useGoals = (user: User, startOfWeekString: string) => {
     }
   };
 
+  const handleUpdateGoalAddTask = async (id: string, tasks: Task[]) => {
+    const updatedGoals = goals.map((goal) =>
+      goal.id === id
+        ? {
+            ...goal,
+            tasks,
+          }
+        : goal
+    );
+
+    const updatedGoal = updatedGoals.find((goal) => goal.id === id);
+
+    if (!updatedGoal) {
+      console.error(`Goal with id ${id} not found.`);
+      return;
+    }
+
+    try {
+      const goalDocRef = doc(firestore, "weeklyGoals", id);
+      await updateDoc(goalDocRef, {
+        tasks: updatedGoal.tasks,
+      });
+      setGoals(updatedGoals);
+      setRecoilGoals(updatedGoals);
+    } catch (error) {
+      console.error("Error updating document: ", error);
+    }
+  };
+
   useEffect(() => {
     const weeklyGoalsCollection = collection(firestore, "weeklyGoals");
 
@@ -291,6 +336,13 @@ export const useGoals = (user: User, startOfWeekString: string) => {
           goal.id = doc.id;
           // apply the second condition client-side
           if (goal.endDate >= startOfWeekString) {
+            // Sorting logic for tasks based on priority strings
+            if (goal.tasks && goal.tasks.length > 0) {
+              goal.tasks.sort((a, b) => {
+                return +a.priority - +b.priority;
+              });
+            }
+
             goalsForWeek.push(goal);
           }
         });
@@ -313,5 +365,6 @@ export const useGoals = (user: User, startOfWeekString: string) => {
     handleCompleteGoal,
     handleUpdateGoal,
     handleDeleteGoal,
+    handleUpdateGoalAddTask,
   };
 };

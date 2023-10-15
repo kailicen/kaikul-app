@@ -18,11 +18,18 @@ import {
   subDays,
 } from "date-fns";
 import { utcToZonedTime } from "date-fns-tz";
+import { DndProvider } from "react-dnd";
+import { HTML5Backend } from "react-dnd-html5-backend";
 
 type Props = { user: User };
 
 function WeeklyPlanner({ user }: Props) {
   const [isLargerThan768] = useMediaQuery("(min-width: 768px)");
+
+  const [isPanelOpen, setIsPanelOpen] = useState(false);
+  const togglePanel = () => {
+    setIsPanelOpen(!isPanelOpen);
+  };
 
   const userTimeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
   const nowInUserTimezone = utcToZonedTime(new Date(), userTimeZone);
@@ -62,31 +69,43 @@ function WeeklyPlanner({ user }: Props) {
   };
 
   return (
-    <VStack width="100%">
-      {isLargerThan768 ? (
-        <WeekNavigation
-          onPreviousWeek={handlePreviousWeek}
-          onNextWeek={handleNextWeek}
-          currentWeekStart={currentWeekStart}
-        />
-      ) : (
-        <DayNavigation
-          onPreviousDay={handlePreviousDay}
-          onNextDay={handleNextDay}
+    <DndProvider backend={HTML5Backend}>
+      <VStack
+        position="relative"
+        ml={isPanelOpen && isLargerThan768 ? "300px" : "0"}
+        width={isPanelOpen && isLargerThan768 ? "calc(100% - 300px)" : "100%"}
+        transition="margin-left 0.3s ease, width 0.3s ease"
+      >
+        {isLargerThan768 ? (
+          <WeekNavigation
+            onPreviousWeek={handlePreviousWeek}
+            onNextWeek={handleNextWeek}
+            currentWeekStart={currentWeekStart}
+          />
+        ) : (
+          <DayNavigation
+            onPreviousDay={handlePreviousDay}
+            onNextDay={handleNextDay}
+            currentDayStart={currentDayStart}
+          />
+        )}
+
+        <GoalView
+          user={user}
           currentDayStart={currentDayStart}
+          currentWeekStart={currentWeekStart}
+          onTogglePanel={togglePanel}
+          isPanelOpen={isPanelOpen}
+          setIsPanelOpen={setIsPanelOpen}
         />
-      )}
-      <GoalView
-        user={user}
-        currentDayStart={currentDayStart}
-        currentWeekStart={currentWeekStart}
-      />
-      {isLargerThan768 ? (
-        <WeekView user={user} currentWeekStart={currentWeekStart} />
-      ) : (
-        <Day user={user} date={currentDayStart} />
-      )}
-    </VStack>
+
+        {isLargerThan768 ? (
+          <WeekView user={user} currentWeekStart={currentWeekStart} />
+        ) : (
+          <Day user={user} date={currentDayStart} />
+        )}
+      </VStack>
+    </DndProvider>
   );
 }
 

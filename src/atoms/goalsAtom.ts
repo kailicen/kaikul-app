@@ -1,4 +1,5 @@
 import { atom } from "recoil";
+import { Task } from "./tasksAtom";
 
 export type Goal = {
   id: string;
@@ -8,7 +9,7 @@ export type Goal = {
   endDate: string;
   userId: string | null;
   description?: string;
-  tasks?: string[];
+  tasks?: Task[];
   color?: string;
 };
 

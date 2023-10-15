@@ -1,8 +1,7 @@
 import { User } from "firebase/auth";
 import Day from "./Day";
 import { Box } from "@chakra-ui/react";
-import { addDays, format, startOfWeek } from "date-fns";
-import { utcToZonedTime } from "date-fns-tz";
+import { addDays, format } from "date-fns";
 
 type Props = { user: User; currentWeekStart: string };
 
