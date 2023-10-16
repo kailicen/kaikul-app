@@ -9,7 +9,7 @@ import {
   Badge,
   VStack,
 } from "@chakra-ui/react";
-import { MdChevronLeft, MdChevronRight } from "react-icons/md";
+import { MdChevronLeft, MdChevronRight, MdRefresh } from "react-icons/md";
 import { AiOutlineShareAlt } from "react-icons/ai";
 import ShareProgressModal from "@/components/Modal/ShareProgress/ShareProgressModal";
 import { utcToZonedTime } from "date-fns-tz";
@@ -32,6 +32,7 @@ const WeekNavigation: React.FC<WeekNavigationProps> = ({
     parseISO(currentWeekStart),
     userTimeZone
   );
+  const currentWeekEndDate = addDays(currentWeekStartDate, 6);
   const startOfWeekDate = format(currentWeekStartDate, "MMM do");
   const endOfWeekDate = format(
     addDays(currentWeekStartDate, 6),
@@ -54,10 +55,29 @@ const WeekNavigation: React.FC<WeekNavigationProps> = ({
     completedCount: 0,
   });
 
+  const refreshData = async () => {
+    try {
+      const stats = await getWeeklyStats(
+        currentWeekStartDate,
+        currentWeekEndDate
+      );
+      setWeeklyStats(stats);
+    } catch (error) {
+      console.error("Failed to fetch total focus hours: ", error);
+    }
+  };
+
+  useEffect(() => {
+    refreshData(); // fetch immediately on component mount or currentWeekStart change
+  }, [currentWeekStart]);
+
   useEffect(() => {
     const fetchTotalFocusHours = async () => {
       try {
-        const stats = await getWeeklyStats(currentWeekStart);
+        const stats = await getWeeklyStats(
+          currentWeekStartDate,
+          currentWeekEndDate
+        );
         setWeeklyStats(stats);
       } catch (error) {
         console.error("Failed to fetch total focus hours: ", error);
@@ -101,14 +121,30 @@ const WeekNavigation: React.FC<WeekNavigationProps> = ({
         </Text>
       </Flex>
       <Flex alignItems="center" gap={3}>
-        <VStack spacing={1}>
-          <Badge colorScheme="purple">
-            Completion Rate: {(weeklyStats.completionRate * 100).toFixed(2)}%
-          </Badge>
-          <Badge colorScheme="purple">
-            Focus Hours: {weeklyStats.totalFocusHours} hrs
-          </Badge>
-        </VStack>
+        <Flex alignItems="center" gap={2}>
+          <VStack spacing={1}>
+            <Badge colorScheme="purple">
+              Completion Rate: {(weeklyStats.completionRate * 100).toFixed(2)}%
+            </Badge>
+            <Badge colorScheme="purple">
+              Focus Hours: {weeklyStats.totalFocusHours} hrs
+            </Badge>
+          </VStack>
+
+          <Tooltip label="Refresh" placement="top">
+            <Box
+              as="button"
+              aria-label="Refresh stats"
+              onClick={refreshData}
+              cursor="pointer"
+              _hover={{ bg: "gray.100" }}
+              p={1}
+              rounded="md"
+            >
+              <Icon as={MdRefresh} fontSize="20px" color="gray.500" />
+            </Box>
+          </Tooltip>
+        </Flex>
         <Button
           variant="outline"
           rightIcon={<AiOutlineShareAlt />}

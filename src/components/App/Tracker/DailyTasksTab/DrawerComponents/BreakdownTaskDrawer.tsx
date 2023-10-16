@@ -117,7 +117,7 @@ const BreakdownTaskDrawer: React.FC<TaskDrawerProps> = ({
   };
 
   return (
-    <Drawer isOpen={isOpen} onClose={onClose}>
+    <Drawer isOpen={isOpen} onClose={onClose} size="md">
       <DrawerOverlay />
       <DrawerContent>
         <DrawerCloseButton />

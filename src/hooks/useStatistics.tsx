@@ -130,23 +130,19 @@ export const useStatistics = () => {
     return { completionRate, completedCount };
   };
 
-  const getWeeklyStats = async (weekStartDate: string) => {
+  const getWeeklyStats = async (startDate: Date, endDate: Date) => {
     let totalFocusHours = 0;
-
-    // Calculating the weekEndDate by adding 6 days to weekStartDate
-    const startDate = new Date(weekStartDate);
-    const endDate = new Date(startDate);
-    endDate.setDate(endDate.getDate() + 6);
 
     try {
       // Use fetchTasks to get all tasks for the week
       const weeklyTasks = await fetchTasks(startDate, endDate);
 
-      // Sum up all focusHours
-      totalFocusHours = weeklyTasks.reduce((total, task) => {
-        return total + (task.focusHours ?? 0); // Using nullish coalescing to handle possible undefined
-      }, 0);
-
+      // Sum up all focusHours for completed tasks
+      totalFocusHours = weeklyTasks
+        .filter((task) => task.completed) // Only include completed tasks
+        .reduce((total, task) => {
+          return total + (task.focusHours ?? 0); // Using nullish coalescing to handle possible undefined
+        }, 0);
       // Calculate completion rate and completed items count
       const { completionRate, completedCount } = calculateCompletionRate(
         weeklyTasks,

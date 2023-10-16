@@ -26,6 +26,8 @@ export const createUserDocument = functions.auth
       displayName: user.displayName,
       photoURL: user.photoURL,
       providerData: user.providerData,
+      token: `token_for_${user.uid}`,
+      isSubscribed: true,
     };
 
     db.collection("users").doc(user.uid).set(newUser);
@@ -148,7 +150,7 @@ interface Recipient {
 }
 
 exports.sendWeeklyNewsletter = functions.pubsub
-  .schedule("every day 09:00") // everyday for testing TODO: put it to every sunday etc.
+  .schedule("every monday 03:40") // everyday for testing TODO: put it to every sunday etc.
   .timeZone("America/Los_Angeles")
   .onRun(async (_context) => {
     try {
@@ -170,16 +172,11 @@ exports.sendWeeklyNewsletter = functions.pubsub
         const displayName = userData.displayName; // Assuming field is 'displayName'
         const token = userData.token; // Assuming field is 'token'
 
-        if (
-          email === "kailicen226@gmail.com" ||
-          email === "setthawut.kul@gmail.com"
-        ) {
-          recipients.push({
-            email,
-            displayName,
-            token,
-          });
-        }
+        recipients.push({
+          email,
+          displayName,
+          token,
+        });
       });
 
       for (const recipient of recipients) {
@@ -211,7 +208,6 @@ exports.sendWeeklyNewsletter = functions.pubsub
       console.error("Error sending newsletter:", error);
     }
   });
-
 
 exports.unsubscribeUser = functions.https.onRequest((req, res) => {
   corsHandler(req, res, async () => {

@@ -192,7 +192,12 @@ function TaskSidePanel({
           <CloseButton onClick={togglePanel} />
         </Flex>
         <VStack spacing={2} mt={2}>
-          <Text fontSize="sm" color="gray.600" textAlign="center" mb={4}>
+          <Text
+            fontSize="sm"
+            color={colorMode === "light" ? "gray.600" : "gray.400"}
+            textAlign="center"
+            mb={4}
+          >
             🚀 Drag & Drop subtasks into your weekly planner for easy
             scheduling! (Large screen)
           </Text>
