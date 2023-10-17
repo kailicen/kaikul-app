@@ -264,7 +264,7 @@ const GoalDrawer: React.FC<GoalDrawerProps> = ({
                     render={({ field }: { field: FieldInputProps<any> }) => (
                       <Textarea
                         {...field}
-                        placeholder="Description..."
+                        placeholder="Why do you want this..."
                         mt={4}
                         rows={10}
                       />

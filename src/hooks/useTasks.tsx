@@ -27,7 +27,8 @@ const useTasks = (date: string, user: User) => {
     description: string,
     goalId: string,
     date: string,
-    color: string
+    color: string,
+    subGoalId?: string
   ) => {
     if (tasks.length < 10) {
       const taskToAdd: Task = {
@@ -41,6 +42,7 @@ const useTasks = (date: string, user: User) => {
         description,
         goalId,
         color,
+        subGoalId,
       };
       try {
         const docRef = await addDoc(collection(firestore, "tasks"), taskToAdd);

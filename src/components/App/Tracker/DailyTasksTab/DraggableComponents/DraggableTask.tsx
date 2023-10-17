@@ -1,20 +1,26 @@
-import { Task } from "@/atoms/tasksAtom";
+import { SubGoal } from "@/atoms/goalsAtom";
 import { FC, ReactNode } from "react";
 import { useDrag, DragSourceMonitor } from "react-dnd";
 
 interface DraggableTaskProps {
-  task: Task;
+  subGoal: SubGoal;
   children: ReactNode;
 }
 
-const DraggableTask: FC<DraggableTaskProps> = ({ task, children }) => {
+const DraggableTask: FC<DraggableTaskProps> = ({
+  subGoal: subGoal,
+  children,
+}) => {
   const [{ isDragging }, drag] = useDrag(() => ({
     type: "TASK",
-    item: { task },
+    item: { subGoal: subGoal },
     collect: (monitor) => ({
       isDragging: !!monitor.isDragging(),
     }),
-    end: (item: { task: Task } | undefined, monitor: DragSourceMonitor) => {
+    end: (
+      item: { subGoal: SubGoal } | undefined,
+      monitor: DragSourceMonitor
+    ) => {
       if (!monitor.didDrop()) {
         return;
       }

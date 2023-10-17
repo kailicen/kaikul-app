@@ -1,5 +1,4 @@
 import { atom } from "recoil";
-import { Task } from "./tasksAtom";
 
 export type Goal = {
   id: string;
@@ -9,8 +8,20 @@ export type Goal = {
   endDate: string;
   userId: string | null;
   description?: string;
-  tasks?: Task[];
+  subGoals?: SubGoal[];
   color?: string;
+};
+
+export type SubGoal = {
+  id: string;
+  goalId: string;
+  text: string;
+  startDate: string;
+  endDate: string;
+  priority: string;
+  description?: string;
+  totalHours?: number;
+  color: string;
 };
 
 interface WeeklyGoalState {

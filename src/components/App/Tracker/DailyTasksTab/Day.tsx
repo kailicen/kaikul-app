@@ -51,6 +51,7 @@ import { Task } from "@/atoms/tasksAtom";
 import { useDrop } from "react-dnd";
 import { doc, getDoc } from "firebase/firestore";
 import { firestore } from "@/firebase/clientApp";
+import { SubGoal } from "@/atoms/goalsAtom";
 
 export const priorities = [
   { value: "1", label: "High", emoji: "🏔️" },
@@ -292,9 +293,9 @@ const Day: React.FC<{ date: string; user: User }> = ({ date, user }) => {
   };
 
   const handleDrop = useCallback(
-    async (item: { task: Task }) => {
+    async (item: { subGoal: SubGoal }) => {
       console.log(`date:${dateRef.current}`);
-      const { goalId, id: id } = item.task;
+      const { goalId, id: id } = item.subGoal;
 
       try {
         // Query for the task in Firestore
@@ -303,24 +304,25 @@ const Day: React.FC<{ date: string; user: User }> = ({ date, user }) => {
           return; // Exit early if either is not defined
         }
 
-        const taskDocRef = doc(firestore, "weeklyGoals", goalId);
-        const taskSnapshot = await getDoc(taskDocRef);
+        const subGoalDocRef = doc(firestore, "weeklyGoals", goalId);
+        const subGoalSnapshot = await getDoc(subGoalDocRef);
 
-        if (taskSnapshot.exists()) {
-          const goalData = taskSnapshot.data();
-          const taskData = goalData?.tasks?.find(
-            (task: Task) => task.id === id
+        if (subGoalSnapshot.exists()) {
+          const goalData = subGoalSnapshot.data();
+          const subGoalData = goalData?.subGoals?.find(
+            (subGoal: SubGoal) => subGoal.id === id
           );
 
-          if (taskData) {
+          if (subGoalData) {
             handleAddTask(
-              taskData.text,
-              taskData.priority,
+              subGoalData.text,
+              subGoalData.priority,
               0,
-              taskData.description || "",
-              taskData.goalId as string,
+              subGoalData.description || "",
+              subGoalData.goalId as string,
               dateRef.current as string,
-              taskData.color || "white"
+              subGoalData.color || "white",
+              subGoalData.id
             );
           } else {
             console.error(`Task with id ${id} not found.`);
