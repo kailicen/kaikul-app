@@ -8,7 +8,6 @@ import {
   DrawerFooter,
   Button,
   FormControl,
-  FormLabel,
   useToast,
 } from "@chakra-ui/react";
 import { DayPicker } from "react-day-picker";

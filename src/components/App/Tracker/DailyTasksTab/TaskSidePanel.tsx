@@ -1,31 +1,24 @@
 import {
   Box,
-  Button,
   CloseButton,
   Flex,
-  FormControl,
   Text,
-  Input,
   VStack,
   useColorMode,
   useMediaQuery,
   HStack,
   Icon,
   Tag,
-  Badge,
 } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import { User } from "firebase/auth";
 import { useGoals } from "@/hooks/useGoals";
-import { useWeeklyTasksAndGoals } from "@/hooks/useTasksAndGoals";
-import { MdAdd, MdDragHandle, MdOutlineDragIndicator } from "react-icons/md";
+import { MdAdd, MdOutlineDragIndicator } from "react-icons/md";
 import { priorities } from "./Day";
 import { Task } from "@/atoms/tasksAtom";
 import SubGoalDrawer from "./DrawerComponents/SubGoalDrawer";
-import useTasks from "@/hooks/useTasks";
 import { v4 as uuidv4 } from "uuid";
 import DraggableTask from "./DraggableComponents/DraggableTask";
-import { useRecoilValue } from "recoil";
 import { Goal, SubGoal } from "@/atoms/goalsAtom";
 import { addDoc, collection } from "firebase/firestore";
 import { firestore } from "@/firebase/clientApp";
@@ -223,7 +216,7 @@ function TaskSidePanel({
           </Text>
           <CloseButton onClick={togglePanel} />
         </Flex>
-        <VStack spacing={2} mt={2}>
+        <VStack spacing={2} mt={2} mb={16}>
           <Text
             fontSize="sm"
             color={colorMode === "light" ? "gray.600" : "gray.400"}
@@ -262,33 +255,28 @@ function TaskSidePanel({
                 </Box>
 
                 <HStack align="top">
-                  {!goal.subGoals ||
-                  (goal.subGoals && goal.subGoals.length < 5) ? (
-                    <Icon
-                      as={MdAdd}
-                      color={colorMode === "light" ? "gray.400" : "gray.400"}
-                      fontSize={20}
-                      cursor="pointer"
-                      onClick={() =>
-                        openSubGoalDrawer(
-                          {
-                            id: "",
-                            text: "",
-                            startDate: "",
-                            endDate: "",
-                            priority: "9",
-                            description: "",
-                            goalId: goal.id,
-                            color: goal.color as string,
-                          },
-                          goal
-                        )
-                      }
-                      mt={2}
-                    />
-                  ) : (
-                    <></>
-                  )}
+                  <Icon
+                    as={MdAdd}
+                    color={colorMode === "light" ? "gray.400" : "gray.400"}
+                    fontSize={20}
+                    cursor="pointer"
+                    onClick={() =>
+                      openSubGoalDrawer(
+                        {
+                          id: "",
+                          text: "",
+                          startDate: "",
+                          endDate: "",
+                          priority: "9",
+                          description: "",
+                          goalId: goal.id,
+                          color: goal.color as string,
+                        },
+                        goal
+                      )
+                    }
+                    mt={2}
+                  />
 
                   {/* If tasks are available, map through them and display */}
                   {goal.subGoals && goal.subGoals.length > 0 && (

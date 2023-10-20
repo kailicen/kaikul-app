@@ -83,7 +83,7 @@ const BuddyList: React.FC<Props> = ({ buddyIds, setSelectedBuddy }) => {
     <VStack
       spacing={2}
       align="stretch"
-      minH="50vh"
+      minH="20vh"
       flexGrow={1}
       overflowY="auto"
     >
