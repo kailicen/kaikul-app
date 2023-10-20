@@ -77,6 +77,17 @@ const SubGoalDrawer: React.FC<Props> = ({
       setStartDate(selectedDay);
       setLocalSubGoal({ ...localSubGoal, startDate: formattedDate });
       setStartDatePopoverOpen(false); // Close popover
+
+      // Check if the new start date is after the previously selected end date
+      if (endDate && selectedDay > endDate) {
+        // Reset the end date
+        setEndDate(undefined);
+        setLocalSubGoal({
+          ...localSubGoal,
+          startDate: formattedDate,
+          endDate: "",
+        });
+      }
     }
   };
 
@@ -86,8 +97,17 @@ const SubGoalDrawer: React.FC<Props> = ({
       setEndDate(selectedDay);
       setLocalSubGoal({ ...localSubGoal, endDate: formattedDate });
       setEndDatePopoverOpen(false); // Close popover
+
+      // Clear the error for endDate
+      if (errors.endDate) {
+        setErrors((prevErrors) => ({
+          ...prevErrors,
+          endDate: undefined,
+        }));
+      }
     }
   };
+
   useEffect(() => {
     // Initialize localTask when task prop changes
     setLocalSubGoal(subGoal);
@@ -98,7 +118,18 @@ const SubGoalDrawer: React.FC<Props> = ({
       HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
     >
   ) => {
-    setLocalSubGoal({ ...localSubGoal, [e.target.name]: e.target.value });
+    const name = e.target.name as keyof typeof errors; // Narrow down the type
+    const value = e.target.value;
+
+    setLocalSubGoal({ ...localSubGoal, [name]: value });
+
+    // Clear the error for the current input field
+    if (errors[name]) {
+      setErrors((prevErrors) => ({
+        ...prevErrors,
+        [name]: undefined,
+      }));
+    }
   };
 
   const handleSubmit = async () => {
@@ -107,8 +138,6 @@ const SubGoalDrawer: React.FC<Props> = ({
 
     let errorState = {};
     if (!text) errorState = { ...errorState, text: "Text is required!" };
-    if (!startDate)
-      errorState = { ...errorState, startDate: "Start date is required!" };
     if (!endDate)
       errorState = { ...errorState, endDate: "End date is required!" };
 
@@ -230,7 +259,8 @@ const SubGoalDrawer: React.FC<Props> = ({
                       selected={startDate}
                       onSelect={handleStartDateSelect}
                       disabled={(day: Date) =>
-                        day < goalStartDate || day > goalEndDate
+                        day < goalStartDate ||
+                        (endDate ? day > endDate : day > goalEndDate)
                       }
                     />
                   </PopoverBody>

@@ -170,7 +170,7 @@ export const useGoals = (user: User, startOfWeekString: string) => {
       }
 
       const goalData = goalDoc.data() as Goal;
-      const updatedTasksInGoal = (goalData.subGoals || []).map((subGoal) => ({
+      const updatedSubGoals = (goalData.subGoals || []).map((subGoal) => ({
         ...subGoal,
         color: newColor,
       }));
@@ -181,7 +181,7 @@ export const useGoals = (user: User, startOfWeekString: string) => {
         color: updatedGoal.color,
         startDate: updatedGoal.startDate,
         endDate: updatedGoal.endDate,
-        tasks: updatedTasksInGoal, // Updating embedded tasks
+        subGoals: updatedSubGoals, // Updating embedded tasks
       });
 
       const taskQuery = query(
@@ -340,7 +340,15 @@ export const useGoals = (user: User, startOfWeekString: string) => {
           // apply the second condition client-side
           if (goal.endDate >= startOfWeekString) {
             // Sorting logic for tasks based on priority strings
+            // Filter subGoals based on the current week
             if (goal.subGoals && goal.subGoals.length > 0) {
+              goal.subGoals = goal.subGoals.filter(
+                (subGoal) =>
+                  subGoal.startDate <= formattedZonedEndOfWeek &&
+                  subGoal.endDate >= startOfWeekString
+              );
+
+              // Sorting logic for tasks based on priority strings
               goal.subGoals.sort((a, b) => {
                 return +a.priority - +b.priority;
               });

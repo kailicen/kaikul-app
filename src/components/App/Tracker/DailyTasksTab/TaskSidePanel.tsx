@@ -18,7 +18,7 @@ import { useEffect, useState } from "react";
 import { User } from "firebase/auth";
 import { useGoals } from "@/hooks/useGoals";
 import { useWeeklyTasksAndGoals } from "@/hooks/useTasksAndGoals";
-import { MdAdd } from "react-icons/md";
+import { MdAdd, MdDragHandle, MdOutlineDragIndicator } from "react-icons/md";
 import { priorities } from "./Day";
 import { Task } from "@/atoms/tasksAtom";
 import SubGoalDrawer from "./DrawerComponents/SubGoalDrawer";
@@ -262,10 +262,10 @@ function TaskSidePanel({
                   {goal.subGoals && goal.subGoals.length > 0 && (
                     <VStack spacing={1} mt={1} ml={3} w="100%">
                       {goal.subGoals.map((subGoal, index) => (
-                        <DraggableTask key={index} subGoal={subGoal}>
+                        <DraggableTask key={subGoal.id} subGoal={subGoal}>
                           <Box
                             key={index}
-                            px={3}
+                            px={2}
                             py={1}
                             borderRadius="md"
                             boxShadow="sm"
@@ -278,31 +278,53 @@ function TaskSidePanel({
                             }}
                             w="100%"
                           >
-                            <Text fontSize="sm">{subGoal.text}</Text>
-                            {subGoal.priority && subGoal.priority !== "9" && (
-                              <Tag
-                                colorScheme={
-                                  colorMode === "light" ? "gray" : "black"
-                                }
-                                size="sm"
-                                variant="solid"
-                                borderRadius="full"
-                                whiteSpace="nowrap"
-                                isTruncated
-                                mt={1}
-                              >
-                                {priorities
-                                  .filter(
-                                    (p) =>
-                                      p.value === subGoal.priority?.toString()
-                                  )
-                                  .map((p) => (
-                                    <>
-                                      {p.emoji} {p.label}
-                                    </>
-                                  ))}
-                              </Tag>
-                            )}
+                            {/* Drag handle icon */}
+                            <Flex align="center">
+                              <Icon
+                                as={MdOutlineDragIndicator}
+                                marginRight="10px"
+                              />
+                              <Text fontSize="sm">{subGoal.text}</Text>
+                            </Flex>
+                            <HStack spacing={1} mt={1}>
+                              {subGoal.priority && subGoal.priority !== "9" && (
+                                <Tag
+                                  colorScheme={
+                                    colorMode === "light" ? "gray" : "black"
+                                  }
+                                  size="sm"
+                                  variant="solid"
+                                  borderRadius="full"
+                                  whiteSpace="nowrap"
+                                  isTruncated
+                                >
+                                  {priorities
+                                    .filter(
+                                      (p) =>
+                                        p.value === subGoal.priority?.toString()
+                                    )
+                                    .map((p) => (
+                                      <>
+                                        {p.emoji} {p.label}
+                                      </>
+                                    ))}
+                                </Tag>
+                              )}
+                              {subGoal.totalHours && (
+                                <Tag
+                                  colorScheme={
+                                    colorMode === "light" ? "gray" : "black"
+                                  }
+                                  size="sm"
+                                  variant="solid"
+                                  borderRadius="full"
+                                  whiteSpace="nowrap"
+                                  isTruncated
+                                >
+                                  {subGoal.totalHours} hrs
+                                </Tag>
+                              )}
+                            </HStack>
                           </Box>
                         </DraggableTask>
                       ))}

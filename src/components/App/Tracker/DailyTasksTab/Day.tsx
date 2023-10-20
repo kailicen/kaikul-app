@@ -294,8 +294,9 @@ const Day: React.FC<{ date: string; user: User }> = ({ date, user }) => {
 
   const handleDrop = useCallback(
     async (item: { subGoal: SubGoal }) => {
-      console.log(`date:${dateRef.current}`);
-      const { goalId, id: id } = item.subGoal;
+      console.log("item:", item.subGoal);
+
+      const { goalId, id } = item.subGoal;
 
       try {
         // Query for the task in Firestore

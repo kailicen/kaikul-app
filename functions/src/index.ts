@@ -260,3 +260,78 @@ exports.unsubscribeUser = functions.https.onRequest((req, res) => {
     }
   });
 });
+
+exports.recalculateTotalHours = functions.firestore
+  .document("tasks/{taskId}")
+  .onWrite(async (change, context) => {
+    let totalHoursDelta = 0;
+
+    const task = change.after.exists ? change.after.data() : null;
+    const previousTaskData = change.before.exists ? change.before.data() : null;
+
+    // Check for task creation
+    if (task && !previousTaskData && task.completed) {
+      totalHoursDelta = task.focusHours || 0;
+    } else if (!task && previousTaskData && previousTaskData.completed) {
+      totalHoursDelta = -(previousTaskData.focusHours || 0);
+    } else if (task && previousTaskData) {
+      // Task marked as completed
+      if (task.completed && !previousTaskData.completed) {
+        totalHoursDelta = task.focusHours || 0;
+      } else if (!task.completed && previousTaskData.completed) {
+        totalHoursDelta = -(previousTaskData.focusHours || 0);
+      } else if (
+        task.completed &&
+        task.focusHours !== previousTaskData.focusHours
+      ) {
+        totalHoursDelta =
+          (task.focusHours || 0) - (previousTaskData.focusHours || 0);
+      }
+    }
+    console.log(`Calculated totalHoursDelta: ${totalHoursDelta}`);
+
+    // If there's no change, exit the function
+    const targetTask = task || previousTaskData;
+    if (totalHoursDelta === 0 || !targetTask?.subGoalId) {
+      return null;
+    }
+
+    // Update the SubGoal's totalHours based on the delta calculated
+    const weeklyGoalRef = admin
+      .firestore()
+      .collection("weeklyGoals")
+      .doc(targetTask.goalId);
+
+    try {
+      const doc = await weeklyGoalRef.get();
+      if (!doc.exists) {
+        console.error("No weeklyGoal found with the given ID");
+        return;
+      }
+
+      const weeklyGoalData = doc.data();
+      if (!weeklyGoalData) {
+        console.error("No data for the weeklyGoal found");
+        return;
+      }
+
+      if (weeklyGoalData.subGoals && Array.isArray(weeklyGoalData.subGoals)) {
+        // Find the subGoal with the matching ID and update its totalHours
+        for (const subGoal of weeklyGoalData.subGoals) {
+          if (subGoal.id === targetTask.subGoalId) {
+            subGoal.totalHours = (subGoal.totalHours || 0) + totalHoursDelta;
+            break;
+          }
+        }
+
+        // Update the weeklyGoal document with the modified subGoals array
+        await weeklyGoalRef.update({subGoals: weeklyGoalData.subGoals});
+      } else {
+        console.error("No subGoals array found in the weeklyGoal data");
+      }
+    } catch (error) {
+      console.error("Error updating subGoal totalHours: ", error);
+    }
+
+    return null;
+  });
