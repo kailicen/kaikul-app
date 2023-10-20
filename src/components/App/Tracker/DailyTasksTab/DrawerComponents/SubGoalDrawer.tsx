@@ -1,4 +1,3 @@
-import { Task } from "@/atoms/tasksAtom";
 import {
   Drawer,
   Input,
@@ -44,6 +43,7 @@ const SubGoalDrawer: React.FC<Props> = ({
   subGoal: subGoal,
   goal: goal,
   saveSubGoal: saveSubGoal,
+
   deleteSubGoal: deleteSubGoal,
 }) => {
   const [localSubGoal, setLocalSubGoal] = useState<SubGoal>(subGoal);
@@ -134,7 +134,7 @@ const SubGoalDrawer: React.FC<Props> = ({
 
   const handleSubmit = async () => {
     setIsLoading(true);
-    const { text, startDate, endDate } = localSubGoal;
+    const { endDate, text } = localSubGoal;
 
     let errorState = {};
     if (!text) errorState = { ...errorState, text: "Text is required!" };

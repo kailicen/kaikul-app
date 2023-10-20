@@ -27,6 +27,10 @@ import { v4 as uuidv4 } from "uuid";
 import DraggableTask from "./DraggableComponents/DraggableTask";
 import { useRecoilValue } from "recoil";
 import { Goal, SubGoal } from "@/atoms/goalsAtom";
+import { addDoc, collection } from "firebase/firestore";
+import { firestore } from "@/firebase/clientApp";
+import { FaCalendarAlt } from "react-icons/fa";
+import TaskDayPickerDrawer from "./DrawerComponents/TaskDayPickerDrawer";
 
 type Props = {
   user: User;
@@ -59,8 +63,13 @@ function TaskSidePanel({
   const bgColor = colorMode === "light" ? "gray.100" : "gray.700";
 
   const [drawerOpen, setDrawerOpen] = useState(false);
+  const [taskDrawerOpen, setTaskDrawerOpen] = useState(false);
   const [subGoal, setSubGoal] = useState<SubGoal | null>(null);
   const [goal, setGoal] = useState<Goal | null>(null);
+
+  const displayText = isLargerThan768
+    ? "🚀 Drag & Drop subgoals into your weekly planner for easy scheduling!"
+    : "Click on the calendar icon to add subgoals into your weekly planner. (🚀 Large screen has drag and drop function)";
 
   const openSubGoalDrawer = (subGoal: SubGoal, goal: Goal) => {
     setSubGoal(subGoal);
@@ -68,9 +77,19 @@ function TaskSidePanel({
     setDrawerOpen(true);
   };
 
+  const openTaskDayPickerDrawer = (subGoal: SubGoal) => {
+    setSubGoal(subGoal);
+    setTaskDrawerOpen(true);
+  };
+
   const closeSubGoalDrawer = () => {
     setSubGoal(null);
     setDrawerOpen(false);
+  };
+
+  const closeTaskDayPickerDrawer = () => {
+    setSubGoal(null);
+    setTaskDrawerOpen(false);
   };
 
   const saveSubGoal = async (subGoal: SubGoal) => {
@@ -118,6 +137,20 @@ function TaskSidePanel({
       console.log("Sub-goal saved successfully");
     } catch (error) {
       console.error("Error while saving task:", error);
+    }
+  };
+
+  const saveTask = async (task: Task) => {
+    try {
+      // Spread the properties of the task and add the userId property
+      const taskWithUserId = { ...task, userId: user.uid };
+
+      const docRef = await addDoc(
+        collection(firestore, "tasks"),
+        taskWithUserId
+      );
+    } catch (error) {
+      console.error("Error adding document:", error);
     }
   };
 
@@ -197,8 +230,7 @@ function TaskSidePanel({
             textAlign="center"
             mb={4}
           >
-            🚀 Drag & Drop subtasks into your weekly planner for easy
-            scheduling! (Large screen)
+            {displayText}
           </Text>
           {goals && goals.length > 0 ? (
             goals.map((goal) => (
@@ -280,13 +312,24 @@ function TaskSidePanel({
                           >
                             {/* Drag handle icon */}
                             <Flex align="center">
-                              <Icon
-                                as={MdOutlineDragIndicator}
-                                marginRight="10px"
-                              />
-                              <Text fontSize="sm">{subGoal.text}</Text>
+                              {isLargerThan768 ? (
+                                <Icon as={MdOutlineDragIndicator} />
+                              ) : (
+                                <Icon
+                                  as={FaCalendarAlt}
+                                  color="gray.800"
+                                  mr={1}
+                                  onClick={(e) => {
+                                    e.stopPropagation();
+                                    openTaskDayPickerDrawer(subGoal);
+                                  }}
+                                />
+                              )}
+                              <Text fontSize="sm" ml={1}>
+                                {subGoal.text}
+                              </Text>
                             </Flex>
-                            <HStack spacing={1} mt={1}>
+                            <HStack spacing={1} mt={1} pl={3}>
                               {subGoal.priority && subGoal.priority !== "9" && (
                                 <Tag
                                   colorScheme={
@@ -345,6 +388,14 @@ function TaskSidePanel({
             goal={goal}
             saveSubGoal={saveSubGoal}
             deleteSubGoal={deleteSubGoal}
+          />
+        )}
+        {subGoal && (
+          <TaskDayPickerDrawer
+            isOpen={taskDrawerOpen}
+            onClose={closeTaskDayPickerDrawer}
+            subGoal={subGoal}
+            saveTask={saveTask}
           />
         )}
       </Box>
