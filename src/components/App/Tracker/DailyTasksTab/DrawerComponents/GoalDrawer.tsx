@@ -124,7 +124,7 @@ const GoalDrawer: React.FC<GoalDrawerProps> = ({
                       <div>
                         <Input
                           {...field}
-                          placeholder="Enter your goal here (e.g., 'Lose 5 pounds')"
+                          placeholder="Enter your goal here (e.g., 'Become financially free in 5 years')"
                         />
                         <ErrorMessage
                           name="goal"
@@ -264,7 +264,7 @@ const GoalDrawer: React.FC<GoalDrawerProps> = ({
                     render={({ field }: { field: FieldInputProps<any> }) => (
                       <Textarea
                         {...field}
-                        placeholder="Why do you want this..."
+                        placeholder="Break your goal down to actionable steps. Too hard? Think of obstacles you might face and what are the solutions."
                         mt={4}
                         rows={10}
                       />

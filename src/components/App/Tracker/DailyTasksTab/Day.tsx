@@ -808,7 +808,7 @@ const Day: React.FC<{ date: string; user: User }> = ({ date, user }) => {
                       render={({ field }: { field: FieldInputProps<any> }) => (
                         <Textarea
                           {...field}
-                          placeholder="Description..."
+                          placeholder="Notes..."
                           mt={4}
                           rows={10}
                         />

@@ -202,7 +202,7 @@ function GoalView({
           onClose={handleInstructionClose}
         />
         {!isPanelOpen && (
-          <Grid templateColumns={{ base: "1fr", md: "1fr 1fr 1fr" }} gap={3}>
+          <Grid templateColumns={{ base: "1fr", md: "1fr 1fr 1fr" }} gap={2}>
             {goals.map((goal) => (
               <Flex
                 key={goal.id}
