@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Goal, weeklyGoalListState } from "../atoms/goalsAtom";
+import { Goal, SubGoal, weeklyGoalListState } from "../atoms/goalsAtom";
 import { User } from "firebase/auth";
 import {
   addDoc,
@@ -170,8 +170,8 @@ export const useGoals = (user: User, startOfWeekString: string) => {
       }
 
       const goalData = goalDoc.data() as Goal;
-      const updatedTasksInGoal = (goalData.tasks || []).map((task) => ({
-        ...task,
+      const updatedSubGoals = (goalData.subGoals || []).map((subGoal) => ({
+        ...subGoal,
         color: newColor,
       }));
 
@@ -181,7 +181,7 @@ export const useGoals = (user: User, startOfWeekString: string) => {
         color: updatedGoal.color,
         startDate: updatedGoal.startDate,
         endDate: updatedGoal.endDate,
-        tasks: updatedTasksInGoal, // Updating embedded tasks
+        subGoals: updatedSubGoals, // Updating embedded tasks
       });
 
       const taskQuery = query(
@@ -288,12 +288,15 @@ export const useGoals = (user: User, startOfWeekString: string) => {
     }
   };
 
-  const handleUpdateGoalAddTask = async (id: string, tasks: Task[]) => {
+  const handleUpdateGoalAddSubGoal = async (
+    id: string,
+    subGoals: SubGoal[]
+  ) => {
     const updatedGoals = goals.map((goal) =>
       goal.id === id
         ? {
             ...goal,
-            tasks,
+            subGoals: subGoals,
           }
         : goal
     );
@@ -308,7 +311,7 @@ export const useGoals = (user: User, startOfWeekString: string) => {
     try {
       const goalDocRef = doc(firestore, "weeklyGoals", id);
       await updateDoc(goalDocRef, {
-        tasks: updatedGoal.tasks,
+        subGoals: updatedGoal.subGoals,
       });
       setGoals(updatedGoals);
       setRecoilGoals(updatedGoals);
@@ -337,8 +340,16 @@ export const useGoals = (user: User, startOfWeekString: string) => {
           // apply the second condition client-side
           if (goal.endDate >= startOfWeekString) {
             // Sorting logic for tasks based on priority strings
-            if (goal.tasks && goal.tasks.length > 0) {
-              goal.tasks.sort((a, b) => {
+            // Filter subGoals based on the current week
+            if (goal.subGoals && goal.subGoals.length > 0) {
+              goal.subGoals = goal.subGoals.filter(
+                (subGoal) =>
+                  subGoal.startDate <= formattedZonedEndOfWeek &&
+                  subGoal.endDate >= startOfWeekString
+              );
+
+              // Sorting logic for tasks based on priority strings
+              goal.subGoals.sort((a, b) => {
                 return +a.priority - +b.priority;
               });
             }
@@ -365,6 +376,6 @@ export const useGoals = (user: User, startOfWeekString: string) => {
     handleCompleteGoal,
     handleUpdateGoal,
     handleDeleteGoal,
-    handleUpdateGoalAddTask,
+    handleUpdateGoalAddTask: handleUpdateGoalAddSubGoal,
   };
 };

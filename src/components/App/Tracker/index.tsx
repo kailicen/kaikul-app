@@ -18,7 +18,7 @@ function TrackerPage({ user }: Props) {
     <Flex direction="column" width="100%">
       <Tabs colorScheme="purple" variant="enclosed" width="100%">
         <TabList display="flex" justifyContent="center" width="100%">
-          <Tab>Daily Tasks</Tab>
+          <Tab>Planner</Tab>
           <Tab>Weekly Updates</Tab>
         </TabList>
 

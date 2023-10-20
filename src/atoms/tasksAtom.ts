@@ -12,6 +12,7 @@ export type Task = {
   color?: string;
   priority: string;
   focusHours?: number;
+  subGoalId?: string;
 };
 
 interface TaskState {

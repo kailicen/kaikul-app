@@ -18,14 +18,19 @@ import { useEffect, useState } from "react";
 import { User } from "firebase/auth";
 import { useGoals } from "@/hooks/useGoals";
 import { useWeeklyTasksAndGoals } from "@/hooks/useTasksAndGoals";
-import { MdAdd } from "react-icons/md";
+import { MdAdd, MdDragHandle, MdOutlineDragIndicator } from "react-icons/md";
 import { priorities } from "./Day";
 import { Task } from "@/atoms/tasksAtom";
-import BreakdownTaskDrawer from "./DrawerComponents/BreakdownTaskDrawer";
+import SubGoalDrawer from "./DrawerComponents/SubGoalDrawer";
 import useTasks from "@/hooks/useTasks";
 import { v4 as uuidv4 } from "uuid";
 import DraggableTask from "./DraggableComponents/DraggableTask";
 import { useRecoilValue } from "recoil";
+import { Goal, SubGoal } from "@/atoms/goalsAtom";
+import { addDoc, collection } from "firebase/firestore";
+import { firestore } from "@/firebase/clientApp";
+import { FaCalendarAlt } from "react-icons/fa";
+import TaskDayPickerDrawer from "./DrawerComponents/TaskDayPickerDrawer";
 
 type Props = {
   user: User;
@@ -58,74 +63,101 @@ function TaskSidePanel({
   const bgColor = colorMode === "light" ? "gray.100" : "gray.700";
 
   const [drawerOpen, setDrawerOpen] = useState(false);
-  const [plannedTask, setPlannedTask] = useState<Task>({
-    text: "",
-    date: "",
-    priority: "9",
-  });
+  const [taskDrawerOpen, setTaskDrawerOpen] = useState(false);
+  const [subGoal, setSubGoal] = useState<SubGoal | null>(null);
+  const [goal, setGoal] = useState<Goal | null>(null);
 
-  const openTaskDrawer = (task: Task) => {
-    setPlannedTask(task);
+  const displayText = isLargerThan768
+    ? "🚀 Drag & Drop subgoals into your weekly planner for easy scheduling!"
+    : "Click on the calendar icon to add subgoals into your weekly planner. (🚀 Large screen has drag and drop function)";
+
+  const openSubGoalDrawer = (subGoal: SubGoal, goal: Goal) => {
+    setSubGoal(subGoal);
+    setGoal(goal);
     setDrawerOpen(true);
   };
 
-  const closeTaskDrawer = () => {
-    setPlannedTask({ text: "", date: "", priority: "9" });
+  const openTaskDayPickerDrawer = (subGoal: SubGoal) => {
+    setSubGoal(subGoal);
+    setTaskDrawerOpen(true);
+  };
+
+  const closeSubGoalDrawer = () => {
+    setSubGoal(null);
     setDrawerOpen(false);
   };
 
-  const saveTask = async (task: Task) => {
+  const closeTaskDayPickerDrawer = () => {
+    setSubGoal(null);
+    setTaskDrawerOpen(false);
+  };
+
+  const saveSubGoal = async (subGoal: SubGoal) => {
     try {
       // Check if goalId is available
-      if (!task.goalId) {
+      if (!subGoal.goalId) {
         console.error("Task does not have an associated goalId");
         return;
       }
 
       // Retrieve the goal using goalId
-      const associatedGoal = goals.find((goal) => goal.id === task.goalId);
+      const associatedGoal = goals.find((goal) => goal.id === subGoal.goalId);
 
       if (!associatedGoal) {
-        console.error(`No goal found with id ${task.goalId}`);
+        console.error(`No goal found with id ${subGoal.goalId}`);
         return;
       }
 
       // Determine whether we're adding or editing a task
-      let newTasks;
-      if (task.id) {
+      let newSubGoals: SubGoal[];
+      if (subGoal.id) {
         // Editing an existing task
-        newTasks = associatedGoal.tasks?.map(
-          (existingTask) =>
-            existingTask.id === task.id
-              ? task // replace the existing task with the updated task
-              : existingTask // leave the task as it is
-        ) ?? [task]; // if for some reason tasks are undefined/null, set newTasks to an array with the new task
+        newSubGoals = associatedGoal.subGoals?.map(
+          (existingSubGoal) =>
+            existingSubGoal.id === subGoal.id
+              ? subGoal // replace the existing task with the updated task
+              : existingSubGoal // leave the task as it is
+        ) ?? [subGoal]; // if for some reason tasks are undefined/null, set newSubGoals to an array with the new task
       } else {
         // Adding a new task
-        const newTask = {
-          ...task,
+        const newSubGoal = {
+          ...subGoal,
           id: uuidv4(), // Assigning a unique id to the new task
           userId: user.uid,
         };
         // Adding a new task
-        newTasks = associatedGoal.tasks
-          ? [...associatedGoal.tasks, newTask]
-          : [newTask];
+        newSubGoals = associatedGoal.subGoals
+          ? [...associatedGoal.subGoals, newSubGoal]
+          : [newSubGoal];
       }
 
       // Update the goal with the new task array using handleUpdateGoalAddTask
-      await handleUpdateGoalAddTask(task.goalId, newTasks);
+      await handleUpdateGoalAddTask(subGoal.goalId, newSubGoals);
 
-      console.log("Task saved successfully");
+      console.log("Sub-goal saved successfully");
     } catch (error) {
       console.error("Error while saving task:", error);
     }
   };
 
-  const deleteTask = async (taskId: string, goalId: string) => {
+  const saveTask = async (task: Task) => {
+    try {
+      // Spread the properties of the task and add the userId property
+      const taskWithUserId = { ...task, userId: user.uid };
+
+      const docRef = await addDoc(
+        collection(firestore, "tasks"),
+        taskWithUserId
+      );
+    } catch (error) {
+      console.error("Error adding document:", error);
+    }
+  };
+
+  const deleteSubGoal = async (id: string, goalId: string) => {
     try {
       // Validate inputs
-      if (!goalId || !taskId) {
+      if (!goalId || !id) {
         console.error("Missing goalId or taskId");
         return;
       }
@@ -139,11 +171,11 @@ function TaskSidePanel({
       }
 
       // Filter out the task to be deleted
-      const newTasks =
-        associatedGoal.tasks?.filter((task) => task.id !== taskId) ?? [];
+      const newSubGoals =
+        associatedGoal.subGoals?.filter((subGoal) => subGoal.id !== id) ?? [];
 
       // Update the goal with the new task array using handleUpdateGoalAddTask
-      await handleUpdateGoalAddTask(goalId, newTasks);
+      await handleUpdateGoalAddTask(goalId, newSubGoals);
 
       console.log("Task deleted successfully");
     } catch (error) {
@@ -198,8 +230,7 @@ function TaskSidePanel({
             textAlign="center"
             mb={4}
           >
-            🚀 Drag & Drop subtasks into your weekly planner for easy
-            scheduling! (Large screen)
+            {displayText}
           </Text>
           {goals && goals.length > 0 ? (
             goals.map((goal) => (
@@ -231,21 +262,27 @@ function TaskSidePanel({
                 </Box>
 
                 <HStack align="top">
-                  {!goal.tasks || (goal.tasks && goal.tasks.length < 5) ? (
+                  {!goal.subGoals ||
+                  (goal.subGoals && goal.subGoals.length < 5) ? (
                     <Icon
                       as={MdAdd}
                       color={colorMode === "light" ? "gray.400" : "gray.400"}
                       fontSize={20}
                       cursor="pointer"
                       onClick={() =>
-                        openTaskDrawer({
-                          text: "",
-                          date: currentWeekStart,
-                          priority: "9",
-                          description: "",
-                          goalId: goal.id,
-                          color: goal.color,
-                        })
+                        openSubGoalDrawer(
+                          {
+                            id: "",
+                            text: "",
+                            startDate: "",
+                            endDate: "",
+                            priority: "9",
+                            description: "",
+                            goalId: goal.id,
+                            color: goal.color as string,
+                          },
+                          goal
+                        )
                       }
                       mt={2}
                     />
@@ -254,49 +291,83 @@ function TaskSidePanel({
                   )}
 
                   {/* If tasks are available, map through them and display */}
-                  {goal.tasks && goal.tasks.length > 0 && (
+                  {goal.subGoals && goal.subGoals.length > 0 && (
                     <VStack spacing={1} mt={1} ml={3} w="100%">
-                      {goal.tasks.map((task, index) => (
-                        <DraggableTask key={index} task={task}>
+                      {goal.subGoals.map((subGoal, index) => (
+                        <DraggableTask key={subGoal.id} subGoal={subGoal}>
                           <Box
                             key={index}
-                            px={3}
+                            px={2}
                             py={1}
                             borderRadius="md"
                             boxShadow="sm"
-                            bgColor={task.color || "white"} // Applying color
+                            bgColor={subGoal.color || "white"} // Applying color
                             color="black"
                             _hover={{ boxShadow: "md" }}
                             cursor="pointer"
                             onClick={() => {
-                              openTaskDrawer(task);
+                              openSubGoalDrawer(subGoal, goal);
                             }}
                             w="100%"
                           >
-                            <Text fontSize="sm">{task.text}</Text>
-                            {task.priority && task.priority !== "9" && (
-                              <Tag
-                                colorScheme={
-                                  colorMode === "light" ? "gray" : "black"
-                                }
-                                size="sm"
-                                variant="solid"
-                                borderRadius="full"
-                                whiteSpace="nowrap"
-                                isTruncated
-                                mt={1}
-                              >
-                                {priorities
-                                  .filter(
-                                    (p) => p.value === task.priority?.toString()
-                                  )
-                                  .map((p) => (
-                                    <>
-                                      {p.emoji} {p.label}
-                                    </>
-                                  ))}
-                              </Tag>
-                            )}
+                            {/* Drag handle icon */}
+                            <Flex align="center">
+                              {isLargerThan768 ? (
+                                <Icon as={MdOutlineDragIndicator} />
+                              ) : (
+                                <Icon
+                                  as={FaCalendarAlt}
+                                  color="gray.800"
+                                  mr={1}
+                                  onClick={(e) => {
+                                    e.stopPropagation();
+                                    openTaskDayPickerDrawer(subGoal);
+                                  }}
+                                />
+                              )}
+                              <Text fontSize="sm" ml={1}>
+                                {subGoal.text}
+                              </Text>
+                            </Flex>
+                            <HStack spacing={1} mt={1} pl={3}>
+                              {subGoal.priority && subGoal.priority !== "9" && (
+                                <Tag
+                                  colorScheme={
+                                    colorMode === "light" ? "gray" : "black"
+                                  }
+                                  size="sm"
+                                  variant="solid"
+                                  borderRadius="full"
+                                  whiteSpace="nowrap"
+                                  isTruncated
+                                >
+                                  {priorities
+                                    .filter(
+                                      (p) =>
+                                        p.value === subGoal.priority?.toString()
+                                    )
+                                    .map((p) => (
+                                      <>
+                                        {p.emoji} {p.label}
+                                      </>
+                                    ))}
+                                </Tag>
+                              )}
+                              {subGoal.totalHours && (
+                                <Tag
+                                  colorScheme={
+                                    colorMode === "light" ? "gray" : "black"
+                                  }
+                                  size="sm"
+                                  variant="solid"
+                                  borderRadius="full"
+                                  whiteSpace="nowrap"
+                                  isTruncated
+                                >
+                                  {subGoal.totalHours} hrs
+                                </Tag>
+                              )}
+                            </HStack>
                           </Box>
                         </DraggableTask>
                       ))}
@@ -309,13 +380,24 @@ function TaskSidePanel({
             <Text>No goals found</Text>
           )}
         </VStack>
-        <BreakdownTaskDrawer
-          isOpen={drawerOpen}
-          onClose={closeTaskDrawer}
-          task={plannedTask}
-          saveTask={saveTask}
-          deleteTask={deleteTask}
-        />
+        {subGoal && goal && (
+          <SubGoalDrawer
+            isOpen={drawerOpen}
+            onClose={closeSubGoalDrawer}
+            subGoal={subGoal}
+            goal={goal}
+            saveSubGoal={saveSubGoal}
+            deleteSubGoal={deleteSubGoal}
+          />
+        )}
+        {subGoal && (
+          <TaskDayPickerDrawer
+            isOpen={taskDrawerOpen}
+            onClose={closeTaskDayPickerDrawer}
+            subGoal={subGoal}
+            saveTask={saveTask}
+          />
+        )}
       </Box>
     </>
   );
