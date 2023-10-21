@@ -1,4 +1,4 @@
-import { Input, Button, Flex, Text } from "@chakra-ui/react";
+import { Input, Button, Flex, Text, Checkbox, Link } from "@chakra-ui/react";
 import React, { useState } from "react";
 import { useSetRecoilState } from "recoil";
 import { authModalState } from "../../../atoms/authModalAtom";
@@ -16,10 +16,18 @@ const SignUp: React.FC = () => {
   const [createUserWithEmailAndPassword, userCred, loading, userError] =
     useCreateUserWithEmailAndPassword(auth);
 
+  const [termsChecked, setTermsChecked] = useState(false);
+
   // Firebase logic
   const onSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     if (error) setError("");
+
+    if (!termsChecked) {
+      setError("You must agree to the terms to sign up.");
+      return;
+    }
+
     if (signUpForm.password !== signUpForm.confirmPassword) {
       setError("Passwords do not match");
       return;
@@ -100,10 +108,28 @@ const SignUp: React.FC = () => {
           borderColor: "purple.500",
         }}
       />
+
+      <Checkbox
+        isChecked={termsChecked}
+        onChange={(e) => setTermsChecked(e.target.checked)}
+        my={3}
+      >
+        I agree to the{" "}
+        <Link
+          href="/terms"
+          target="_blank"
+          color="purple.500"
+          textDecoration="underline"
+        >
+          Terms of Service
+        </Link>
+      </Checkbox>
+
       <Text textAlign="center" color="red" fontSize="10pt">
         {error ||
           FIREBASE_ERRORS[userError?.message as keyof typeof FIREBASE_ERRORS]}
       </Text>
+
       <Button
         width="100%"
         height="36px"
