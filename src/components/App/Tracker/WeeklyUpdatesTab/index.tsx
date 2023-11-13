@@ -1,7 +1,5 @@
-import React, { useState } from "react";
-import { Grid, VStack, Text } from "@chakra-ui/react";
-import { InfoIcon } from "@chakra-ui/icons";
-import MyJourneyModal from "@/components/Modal/Instructions/MyJourneyModal";
+import React from "react";
+import { Grid, VStack } from "@chakra-ui/react";
 import WeeklyUpdateSection from "./WeeklyUpdateSection";
 import { User } from "firebase/auth";
 import MyCommunityInfo from "./MyCommunityInfo";

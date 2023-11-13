@@ -30,7 +30,13 @@ function MePage({ user, posts }: Props) {
     <>
       {!loading && profile && (
         <Flex direction="column" width="100%">
-          <Tabs colorScheme="purple" variant="enclosed" width="100%" mx="auto">
+          <Tabs
+            colorScheme="purple"
+            variant="enclosed"
+            width="100%"
+            mx="auto"
+            index={2}
+          >
             <TabList display="flex" justifyContent="center">
               <Tab>My Journey</Tab>
               <Tab>Leaderboard</Tab>

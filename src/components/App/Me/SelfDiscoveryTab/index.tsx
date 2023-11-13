@@ -1,11 +1,10 @@
-import { Text, VStack, Grid, Select } from "@chakra-ui/react";
+import { Text, VStack, Grid, Select, Box, Button } from "@chakra-ui/react";
 import React, { useState } from "react";
 import { UserProfileAddition } from "@/atoms/userProfileAdditionAtom";
 import { InfoIcon } from "@chakra-ui/icons";
 import SelfDiscoveryModal from "@/components/Modal/Instructions/SelfDiscoveryModal";
 import SelfDiscoveryCard from "./SelfDiscoveryCard";
 import ThemeOfTheWeekCard, { Theme } from "./ThemeOfTheWeekCard";
-import OtherThemeCards from "./OtherThemeCards";
 
 type Props = {
   profileAddition: UserProfileAddition;
@@ -33,6 +32,31 @@ function SelfDiscovery({ profileAddition, onEdit, posts }: Props) {
     ? posts.filter((post) => post.fields.title === selectedTheme)
     : posts;
 
+  // Pagination states
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 3; // You can adjust this number as needed
+
+  // Calculating the index of the first and last post of the current page
+  const indexOfLastPost = currentPage * itemsPerPage;
+  const indexOfFirstPost = indexOfLastPost - itemsPerPage;
+
+  // Slice the posts array to get only the posts for the current page
+  const currentPosts = filteredPosts.slice(indexOfFirstPost, indexOfLastPost);
+
+  // Change page handler
+  const paginate = (pageNumber: number) => setCurrentPage(pageNumber);
+
+  // Calculate the total number of pages
+  const pageCount = Math.ceil(filteredPosts.length / itemsPerPage);
+
+  const handlePrevPage = () => {
+    setCurrentPage((prev) => (prev > 1 ? prev - 1 : prev));
+  };
+
+  const handleNextPage = () => {
+    setCurrentPage((prev) => (prev < pageCount ? prev + 1 : prev));
+  };
+
   return (
     <VStack width="100%">
       <Text fontWeight="bold" fontSize="lg" mb="2">
@@ -56,7 +80,7 @@ function SelfDiscovery({ profileAddition, onEdit, posts }: Props) {
         gap={4}
         width="100%"
       >
-        <VStack alignItems="flex-start">
+        <VStack alignItems="flex-start" gap={4}>
           <Select
             placeholder="Select theme"
             onChange={(e) => setSelectedTheme(e.target.value)}
@@ -69,10 +93,29 @@ function SelfDiscovery({ profileAddition, onEdit, posts }: Props) {
               </option>
             ))}
           </Select>
-          {/* First Post into ThemeOfTheWeekCard */}
-          {filteredPosts.map((post: Theme) => (
+          {/* Paginated Posts */}
+          {currentPosts.map((post: Theme) => (
             <ThemeOfTheWeekCard key={post.sys.id} post={post} />
           ))}
+          {/* Pagination Controls */}
+          <Box
+            display="flex"
+            justifyContent="flex-start"
+            alignItems="center"
+            gap={2}
+            mt={5}
+          >
+            <Button onClick={handlePrevPage} disabled={currentPage === 1}>
+              Prev
+            </Button>
+            <Text>Page: {currentPage}</Text>
+            <Button
+              onClick={handleNextPage}
+              disabled={currentPage === pageCount}
+            >
+              Next
+            </Button>
+          </Box>
         </VStack>
 
         {/* SelfDiscoveryCard on the right */}

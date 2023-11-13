@@ -9,6 +9,7 @@ import {
   HStack,
   Icon,
   Tag,
+  Spinner,
 } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import { User } from "firebase/auth";
@@ -49,7 +50,10 @@ function TaskSidePanel({
   openDrawer,
 }: Props) {
   //const { structuredGoals } = useWeeklyTasksAndGoals(user, currentWeekStart);
-  const { goals, handleUpdateGoalAddTask } = useGoals(user, currentWeekStart);
+  const { goals, handleUpdateGoalAddTask, loading } = useGoals(
+    user,
+    currentWeekStart
+  );
 
   const [isLargerThan768] = useMediaQuery("(min-width: 768px)");
   const { colorMode } = useColorMode();
@@ -225,7 +229,13 @@ function TaskSidePanel({
           >
             {displayText}
           </Text>
-          {goals && goals.length > 0 ? (
+
+          {/* Spinner for loading state */}
+          {loading ? (
+            <Flex justify="center" align="center" height="100%">
+              <Spinner size="xl" />
+            </Flex>
+          ) : goals && goals.length > 0 ? (
             goals.map((goal) => (
               <Box key={goal.id} w="100%">
                 <Box

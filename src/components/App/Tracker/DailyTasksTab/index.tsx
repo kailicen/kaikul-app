@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import GoalView from "./GoalView";
 import WeekView from "./WeekView";
 import { User } from "firebase/auth";
@@ -27,6 +27,12 @@ function WeeklyPlanner({ user }: Props) {
   const [isLargerThan768] = useMediaQuery("(min-width: 768px)");
 
   const [isPanelOpen, setIsPanelOpen] = useState(false);
+
+  useEffect(() => {
+    // Update isPanelOpen based on screen size after component mounts
+    setIsPanelOpen(isLargerThan768);
+  }, [isLargerThan768]); // dependency on isLargerThan768
+
   const togglePanel = () => {
     setIsPanelOpen(!isPanelOpen);
   };

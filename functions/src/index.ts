@@ -3,9 +3,9 @@ import * as functions from "firebase-functions";
 import * as admin from "firebase-admin";
 import {format, addYears} from "date-fns";
 import * as mailgun from "mailgun-js";
-// import * as cors from "cors";
+import * as cors from "cors";
 // default is for Vercel deployment issue, but it will break the functions
-import {default as cors} from "cors";
+// import {default as cors} from "cors";
 
 
 admin.initializeApp();
@@ -150,8 +150,8 @@ interface Recipient {
 }
 
 exports.sendWeeklyNewsletter = functions.pubsub
-  .schedule("every monday 03:40") // everyday for testing TODO: put it to every sunday etc.
-  .timeZone("America/Los_Angeles")
+  .schedule("every sunday 12:00") // everyday for testing TODO: put it to every sunday etc.
+  .timeZone("Australia/Hobart")
   .onRun(async (_context) => {
     try {
       // Fetch subscribers from Firebase (assuming Firestore here)
@@ -193,7 +193,7 @@ exports.sendWeeklyNewsletter = functions.pubsub
         const data = {
           from: "KaiKul Team <kaikulteam@kaikul.com>",
           to: recipient.email,
-          subject: "Your Weekly Newsletter", // also need to change subject
+          subject: "A Quick Hello from KaiKul 🚀", // also need to change subject
           template: "newsletter",
           "h:X-Mailgun-Variables": JSON.stringify({
             displayName: displayName,

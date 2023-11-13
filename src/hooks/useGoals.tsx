@@ -30,6 +30,8 @@ import {
 import { utcToZonedTime } from "date-fns-tz";
 
 export const useGoals = (user: User, startOfWeekString: string) => {
+  const [loading, setLoading] = useState(true); // New loading state
+
   const [recoilGoals, setRecoilGoals] = useRecoilState(weeklyGoalListState);
   const { userPoints, computePointsForGoal, computeGoalPoints, updatePoints } =
     useUserPoints(user);
@@ -321,6 +323,7 @@ export const useGoals = (user: User, startOfWeekString: string) => {
   };
 
   useEffect(() => {
+    setLoading(true); // Start loading before fetching data
     const weeklyGoalsCollection = collection(firestore, "weeklyGoals");
 
     // Query based on one condition first
@@ -359,19 +362,25 @@ export const useGoals = (user: User, startOfWeekString: string) => {
         });
         setGoals(goalsForWeek);
         setRecoilGoals(goalsForWeek);
+        setLoading(false); // Stop loading after data is processed
       },
       (error) => {
         console.error("Error fetching goals:", error);
+        setLoading(false); // Stop loading if an error occurs
       }
     );
 
     // Cleanup listener on component unmount
-    return () => unsubscribe();
+    return () => {
+      unsubscribe();
+      setLoading(false); // Ensure loading is false when unmounting
+    };
   }, [user, formattedZonedEndOfWeek, endOfWeek]);
 
   return {
     goals,
-    recoilGoals: recoilGoals,
+    recoilGoals,
+    loading, // Include the loading state in the return value
     handleAddGoal,
     handleCompleteGoal,
     handleUpdateGoal,
