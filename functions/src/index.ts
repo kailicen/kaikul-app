@@ -3,9 +3,9 @@ import * as functions from "firebase-functions";
 import * as admin from "firebase-admin";
 import {format, addYears} from "date-fns";
 import * as mailgun from "mailgun-js";
-import * as cors from "cors";
+// import * as cors from "cors";
 // default is for Vercel deployment issue, but it will break the functions
-// import {default as cors} from "cors";
+import {default as cors} from "cors";
 
 
 admin.initializeApp();
