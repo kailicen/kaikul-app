@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   Flex,
   Tab,
@@ -25,6 +25,7 @@ function MePage({ user, posts }: Props) {
   const { loading, profile, updateProfile } = useUserProfile(user);
   const { profileAddition, updateProfileAddition } =
     useUserProfileAddition(user);
+  const [tabIndex, setTabIndex] = useState(2); // default to the first tab
 
   return (
     <>
@@ -35,7 +36,8 @@ function MePage({ user, posts }: Props) {
             variant="enclosed"
             width="100%"
             mx="auto"
-            index={2}
+            index={tabIndex}
+            onChange={(index) => setTabIndex(index)}
           >
             <TabList display="flex" justifyContent="center">
               <Tab>My Journey</Tab>
