@@ -28,10 +28,10 @@ function WeeklyPlanner({ user }: Props) {
 
   const [isPanelOpen, setIsPanelOpen] = useState(false);
 
-  useEffect(() => {
-    // Update isPanelOpen based on screen size after component mounts
-    setIsPanelOpen(isLargerThan768);
-  }, [isLargerThan768]); // dependency on isLargerThan768
+  // useEffect(() => {
+  //   // Update isPanelOpen based on screen size after component mounts
+  //   setIsPanelOpen(isLargerThan768);
+  // }, [isLargerThan768]); // dependency on isLargerThan768
 
   const togglePanel = () => {
     setIsPanelOpen(!isPanelOpen);

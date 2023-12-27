@@ -25,7 +25,7 @@ function MePage({ user, posts }: Props) {
   const { loading, profile, updateProfile } = useUserProfile(user);
   const { profileAddition, updateProfileAddition } =
     useUserProfileAddition(user);
-  const [tabIndex, setTabIndex] = useState(2); // default to the first tab
+  const [tabIndex, setTabIndex] = useState(0); // default to the first tab
 
   return (
     <>
