@@ -33,7 +33,7 @@ function LeftSection({ user, selectedBuddy }: Props) {
             />
             {/* <TeamActions /> */}
           </Grid>
-          <FloatingFeedbackButton /> {/* Add the feedback button */}
+          {/* <FloatingFeedbackButton />  */}
         </>
       ) : (
         <div>Select a buddy to view details</div>

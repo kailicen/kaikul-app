@@ -27,7 +27,7 @@ function Tracker({}: Props) {
       {user ? (
         <div className="pt-[80px]">
           <TrackerPage user={user} />
-          <FloatingFeedbackButton /> {/* Add the feedback button */}
+          {/* <FloatingFeedbackButton /> */}
         </div>
       ) : null}
     </>

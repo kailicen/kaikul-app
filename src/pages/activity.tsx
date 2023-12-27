@@ -156,7 +156,7 @@ const Activity: NextPage = () => {
               </VStack>
             )}
           </VStack>
-          <FloatingFeedbackButton /> {/* Add the feedback button */}
+          {/* <FloatingFeedbackButton />  */}
         </div>
       ) : (
         <LoadingScreen />

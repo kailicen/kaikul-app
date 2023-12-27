@@ -186,7 +186,7 @@ function ProfilePage() {
           </Button>
         </VStack>
       </Flex>
-      <FloatingFeedbackButton /> {/* Add the feedback button */}
+      {/* <FloatingFeedbackButton /> */}
     </>
   );
 }

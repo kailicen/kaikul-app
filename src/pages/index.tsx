@@ -181,7 +181,7 @@ export default function Home({ posts }: Props) {
       {user ? (
         <div className="pt-[80px] mx-auto md:container">
           <MePage user={user} posts={posts} />
-          <FloatingFeedbackButton /> {/* Add the feedback button */}
+          {/* <FloatingFeedbackButton /> */}
         </div>
       ) : (
         <>

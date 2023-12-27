@@ -72,7 +72,7 @@ function WeeklyUpdatePage({}: Props) {
               </TabPanels>
             </Tabs>
           </Flex>
-          <FloatingFeedbackButton /> {/* Add the feedback button */}
+          {/* <FloatingFeedbackButton /> */}
         </div>
       ) : (
         <LoadingScreen />
